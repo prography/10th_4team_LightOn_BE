@@ -1,4 +1,4 @@
-package com.example.lighton;
+package com.prography.lighton;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

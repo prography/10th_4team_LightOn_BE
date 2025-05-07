@@ -1,4 +1,4 @@
-package com.example.lighton.common.exception;
+package com.prography.lighton.common.exception;
 
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
