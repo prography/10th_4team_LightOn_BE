@@ -6,12 +6,12 @@ import jakarta.persistence.Embeddable;
 @Embeddable
 public class MarketingAgreement {
 
-    @Column(nullable = false)
+    @Column(nullable = false, name = "sms_agreement")
     private Boolean sms;
 
-    @Column(nullable = false)
+    @Column(nullable = false, name = "push_agreement")
     private Boolean push;
 
-    @Column(nullable = false)
+    @Column(nullable = false, name = "email_agreement")
     private Boolean email;
 }
