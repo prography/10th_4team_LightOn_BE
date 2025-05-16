@@ -6,11 +6,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.prography.lighton.member.application.command.RegisterMemberCommand;
-import com.prography.lighton.member.domain.MemberRepository;
 import com.prography.lighton.member.domain.entity.TemporaryMember;
-import com.prography.lighton.member.domain.TemporaryMemberRepository;
+import com.prography.lighton.member.domain.repository.TemporaryMemberRepository;
 import com.prography.lighton.member.domain.entity.vo.Email;
-import com.prography.lighton.member.domain.entity.vo.Password;
 import com.prography.lighton.member.presentation.dto.response.SignUpMemberResponseDTO;
 
 @Service
