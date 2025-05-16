@@ -10,9 +10,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.prography.lighton.common.utils.ApiUtils;
 import com.prography.lighton.common.utils.ApiUtils.ApiResult;
 import com.prography.lighton.member.application.RegisterMemberUseCase;
-import com.prography.lighton.member.application.command.RegisterMemberCommand;
-import com.prography.lighton.member.presentation.dto.request.SignUpMemberRequestDTO;
-import com.prography.lighton.member.presentation.dto.response.SignUpMemberResponseDTO;
+import com.prography.lighton.member.presentation.dto.request.RegisterMemberRequestDTO;
+import com.prography.lighton.member.presentation.dto.response.RegisterMemberResponseDTO;
 
 @RestController
 @RequestMapping("/api/users")
@@ -25,8 +24,8 @@ public class MemberController {
 	}
 
 	@PostMapping
-	public ApiResult<SignUpMemberResponseDTO> register(@RequestBody SignUpMemberRequestDTO request) {
-		return ApiUtils.success(registerMemberUseCase.registerMember(RegisterMemberCommand.of(request)));
+	public ApiResult<RegisterMemberResponseDTO> register(@RequestBody RegisterMemberRequestDTO request) {
+		return ApiUtils.success(registerMemberUseCase.registerMember(request));
 	}
 
 	@PostMapping("/login")

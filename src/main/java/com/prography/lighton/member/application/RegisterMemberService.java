@@ -5,11 +5,11 @@ import static com.prography.lighton.member.domain.entity.vo.Password.*;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import com.prography.lighton.member.application.command.RegisterMemberCommand;
 import com.prography.lighton.member.domain.entity.TemporaryMember;
 import com.prography.lighton.member.domain.repository.TemporaryMemberRepository;
 import com.prography.lighton.member.domain.entity.vo.Email;
-import com.prography.lighton.member.presentation.dto.response.SignUpMemberResponseDTO;
+import com.prography.lighton.member.presentation.dto.request.RegisterMemberRequestDTO;
+import com.prography.lighton.member.presentation.dto.response.RegisterMemberResponseDTO;
 
 @Service
 public class RegisterMemberService implements RegisterMemberUseCase {
@@ -23,16 +23,16 @@ public class RegisterMemberService implements RegisterMemberUseCase {
 	}
 
 	@Override
-	public SignUpMemberResponseDTO registerMember(final RegisterMemberCommand command) {
-		if (temporaryMemberRepository.existsByEmail(command.email())) {
+	public RegisterMemberResponseDTO registerMember(final RegisterMemberRequestDTO request) {
+		if (temporaryMemberRepository.existsByEmail(request.email())) {
 			throw new IllegalArgumentException("이미 존재하는 이메일입니다.");
 		}
 
 		TemporaryMember temporaryMember = TemporaryMember.of(
-				new Email(command.email()),
-				encodeAndCreate(command.password(), passwordEncoder));
+				new Email(request.email()),
+				encodeAndCreate(request.password(), passwordEncoder));
 		temporaryMemberRepository.save(temporaryMember);
 
-		return SignUpMemberResponseDTO.of(temporaryMember.getId());
+		return RegisterMemberResponseDTO.of(temporaryMember.getId());
 	}
 }

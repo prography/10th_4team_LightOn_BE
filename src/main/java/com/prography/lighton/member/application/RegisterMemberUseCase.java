@@ -1,9 +1,9 @@
 package com.prography.lighton.member.application;
 
-import com.prography.lighton.member.application.command.RegisterMemberCommand;
-import com.prography.lighton.member.presentation.dto.response.SignUpMemberResponseDTO;
+import com.prography.lighton.member.presentation.dto.request.RegisterMemberRequestDTO;
+import com.prography.lighton.member.presentation.dto.response.RegisterMemberResponseDTO;
 
 public interface RegisterMemberUseCase {
 
-	SignUpMemberResponseDTO registerMember(final RegisterMemberCommand command);
+	RegisterMemberResponseDTO registerMember(final RegisterMemberRequestDTO request);
 }
