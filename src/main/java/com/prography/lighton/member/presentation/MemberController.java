@@ -9,14 +9,16 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.prography.lighton.common.utils.ApiUtils;
 import com.prography.lighton.common.utils.ApiUtils.ApiResult;
+import com.prography.lighton.member.presentation.dto.request.SignUpMemberRequestDTO;
+import com.prography.lighton.member.presentation.dto.response.SignUpMemberResponseDTO;
 
 @RestController
 @RequestMapping("/api/users")
 public class MemberController {
 
 	@PostMapping
-	public ApiResult<?> signUp() {
-		return ApiUtils.success();
+	public ApiResult<SignUpMemberResponseDTO> signUp(SignUpMemberRequestDTO request) {
+		return ApiUtils.success(null);
 	}
 
 	@PostMapping("/login")

@@ -42,11 +42,14 @@ public class Performance extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private Type type;
 
+    @ElementCollection(targetClass = Seat.class)
+    @CollectionTable(
+            name = "performance_seat",
+            joinColumns = @JoinColumn(name = "performance_id")
+    )
+    @Column(name = "seat")
     @Enumerated(EnumType.STRING)
-    private List<Seat> seats;
-
-    @Column(nullable = false)
-    private String notice;
+    private List<Seat> seats = new ArrayList<>();
 
     @Column(nullable = false)
     private Boolean isPaid;
