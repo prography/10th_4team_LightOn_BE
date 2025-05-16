@@ -5,6 +5,7 @@ import com.prography.lighton.member.domain.entity.association.PreferredArtist;
 import com.prography.lighton.member.domain.entity.enums.Authority;
 import com.prography.lighton.member.domain.entity.vo.Email;
 import com.prography.lighton.member.domain.entity.vo.MarketingAgreement;
+import com.prography.lighton.member.domain.entity.vo.Password;
 import com.prography.lighton.member.domain.entity.vo.Phone;
 import com.prography.lighton.member.domain.entity.vo.PreferredRegion;
 import jakarta.persistence.*;
@@ -26,7 +27,7 @@ public class Member extends BaseEntity {
     private Email email;
 
     @Column(nullable = false)
-    private String password;
+    private Password password;
 
     @Column(nullable = false)
     private String name;
