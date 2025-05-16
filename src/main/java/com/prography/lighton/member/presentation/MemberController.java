@@ -1,6 +1,5 @@
 package com.prography.lighton.member.presentation;
 
-import org.springframework.security.core.parameters.P;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,7 +16,7 @@ import com.prography.lighton.member.presentation.dto.response.SignUpMemberRespon
 public class MemberController {
 
 	@PostMapping
-	public ApiResult<SignUpMemberResponseDTO> signUp(SignUpMemberRequestDTO request) {
+	public ApiResult<SignUpMemberResponseDTO> register(SignUpMemberRequestDTO request) {
 		return ApiUtils.success(null);
 	}
 
