@@ -13,13 +13,14 @@ public class SecurityConfig {
 	@Bean
 	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 		http
-				.csrf().disable()
+				.csrf(csrf -> csrf.disable())
 				.authorizeHttpRequests(auth -> auth
-						.requestMatchers("/api/users").permitAll()  // 회원가입 허용
-						.anyRequest().authenticated()  // 나머지는 인증 필요
+						.requestMatchers("/health").permitAll()
+						.requestMatchers("/api/users").permitAll()
+						.anyRequest().authenticated()
 				)
-				.formLogin().disable()
-				.httpBasic().disable();
+				.formLogin(form -> form.disable())
+				.httpBasic(basic -> basic.disable());
 
 		return http.build();
 	}
