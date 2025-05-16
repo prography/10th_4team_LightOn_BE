@@ -6,6 +6,7 @@ import org.hibernate.annotations.SQLRestriction;
 
 import com.prography.lighton.common.BaseEntity;
 import com.prography.lighton.member.domain.entity.vo.Email;
+import com.prography.lighton.member.domain.entity.vo.Password;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Embedded;
@@ -23,14 +24,14 @@ public class TemporaryMember extends BaseEntity {
 	@Embedded
 	private Email email;
 
-	@Column(nullable = false)
-	private String password;
+	@Embedded
+	private Password password;
 
 	@Column(nullable = false)
 	@ColumnDefault("false")
 	private Boolean isRegistered = false;
 
-	public static TemporaryMember of(Email email, String password) {
+	public static TemporaryMember of(Email email, Password password) {
 		return new TemporaryMember(email, password, false);
 	}
 }
