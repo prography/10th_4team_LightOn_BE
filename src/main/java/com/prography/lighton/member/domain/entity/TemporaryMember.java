@@ -29,4 +29,8 @@ public class TemporaryMember extends BaseEntity {
 	@Column(nullable = false)
 	@ColumnDefault("false")
 	private Boolean isRegistered = false;
+
+	public static TemporaryMember of(Email email, String password) {
+		return new TemporaryMember(email, password, false);
+	}
 }

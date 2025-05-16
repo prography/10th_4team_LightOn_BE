@@ -14,7 +14,7 @@ public class Email {
 
     private static final Pattern EMAIL_PATTERN = Pattern.compile("^[\\w-.]+@([\\w-]+\\.)+[\\w-]{2,4}$");
 
-    @Column(nullable = false, unique = true)
+    @Column(nullable = false, unique = true, name = "email")
     private String value;
 
     protected Email() {
@@ -23,7 +23,7 @@ public class Email {
 
     public Email(String value) {
         if (value == null || !EMAIL_PATTERN.matcher(value).matches()) {
-            throw new InvalidMemberException("잘못된 이메일 형식입니다: " + value);
+            throw new InvalidMemberException("이메일 형식이 올바르지 않습니다.");
         }
         this.value = value;
     }

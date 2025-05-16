@@ -5,5 +5,5 @@ import com.prography.lighton.member.presentation.dto.response.SignUpMemberRespon
 
 public interface RegisterMemberUseCase {
 
-	SignUpMemberResponseDTO registerMember(RegisterMemberCommand command) throws Exception;
+	SignUpMemberResponseDTO registerMember(final RegisterMemberCommand command);
 }
