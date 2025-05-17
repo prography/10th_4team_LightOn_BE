@@ -15,6 +15,7 @@ import com.prography.lighton.member.domain.entity.vo.PreferredRegion;
 import com.prography.lighton.member.domain.repository.MemberRepository;
 import com.prography.lighton.member.domain.repository.TemporaryMemberRepository;
 import com.prography.lighton.member.presentation.dto.request.CompleteMemberProfileRequestDTO;
+import com.prography.lighton.member.presentation.dto.response.CompleteMemberProfileResponseDTO;
 
 @Service
 public class CompleteMemberProfileService implements CompleteMemberProfileUseCase {
@@ -28,7 +29,9 @@ public class CompleteMemberProfileService implements CompleteMemberProfileUseCas
 
 	public CompleteMemberProfileService(
 			final TemporaryMemberRepository temporaryMemberRepository,
-			final MemberRepository memberRepository, RegionRepository regionRepository, SubRegionRepository subRegionRepository,
+			final MemberRepository memberRepository,
+			final RegionRepository regionRepository,
+			final SubRegionRepository subRegionRepository,
 			final TokenProvider tokenProvider) {
 		this.temporaryMemberRepository = temporaryMemberRepository;
 		this.memberRepository = memberRepository;
@@ -38,7 +41,7 @@ public class CompleteMemberProfileService implements CompleteMemberProfileUseCas
 	}
 
 	@Override
-	public void completeMemberProfile(final Long temporaryMemberId, final CompleteMemberProfileRequestDTO request) {
+	public CompleteMemberProfileResponseDTO completeMemberProfile(final Long temporaryMemberId, final CompleteMemberProfileRequestDTO request) {
 		TemporaryMember temporaryMember = temporaryMemberRepository.getById(temporaryMemberId);
 		if (temporaryMember.isRegistered()) {
 			throw new IllegalArgumentException("이미 프로필이 등록된 회원입니다.");
@@ -60,6 +63,12 @@ public class CompleteMemberProfileService implements CompleteMemberProfileUseCas
 		);
 
 		temporaryMember.markAsRegistered();
-		memberRepository.save(member);
+		Member savedMember = memberRepository.save(member);
+
+		return CompleteMemberProfileResponseDTO.of(
+				tokenProvider.createAccessToken(String.valueOf(savedMember.getId())),
+				tokenProvider.createRefreshToken(String.valueOf(savedMember.getId())),
+				savedMember.getId()
+		);
 	}
 }

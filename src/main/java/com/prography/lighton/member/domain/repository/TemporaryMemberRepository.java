@@ -12,7 +12,7 @@ public interface TemporaryMemberRepository extends JpaRepository<TemporaryMember
 	@Query("SELECT COUNT(m) > 0 FROM TemporaryMember m WHERE m.email.value = :email")
 	boolean existsByEmail(@Param("email") String email);
 
-	default TemporaryMember getById(Long id) {
+	default TemporaryMember getById(final Long id) {
 		return findById(id)
 				.orElseThrow(NoSuchMemberException::new);
 	}

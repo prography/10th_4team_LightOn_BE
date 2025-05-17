@@ -14,6 +14,7 @@ import com.prography.lighton.member.application.CompleteMemberProfileUseCase;
 import com.prography.lighton.member.application.RegisterMemberUseCase;
 import com.prography.lighton.member.presentation.dto.request.CompleteMemberProfileRequestDTO;
 import com.prography.lighton.member.presentation.dto.request.RegisterMemberRequestDTO;
+import com.prography.lighton.member.presentation.dto.response.CompleteMemberProfileResponseDTO;
 import com.prography.lighton.member.presentation.dto.response.RegisterMemberResponseDTO;
 
 @RestController
@@ -34,10 +35,9 @@ public class MemberController {
 	}
 
 	@PostMapping("/{temporaryMemberId}/info")
-	public ApiResult<?> completeMemberProfile(@PathVariable Long temporaryMemberId,
+	public ApiResult<CompleteMemberProfileResponseDTO> completeMemberProfile(@PathVariable Long temporaryMemberId,
 			@RequestBody CompleteMemberProfileRequestDTO request) {
-		completeMemberProfileUseCase.completeMemberProfile(temporaryMemberId, request);
-		return ApiUtils.success();
+		return ApiUtils.success(completeMemberProfileUseCase.completeMemberProfile(temporaryMemberId, request));
 	}
 
 	@GetMapping("/duplicate-check")
