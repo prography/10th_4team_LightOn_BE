@@ -3,6 +3,10 @@ package com.prography.lighton.member.application;
 import org.springframework.stereotype.Service;
 
 import com.prography.lighton.auth.application.TokenProvider;
+import com.prography.lighton.location.domain.entity.Region;
+import com.prography.lighton.location.domain.entity.SubRegion;
+import com.prography.lighton.location.domain.repository.RegionRepository;
+import com.prography.lighton.location.domain.repository.SubRegionRepository;
 import com.prography.lighton.member.domain.entity.Member;
 import com.prography.lighton.member.domain.entity.TemporaryMember;
 import com.prography.lighton.member.domain.entity.vo.MarketingAgreement;
@@ -17,14 +21,19 @@ public class CompleteMemberProfileService implements CompleteMemberProfileUseCas
 
 	private final TemporaryMemberRepository temporaryMemberRepository;
 	private final MemberRepository memberRepository;
+	private final RegionRepository regionRepository;
+	private final SubRegionRepository subRegionRepository;
+
 	private final TokenProvider tokenProvider;
 
 	public CompleteMemberProfileService(
 			final TemporaryMemberRepository temporaryMemberRepository,
-			final MemberRepository memberRepository,
+			final MemberRepository memberRepository, RegionRepository regionRepository, SubRegionRepository subRegionRepository,
 			final TokenProvider tokenProvider) {
 		this.temporaryMemberRepository = temporaryMemberRepository;
 		this.memberRepository = memberRepository;
+		this.regionRepository = regionRepository;
+		this.subRegionRepository = subRegionRepository;
 		this.tokenProvider = tokenProvider;
 	}
 
@@ -35,10 +44,13 @@ public class CompleteMemberProfileService implements CompleteMemberProfileUseCas
 			throw new IllegalArgumentException("이미 프로필이 등록된 회원입니다.");
 		}
 
+		Region region = regionRepository.getByRegionCode(request.regionCode());
+		SubRegion subRegion = subRegionRepository.getByRegionCode(request.regionCode());
+
 		Member member = Member.toNormalMember(
 				temporaryMember.getEmail(),
 				temporaryMember.getPassword(),
-				new PreferredRegion(),
+				PreferredRegion.of(region, subRegion),
 				request.name(),
 				Phone.of(request.phone()),
 				MarketingAgreement.of(
@@ -47,7 +59,7 @@ public class CompleteMemberProfileService implements CompleteMemberProfileUseCas
 						request.agreements().marketing().email())
 		);
 
-		memberRepository.save(member);
 		temporaryMember.markAsRegistered();
+		memberRepository.save(member);
 	}
 }

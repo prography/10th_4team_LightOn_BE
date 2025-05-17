@@ -3,14 +3,9 @@ package com.prography.lighton.member.presentation.dto.request;
 public record CompleteMemberProfileRequestDTO(
 		String name,
 		String phone,
-		RegionDTO region,
+		Integer regionCode,
 		AgreementsDTO agreements
 ) {
-	public record RegionDTO(
-			String city,
-			String district
-	) {}
-
 	public record AgreementsDTO(
 			boolean terms,
 			boolean privacy,

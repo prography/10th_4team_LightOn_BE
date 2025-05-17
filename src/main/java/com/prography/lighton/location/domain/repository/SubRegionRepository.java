@@ -9,10 +9,10 @@ import com.prography.lighton.location.exception.NoSuchRegionException;
 
 public interface SubRegionRepository extends JpaRepository<SubRegion, Long> {
 
-	Optional<SubRegion> findByName(String name);
+	Optional<SubRegion> findByCode(Integer code);
 
-	default SubRegion getBySubRegionName(String subRegionName) {
-		return findByName(subRegionName)
+	default SubRegion getByRegionCode(Integer code) {
+		return findByCode(code)
 				.orElseThrow(NoSuchRegionException::new);
 	}
 }

@@ -9,10 +9,9 @@ import com.prography.lighton.location.exception.NoSuchRegionException;
 
 public interface RegionRepository extends JpaRepository<Region, Long> {
 
-	Optional<Region> findByName(String name);
-
-	default Region getByRegionName(String regionName) {
-		return findByName(regionName)
+	default Region getByRegionCode(Integer code) {
+		System.out.println((long) ((code / 100) * 100));
+		return findById((long) ((code / 100) * 100))
 				.orElseThrow(NoSuchRegionException::new);
 	}
 }
