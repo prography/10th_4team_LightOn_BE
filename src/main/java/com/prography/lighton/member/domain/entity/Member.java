@@ -14,6 +14,7 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.SQLRestriction;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -47,4 +48,18 @@ public class Member extends BaseEntity {
 
     @OneToMany(mappedBy = "member", fetch = FetchType.LAZY)
     private List<PreferredArtist> preferredArtists;
+
+    public static Member toNormalMember (Email email, Password password, PreferredRegion preferredRegion,
+            String name, Phone phone, MarketingAgreement marketingAgreement) {
+        return new Member(
+                email,
+                password,
+                name,
+                preferredRegion,
+                phone,
+                marketingAgreement,
+                Authority.NORMAL,
+                new ArrayList<>()
+        );
+    }
 }

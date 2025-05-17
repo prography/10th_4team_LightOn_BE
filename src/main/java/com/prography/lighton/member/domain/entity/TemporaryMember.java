@@ -34,4 +34,20 @@ public class TemporaryMember extends BaseEntity {
 	public static TemporaryMember of(Email email, Password password) {
 		return new TemporaryMember(email, password, false);
 	}
+
+	public void markAsRegistered() {
+		this.isRegistered = true;
+	}
+
+	public Email getEmail() {
+		return email;
+	}
+
+	public Password getPassword() {
+		return password;
+	}
+
+	public Boolean isRegistered() {
+		return isRegistered;
+	}
 }
