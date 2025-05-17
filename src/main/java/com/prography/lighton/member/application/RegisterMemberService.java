@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.prography.lighton.member.domain.entity.TemporaryMember;
 import com.prography.lighton.member.domain.repository.TemporaryMemberRepository;
+import com.prography.lighton.member.exception.DuplicateMemberException;
 import com.prography.lighton.member.presentation.dto.request.RegisterMemberRequestDTO;
 import com.prography.lighton.member.presentation.dto.response.RegisterMemberResponseDTO;
 
@@ -25,7 +26,7 @@ public class RegisterMemberService implements RegisterMemberUseCase {
 	@Override
 	public RegisterMemberResponseDTO registerMember(final RegisterMemberRequestDTO request) {
 		if (temporaryMemberRepository.existsByEmail(request.email())) {
-			throw new IllegalArgumentException("이미 존재하는 이메일입니다.");
+			throw new DuplicateMemberException("이미 존재하는 이메일입니다.");
 		}
 
 		TemporaryMember temporaryMember = TemporaryMember.of(
