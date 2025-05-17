@@ -50,12 +50,14 @@ public class CompleteMemberProfileService implements CompleteMemberProfileUseCas
 		Region region = regionRepository.getByRegionCode(request.regionCode());
 		SubRegion subRegion = subRegionRepository.getByRegionCode(request.regionCode());
 
+		Phone phone = validatePhoneDuplicate(request.phone());
+
 		Member member = Member.toNormalMember(
 				temporaryMember.getEmail(),
 				temporaryMember.getPassword(),
 				PreferredRegion.of(region, subRegion),
 				request.name(),
-				Phone.of(request.phone()),
+				phone,
 				MarketingAgreement.of(
 						request.agreements().marketing().sms(),
 						request.agreements().marketing().push(),
@@ -70,5 +72,13 @@ public class CompleteMemberProfileService implements CompleteMemberProfileUseCas
 				tokenProvider.createRefreshToken(String.valueOf(savedMember.getId())),
 				savedMember.getId()
 		);
+	}
+
+	private Phone validatePhoneDuplicate(String phoneNumber) {
+		Phone phone = Phone.of(phoneNumber);
+		if (memberRepository.existsByPhone(phone)) {
+			throw new IllegalArgumentException("이미 존재하는 전화번호입니다.");
+		}
+		return phone;
 	}
 }
