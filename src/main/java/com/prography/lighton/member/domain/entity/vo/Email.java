@@ -11,16 +11,17 @@ import com.prography.lighton.member.exception.InvalidMemberException;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
 
 @Embeddable
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Email {
 
     private static final Pattern EMAIL_PATTERN = Pattern.compile("^[\\w-.]+@([\\w-]+\\.)+[\\w-]{2,4}$");
 
     @Column(nullable = false, unique = true, name = "email")
     private String value;
-
-    protected Email() {}
 
     private Email(String value) {
         this.value = value;
@@ -31,10 +32,6 @@ public class Email {
             throw new InvalidMemberException("이메일 형식이 올바르지 않습니다.", HttpStatus.BAD_REQUEST);
         }
         return new Email(value);
-    }
-
-    public String getValue() {
-        return value;
     }
 
     @Override

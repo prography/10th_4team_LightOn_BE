@@ -9,8 +9,11 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
 
 @Embeddable
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Password {
 
 	private static final Pattern PASSWORD_PATTERN = Pattern.compile(
@@ -19,8 +22,6 @@ public class Password {
 
 	@Column(nullable = false, name = "password")
 	private String value;
-
-	protected Password() {}
 
 	public static Password encodeAndCreate(String rawPassword, PasswordEncoder encoder) {
 		if (!PASSWORD_PATTERN.matcher(rawPassword).matches() || isBlank(rawPassword)) {

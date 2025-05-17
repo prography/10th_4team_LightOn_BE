@@ -8,16 +8,17 @@ import ch.qos.logback.core.util.StringUtil;
 import io.micrometer.common.util.StringUtils;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
 
 @Embeddable
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Phone {
 
     private static final String PHONE_NUMBER_PATTERN = "^\\d{3}\\d{3,4}\\d{4}$";
 
     @Column(nullable = false, length = 11, unique = true, name = "phone")
     private String value;
-
-    protected Phone() {}
 
     private Phone (String value) {
         this.value = value;

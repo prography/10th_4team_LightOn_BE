@@ -2,8 +2,11 @@ package com.prography.lighton.member.domain.entity.vo;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
 
 @Embeddable
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class MarketingAgreement {
 
     @Column(nullable = false, name = "sms_agreement")
@@ -14,8 +17,6 @@ public class MarketingAgreement {
 
     @Column(nullable = false, name = "email_agreement")
     private Boolean email;
-
-    protected MarketingAgreement() {}
 
     private MarketingAgreement(Boolean sms, Boolean push, Boolean email) {
         this.sms = sms;
