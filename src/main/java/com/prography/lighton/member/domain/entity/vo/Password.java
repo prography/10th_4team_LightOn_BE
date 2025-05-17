@@ -15,7 +15,7 @@ public class Password {
 			"^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[!@#$%^&*()\\-_=+{}\\[\\]:;\"'<>,.?/\\\\|]).{8,20}$"
 	);
 
-	@Column(nullable = false)
+	@Column(nullable = false, name = "password")
 	private String value;
 
 	protected Password() {}

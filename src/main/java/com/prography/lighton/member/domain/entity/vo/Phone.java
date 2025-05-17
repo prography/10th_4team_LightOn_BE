@@ -8,9 +8,9 @@ import jakarta.persistence.Embeddable;
 @Embeddable
 public class Phone {
 
-    private static final String PHONE_NUMBER_PATTERN = "^\\d{3}-\\d{3,4}-\\d{4}$";
+    private static final String PHONE_NUMBER_PATTERN = "^\\d{3}\\d{3,4}\\d{4}$";
 
-    @Column(nullable = false, length = 11, unique = true)
+    @Column(nullable = false, length = 11, unique = true, name = "phone")
     private String value;
 
     protected Phone() {}
