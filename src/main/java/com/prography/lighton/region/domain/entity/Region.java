@@ -1,4 +1,4 @@
-package com.prography.lighton.location.domain.entity;
+package com.prography.lighton.region.domain.entity;
 
 import com.prography.lighton.common.BaseEntity;
 import jakarta.persistence.Column;

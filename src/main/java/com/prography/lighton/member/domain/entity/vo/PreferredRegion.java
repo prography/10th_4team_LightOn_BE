@@ -1,17 +1,29 @@
 package com.prography.lighton.member.domain.entity.vo;
 
-import com.prography.lighton.location.domain.entity.Region;
-import com.prography.lighton.location.domain.entity.SubRegion;
+import com.prography.lighton.region.domain.entity.Region;
+import com.prography.lighton.region.domain.entity.SubRegion;
 import jakarta.persistence.Embeddable;
 import jakarta.persistence.FetchType;
-import jakarta.persistence.OneToOne;
+import jakarta.persistence.ManyToOne;
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
 
 @Embeddable
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class PreferredRegion {
 
-    @OneToOne(fetch = FetchType.LAZY, optional = false)
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
     private Region region;
 
-    @OneToOne(fetch = FetchType.LAZY, optional = false)
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
     private SubRegion subRegion;
+
+    private PreferredRegion(Region region, SubRegion subRegion) {
+        this.region = region;
+        this.subRegion = subRegion;
+    }
+
+    public static PreferredRegion of(Region region, SubRegion subRegion) {
+        return new PreferredRegion(region, subRegion);
+    }
 }
