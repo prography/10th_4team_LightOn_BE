@@ -1,5 +1,7 @@
 package com.prography.lighton.common.exception;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -12,6 +14,8 @@ import com.prography.lighton.member.exception.NoSuchMemberException;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
+
+	private final Logger logger = LoggerFactory.getLogger(getClass());
 
 	@ExceptionHandler({
 			NoSuchMemberException.class,
@@ -35,6 +39,7 @@ public class GlobalExceptionHandler {
 
 	@ExceptionHandler(Exception.class)
 	public ApiResult<?> handleException(Exception e) {
+		logger.error(e.getMessage(), e);
 		return ApiUtils.error(HttpStatus.INTERNAL_SERVER_ERROR, "서버 오류가 발생했습니다.");
 	}
 }
