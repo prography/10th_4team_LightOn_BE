@@ -1,11 +1,11 @@
-package com.prography.lighton.location.domain.repository;
+package com.prography.lighton.region.domain.repository;
 
 import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import com.prography.lighton.location.domain.entity.SubRegion;
-import com.prography.lighton.location.exception.NoSuchRegionException;
+import com.prography.lighton.region.domain.entity.SubRegion;
+import com.prography.lighton.region.exception.NoSuchRegionException;
 
 public interface SubRegionRepository extends JpaRepository<SubRegion, Long> {
 

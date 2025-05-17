@@ -3,10 +3,10 @@ package com.prography.lighton.member.application;
 import org.springframework.stereotype.Service;
 
 import com.prography.lighton.auth.application.TokenProvider;
-import com.prography.lighton.location.domain.entity.Region;
-import com.prography.lighton.location.domain.entity.SubRegion;
-import com.prography.lighton.location.domain.repository.RegionRepository;
-import com.prography.lighton.location.domain.repository.SubRegionRepository;
+import com.prography.lighton.region.domain.entity.Region;
+import com.prography.lighton.region.domain.entity.SubRegion;
+import com.prography.lighton.region.domain.repository.RegionRepository;
+import com.prography.lighton.region.domain.repository.SubRegionRepository;
 import com.prography.lighton.member.domain.entity.Member;
 import com.prography.lighton.member.domain.entity.TemporaryMember;
 import com.prography.lighton.member.domain.entity.vo.MarketingAgreement;

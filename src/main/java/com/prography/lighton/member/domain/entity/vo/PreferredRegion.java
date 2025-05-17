@@ -1,13 +1,10 @@
 package com.prography.lighton.member.domain.entity.vo;
 
-import java.util.Objects;
-
-import com.prography.lighton.location.domain.entity.Region;
-import com.prography.lighton.location.domain.entity.SubRegion;
+import com.prography.lighton.region.domain.entity.Region;
+import com.prography.lighton.region.domain.entity.SubRegion;
 import jakarta.persistence.Embeddable;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToOne;
 
 @Embeddable
 public class PreferredRegion {

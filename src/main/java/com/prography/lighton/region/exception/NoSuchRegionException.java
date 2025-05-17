@@ -1,4 +1,4 @@
-package com.prography.lighton.location.exception;
+package com.prography.lighton.region.exception;
 
 public class NoSuchRegionException extends RuntimeException {
 
