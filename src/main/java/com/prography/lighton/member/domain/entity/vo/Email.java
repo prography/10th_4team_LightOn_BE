@@ -1,5 +1,7 @@
 package com.prography.lighton.member.domain.entity.vo;
 
+import static io.micrometer.common.util.StringUtils.*;
+
 import java.util.Objects;
 import java.util.regex.Pattern;
 
@@ -25,7 +27,7 @@ public class Email {
     }
 
     public static Email of(String value) {
-        if (value == null || !EMAIL_PATTERN.matcher(value).matches()) {
+        if (isBlank(value)|| !EMAIL_PATTERN.matcher(value).matches()) {
             throw new InvalidMemberException("이메일 형식이 올바르지 않습니다.", HttpStatus.BAD_REQUEST);
         }
         return new Email(value);

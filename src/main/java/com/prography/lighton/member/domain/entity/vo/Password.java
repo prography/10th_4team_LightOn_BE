@@ -1,5 +1,7 @@
 package com.prography.lighton.member.domain.entity.vo;
 
+import static io.micrometer.common.util.StringUtils.*;
+
 import java.util.Objects;
 import java.util.regex.Pattern;
 
@@ -21,7 +23,7 @@ public class Password {
 	protected Password() {}
 
 	public static Password encodeAndCreate(String rawPassword, PasswordEncoder encoder) {
-		if (!PASSWORD_PATTERN.matcher(rawPassword).matches()) {
+		if (!PASSWORD_PATTERN.matcher(rawPassword).matches() || isBlank(rawPassword)) {
 			throw new IllegalArgumentException("비밀번호 형식이 올바르지 않습니다.");
 		}
 		return new Password(encoder.encode(rawPassword));

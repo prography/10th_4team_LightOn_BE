@@ -1,7 +1,11 @@
 package com.prography.lighton.member.domain.entity.vo;
 
+import static io.micrometer.common.util.StringUtils.*;
+
 import java.util.Objects;
 
+import ch.qos.logback.core.util.StringUtil;
+import io.micrometer.common.util.StringUtils;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
 
@@ -20,7 +24,7 @@ public class Phone {
     }
 
     public static Phone of(String phoneNumber) {
-        if (phoneNumber == null || !phoneNumber.matches(PHONE_NUMBER_PATTERN)) {
+        if (isBlank(phoneNumber) || !phoneNumber.matches(PHONE_NUMBER_PATTERN)) {
             throw new IllegalArgumentException("전화번호 형식이 올바르지 않습니다.");
         }
         return new Phone(phoneNumber);
