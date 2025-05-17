@@ -10,7 +10,6 @@ import com.prography.lighton.member.domain.entity.vo.Phone;
 import com.prography.lighton.member.domain.entity.vo.PreferredRegion;
 import com.prography.lighton.member.domain.repository.MemberRepository;
 import com.prography.lighton.member.domain.repository.TemporaryMemberRepository;
-import com.prography.lighton.member.exception.NoSuchMemberException;
 import com.prography.lighton.member.presentation.dto.request.CompleteMemberProfileRequestDTO;
 
 @Service
@@ -41,8 +40,11 @@ public class CompleteMemberProfileService implements CompleteMemberProfileUseCas
 				temporaryMember.getPassword(),
 				new PreferredRegion(),
 				request.name(),
-				new Phone(),
-				new MarketingAgreement()
+				Phone.of(request.phone()),
+				MarketingAgreement.of(
+						request.agreements().marketing().sms(),
+						request.agreements().marketing().push(),
+						request.agreements().marketing().email())
 		);
 
 		memberRepository.save(member);

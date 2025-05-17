@@ -1,5 +1,6 @@
 package com.prography.lighton.member.domain.entity.vo;
 
+import java.util.Objects;
 import java.util.regex.Pattern;
 
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -31,6 +32,24 @@ public class Password {
 	}
 
 	public String getValue() {
+		return value;
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (o == null || getClass() != o.getClass())
+			return false;
+		Password password = (Password)o;
+		return Objects.equals(value, password.value);
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hashCode(value);
+	}
+
+	@Override
+	public String toString() {
 		return value;
 	}
 }

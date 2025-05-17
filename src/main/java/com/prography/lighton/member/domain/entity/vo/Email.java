@@ -7,7 +7,6 @@ import com.prography.lighton.member.exception.InvalidMemberException;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
-import lombok.EqualsAndHashCode;
 
 @Embeddable
 public class Email {
@@ -17,15 +16,17 @@ public class Email {
     @Column(nullable = false, unique = true, name = "email")
     private String value;
 
-    protected Email() {
-        // JPA 기본 생성자
+    protected Email() {}
+
+    private Email(String value) {
+        this.value = value;
     }
 
-    public Email(String value) {
+    public static Email of(String value) {
         if (value == null || !EMAIL_PATTERN.matcher(value).matches()) {
             throw new InvalidMemberException("이메일 형식이 올바르지 않습니다.");
         }
-        this.value = value;
+        return new Email(value);
     }
 
     public String getValue() {

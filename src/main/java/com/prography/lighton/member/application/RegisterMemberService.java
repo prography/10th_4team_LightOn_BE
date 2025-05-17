@@ -1,5 +1,6 @@
 package com.prography.lighton.member.application;
 
+import static com.prography.lighton.member.domain.entity.vo.Email.*;
 import static com.prography.lighton.member.domain.entity.vo.Password.*;
 
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -7,7 +8,6 @@ import org.springframework.stereotype.Service;
 
 import com.prography.lighton.member.domain.entity.TemporaryMember;
 import com.prography.lighton.member.domain.repository.TemporaryMemberRepository;
-import com.prography.lighton.member.domain.entity.vo.Email;
 import com.prography.lighton.member.presentation.dto.request.RegisterMemberRequestDTO;
 import com.prography.lighton.member.presentation.dto.response.RegisterMemberResponseDTO;
 
@@ -29,7 +29,7 @@ public class RegisterMemberService implements RegisterMemberUseCase {
 		}
 
 		TemporaryMember temporaryMember = TemporaryMember.of(
-				new Email(request.email()),
+				of(request.email()),
 				encodeAndCreate(request.password(), passwordEncoder));
 		temporaryMemberRepository.save(temporaryMember);
 
