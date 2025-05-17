@@ -31,10 +31,6 @@ public class Password {
 		this.value = encrypted;
 	}
 
-	public String getValue() {
-		return value;
-	}
-
 	@Override
 	public boolean equals(Object o) {
 		if (o == null || getClass() != o.getClass())
