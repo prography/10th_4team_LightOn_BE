@@ -3,6 +3,8 @@ package com.prography.lighton.member.domain.entity.vo;
 import java.util.Objects;
 import java.util.regex.Pattern;
 
+import org.springframework.http.HttpStatus;
+
 import com.prography.lighton.member.exception.InvalidMemberException;
 
 import jakarta.persistence.Column;
@@ -24,7 +26,7 @@ public class Email {
 
     public static Email of(String value) {
         if (value == null || !EMAIL_PATTERN.matcher(value).matches()) {
-            throw new InvalidMemberException("이메일 형식이 올바르지 않습니다.");
+            throw new InvalidMemberException("이메일 형식이 올바르지 않습니다.", HttpStatus.BAD_REQUEST);
         }
         return new Email(value);
     }

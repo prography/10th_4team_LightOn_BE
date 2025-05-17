@@ -1,15 +1,19 @@
 package com.prography.lighton.region.exception;
 
+import org.springframework.http.HttpStatus;
+
 public class NoSuchRegionException extends RuntimeException {
 
-	private static final String MESSAGE = "해당 지역은 존재하지 않습니다.";
+	private final HttpStatus httpStatus;
 
-	public NoSuchRegionException() {
-		super(MESSAGE);
+	public NoSuchRegionException(HttpStatus httpStatus) {
+		super("해당 지역은 존재하지 않습니다.");
+		this.httpStatus = httpStatus;
 	}
 
-	public NoSuchRegionException(String message) {
+	public NoSuchRegionException(String message, HttpStatus httpStatus) {
 		super(message);
+		this.httpStatus = httpStatus;
 	}
 
 }
