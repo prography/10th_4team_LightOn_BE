@@ -18,7 +18,7 @@ import com.prography.lighton.member.presentation.dto.response.CompleteMemberProf
 import com.prography.lighton.member.presentation.dto.response.RegisterMemberResponseDTO;
 
 @RestController
-@RequestMapping("/api/users")
+@RequestMapping("/api/members")
 public class MemberController {
 
 	private final RegisterMemberUseCase registerMemberUseCase;

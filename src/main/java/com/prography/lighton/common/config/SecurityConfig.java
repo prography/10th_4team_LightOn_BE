@@ -17,8 +17,8 @@ public class SecurityConfig {
 				.csrf(csrf -> csrf.disable())
 				.authorizeHttpRequests(auth -> auth
 						.requestMatchers(HttpMethod.GET, "/health").permitAll()
-						.requestMatchers(HttpMethod.POST, "/api/users").permitAll()
-						.requestMatchers(HttpMethod.POST,"/api/users/{temporaryMemberId}/info").permitAll()
+						.requestMatchers(HttpMethod.POST, "/api/members").permitAll()
+						.requestMatchers(HttpMethod.POST,"/api/members/{temporaryMemberId}/info").permitAll()
 						.anyRequest().authenticated()
 				)
 				.formLogin(form -> form.disable())
