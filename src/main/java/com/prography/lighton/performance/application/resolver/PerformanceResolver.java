@@ -10,7 +10,10 @@ import com.prography.lighton.performance.domain.entity.vo.Info;
 import com.prography.lighton.performance.domain.entity.vo.Location;
 import com.prography.lighton.performance.domain.entity.vo.Payment;
 import com.prography.lighton.performance.domain.entity.vo.Schedule;
+import com.prography.lighton.performance.presentation.dto.InfoDTO;
+import com.prography.lighton.performance.presentation.dto.PaymentDTO;
 import com.prography.lighton.performance.presentation.dto.PerformanceRegisterRequest;
+import com.prography.lighton.performance.presentation.dto.ScheduleDTO;
 import com.prography.lighton.region.domain.resolver.RegionResolver;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -24,48 +27,52 @@ public class PerformanceResolver {
     private final RegionResolver regionResolver;
 
     public Performance resolve(Artist artist, PerformanceRegisterRequest req) {
-        Info info = toInfo(req);
-        Schedule schedule = toSchedule(req);
-        Location location = toLocation(req);
-        Payment payment = toPayment(req);
-        List<Genre> genres = genreService.getGenresOrThrow(req.info().genre());
-        List<Seat> seats = req.seat();
+        DomainData d = toDomainData(req.infoDTO(), req.scheduleDTO(), req.paymentDTO(), req.seat());
 
         return Performance.create(
                 artist,
-                info,
-                schedule,
-                location,
-                payment,
+                d.info(),
+                d.schedule(),
+                d.location(),
+                d.payment(),
                 Type.NORMAL,
-                seats,
-                genres,
+                d.seats(),
+                d.genres(),
                 req.proof()
         );
     }
 
-    private Info toInfo(PerformanceRegisterRequest req) {
-        var i = req.info();
+    public DomainData toDomainData(InfoDTO infoDTO, ScheduleDTO scheduleDTO, PaymentDTO paymentDTO, List<Seat> seats) {
+        return new DomainData(
+                toInfo(infoDTO),
+                toSchedule(scheduleDTO),
+                toLocation(infoDTO),
+                toPayment(paymentDTO),
+                seats,
+                genreService.getGenresOrThrow(infoDTO.genre())
+        );
+    }
+
+    private Info toInfo(InfoDTO req) {
         return Info.of(
-                i.title(),
-                i.description(),
-                i.place(),
-                i.notice(),
-                i.poster()
+                req.title(),
+                req.description(),
+                req.place(),
+                req.notice(),
+                req.poster()
         );
     }
 
-    private Schedule toSchedule(PerformanceRegisterRequest req) {
-        var s = req.schedule();
+    private Schedule toSchedule(ScheduleDTO req) {
         return Schedule.of(
-                s.startDate(),
-                s.endDate(),
-                s.startTime(),
-                s.endTime()
+                req.startDate(),
+                req.endDate(),
+                req.startTime(),
+                req.endTime()
         );
     }
 
-    private Location toLocation(PerformanceRegisterRequest req) {
+    private Location toLocation(InfoDTO req) {
         // 위도&경도는 외부 api 사용, 나중에 수정 필요
         Double latitude = 0.0;
         Double longitude = 0.0;
@@ -73,18 +80,27 @@ public class PerformanceResolver {
         return Location.of(
                 latitude,
                 longitude,
-                regionResolver.resolve(req.info().location())
+                regionResolver.resolve(req.location())
         );
     }
 
-    private Payment toPayment(PerformanceRegisterRequest req) {
-        var p = req.payment();
+    private Payment toPayment(PaymentDTO req) {
         return Payment.of(
-                p.isPaid(),
-                p.account(),
-                p.bank(),
-                p.accountHolder(),
-                p.price()
+                req.isPaid(),
+                req.account(),
+                req.bank(),
+                req.accountHolder(),
+                req.price()
         );
+    }
+
+    public record DomainData(
+            Info info,
+            Schedule schedule,
+            Location location,
+            Payment payment,
+            List<Seat> seats,
+            List<Genre> genres
+    ) {
     }
 }
