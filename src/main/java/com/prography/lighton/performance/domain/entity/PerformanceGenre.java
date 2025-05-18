@@ -24,11 +24,11 @@ public class PerformanceGenre extends BaseEntity {
 
     public static List<PerformanceGenre> createListFor(Performance performance, List<Genre> genres) {
         return genres.stream()
-                .map(genre -> createFor(performance, genre))
+                .map(genre -> create(performance, genre))
                 .toList();
     }
 
-    private static PerformanceGenre createFor(Performance performance, Genre genre) {
+    private static PerformanceGenre create(Performance performance, Genre genre) {
         return new PerformanceGenre(performance, genre);
     }
 }
