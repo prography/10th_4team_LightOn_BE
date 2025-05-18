@@ -17,16 +17,15 @@ import jakarta.persistence.OneToOne;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import lombok.AllArgsConstructor;
+import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.SQLRestriction;
 
 @Entity
-@NoArgsConstructor
-@AllArgsConstructor
 @SQLDelete(sql = "UPDATE artist SET status = false WHERE id = ?")
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @SQLRestriction("status = true")
 public class Artist extends BaseEntity {
 
