@@ -39,7 +39,6 @@ public class Artist extends BaseEntity {
     @Column(nullable = false, columnDefinition = "varchar(20) default 'PENDING'")
     private ApproveStatus approveStatus = ApproveStatus.PENDING;
 
-    @Column(nullable = false)
     private LocalDateTime approveAt;
 
     @Column(nullable = false, columnDefinition = "BIGINT DEFAULT 0")
@@ -64,4 +63,32 @@ public class Artist extends BaseEntity {
 
     @OneToMany(mappedBy = "artist")
     private List<PerformanceArtist> performances = new ArrayList<>();
+
+    public Artist(Member member, String stageName, String description, RegionInfo activityLocation, History history,
+                  String proofUrl) {
+        this.member = member;
+        this.stageName = stageName;
+        this.description = description;
+        this.activityLocation = activityLocation;
+        this.history = history;
+        this.proofUrl = proofUrl;
+    }
+
+    public static Artist create(
+            Member member,
+            String stageName,
+            String description,
+            RegionInfo activityLocation,
+            History history,
+            String proofUrl
+    ) {
+        return new Artist(
+                member,
+                stageName,
+                description,
+                activityLocation,
+                history,
+                proofUrl
+        );
+    }
 }
