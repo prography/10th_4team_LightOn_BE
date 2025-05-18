@@ -1,7 +1,7 @@
 package com.prography.lighton.performance.presentation.exception;
 
 import com.prography.lighton.common.utils.ApiUtils.ApiResult;
-import com.prography.lighton.performance.domain.entity.exception.MasterArtistCannotBeRemovedException;
+import com.prography.lighton.performance.domain.exception.MasterArtistCannotBeRemovedException;
 import com.prography.lighton.performance.domain.exception.PerformanceNotApprovedException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
