@@ -5,6 +5,7 @@ import com.prography.lighton.member.domain.entity.association.PreferredArtist;
 import com.prography.lighton.member.domain.entity.enums.Authority;
 import com.prography.lighton.member.domain.entity.vo.Email;
 import com.prography.lighton.member.domain.entity.vo.MarketingAgreement;
+import com.prography.lighton.member.domain.entity.vo.Password;
 import com.prography.lighton.member.domain.entity.vo.Phone;
 import com.prography.lighton.member.domain.entity.vo.PreferredRegion;
 import jakarta.persistence.*;
@@ -13,6 +14,7 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.SQLRestriction;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -26,7 +28,7 @@ public class Member extends BaseEntity {
     private Email email;
 
     @Column(nullable = false)
-    private String password;
+    private Password password;
 
     @Column(nullable = false)
     private String name;
@@ -44,6 +46,20 @@ public class Member extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private Authority authority;
 
-    @OneToMany(mappedBy = "member_id", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "member", fetch = FetchType.LAZY)
     private List<PreferredArtist> preferredArtists;
+
+    public static Member toNormalMember (Email email, Password password, PreferredRegion preferredRegion,
+            String name, Phone phone, MarketingAgreement marketingAgreement) {
+        return new Member(
+                email,
+                password,
+                name,
+                preferredRegion,
+                phone,
+                marketingAgreement,
+                Authority.NORMAL,
+                new ArrayList<>()
+        );
+    }
 }

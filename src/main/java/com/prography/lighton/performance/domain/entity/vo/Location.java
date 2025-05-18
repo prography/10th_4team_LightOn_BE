@@ -1,6 +1,6 @@
 package com.prography.lighton.performance.domain.entity.vo;
 
-import com.prography.lighton.location.domain.entity.SubRegion;
+import com.prography.lighton.region.domain.entity.SubRegion;
 import jakarta.persistence.*;
 
 @Embeddable
