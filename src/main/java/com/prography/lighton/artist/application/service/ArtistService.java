@@ -4,6 +4,7 @@ import com.prography.lighton.artist.domain.entity.Artist;
 import com.prography.lighton.artist.domain.entity.vo.History;
 import com.prography.lighton.artist.infrastructure.repository.ArtistRepository;
 import com.prography.lighton.artist.presentation.dto.ArtistRegisterRequest;
+import com.prography.lighton.artist.presentation.dto.ArtistUpdateRequest;
 import com.prography.lighton.common.vo.RegionInfo;
 import com.prography.lighton.genre.application.service.GenreService;
 import com.prography.lighton.genre.domain.entity.Genre;
@@ -42,5 +43,37 @@ public class ArtistService {
                 genres
         );
         artistRepository.save(artist);
+    }
+
+    @Transactional
+    public void updateArtist(Member member, ArtistUpdateRequest request) {
+        Artist artist = artistRepository.getByMember(member);
+        artist.validateUpdatable();
+
+        var data = toArtistData(request.artist(), request.history());
+        artist.update(
+                request.artist().name(),
+                request.artist().description(),
+                data.activityRegion(),
+                data.history(),
+                data.genres()
+        );
+    }
+
+    private ArtistData toArtistData(
+            ArtistRegisterRequest.ArtistDTO artistDto,
+            ArtistRegisterRequest.HistoryDTO historyDto
+    ) {
+        RegionInfo activityRegion = regionResolver.resolve(artistDto.activityLocation());
+        History history = History.of(historyDto.bio(), historyDto.activityPhotos());
+        List<Genre> genres = genreService.getGenresOrThrow(artistDto.genre());
+        return new ArtistData(activityRegion, history, genres);
+    }
+
+    private static record ArtistData(
+            RegionInfo activityRegion,
+            History history,
+            List<Genre> genres
+    ) {
     }
 }
