@@ -1,5 +1,6 @@
 package com.prography.lighton.performance.domain.entity.vo;
 
+import com.prography.lighton.performance.domain.entity.exception.InvalidScheduleException;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
 import java.time.LocalDate;
@@ -29,5 +30,16 @@ public class Schedule {
 
     public static Schedule of(LocalDate startDate, LocalDate endDate, LocalTime startTime, LocalTime endTime) {
         return new Schedule(startDate, endDate, startTime, endTime);
+    }
+
+    private static void validateSchedule(LocalDate startDate, LocalDate endDate, LocalTime startTime,
+                                         LocalTime endTime) {
+        if (endDate.isBefore(startDate)) {
+            throw new InvalidScheduleException("종료일은 시작일보다 빠를 수 없습니다.");
+        }
+
+        if (endTime.isBefore(startTime)) {
+            throw new InvalidScheduleException("종료 시간은 시작 시간보다 뒤여야 합니다.");
+        }
     }
 }
