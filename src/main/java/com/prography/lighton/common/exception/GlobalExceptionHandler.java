@@ -8,6 +8,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import com.prography.lighton.auth.exception.InvalidTokenException;
 import com.prography.lighton.common.exception.base.NotFoundException;
 import com.prography.lighton.common.utils.ApiUtils;
 import com.prography.lighton.common.utils.ApiUtils.ApiResult;
@@ -29,7 +30,8 @@ public class GlobalExceptionHandler {
 	}
 
 	@ExceptionHandler({
-			InvalidMemberException.class
+			InvalidMemberException.class,
+			InvalidTokenException.class
 	})
 	public ResponseEntity<?> handleInvalidMemberException(InvalidMemberException e) {
 		return ResponseEntity.status(e.status()).body(ApiUtils.error(e.status(), e.getMessage()));
