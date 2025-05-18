@@ -1,6 +1,7 @@
 package com.prography.lighton.member.application;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.prography.lighton.auth.application.TokenProvider;
 import com.prography.lighton.member.exception.DuplicateMemberException;
@@ -18,6 +19,7 @@ import com.prography.lighton.region.domain.resolver.PreferredRegionResolver;
 import lombok.RequiredArgsConstructor;
 
 @Service
+@Transactional
 @RequiredArgsConstructor
 public class CompleteMemberProfileService implements CompleteMemberProfileUseCase {
 

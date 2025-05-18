@@ -5,6 +5,7 @@ import static com.prography.lighton.member.domain.entity.vo.Password.*;
 
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.prography.lighton.member.domain.entity.TemporaryMember;
 import com.prography.lighton.member.domain.repository.TemporaryMemberRepository;
@@ -15,6 +16,7 @@ import com.prography.lighton.member.presentation.dto.response.RegisterMemberResp
 import lombok.RequiredArgsConstructor;
 
 @Service
+@Transactional
 @RequiredArgsConstructor
 public class RegisterMemberService implements RegisterMemberUseCase {
 
