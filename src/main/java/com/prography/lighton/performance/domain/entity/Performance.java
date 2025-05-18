@@ -7,6 +7,7 @@ import com.prography.lighton.genre.domain.entity.Genre;
 import com.prography.lighton.performance.domain.entity.association.PerformanceArtist;
 import com.prography.lighton.performance.domain.entity.enums.Seat;
 import com.prography.lighton.performance.domain.entity.enums.Type;
+import com.prography.lighton.performance.domain.entity.exception.MasterArtistCannotBeRemovedException;
 import com.prography.lighton.performance.domain.entity.vo.Info;
 import com.prography.lighton.performance.domain.entity.vo.Location;
 import com.prography.lighton.performance.domain.entity.vo.Payment;
@@ -20,7 +21,9 @@ import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.validation.constraints.NotEmpty;
 import java.util.ArrayList;
@@ -40,6 +43,10 @@ import org.hibernate.annotations.SQLRestriction;
 @SQLDelete(sql = "UPDATE performance SET status = false WHERE id = ?")
 @SQLRestriction("status = true")
 public class Performance extends BaseEntity {
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @NotEmpty
+    private Artist master;
 
     @OneToMany(mappedBy = "performance")
     @NotEmpty
@@ -91,6 +98,7 @@ public class Performance extends BaseEntity {
     private String posterUrl;
 
     private Performance(
+            Artist master,
             Info info,
             Schedule schedule,
             Location location,
@@ -100,6 +108,7 @@ public class Performance extends BaseEntity {
             String proofUrl,
             String posterUrl
     ) {
+        this.master = master;
         this.info = info;
         this.schedule = schedule;
         this.location = location;
@@ -122,7 +131,8 @@ public class Performance extends BaseEntity {
             String proofUrl,
             String posterUrl
     ) {
-        Performance perf = new Performance(info, schedule, location, payment, type, seats, proofUrl, posterUrl);
+        Performance perf = new Performance(initialArtist, info, schedule, location, payment, type, seats, proofUrl,
+                posterUrl);
         // 최초 등록 시 단일 아티스트 (수정 가능성 있음)
         perf.artists.add(new PerformanceArtist(initialArtist, perf));
         perf.updateGenres(genres);
@@ -152,6 +162,8 @@ public class Performance extends BaseEntity {
     }
 
     private void updateArtists(List<Artist> newArtists) {
+        validateNotRemovingMaster(newArtists);
+
         Set<Long> newArtistIds = newArtists.stream()
                 .map(Artist::getId)
                 .collect(Collectors.toSet());
@@ -167,6 +179,15 @@ public class Performance extends BaseEntity {
                 .toList();
 
         this.artists.addAll(PerformanceArtist.createListFor(this, artistsToAdd));
+    }
+
+    private void validateNotRemovingMaster(List<Artist> newArtists) {
+        boolean isMasterPresent = newArtists.stream()
+                .anyMatch(artist -> artist.getId().equals(this.master.getId()));
+
+        if (!isMasterPresent) {
+            throw new MasterArtistCannotBeRemovedException();
+        }
     }
 
     private void updateGenres(List<Genre> newGenres) {
