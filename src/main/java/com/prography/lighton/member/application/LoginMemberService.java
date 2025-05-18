@@ -38,7 +38,7 @@ public class LoginMemberService implements LoginMemberUseCase {
 	}
 
 	private void validateIsNotTemporaryMember(String email) {
-		if (temporaryMemberRepository.existsByEmail(email)) {
+		if (temporaryMemberRepository.existsByEmailAndNotRegistered(email)) {
 			throw new InvalidMemberException("개인 정보를 입력해주세요.");
 		}
 	}
