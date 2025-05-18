@@ -63,9 +63,6 @@ public class Performance extends BaseEntity {
     private List<Seat> seats = new ArrayList<>();
 
     @Column(nullable = false)
-    private Boolean isPaid;
-
-    @Column(nullable = false)
     @ColumnDefault("0")
     private Long viewCount = 0L;
 
