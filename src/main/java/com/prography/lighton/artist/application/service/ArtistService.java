@@ -1,5 +1,9 @@
 package com.prography.lighton.artist.application.service;
 
+import static java.util.stream.Collectors.collectingAndThen;
+import static java.util.stream.Collectors.toList;
+
+import com.prography.lighton.artist.application.exception.NoSuchArtistException;
 import com.prography.lighton.artist.domain.entity.Artist;
 import com.prography.lighton.artist.domain.entity.vo.History;
 import com.prography.lighton.artist.infrastructure.repository.ArtistRepository;
@@ -29,7 +33,18 @@ public class ArtistService {
         artist.validateApproved();
         return artist;
     }
-    
+
+    public List<Artist> getApprovedArtistsByIds(List<Long> artistIds) {
+        return artistRepository.findAllById(artistIds).stream()
+                .peek(Artist::validateApproved)
+                .collect(collectingAndThen(toList(), list -> {
+                    if (list.size() != artistIds.size()) {
+                        throw new NoSuchArtistException();
+                    }
+                    return list;
+                }));
+    }
+
     @Transactional
     public void registerArtist(Member member, ArtistRegisterRequest request) {
         artistRepository.findByMember(member)
