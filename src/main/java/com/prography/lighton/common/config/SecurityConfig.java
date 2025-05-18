@@ -28,7 +28,6 @@ public class SecurityConfig {
 						.requestMatchers(HttpMethod.POST, "/api/members").permitAll()
 						.requestMatchers(HttpMethod.POST, "/api/members/login").permitAll()
 						.requestMatchers(HttpMethod.POST,"/api/members/{temporaryMemberId}/info").permitAll()
-						.requestMatchers(HttpMethod.GET, "/api/me").hasRole("NORMAL")
 						.anyRequest().authenticated()
 				)
 				.formLogin(form -> form.disable())

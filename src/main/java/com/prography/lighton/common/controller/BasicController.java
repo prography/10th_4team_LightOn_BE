@@ -19,11 +19,4 @@ public class BasicController {
 	public ApiResult<String> healthCheck() {
 		return ApiUtils.success("ok");
 	}
-
-	@GetMapping("/api/me")
-	public ResponseEntity<ApiResult<String>> me(@LoginMember Member member) {
-		log.info(String.valueOf(member.getAuthority()));
-		log.info("memberId: {}", member.getId());
-		return ResponseEntity.ok(ApiUtils.success("ok"));
-	}
 }
