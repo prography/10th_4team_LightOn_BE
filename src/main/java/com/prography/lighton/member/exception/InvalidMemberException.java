@@ -2,20 +2,25 @@ package com.prography.lighton.member.exception;
 
 import org.springframework.http.HttpStatus;
 
+import com.prography.lighton.common.utils.ApiUtils;
+
 public class InvalidMemberException extends RuntimeException{
 
-	private final HttpStatus httpStatus;
+	private static final String MESSAGE = "잘못된 회원의 정보입니다." ;
 
-	public InvalidMemberException(final String message, HttpStatus httpStatus) {
-		super(message);
-		this.httpStatus = httpStatus;
+	public InvalidMemberException () {
+		super (MESSAGE) ;
 	}
 
-	public InvalidMemberException(HttpStatus httpStatus) {
-		this("잘못된 회원의 정보입니다.", httpStatus);
+	public InvalidMemberException (String message) {
+		super (message) ;
 	}
 
-	public HttpStatus getHttpStatus() {
-		return httpStatus;
+	public ApiUtils.ApiResult<?> body() {
+		return ApiUtils.error(HttpStatus.CONFLICT, getMessage());
+	}
+
+	public HttpStatus status () {
+		return HttpStatus.CONFLICT;
 	}
 }

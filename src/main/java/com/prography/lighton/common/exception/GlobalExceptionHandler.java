@@ -21,8 +21,7 @@ public class GlobalExceptionHandler {
 
 	@ExceptionHandler({
 			NoSuchMemberException.class,
-			NoSuchRegionException.class,
-			EntityNotFoundException.class
+			NoSuchRegionException.class
 	})
 	public ApiResult<?> handleNotFoundException(RuntimeException e) {
 		return ApiUtils.error(HttpStatus.NOT_FOUND, e.getMessage());
@@ -32,7 +31,7 @@ public class GlobalExceptionHandler {
 			InvalidMemberException.class
 	})
 	public ApiResult<?> handleInvalidMemberException(InvalidMemberException e) {
-		return ApiUtils.error(HttpStatus.BAD_REQUEST, e.getMessage());
+		return ApiUtils.error(e.status(), e.getMessage());
 	}
 
 	@ExceptionHandler(IllegalArgumentException.class)

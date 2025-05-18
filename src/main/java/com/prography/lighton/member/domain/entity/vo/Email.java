@@ -29,7 +29,7 @@ public class Email {
 
     public static Email of(String value) {
         if (isBlank(value)|| !EMAIL_PATTERN.matcher(value).matches()) {
-            throw new InvalidMemberException("이메일 형식이 올바르지 않습니다.", HttpStatus.BAD_REQUEST);
+            throw new InvalidMemberException("이메일 형식이 올바르지 않습니다.");
         }
         return new Email(value);
     }
