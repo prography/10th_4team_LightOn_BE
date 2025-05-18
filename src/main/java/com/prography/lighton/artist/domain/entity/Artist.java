@@ -20,7 +20,6 @@ import java.util.List;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.SQLRestriction;
 
@@ -44,11 +43,9 @@ public class Artist extends BaseEntity {
     private LocalDateTime approveAt;
 
     @Column(nullable = false, columnDefinition = "BIGINT DEFAULT 0")
-    @ColumnDefault("0")
     private Long viewCount = 0L;
 
     @Column(nullable = false, columnDefinition = "BIGINT DEFAULT 0")
-    @ColumnDefault("0")
     private Long likeCount = 0L;
 
     @Column(nullable = false)

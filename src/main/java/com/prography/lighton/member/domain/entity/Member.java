@@ -15,6 +15,7 @@ import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.OneToMany;
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.AllArgsConstructor;
@@ -66,5 +67,22 @@ public class Member extends BaseEntity {
                 Authority.NORMAL,
                 new ArrayList<>()
         );
+    }
+
+    // 임시 구현 함수, 로그인 구현 시 사라질 예정
+    public static Member withId(Long id) {
+        Member member = new Member();
+        member.setIdForTest(id);
+        return member;
+    }
+
+    protected void setIdForTest(Long id) {
+        try {
+            Field idField = BaseEntity.class.getDeclaredField("id");
+            idField.setAccessible(true);
+            idField.set(this, id);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 }
