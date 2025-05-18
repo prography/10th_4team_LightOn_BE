@@ -6,8 +6,13 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import java.util.List;
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 
 @Entity
+@NoArgsConstructor
+@AllArgsConstructor
 public class ArtistGenre extends BaseEntity {
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
@@ -16,4 +21,14 @@ public class ArtistGenre extends BaseEntity {
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "genre_id")
     private Genre genre;
+
+    public static List<ArtistGenre> createListFor(Artist artist, List<Genre> genres) {
+        return genres.stream()
+                .map(genre -> createFor(artist, genre))
+                .toList();
+    }
+    
+    private static ArtistGenre createFor(Artist artist, Genre genre) {
+        return new ArtistGenre(artist, genre);
+    }
 }
