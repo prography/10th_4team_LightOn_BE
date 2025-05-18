@@ -1,11 +1,9 @@
 package com.prography.lighton.performance.domain.entity.vo;
 
-import com.prography.lighton.region.domain.entity.SubRegion;
+import com.prography.lighton.common.vo.RegionInfo;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Embedded;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -23,11 +21,10 @@ public class Location {
     @Column(nullable = false)
     private Double longitude;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "region_id", nullable = false)
-    private SubRegion region;
+    @Embedded
+    private RegionInfo region;
 
-    public static Location of(Double latitude, Double longitude, SubRegion region) {
+    public static Location of(Double latitude, Double longitude, RegionInfo region) {
         return new Location(latitude, longitude, region);
     }
 }
