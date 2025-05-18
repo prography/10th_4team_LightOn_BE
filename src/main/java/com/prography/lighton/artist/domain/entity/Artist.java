@@ -1,12 +1,13 @@
 package com.prography.lighton.artist.domain.entity;
 
 import com.prography.lighton.artist.domain.entity.enums.ApproveStatus;
-import com.prography.lighton.artist.domain.entity.vo.ActivityImages;
 import com.prography.lighton.artist.domain.entity.vo.ActivityLocation;
+import com.prography.lighton.artist.domain.entity.vo.History;
 import com.prography.lighton.common.BaseEntity;
 import com.prography.lighton.member.domain.entity.Member;
 import com.prography.lighton.performance.domain.entity.association.PerformanceArtist;
 import jakarta.persistence.Column;
+import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -35,9 +36,6 @@ public class Artist extends BaseEntity {
     @Column(nullable = false)
     private String stageName;
 
-    @Column(nullable = false)
-    private String bio;
-
     @Enumerated(EnumType.STRING)
     private ApproveStatus approveStatus;
 
@@ -55,11 +53,11 @@ public class Artist extends BaseEntity {
     @Column(nullable = false)
     private String description;
 
-    @Column(nullable = false)
-    private ActivityImages activityImages;
-
-    @Column(nullable = false)
+    @Embedded
     private ActivityLocation activityLocation;
+
+    @Embedded
+    private History history;
 
     @Column(nullable = false)
     private String proofUrl;
