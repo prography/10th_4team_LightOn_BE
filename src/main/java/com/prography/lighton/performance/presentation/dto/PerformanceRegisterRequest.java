@@ -48,6 +48,9 @@ public record PerformanceRegisterRequest(
             @NotBlank(message = "공연 소개는 필수입니다.")
             String description,
 
+            @NotNull(message = "지역 코드는 필수입니다.")
+            Integer location,
+
             @NotBlank(message = "공연 장소는 필수입니다.")
             String place,
 
