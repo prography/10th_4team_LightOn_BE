@@ -1,5 +1,7 @@
 package com.prography.lighton.artist.domain.entity;
 
+import com.prography.lighton.artist.application.exception.ArtistRegistrationNotAllowedException;
+import com.prography.lighton.artist.application.exception.ArtistUpdateNotAllowedException;
 import com.prography.lighton.artist.domain.entity.enums.ApproveStatus;
 import com.prography.lighton.artist.domain.entity.vo.History;
 import com.prography.lighton.common.BaseEntity;
@@ -107,5 +109,31 @@ public class Artist extends BaseEntity {
                         .map(genre -> new ArtistGenre(this, genre))
                         .toList()
         );
+    }
+
+    public void update(
+            String stageName,
+            String description,
+            RegionInfo activityLocation,
+            History history,
+            List<Genre> genres
+    ) {
+        this.stageName = stageName;
+        this.description = description;
+        this.activityLocation = activityLocation;
+        this.history = history;
+        this.updateGenres(genres);
+    }
+
+    public void validateCreatable() {
+        if (this.approveStatus != ApproveStatus.REJECTED) {
+            throw new ArtistRegistrationNotAllowedException();
+        }
+    }
+
+    public void validateUpdatable() {
+        if (this.approveStatus != ApproveStatus.APPROVED) {
+            throw new ArtistUpdateNotAllowedException();
+        }
     }
 }
