@@ -40,4 +40,13 @@ public class ArtistPerformanceController {
         return ResponseEntity.ok()
                 .body(ApiUtils.success());
     }
+
+    @PostMapping("/{id}")
+    public ResponseEntity<ApiResult<String>> cancelPerformance(@PathVariable Long id) {
+        // 나중에 수정 필요
+        Member member = Member.withId(1L);
+        performanceService.cancelPerformance(member, id);
+        return ResponseEntity.ok()
+                .body(ApiUtils.success());
+    }
 }
