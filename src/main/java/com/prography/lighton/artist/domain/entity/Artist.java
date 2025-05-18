@@ -36,7 +36,8 @@ public class Artist extends BaseEntity {
     private String stageName;
 
     @Enumerated(EnumType.STRING)
-    private ApproveStatus approveStatus;
+    @Column(nullable = false, columnDefinition = "varchar(20) default 'PENDING'")
+    private ApproveStatus approveStatus = ApproveStatus.PENDING;
 
     @Column(nullable = false)
     private LocalDateTime approveAt;
