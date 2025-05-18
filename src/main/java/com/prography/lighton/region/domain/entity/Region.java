@@ -5,14 +5,15 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.OneToMany;
+import java.util.List;
 import lombok.AllArgsConstructor;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.SQLRestriction;
 
-import java.util.List;
-
 @Entity
+@Getter
 @NoArgsConstructor
 @AllArgsConstructor
 @SQLDelete(sql = "UPDATE region SET status = false WHERE id = ?")
