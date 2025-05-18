@@ -2,6 +2,7 @@ package com.prography.lighton.performance.domain.entity;
 
 import com.prography.lighton.artist.domain.entity.Artist;
 import com.prography.lighton.artist.domain.entity.enums.ApproveStatus;
+import com.prography.lighton.artist.domain.entity.exception.NotAMasterArtistException;
 import com.prography.lighton.common.BaseEntity;
 import com.prography.lighton.genre.domain.entity.Genre;
 import com.prography.lighton.performance.domain.entity.association.PerformanceArtist;
@@ -133,25 +134,32 @@ public class Performance extends BaseEntity {
     }
 
     public void update(
+            Artist artist,
             List<Artist> newArtists,
             Info info,
             Schedule schedule,
             Location location,
             Payment payment,
-            Type type,
             List<Seat> seats,
             List<Genre> genres
     ) {
+        validateMasterArtist(artist);
+
         this.info = info;
         this.schedule = schedule;
         this.location = location;
         this.payment = payment;
-        this.type = type;
         this.seats.clear();
         this.seats.addAll(seats);
 
         updateArtists(newArtists);
         updateGenres(genres);
+    }
+
+    private void validateMasterArtist(Artist artist) {
+        if (!master.equals(artist)) {
+            throw new NotAMasterArtistException();
+        }
     }
 
     private void updateArtists(List<Artist> newArtists) {
