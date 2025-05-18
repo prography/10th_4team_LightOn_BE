@@ -13,7 +13,7 @@ import com.prography.lighton.performance.domain.entity.vo.Info;
 import com.prography.lighton.performance.domain.entity.vo.Location;
 import com.prography.lighton.performance.domain.entity.vo.Payment;
 import com.prography.lighton.performance.domain.entity.vo.Schedule;
-import com.prography.lighton.performance.domain.exeption.PerformanceNotApprovedException;
+import com.prography.lighton.performance.domain.exception.PerformanceNotApprovedException;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.CollectionTable;
 import jakarta.persistence.Column;
