@@ -18,12 +18,14 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.AccessLevel;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.SQLRestriction;
 
 @Entity
+@Getter
 @SQLDelete(sql = "UPDATE artist SET status = false WHERE id = ?")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @SQLRestriction("status = true")
