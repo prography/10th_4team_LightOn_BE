@@ -6,6 +6,7 @@ import com.prography.lighton.common.BaseEntity;
 import com.prography.lighton.common.vo.RegionInfo;
 import com.prography.lighton.member.domain.entity.Member;
 import com.prography.lighton.performance.domain.entity.association.PerformanceArtist;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
@@ -62,6 +63,9 @@ public class Artist extends BaseEntity {
 
     @OneToMany(mappedBy = "artist")
     private List<PerformanceArtist> performances = new ArrayList<>();
+
+    @OneToMany(mappedBy = "artist", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<ArtistGenre> genres = new ArrayList<>();
 
     public Artist(Member member, String stageName, String description, RegionInfo activityLocation, History history,
                   String proofUrl) {
