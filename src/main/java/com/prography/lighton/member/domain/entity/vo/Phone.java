@@ -1,11 +1,35 @@
 package com.prography.lighton.member.domain.entity.vo;
 
+import static io.micrometer.common.util.StringUtils.*;
+
+import java.util.Objects;
+
+import ch.qos.logback.core.util.StringUtil;
+import io.micrometer.common.util.StringUtils;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
+import lombok.AccessLevel;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 
 @Embeddable
+@EqualsAndHashCode
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Phone {
 
-    @Column(nullable = false, length = 11, unique = true)
-    private String phoneNumber;
+    private static final String PHONE_NUMBER_PATTERN = "^\\d{3}\\d{3,4}\\d{4}$";
+
+    @Column(nullable = false, length = 11, unique = true, name = "phone")
+    private String value;
+
+    private Phone (String value) {
+        this.value = value;
+    }
+
+    public static Phone of(String phoneNumber) {
+        if (isBlank(phoneNumber) || !phoneNumber.matches(PHONE_NUMBER_PATTERN)) {
+            throw new IllegalArgumentException("전화번호 형식이 올바르지 않습니다.");
+        }
+        return new Phone(phoneNumber);
+    }
 }

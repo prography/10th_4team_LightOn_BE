@@ -1,4 +1,4 @@
-package com.prography.lighton.location.domain.entity;
+package com.prography.lighton.region.domain.entity;
 
 import com.prography.lighton.common.BaseEntity;
 import jakarta.persistence.*;
@@ -7,7 +7,6 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.SQLRestriction;
 
-import java.util.List;
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
