@@ -31,7 +31,7 @@ public class PerformanceService {
     @Transactional
     public void registerPerformance(Member member, PerformanceRegisterRequest request) {
         Artist artist = artistService.getApprovedArtistByMember(member);
-        var data = performanceResolver.toDomainData(request.infoDTO(), request.scheduleDTO(), request.paymentDTO(),
+        var data = performanceResolver.toDomainData(request.info(), request.schedule(), request.payment(),
                 request.seat());
         Performance performance = Performance.create(artist, data.info(), data.schedule(), data.location(),
                 data.payment(),
@@ -43,7 +43,7 @@ public class PerformanceService {
     public void updatePerformance(Member member, Long performanceId, PerformanceUpdateRequest request) {
         Artist requestArtist = artistService.getApprovedArtistByMember(member);
         Performance performance = getApprovedPerformanceById(performanceId);
-        var data = performanceResolver.toDomainData(request.infoDTO(), request.scheduleDTO(), request.paymentDTO(),
+        var data = performanceResolver.toDomainData(request.info(), request.schedule(), request.payment(),
                 request.seat());
         List<Artist> artists = artistService.getApprovedArtistsByIds(request.artists());
         performance.update(requestArtist, artists, data.info(), data.schedule(), data.location(), data.payment(),
