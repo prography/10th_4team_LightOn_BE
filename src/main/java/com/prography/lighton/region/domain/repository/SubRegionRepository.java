@@ -14,6 +14,6 @@ public interface SubRegionRepository extends JpaRepository<SubRegion, Long> {
 
 	default SubRegion getByRegionCode(Integer code) {
 		return findByCode(code)
-				.orElseThrow(() -> new NoSuchRegionException(HttpStatus.NOT_FOUND));
+				.orElseThrow(NoSuchRegionException::new);
 	}
 }

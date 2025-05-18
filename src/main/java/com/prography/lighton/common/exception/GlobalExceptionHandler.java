@@ -6,6 +6,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import com.prography.lighton.common.exception.base.NotFoundException;
 import com.prography.lighton.common.utils.ApiUtils;
 import com.prography.lighton.common.utils.ApiUtils.ApiResult;
 import com.prography.lighton.region.exception.NoSuchRegionException;
@@ -19,12 +20,9 @@ public class GlobalExceptionHandler {
 
 	private final Logger logger = LoggerFactory.getLogger(getClass());
 
-	@ExceptionHandler({
-			NoSuchMemberException.class,
-			NoSuchRegionException.class
-	})
-	public ApiResult<?> handleNotFoundException(RuntimeException e) {
-		return ApiUtils.error(HttpStatus.NOT_FOUND, e.getMessage());
+	@ExceptionHandler(NotFoundException.class)
+	public ApiResult<?> handleNotFoundException(NotFoundException e) {
+		return ApiUtils.error(e.status(), e.getMessage());
 	}
 
 	@ExceptionHandler({

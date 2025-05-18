@@ -15,6 +15,6 @@ public interface TemporaryMemberRepository extends JpaRepository<TemporaryMember
 
 	default TemporaryMember getById(final Long id) {
 		return findById(id)
-				.orElseThrow(() -> new NoSuchMemberException(HttpStatus.NOT_FOUND));
+				.orElseThrow(NoSuchMemberException::new);
 	}
 }

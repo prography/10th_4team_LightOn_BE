@@ -10,6 +10,6 @@ public interface RegionRepository extends JpaRepository<Region, Long> {
 
 	default Region getByRegionCode(Integer code) {
 		return findById((long) code)
-				.orElseThrow(() -> new NoSuchRegionException(HttpStatus.NOT_FOUND));
+				.orElseThrow(NoSuchRegionException::new);
 	}
 }
