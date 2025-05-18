@@ -1,12 +1,10 @@
 package com.prography.lighton.common.exception;
 
-import com.prography.lighton.auth.application.exception.InvalidTokenException;
+import com.prography.lighton.common.exception.base.DuplicateException;
 import com.prography.lighton.common.exception.base.InvalidException;
 import com.prography.lighton.common.exception.base.NotFoundException;
 import com.prography.lighton.common.utils.ApiUtils;
 import com.prography.lighton.common.utils.ApiUtils.ApiResult;
-import com.prography.lighton.member.exception.DuplicateMemberException;
-import com.prography.lighton.member.exception.InvalidMemberException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -24,16 +22,13 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(e.status()).body(ApiUtils.error(e.status(), e.getMessage()));
     }
 
-    @ExceptionHandler({
-            InvalidMemberException.class,
-            InvalidTokenException.class
-    })
+    @ExceptionHandler(InvalidException.class)
     public ResponseEntity<?> handleInvalidMemberException(InvalidException e) {
         return ResponseEntity.status(e.status()).body(ApiUtils.error(e.status(), e.getMessage()));
     }
 
-    @ExceptionHandler(DuplicateMemberException.class)
-    public ResponseEntity<?> handleDuplicateMemberException(DuplicateMemberException e) {
+    @ExceptionHandler(DuplicateException.class)
+    public ResponseEntity<?> handleDuplicateMemberException(DuplicateException e) {
         return ResponseEntity.status(e.status())
                 .body(ApiUtils.error(e.status(), e.getMessage()));
     }
