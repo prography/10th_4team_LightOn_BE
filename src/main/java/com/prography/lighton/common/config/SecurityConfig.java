@@ -8,8 +8,16 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
+import com.prography.lighton.auth.application.TokenProvider;
+import com.prography.lighton.auth.presentation.filter.JwtAuthenticationFilter;
+
+import lombok.RequiredArgsConstructor;
+
 @Configuration
+@RequiredArgsConstructor
 public class SecurityConfig {
+
+	private final TokenProvider tokenProvider;
 
 	@Bean
 	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -23,7 +31,11 @@ public class SecurityConfig {
 						.anyRequest().authenticated()
 				)
 				.formLogin(form -> form.disable())
-				.httpBasic(basic -> basic.disable());
+				.httpBasic(basic -> basic.disable())
+				.addFilterBefore(
+						new JwtAuthenticationFilter(tokenProvider),
+						org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter.class
+				);
 
 		return http.build();
 	}
