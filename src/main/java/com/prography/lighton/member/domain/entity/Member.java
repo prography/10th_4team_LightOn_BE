@@ -8,11 +8,14 @@ import com.prography.lighton.member.domain.entity.vo.MarketingAgreement;
 import com.prography.lighton.member.domain.entity.vo.Password;
 import com.prography.lighton.member.domain.entity.vo.Phone;
 import com.prography.lighton.member.domain.entity.vo.PreferredRegion;
+import com.prography.lighton.member.exception.InvalidMemberException;
+
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.SQLRestriction;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -62,4 +65,11 @@ public class Member extends BaseEntity {
                 new ArrayList<>()
         );
     }
+    // Member.java
+    public void validatePassword(String rawPassword, PasswordEncoder encoder) {
+        if (!this.password.matches(rawPassword, encoder)) {
+            throw new InvalidMemberException("비밀번호가 일치하지 않습니다.");
+        }
+    }
+
 }
