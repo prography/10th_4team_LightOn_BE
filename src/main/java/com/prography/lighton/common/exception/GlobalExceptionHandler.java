@@ -12,6 +12,8 @@ import com.prography.lighton.region.exception.NoSuchRegionException;
 import com.prography.lighton.member.exception.InvalidMemberException;
 import com.prography.lighton.member.exception.NoSuchMemberException;
 
+import jakarta.persistence.EntityNotFoundException;
+
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
@@ -19,7 +21,8 @@ public class GlobalExceptionHandler {
 
 	@ExceptionHandler({
 			NoSuchMemberException.class,
-			NoSuchRegionException.class
+			NoSuchRegionException.class,
+			EntityNotFoundException.class
 	})
 	public ApiResult<?> handleNotFoundException(RuntimeException e) {
 		return ApiUtils.error(HttpStatus.NOT_FOUND, e.getMessage());
