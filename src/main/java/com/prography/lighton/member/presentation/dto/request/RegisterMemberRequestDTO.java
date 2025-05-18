@@ -1,4 +1,10 @@
 package com.prography.lighton.member.presentation.dto.request;
 
-public record RegisterMemberRequestDTO(String email, String password) {
+import com.prography.lighton.member.validation.annotation.ValidPassword;
+
+import jakarta.validation.constraints.Email;
+
+public record RegisterMemberRequestDTO(
+		@Email String email,
+		@ValidPassword String password) {
 }

@@ -1,5 +1,6 @@
 package com.prography.lighton.member.presentation;
 
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -17,8 +18,10 @@ import com.prography.lighton.member.presentation.dto.request.RegisterMemberReque
 import com.prography.lighton.member.presentation.dto.response.CompleteMemberProfileResponseDTO;
 import com.prography.lighton.member.presentation.dto.response.RegisterMemberResponseDTO;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
+@Validated
 @RestController
 @RequestMapping("/api/members")
 @RequiredArgsConstructor
@@ -28,13 +31,13 @@ public class MemberController {
 	private final CompleteMemberProfileUseCase completeMemberProfileUseCase;
 
 	@PostMapping
-	public ApiResult<RegisterMemberResponseDTO> register(@RequestBody RegisterMemberRequestDTO request) {
+	public ApiResult<RegisterMemberResponseDTO> register(@RequestBody @Valid RegisterMemberRequestDTO request) {
 		return ApiUtils.success(registerMemberUseCase.registerMember(request));
 	}
 
 	@PostMapping("/{temporaryMemberId}/info")
 	public ApiResult<CompleteMemberProfileResponseDTO> completeMemberProfile(@PathVariable Long temporaryMemberId,
-			@RequestBody CompleteMemberProfileRequestDTO request) {
+			@RequestBody @Valid CompleteMemberProfileRequestDTO request) {
 		return ApiUtils.success(completeMemberProfileUseCase.completeMemberProfile(temporaryMemberId, request));
 	}
 

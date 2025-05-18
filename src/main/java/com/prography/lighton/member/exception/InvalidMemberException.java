@@ -17,10 +17,10 @@ public class InvalidMemberException extends RuntimeException{
 	}
 
 	public ApiUtils.ApiResult<?> body() {
-		return ApiUtils.error(HttpStatus.CONFLICT, getMessage());
+		return ApiUtils.error(HttpStatus.BAD_REQUEST, getMessage());
 	}
 
 	public HttpStatus status () {
-		return HttpStatus.CONFLICT;
+		return HttpStatus.BAD_REQUEST;
 	}
 }
