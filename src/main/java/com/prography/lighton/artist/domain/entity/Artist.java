@@ -2,19 +2,25 @@ package com.prography.lighton.artist.domain.entity;
 
 import com.prography.lighton.artist.domain.entity.enums.ApproveStatus;
 import com.prography.lighton.artist.domain.entity.vo.ActivityImages;
+import com.prography.lighton.artist.domain.entity.vo.ActivityLocation;
 import com.prography.lighton.common.BaseEntity;
 import com.prography.lighton.member.domain.entity.Member;
 import com.prography.lighton.performance.domain.entity.association.PerformanceArtist;
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.SQLRestriction;
-
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
 
 @Entity
 @NoArgsConstructor
@@ -51,6 +57,9 @@ public class Artist extends BaseEntity {
 
     @Column(nullable = false)
     private ActivityImages activityImages;
+
+    @Column(nullable = false)
+    private ActivityLocation activityLocation;
 
     @Column(nullable = false)
     private String proofUrl;
