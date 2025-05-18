@@ -20,10 +20,6 @@ public record PerformanceRegisterRequest(
         @Valid
         Schedule schedule,
 
-        @NotNull(message = "아티스트 정보는 필수입니다.")
-        @Valid
-        ArtistInfo artist,
-
         @NotNull(message = "결제 정보는 필수입니다.")
         @Valid
         Payment payment,
