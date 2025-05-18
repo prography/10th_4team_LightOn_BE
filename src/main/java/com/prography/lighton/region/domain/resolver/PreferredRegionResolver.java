@@ -23,6 +23,6 @@ public class PreferredRegionResolver {
 	}
 
 	private Integer getParentRegionCode(Integer regionCode) {
-		return (regionCode * 100) / 100;
+		return (regionCode / 100) * 100;
 	}
 }
