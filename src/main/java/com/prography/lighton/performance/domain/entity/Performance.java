@@ -150,8 +150,7 @@ public class Performance extends BaseEntity {
 
         this.artists.addAll(PerformanceArtist.createListFor(this, artistsToAdd));
     }
-
-
+    
     private void updateGenres(List<Genre> newGenres) {
         Set<Long> newIds = newGenres.stream()
                 .map(Genre::getId)
