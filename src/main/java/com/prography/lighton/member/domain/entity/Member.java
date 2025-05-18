@@ -1,21 +1,26 @@
 package com.prography.lighton.member.domain.entity;
 
 import com.prography.lighton.common.BaseEntity;
+import com.prography.lighton.common.vo.RegionInfo;
 import com.prography.lighton.member.domain.entity.association.PreferredArtist;
 import com.prography.lighton.member.domain.entity.enums.Authority;
 import com.prography.lighton.member.domain.entity.vo.Email;
 import com.prography.lighton.member.domain.entity.vo.MarketingAgreement;
 import com.prography.lighton.member.domain.entity.vo.Password;
 import com.prography.lighton.member.domain.entity.vo.Phone;
-import com.prography.lighton.member.domain.entity.vo.PreferredRegion;
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Embedded;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.OneToMany;
+import java.util.ArrayList;
+import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.SQLRestriction;
-
-import java.util.ArrayList;
-import java.util.List;
 
 @Entity
 @NoArgsConstructor
@@ -34,7 +39,7 @@ public class Member extends BaseEntity {
     private String name;
 
     @Embedded
-    private PreferredRegion preferredRegion;
+    private RegionInfo preferredRegion;
 
     @Embedded
     private Phone phone;
@@ -49,8 +54,8 @@ public class Member extends BaseEntity {
     @OneToMany(mappedBy = "member", fetch = FetchType.LAZY)
     private List<PreferredArtist> preferredArtists;
 
-    public static Member toNormalMember (Email email, Password password, PreferredRegion preferredRegion,
-            String name, Phone phone, MarketingAgreement marketingAgreement) {
+    public static Member toNormalMember(Email email, Password password, RegionInfo preferredRegion,
+                                        String name, Phone phone, MarketingAgreement marketingAgreement) {
         return new Member(
                 email,
                 password,

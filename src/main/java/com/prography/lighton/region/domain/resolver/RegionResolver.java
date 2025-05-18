@@ -1,6 +1,6 @@
 package com.prography.lighton.region.domain.resolver;
 
-import com.prography.lighton.member.domain.entity.vo.PreferredRegion;
+import com.prography.lighton.common.vo.RegionInfo;
 import com.prography.lighton.region.domain.entity.Region;
 import com.prography.lighton.region.domain.entity.SubRegion;
 import com.prography.lighton.region.domain.repository.RegionRepository;
@@ -14,10 +14,10 @@ public class RegionResolver {
     private final RegionRepository regionRepository;
     private final SubRegionRepository subRegionRepository;
 
-    public PreferredRegion resolve(Integer regionCode) {
+    public RegionInfo resolve(Integer regionCode) {
         Region region = regionRepository.getByRegionCode(getParentRegionCode(regionCode));
         SubRegion subRegion = subRegionRepository.getByRegionCode(regionCode);
-        return PreferredRegion.of(region, subRegion);
+        return RegionInfo.of(region, subRegion);
     }
 
     private Integer getParentRegionCode(Integer regionCode) {

@@ -1,11 +1,11 @@
 package com.prography.lighton.member.application;
 
 import com.prography.lighton.auth.application.TokenProvider;
+import com.prography.lighton.common.vo.RegionInfo;
 import com.prography.lighton.member.domain.entity.Member;
 import com.prography.lighton.member.domain.entity.TemporaryMember;
 import com.prography.lighton.member.domain.entity.vo.MarketingAgreement;
 import com.prography.lighton.member.domain.entity.vo.Phone;
-import com.prography.lighton.member.domain.entity.vo.PreferredRegion;
 import com.prography.lighton.member.domain.repository.MemberRepository;
 import com.prography.lighton.member.domain.repository.TemporaryMemberRepository;
 import com.prography.lighton.member.exception.DuplicateMemberException;
@@ -31,7 +31,7 @@ public class CompleteMemberProfileService implements CompleteMemberProfileUseCas
     public CompleteMemberProfileResponseDTO completeMemberProfile(final Long temporaryMemberId,
                                                                   final CompleteMemberProfileRequestDTO request) {
         TemporaryMember temporaryMember = getTemporaryMember(temporaryMemberId);
-        PreferredRegion preferredRegion = regionResolver.resolve(request.regionCode());
+        RegionInfo preferredRegion = regionResolver.resolve(request.regionCode());
         Phone phone = validatePhoneDuplicate(request.phone());
         MarketingAgreement marketingAgreement = toMarketingAgreement(request);
 
