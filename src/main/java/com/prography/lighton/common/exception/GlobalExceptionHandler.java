@@ -14,11 +14,11 @@ import com.prography.lighton.member.exception.InvalidMemberException;
 import com.prography.lighton.member.exception.NoSuchMemberException;
 
 import jakarta.persistence.EntityNotFoundException;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @RestControllerAdvice
 public class GlobalExceptionHandler {
-
-	private final Logger logger = LoggerFactory.getLogger(getClass());
 
 	@ExceptionHandler(NotFoundException.class)
 	public ApiResult<?> handleNotFoundException(NotFoundException e) {
@@ -39,7 +39,7 @@ public class GlobalExceptionHandler {
 
 	@ExceptionHandler(Exception.class)
 	public ApiResult<?> handleException(Exception e) {
-		logger.error(e.getMessage(), e);
+		log.error(e.getMessage(), e);
 		return ApiUtils.error(HttpStatus.INTERNAL_SERVER_ERROR, "서버 오류가 발생했습니다.");
 	}
 }
