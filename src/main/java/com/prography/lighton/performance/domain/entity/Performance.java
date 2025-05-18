@@ -45,8 +45,7 @@ import org.hibernate.annotations.SQLRestriction;
 @SQLRestriction("status = true")
 public class Performance extends BaseEntity {
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @NotEmpty
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
     private Artist master;
 
     @OneToMany(mappedBy = "performance")
