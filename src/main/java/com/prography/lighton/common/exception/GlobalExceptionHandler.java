@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import com.prography.lighton.common.exception.base.NotFoundException;
 import com.prography.lighton.common.utils.ApiUtils;
 import com.prography.lighton.common.utils.ApiUtils.ApiResult;
+import com.prography.lighton.member.exception.DuplicateMemberException;
 import com.prography.lighton.region.exception.NoSuchRegionException;
 import com.prography.lighton.member.exception.InvalidMemberException;
 import com.prography.lighton.member.exception.NoSuchMemberException;
@@ -32,6 +33,12 @@ public class GlobalExceptionHandler {
 	})
 	public ResponseEntity<?> handleInvalidMemberException(InvalidMemberException e) {
 		return ResponseEntity.status(e.status()).body(ApiUtils.error(e.status(), e.getMessage()));
+	}
+
+	@ExceptionHandler(DuplicateMemberException.class)
+	public ResponseEntity<?> handleDuplicateMemberException(DuplicateMemberException e) {
+		return ResponseEntity.status(e.status())
+				.body(ApiUtils.error(e.status(), e.getMessage()));
 	}
 
 	@ExceptionHandler(IllegalArgumentException.class)
