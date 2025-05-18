@@ -7,9 +7,11 @@ import jakarta.persistence.FetchType;
 import jakarta.persistence.ManyToOne;
 import java.util.List;
 import lombok.AllArgsConstructor;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Entity
+@Getter
 @NoArgsConstructor
 @AllArgsConstructor
 public class PerformanceGenre extends BaseEntity {

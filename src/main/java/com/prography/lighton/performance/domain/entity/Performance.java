@@ -1,6 +1,8 @@
 package com.prography.lighton.performance.domain.entity;
 
+import com.prography.lighton.artist.domain.entity.Artist;
 import com.prography.lighton.common.BaseEntity;
+import com.prography.lighton.genre.domain.entity.Genre;
 import com.prography.lighton.performance.domain.entity.association.PerformanceArtist;
 import com.prography.lighton.performance.domain.entity.enums.Seat;
 import com.prography.lighton.performance.domain.entity.enums.Type;
@@ -21,6 +23,9 @@ import jakarta.persistence.OneToMany;
 import jakarta.validation.constraints.NotEmpty;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
+import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.ColumnDefault;
@@ -28,8 +33,8 @@ import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.SQLRestriction;
 
 @Entity
-@NoArgsConstructor
-@AllArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
 @SQLDelete(sql = "UPDATE performance SET status = false WHERE id = ?")
 @SQLRestriction("status = true")
 public class Performance extends BaseEntity {
@@ -72,4 +77,56 @@ public class Performance extends BaseEntity {
 
     @OneToMany(mappedBy = "performance", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<PerformanceGenre> genres = new ArrayList<>();
+
+    private Performance(
+            Info info,
+            Schedule schedule,
+            Location location,
+            Payment payment,
+            Type type,
+            List<Seat> seats
+    ) {
+        this.info = info;
+        this.schedule = schedule;
+        this.location = location;
+        this.payment = payment;
+        this.type = type;
+        this.seats.addAll(seats);
+    }
+
+    public static Performance create(
+            Artist initialArtist,
+            Info info,
+            Schedule schedule,
+            Location location,
+            Payment payment,
+            Type type,
+            List<Seat> seats,
+            List<Genre> genres
+    ) {
+        Performance perf = new Performance(info, schedule, location, payment, type, seats);
+        // 최초 등록 시 단일 아티스트 (수정 가능성 있음)
+        perf.artists.add(new PerformanceArtist(initialArtist, perf));
+        perf.updateGenres(genres);
+        return perf;
+    }
+
+    private void updateGenres(List<Genre> newGenres) {
+        Set<Long> newIds = newGenres.stream()
+                .map(Genre::getId)
+                .collect(Collectors.toSet());
+
+        this.genres.removeIf(pg -> !newIds.contains(pg.getGenre().getId()));
+
+        Set<Long> existingGenreIds = this.genres.stream()
+                .map(pg -> pg.getGenre().getId())
+                .collect(Collectors.toSet());
+
+        List<Genre> genresToAdd = newGenres.stream()
+                .filter(g -> !existingGenreIds.contains(g.getId()))
+                .toList();
+
+        this.genres.addAll(PerformanceGenre.createListFor(this, genresToAdd));
+    }
+
 }
