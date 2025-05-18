@@ -4,7 +4,7 @@ import jakarta.validation.constraints.NotNull;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
-public record Schedule(
+public record ScheduleDTO(
 
         @NotNull(message = "공연 시작 날짜는 필수입니다.")
         LocalDate startDate,

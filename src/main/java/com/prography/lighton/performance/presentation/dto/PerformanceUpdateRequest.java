@@ -15,15 +15,15 @@ public record PerformanceUpdateRequest(
 
         @NotNull(message = "공연 기본 정보는 필수입니다.")
         @Valid
-        Info info,
+        InfoDTO infoDTO,
 
         @NotNull(message = "공연 일정 정보는 필수입니다.")
         @Valid
-        Schedule schedule,
+        ScheduleDTO scheduleDTO,
 
         @NotNull(message = "결제 정보는 필수입니다.")
         @Valid
-        Payment payment,
+        PaymentDTO paymentDTO,
 
         @NotEmpty(message = "좌석 유형은 하나 이상 선택해야 합니다.")
         List<@NotNull(message = "좌석 유형은 비어 있을 수 없습니다.") Seat> seat,
