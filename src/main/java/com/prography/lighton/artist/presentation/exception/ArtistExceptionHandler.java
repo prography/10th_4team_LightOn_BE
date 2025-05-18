@@ -1,6 +1,7 @@
 package com.prography.lighton.artist.presentation.exception;
 
 import com.prography.lighton.artist.domain.entity.exception.ArtistRegistrationNotAllowedException;
+import com.prography.lighton.artist.domain.entity.exception.ArtistUpdateNotAllowedException;
 import com.prography.lighton.common.utils.ApiUtils;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -12,6 +13,12 @@ public class ArtistExceptionHandler {
     @ExceptionHandler(ArtistRegistrationNotAllowedException.class)
     public ResponseEntity<ApiUtils.ApiResult<?>> artistRegistrationNotAllowedException(
             ArtistRegistrationNotAllowedException exception) {
+        return new ResponseEntity<>(exception.body(), exception.status());
+    }
+
+    @ExceptionHandler(ArtistUpdateNotAllowedException.class)
+    public ResponseEntity<ApiUtils.ApiResult<?>> artistUpdateNotAllowedException(
+            ArtistUpdateNotAllowedException exception) {
         return new ResponseEntity<>(exception.body(), exception.status());
     }
 }
