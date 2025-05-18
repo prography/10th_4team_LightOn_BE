@@ -11,7 +11,6 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
@@ -22,8 +21,7 @@ public class GenreService {
     private Map<Long, Genre> cache;
 
     @PostConstruct
-    @Transactional
-    public void initCache() {
+    public void init() {
         this.cache = genreRepository.findAll().stream()
                 .collect(Collectors.toUnmodifiableMap(Genre::getId, Function.identity()));
     }
