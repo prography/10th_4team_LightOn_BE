@@ -1,6 +1,6 @@
 package com.prography.lighton.artist.presentation.exception;
 
-import com.prography.lighton.artist.application.exception.ArtistRegistrationNotAllowedException;
+import com.prography.lighton.artist.domain.entity.exception.ArtistRegistrationNotAllowedException;
 import com.prography.lighton.common.utils.ApiUtils;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
