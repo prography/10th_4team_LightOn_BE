@@ -12,10 +12,13 @@ import org.springframework.web.bind.annotation.RestController;
 import com.prography.lighton.common.utils.ApiUtils;
 import com.prography.lighton.common.utils.ApiUtils.ApiResult;
 import com.prography.lighton.member.application.CompleteMemberProfileUseCase;
+import com.prography.lighton.member.application.LoginMemberUseCase;
 import com.prography.lighton.member.application.RegisterMemberUseCase;
 import com.prography.lighton.member.presentation.dto.request.CompleteMemberProfileRequestDTO;
+import com.prography.lighton.member.presentation.dto.request.LoginMemberRequestDTO;
 import com.prography.lighton.member.presentation.dto.request.RegisterMemberRequestDTO;
 import com.prography.lighton.member.presentation.dto.response.CompleteMemberProfileResponseDTO;
+import com.prography.lighton.member.presentation.dto.response.LoginMemberResponseDTO;
 import com.prography.lighton.member.presentation.dto.response.RegisterMemberResponseDTO;
 
 import jakarta.validation.Valid;
@@ -29,6 +32,7 @@ public class MemberController {
 
 	private final RegisterMemberUseCase registerMemberUseCase;
 	private final CompleteMemberProfileUseCase completeMemberProfileUseCase;
+	private final LoginMemberUseCase loginMemberUseCase;
 
 	@PostMapping
 	public ApiResult<RegisterMemberResponseDTO> register(@RequestBody @Valid RegisterMemberRequestDTO request) {
@@ -47,7 +51,7 @@ public class MemberController {
 	}
 
 	@PostMapping("/login")
-	public ApiResult<?> login() {
-		return ApiUtils.success();
+	public ApiResult<LoginMemberResponseDTO> login(@RequestBody @Valid LoginMemberRequestDTO request) {
+		return ApiUtils.success(loginMemberUseCase.loginMember(request));
 	}
 }
