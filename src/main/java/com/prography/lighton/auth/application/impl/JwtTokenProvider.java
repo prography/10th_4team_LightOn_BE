@@ -80,7 +80,7 @@ public class JwtTokenProvider implements TokenProvider {
     }
 
     @Override
-    public String getRole(String token) {
+    public String getRole(final String token) {
         Claims claims = Jwts.parserBuilder()
                 .setSigningKey(key)
                 .build()
