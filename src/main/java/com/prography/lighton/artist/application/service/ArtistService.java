@@ -1,8 +1,6 @@
 package com.prography.lighton.artist.application.service;
 
-import com.prography.lighton.artist.application.exception.ArtistRegistrationNotAllowedException;
 import com.prography.lighton.artist.domain.entity.Artist;
-import com.prography.lighton.artist.domain.entity.enums.ApproveStatus;
 import com.prography.lighton.artist.domain.entity.vo.History;
 import com.prography.lighton.artist.infrastructure.repository.ArtistRepository;
 import com.prography.lighton.artist.presentation.dto.ArtistRegisterRequest;
@@ -27,11 +25,13 @@ public class ArtistService {
 
     @Transactional
     public void registerMember(Member member, ArtistRegisterRequest request) {
-        validateArtistRegistration(member);
+        artistRepository.findByMember(member)
+                .ifPresent(Artist::validateCreatable);
 
         RegionInfo activityRegion = regionResolver.resolve(request.artist().activityLocation());
         History history = History.of(request.history().bio(), request.history().activityPhotos());
         List<Genre> genres = genreService.getGenresOrThrow(request.artist().genre());
+
         Artist artist = Artist.create(
                 member,
                 request.artist().name(),
@@ -41,15 +41,6 @@ public class ArtistService {
                 request.proof(),
                 genres
         );
-
         artistRepository.save(artist);
-    }
-
-    private void validateArtistRegistration(Member member) {
-        artistRepository.findByMember(member)
-                .filter(artist -> artist.getApproveStatus() != ApproveStatus.REJECTED)
-                .ifPresent(artist -> {
-                    throw new ArtistRegistrationNotAllowedException();
-                });
     }
 }
