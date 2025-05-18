@@ -17,7 +17,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class SecurityConfig {
 
-	private final TokenProvider tokenProvider;
+	private final JwtAuthenticationFilter jwtAuthenticationFilter;
 
 	@Bean
 	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -28,12 +28,13 @@ public class SecurityConfig {
 						.requestMatchers(HttpMethod.POST, "/api/members").permitAll()
 						.requestMatchers(HttpMethod.POST, "/api/members/login").permitAll()
 						.requestMatchers(HttpMethod.POST,"/api/members/{temporaryMemberId}/info").permitAll()
+						.requestMatchers(HttpMethod.GET, "/api/me").hasRole("NORMAL")
 						.anyRequest().authenticated()
 				)
 				.formLogin(form -> form.disable())
 				.httpBasic(basic -> basic.disable())
 				.addFilterBefore(
-						new JwtAuthenticationFilter(tokenProvider),
+						jwtAuthenticationFilter,
 						org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter.class
 				);
 

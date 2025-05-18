@@ -1,6 +1,22 @@
 package com.prography.lighton.auth.presentation.filter;
 
+import java.io.IOException;
+import java.util.List;
+
+import org.springframework.http.HttpStatus;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
+import org.springframework.stereotype.Component;
+import org.springframework.util.StringUtils;
+import org.springframework.web.filter.OncePerRequestFilter;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.prography.lighton.auth.application.TokenProvider;
+import com.prography.lighton.auth.exception.InvalidTokenException;
+import com.prography.lighton.common.utils.ApiUtils;
+
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -8,70 +24,91 @@ import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
-import org.springframework.stereotype.Component;
-import org.springframework.util.StringUtils;
-import org.springframework.web.filter.OncePerRequestFilter;
-
-import java.io.IOException;
-import java.util.List;
-
 @Slf4j
 @Component
 @RequiredArgsConstructor
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
 	private final TokenProvider tokenProvider;
+	private final ObjectMapper objectMapper;
 
 	private static final String AUTHORIZATION_HEADER = "Authorization";
 	private static final String BEARER_PREFIX = "Bearer ";
 	private static final String ROLE_PREFIX = "ROLE_";
+	private static final String CONTENT_TYPE = "application/json;charset=UTF-8";
 
 	@Override
 	protected void doFilterInternal(HttpServletRequest request,
 			HttpServletResponse response,
 			FilterChain filterChain) throws ServletException, IOException {
 
-		String token = resolveToken(request);
-		if (token != null) {
-			try {
-				tokenProvider.validateToken(token); // 토큰 유효성 검증
-
-				String memberId = tokenProvider.getPayload(token); // subject (예: memberId)
-				String role = tokenProvider.getRole(token);        // 단일 role (예: "ADMIN")
-
-				var authority = new org.springframework.security.core.authority.SimpleGrantedAuthority(ROLE_PREFIX + role);
-				var authorities = List.of(authority);
-
-				var authentication = new UsernamePasswordAuthenticationToken(
-						memberId,  // principal
-						null,      // credentials
-						authorities
-				);
-
-				authentication.setDetails(
-						new WebAuthenticationDetailsSource().buildDetails(request)
-				);
-
-				SecurityContextHolder.getContext().setAuthentication(authentication);
-
-			} catch (Exception e) {
-				log.error("JWT authentication failed: {}", e.getMessage());
-				SecurityContextHolder.clearContext();
-			}
+		if (isPermitAllRequest(request)) {
+			filterChain.doFilter(request, response);
+			return;
 		}
 
-		filterChain.doFilter(request, response);
+		try {
+			authenticateRequest(request);
+			filterChain.doFilter(request, response);
+
+		} catch (Exception e) {
+			log.error("JWT authentication failed: {}", e.getMessage());
+			sendUnauthorizedResponse(response, e.getMessage());
+		}
 	}
 
-	private String resolveToken(HttpServletRequest request) {
+	private void authenticateRequest(HttpServletRequest request) {
+		String token = extractToken(request);
+		tokenProvider.validateToken(token);
+
+		String memberId = tokenProvider.getPayload(token);
+		String role = tokenProvider.getRole(token);
+
+		validateRole(role);
+
+		var authority = new SimpleGrantedAuthority(ROLE_PREFIX + role);
+		var authentication = new UsernamePasswordAuthenticationToken(memberId, null, List.of(authority));
+		authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+		SecurityContextHolder.getContext().setAuthentication(authentication);
+	}
+
+	private String extractToken(HttpServletRequest request) {
 		String bearer = request.getHeader(AUTHORIZATION_HEADER);
-		if (StringUtils.hasText(bearer) && bearer.startsWith(BEARER_PREFIX)) {
-			return bearer.substring(BEARER_PREFIX.length());
+		if (!StringUtils.hasText(bearer)) {
+			throw new InvalidTokenException("Authorization 헤더가 없습니다.");
 		}
-		return null;
+		if (!bearer.startsWith(BEARER_PREFIX)) {
+			throw new InvalidTokenException("토큰 형식이 잘못되었습니다.");
+		}
+		String token = bearer.substring(BEARER_PREFIX.length());
+		if (!StringUtils.hasText(token)) {
+			throw new InvalidTokenException("토큰이 비어있습니다.");
+		}
+		return token;
+	}
+
+	private void validateRole(String role) {
+		if (!StringUtils.hasText(role)) {
+			throw new InvalidTokenException("사용자 역할 정보가 없습니다.");
+		}
+	}
+
+	private void sendUnauthorizedResponse(HttpServletResponse response, String message) throws IOException {
+		response.setStatus(HttpStatus.UNAUTHORIZED.value());
+		response.setContentType(CONTENT_TYPE);
+
+		String json = objectMapper.writeValueAsString(
+				ApiUtils.error(HttpStatus.UNAUTHORIZED, message)
+		);
+
+		response.getWriter().write(json);
+	}
+
+	private boolean isPermitAllRequest(HttpServletRequest request) {
+		String uri = request.getRequestURI();
+		return uri.equals("/health") ||
+				uri.equals("/api/members") ||
+				uri.equals("/api/members/login") ||
+				uri.matches("^/api/members/\\d+/info$");
 	}
 }
-

@@ -14,7 +14,6 @@ import com.prography.lighton.auth.exception.InvalidTokenException;
 import com.prography.lighton.member.domain.entity.enums.Authority;
 
 import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -54,7 +53,7 @@ public class JwtTokenProvider implements TokenProvider {
 
 		return Jwts.builder()
 				.setSubject(payload)
-				.claim(ROLE_KEY, roles) // ✅ 여기에 권한 추가
+				.claim(ROLE_KEY, roles)
 				.setIssuedAt(now)
 				.setExpiration(validity)
 				.signWith(key, SignatureAlgorithm.HS256)
@@ -92,7 +91,7 @@ public class JwtTokenProvider implements TokenProvider {
 					.build()
 					.parseClaimsJws(token);
 		} catch (final JwtException | IllegalArgumentException e) {
-			throw new InvalidTokenException("유효하지 않은 토큰입니다.");
+			throw new InvalidTokenException();
 		}
 	}
 
