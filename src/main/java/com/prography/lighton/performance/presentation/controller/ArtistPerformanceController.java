@@ -13,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -24,7 +25,8 @@ public class ArtistPerformanceController {
     private final PerformanceService performanceService;
 
     @PostMapping
-    public ResponseEntity<ApiResult<String>> registerPerformance(@Valid PerformanceRegisterRequest request) {
+    public ResponseEntity<ApiResult<String>> registerPerformance(
+            @Valid @RequestBody PerformanceRegisterRequest request) {
         // 나중에 수정 필요
         Member member = Member.withId(1L);
         performanceService.registerPerformance(member, request);
@@ -34,7 +36,7 @@ public class ArtistPerformanceController {
 
     @PostMapping("/{id}")
     public ResponseEntity<ApiResult<String>> updatePerformance(@PathVariable Long id,
-                                                               @Valid PerformanceUpdateRequest request) {
+                                                               @Valid @RequestBody PerformanceUpdateRequest request) {
         // 나중에 수정 필요
         Member member = Member.withId(1L);
         performanceService.updatePerformance(member, id, request);
