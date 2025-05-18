@@ -17,10 +17,8 @@ public interface ArtistRepository extends JpaRepository<Artist, Long> {
     @Query("""
                 select a from Artist a
                 join fetch a.genres ag
-                join fetch ag.genre g
                 where a.member = :member
                   and a.status = true
-                  and g.status = true
             """)
     Optional<Artist> findWithGenresByMember(@Param("member") Member member);
 
