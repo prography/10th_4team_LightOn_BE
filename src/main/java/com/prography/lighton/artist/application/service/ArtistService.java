@@ -24,7 +24,7 @@ public class ArtistService {
     private final RegionResolver regionResolver;
 
     @Transactional
-    public void registerMember(Member member, ArtistRegisterRequest request) {
+    public void registerArtist(Member member, ArtistRegisterRequest request) {
         artistRepository.findByMember(member)
                 .ifPresent(Artist::validateCreatable);
 
