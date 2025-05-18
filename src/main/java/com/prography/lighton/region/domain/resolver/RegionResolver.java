@@ -1,23 +1,34 @@
 package com.prography.lighton.region.domain.resolver;
 
 import com.prography.lighton.common.vo.RegionInfo;
-import com.prography.lighton.region.domain.entity.Region;
-import com.prography.lighton.region.domain.entity.SubRegion;
-import com.prography.lighton.region.domain.repository.RegionRepository;
 import com.prography.lighton.region.domain.repository.SubRegionRepository;
+import com.prography.lighton.region.exception.NoSuchRegionException;
+import jakarta.annotation.PostConstruct;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
 public class RegionResolver {
-    private final RegionRepository regionRepository;
     private final SubRegionRepository subRegionRepository;
+    private final Map<Integer, RegionInfo> cache = new ConcurrentHashMap<>();
+
+    @PostConstruct
+    public void init() {
+        subRegionRepository.findAllActiveWithRegion()
+                .forEach(sr ->
+                        cache.put(sr.getCode(), RegionInfo.of(sr.getRegion(), sr))
+                );
+    }
 
     public RegionInfo resolve(Integer regionCode) {
-        Region region = regionRepository.getByRegionCode(getParentRegionCode(regionCode));
-        SubRegion subRegion = subRegionRepository.getByRegionCode(regionCode);
-        return RegionInfo.of(region, subRegion);
+        RegionInfo info = cache.get(regionCode);
+        if (info == null) {
+            throw new NoSuchRegionException();
+        }
+        return info;
     }
 
     private Integer getParentRegionCode(Integer regionCode) {
