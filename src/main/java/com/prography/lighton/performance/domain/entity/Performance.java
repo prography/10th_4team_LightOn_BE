@@ -1,6 +1,7 @@
 package com.prography.lighton.performance.domain.entity;
 
 import com.prography.lighton.artist.domain.entity.Artist;
+import com.prography.lighton.artist.domain.entity.enums.ApproveStatus;
 import com.prography.lighton.common.BaseEntity;
 import com.prography.lighton.genre.domain.entity.Genre;
 import com.prography.lighton.performance.domain.entity.association.PerformanceArtist;
@@ -66,6 +67,10 @@ public class Performance extends BaseEntity {
     @Column(name = "seat")
     @Enumerated(EnumType.STRING)
     private List<Seat> seats = new ArrayList<>();
+
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false, columnDefinition = "varchar(20) default 'PENDING'")
+    private ApproveStatus approveStatus = ApproveStatus.PENDING;
 
     @Column(nullable = false)
     @ColumnDefault("0")
