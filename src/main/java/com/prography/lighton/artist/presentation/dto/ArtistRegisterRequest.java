@@ -47,7 +47,7 @@ public record ArtistRegisterRequest(
     public record HistoryDTO(
 
             @NotBlank(message = "주요 활동 이력은 필수입니다.")
-            String text,
+            String bio,
 
             @Size(max = 5, message = "활동 사진은 최대 5장까지 업로드 가능합니다.")
             List<
