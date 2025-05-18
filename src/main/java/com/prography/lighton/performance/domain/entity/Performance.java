@@ -78,19 +78,29 @@ public class Performance extends BaseEntity {
     @OneToMany(mappedBy = "performance", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<PerformanceGenre> genres = new ArrayList<>();
 
+    @Column(nullable = false)
+    private String proofUrl;
+
+    @Column(nullable = false)
+    private String posterUrl;
+
     private Performance(
             Info info,
             Schedule schedule,
             Location location,
             Payment payment,
             Type type,
-            List<Seat> seats
+            List<Seat> seats,
+            String proofUrl,
+            String posterUrl
     ) {
         this.info = info;
         this.schedule = schedule;
         this.location = location;
         this.payment = payment;
         this.type = type;
+        this.proofUrl = proofUrl;
+        this.posterUrl = posterUrl;
         this.seats.addAll(seats);
     }
 
@@ -102,9 +112,11 @@ public class Performance extends BaseEntity {
             Payment payment,
             Type type,
             List<Seat> seats,
-            List<Genre> genres
+            List<Genre> genres,
+            String proofUrl,
+            String posterUrl
     ) {
-        Performance perf = new Performance(info, schedule, location, payment, type, seats);
+        Performance perf = new Performance(info, schedule, location, payment, type, seats, proofUrl, posterUrl);
         // 최초 등록 시 단일 아티스트 (수정 가능성 있음)
         perf.artists.add(new PerformanceArtist(initialArtist, perf));
         perf.updateGenres(genres);
@@ -150,7 +162,7 @@ public class Performance extends BaseEntity {
 
         this.artists.addAll(PerformanceArtist.createListFor(this, artistsToAdd));
     }
-    
+
     private void updateGenres(List<Genre> newGenres) {
         Set<Long> newIds = newGenres.stream()
                 .map(Genre::getId)
