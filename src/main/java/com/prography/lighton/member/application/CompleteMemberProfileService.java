@@ -15,7 +15,10 @@ import com.prography.lighton.member.presentation.dto.request.CompleteMemberProfi
 import com.prography.lighton.member.presentation.dto.response.CompleteMemberProfileResponseDTO;
 import com.prography.lighton.region.domain.resolver.PreferredRegionResolver;
 
+import lombok.RequiredArgsConstructor;
+
 @Service
+@RequiredArgsConstructor
 public class CompleteMemberProfileService implements CompleteMemberProfileUseCase {
 
 	private final TemporaryMemberRepository temporaryMemberRepository;
@@ -23,17 +26,6 @@ public class CompleteMemberProfileService implements CompleteMemberProfileUseCas
 
 	private final PreferredRegionResolver preferredRegionResolver;
 	private final TokenProvider tokenProvider;
-
-	public CompleteMemberProfileService(
-			final TemporaryMemberRepository temporaryMemberRepository,
-			final MemberRepository memberRepository,
-			final PreferredRegionResolver preferredRegionResolver,
-			final TokenProvider tokenProvider) {
-		this.temporaryMemberRepository = temporaryMemberRepository;
-		this.memberRepository = memberRepository;
-		this.preferredRegionResolver = preferredRegionResolver;
-		this.tokenProvider = tokenProvider;
-	}
 
 	@Override
 	public CompleteMemberProfileResponseDTO completeMemberProfile(final Long temporaryMemberId, final CompleteMemberProfileRequestDTO request) {

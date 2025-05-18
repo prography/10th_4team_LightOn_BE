@@ -12,16 +12,14 @@ import com.prography.lighton.member.exception.DuplicateMemberException;
 import com.prography.lighton.member.presentation.dto.request.RegisterMemberRequestDTO;
 import com.prography.lighton.member.presentation.dto.response.RegisterMemberResponseDTO;
 
+import lombok.RequiredArgsConstructor;
+
 @Service
+@RequiredArgsConstructor
 public class RegisterMemberService implements RegisterMemberUseCase {
 
 	private final TemporaryMemberRepository temporaryMemberRepository;
 	private final PasswordEncoder passwordEncoder;
-
-	public RegisterMemberService(final TemporaryMemberRepository temporaryMemberRepository, final PasswordEncoder passwordEncoder) {
-		this.temporaryMemberRepository = temporaryMemberRepository;
-		this.passwordEncoder = passwordEncoder;
-	}
 
 	@Override
 	public RegisterMemberResponseDTO registerMember(final RegisterMemberRequestDTO request) {

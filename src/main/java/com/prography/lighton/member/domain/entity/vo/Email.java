@@ -12,9 +12,11 @@ import com.prography.lighton.member.exception.InvalidMemberException;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
 import lombok.AccessLevel;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 @Embeddable
+@EqualsAndHashCode
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Email {
 
@@ -28,27 +30,9 @@ public class Email {
     }
 
     public static Email of(String value) {
-        if (isBlank(value)|| !EMAIL_PATTERN.matcher(value).matches()) {
+        if (isBlank(value) || !EMAIL_PATTERN.matcher(value).matches()) {
             throw new InvalidMemberException("이메일 형식이 올바르지 않습니다.");
         }
         return new Email(value);
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof Email)) return false;
-        Email email = (Email) o;
-        return Objects.equals(value, email.value);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(value);
-    }
-
-    @Override
-    public String toString() {
-        return value;
     }
 }

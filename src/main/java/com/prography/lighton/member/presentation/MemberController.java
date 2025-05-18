@@ -17,17 +17,15 @@ import com.prography.lighton.member.presentation.dto.request.RegisterMemberReque
 import com.prography.lighton.member.presentation.dto.response.CompleteMemberProfileResponseDTO;
 import com.prography.lighton.member.presentation.dto.response.RegisterMemberResponseDTO;
 
+import lombok.RequiredArgsConstructor;
+
 @RestController
 @RequestMapping("/api/members")
+@RequiredArgsConstructor
 public class MemberController {
 
 	private final RegisterMemberUseCase registerMemberUseCase;
 	private final CompleteMemberProfileUseCase completeMemberProfileUseCase;
-
-	public MemberController(RegisterMemberUseCase registerMemberUseCase, CompleteMemberProfileUseCase completeMemberProfileUseCase) {
-		this.registerMemberUseCase = registerMemberUseCase;
-		this.completeMemberProfileUseCase = completeMemberProfileUseCase;
-	}
 
 	@PostMapping
 	public ApiResult<RegisterMemberResponseDTO> register(@RequestBody RegisterMemberRequestDTO request) {
