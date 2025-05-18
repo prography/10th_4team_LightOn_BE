@@ -1,18 +1,14 @@
 package com.prography.lighton.performance.application.resolver;
 
-import com.prography.lighton.artist.domain.entity.Artist;
 import com.prography.lighton.genre.application.service.GenreService;
 import com.prography.lighton.genre.domain.entity.Genre;
-import com.prography.lighton.performance.domain.entity.Performance;
 import com.prography.lighton.performance.domain.entity.enums.Seat;
-import com.prography.lighton.performance.domain.entity.enums.Type;
 import com.prography.lighton.performance.domain.entity.vo.Info;
 import com.prography.lighton.performance.domain.entity.vo.Location;
 import com.prography.lighton.performance.domain.entity.vo.Payment;
 import com.prography.lighton.performance.domain.entity.vo.Schedule;
 import com.prography.lighton.performance.presentation.dto.InfoDTO;
 import com.prography.lighton.performance.presentation.dto.PaymentDTO;
-import com.prography.lighton.performance.presentation.dto.PerformanceRegisterRequest;
 import com.prography.lighton.performance.presentation.dto.ScheduleDTO;
 import com.prography.lighton.region.domain.resolver.RegionResolver;
 import java.util.List;
@@ -25,22 +21,6 @@ public class PerformanceResolver {
 
     private final GenreService genreService;
     private final RegionResolver regionResolver;
-
-    public Performance resolve(Artist artist, PerformanceRegisterRequest req) {
-        DomainData d = toDomainData(req.infoDTO(), req.scheduleDTO(), req.paymentDTO(), req.seat());
-
-        return Performance.create(
-                artist,
-                d.info(),
-                d.schedule(),
-                d.location(),
-                d.payment(),
-                Type.NORMAL,
-                d.seats(),
-                d.genres(),
-                req.proof()
-        );
-    }
 
     public DomainData toDomainData(InfoDTO infoDTO, ScheduleDTO scheduleDTO, PaymentDTO paymentDTO, List<Seat> seats) {
         return new DomainData(
