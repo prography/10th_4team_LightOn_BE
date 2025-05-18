@@ -2,6 +2,7 @@ package com.prography.lighton.auth.application.impl;
 
 import java.nio.charset.StandardCharsets;
 import java.util.Date;
+import java.util.List;
 
 import javax.crypto.SecretKey;
 
@@ -10,6 +11,7 @@ import org.springframework.stereotype.Component;
 
 import com.prography.lighton.auth.application.TokenProvider;
 import com.prography.lighton.auth.exception.InvalidTokenException;
+import com.prography.lighton.member.domain.entity.enums.Authority;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
@@ -34,26 +36,29 @@ public class JwtTokenProvider implements TokenProvider {
 	}
 
 	@Override
-	public String createAccessToken(final String payload) {
-		return createToken(payload, accessTokenValidityInMilliseconds);
+	public String createAccessToken(final String payload, final Authority authority) {
+		return createToken(payload, accessTokenValidityInMilliseconds, authority.toString());
 	}
 
 	@Override
-	public String createRefreshToken(final String payload) {
-		return createToken(payload, refreshTokenValidityInMilliseconds);
+	public String createRefreshToken(final String payload, final Authority authority) {
+		return createToken(payload, refreshTokenValidityInMilliseconds, authority.toString());
 	}
 
-	private String createToken(final String payload, final Long validityInMilliseconds) {
+
+	private String createToken(String payload, Long validityInMilliseconds, String roles) {
 		Date now = new Date();
 		Date validity = new Date(now.getTime() + validityInMilliseconds);
 
 		return Jwts.builder()
 				.setSubject(payload)
+				.claim("roles", roles) // ✅ 여기에 권한 추가
 				.setIssuedAt(now)
 				.setExpiration(validity)
 				.signWith(key, SignatureAlgorithm.HS256)
 				.compact();
 	}
+
 
 	@Override
 	public String getPayload(final String token) {
@@ -66,18 +71,27 @@ public class JwtTokenProvider implements TokenProvider {
 	}
 
 	@Override
+	public String getRole(String token) {
+		Claims claims = Jwts.parserBuilder()
+				.setSigningKey(key)
+				.build()
+				.parseClaimsJws(token)
+				.getBody();
+
+		return claims.get("roles", String.class);
+	}
+
+
+	@Override
 	public void validateToken(final String token) {
 		try {
-			Jws<Claims> claims = Jwts.parserBuilder()
+			Jwts.parserBuilder()
 					.setSigningKey(key)
 					.build()
 					.parseClaimsJws(token);
-
-			claims.getBody()
-					.getExpiration()
-					.before(new Date());
 		} catch (final JwtException | IllegalArgumentException e) {
-			throw new InvalidTokenException("권한이 없습니다.");
+			throw new InvalidTokenException("유효하지 않은 토큰입니다.");
 		}
 	}
+
 }

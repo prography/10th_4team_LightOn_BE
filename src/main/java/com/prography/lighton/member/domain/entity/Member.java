@@ -9,9 +9,11 @@ import com.prography.lighton.member.domain.entity.vo.Password;
 import com.prography.lighton.member.domain.entity.vo.Phone;
 import com.prography.lighton.member.domain.entity.vo.PreferredRegion;
 import com.prography.lighton.member.exception.InvalidMemberException;
+import com.prography.lighton.performance.domain.entity.enums.Seat;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.SQLRestriction;
@@ -45,6 +47,7 @@ public class Member extends BaseEntity {
     @Embedded
     private MarketingAgreement marketingAgreement;
 
+    @Getter
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     private Authority authority;
