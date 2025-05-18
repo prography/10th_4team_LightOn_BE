@@ -1,6 +1,6 @@
 package com.prography.lighton.performance.domain.entity.vo;
 
-import com.prography.lighton.performance.domain.entity.exception.InvalidScheduleException;
+import com.prography.lighton.performance.domain.exception.InvalidScheduleException;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
 import java.time.LocalDate;
