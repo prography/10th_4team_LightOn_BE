@@ -4,6 +4,7 @@ import com.prography.lighton.artist.domain.entity.enums.ApproveStatus;
 import com.prography.lighton.artist.domain.entity.vo.History;
 import com.prography.lighton.common.BaseEntity;
 import com.prography.lighton.common.vo.RegionInfo;
+import com.prography.lighton.genre.domain.entity.Genre;
 import com.prography.lighton.member.domain.entity.Member;
 import com.prography.lighton.performance.domain.entity.association.PerformanceArtist;
 import jakarta.persistence.CascadeType;
@@ -67,8 +68,8 @@ public class Artist extends BaseEntity {
     @OneToMany(mappedBy = "artist", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ArtistGenre> genres = new ArrayList<>();
 
-    public Artist(Member member, String stageName, String description, RegionInfo activityLocation, History history,
-                  String proofUrl) {
+    private Artist(Member member, String stageName, String description, RegionInfo activityLocation, History history,
+                   String proofUrl) {
         this.member = member;
         this.stageName = stageName;
         this.description = description;
@@ -83,15 +84,28 @@ public class Artist extends BaseEntity {
             String description,
             RegionInfo activityLocation,
             History history,
-            String proofUrl
+            String proofUrl,
+            List<Genre> genres
     ) {
-        return new Artist(
+        Artist artist = new Artist(
                 member,
                 stageName,
                 description,
                 activityLocation,
                 history,
                 proofUrl
+        );
+
+        artist.updateGenres(genres);
+        return artist;
+    }
+
+    private void updateGenres(List<Genre> genreList) {
+        this.genres.clear();
+        this.genres.addAll(
+                genreList.stream()
+                        .map(genre -> new ArtistGenre(this, genre))
+                        .toList()
         );
     }
 }
