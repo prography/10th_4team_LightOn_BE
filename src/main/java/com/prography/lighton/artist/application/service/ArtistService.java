@@ -29,19 +29,17 @@ public class ArtistService {
         artistRepository.findByMember(member)
                 .ifPresent(Artist::validateCreatable);
 
-        RegionInfo activityRegion = regionResolver.resolve(request.artist().activityLocation());
-        History history = History.of(request.history().bio(), request.history().activityPhotos());
-        List<Genre> genres = genreService.getGenresOrThrow(request.artist().genre());
-
+        var data = toArtistData(request.artist(), request.history());
         Artist artist = Artist.create(
                 member,
                 request.artist().name(),
                 request.artist().description(),
-                activityRegion,
-                history,
+                data.activityRegion(),
+                data.history(),
                 request.proof(),
-                genres
+                data.genres()
         );
+
         artistRepository.save(artist);
     }
 
