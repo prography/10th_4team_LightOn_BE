@@ -25,7 +25,7 @@ public class ArtistController {
     public ResponseEntity<ApiResult<String>> registerArtist(@Valid @RequestBody ArtistRegisterRequest request) {
         // 나중에 수정 필요
         Member member = Member.withId(1L);
-        artistService.registerMember(member, request);
+        artistService.registerArtist(member, request);
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(ApiUtils.success());
     }
