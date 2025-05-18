@@ -50,4 +50,13 @@ public class PerformanceService {
                 data.seats(),
                 data.genres());
     }
+
+    @Transactional
+    public void cancelPerformance(Member member, Long performanceId) {
+        Artist requestArtist = artistService.getApprovedArtistByMember(member);
+        Performance performance = getApprovedPerformanceById(performanceId);
+        performance.validateMasterArtist(requestArtist);
+        // 사용자에게 알림 필요
+        performanceRepository.delete(performance);
+    }
 }
