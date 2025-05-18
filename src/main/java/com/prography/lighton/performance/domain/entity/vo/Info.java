@@ -24,7 +24,6 @@ public class Info {
 
     private String notice;
 
-    @Column(nullable = false)
     private String posterUrl;
 
     public static Info of(String title, String description, String place, String notice, String posterUrl) {
