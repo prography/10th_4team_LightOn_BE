@@ -2,6 +2,7 @@ package com.prography.lighton.common.exception;
 
 import com.fasterxml.jackson.databind.JsonMappingException.Reference;
 import com.fasterxml.jackson.databind.exc.InvalidFormatException;
+import com.prography.lighton.common.exception.base.InvalidException;
 import com.prography.lighton.common.exception.base.NotFoundException;
 import com.prography.lighton.common.utils.ApiUtils;
 import com.prography.lighton.member.exception.InvalidMemberException;
@@ -30,6 +31,11 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(e.status()).body(ApiUtils.error(e.status(), e.getMessage()));
     }
 
+    @ExceptionHandler(InvalidException.class)
+    public ResponseEntity<?> handleInvalidMemberException(InvalidException e) {
+        return ResponseEntity.status(e.status()).body(ApiUtils.error(e.status(), e.getMessage()));
+    }
+    
     @ExceptionHandler(IllegalArgumentException.class)
     public ResponseEntity<?> handleIllegalArgumentException(IllegalArgumentException e) {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST)
