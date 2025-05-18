@@ -1,8 +1,8 @@
 package com.prography.lighton.artist.domain.entity;
 
 import com.prography.lighton.artist.domain.entity.enums.ApproveStatus;
+import com.prography.lighton.artist.domain.entity.exception.ArtistNotApprovedException;
 import com.prography.lighton.artist.domain.entity.exception.ArtistRegistrationNotAllowedException;
-import com.prography.lighton.artist.domain.entity.exception.ArtistUpdateNotAllowedException;
 import com.prography.lighton.artist.domain.entity.vo.History;
 import com.prography.lighton.common.BaseEntity;
 import com.prography.lighton.common.vo.RegionInfo;
@@ -142,9 +142,9 @@ public class Artist extends BaseEntity {
         }
     }
 
-    public void validateUpdatable() {
+    public void validateApproved() {
         if (this.approveStatus != ApproveStatus.APPROVED) {
-            throw new ArtistUpdateNotAllowedException();
+            throw new ArtistNotApprovedException();
         }
     }
 }

@@ -24,6 +24,12 @@ public class ArtistService {
     private final GenreService genreService;
     private final RegionResolver regionResolver;
 
+    public Artist getApprovedArtistByMember(Member member) {
+        Artist artist = artistRepository.getByMember(member);
+        artist.validateApproved();
+        return artist;
+    }
+    
     @Transactional
     public void registerArtist(Member member, ArtistRegisterRequest request) {
         artistRepository.findByMember(member)
@@ -45,8 +51,7 @@ public class ArtistService {
 
     @Transactional
     public void updateArtist(Member member, ArtistUpdateRequest request) {
-        Artist artist = artistRepository.getByMember(member);
-        artist.validateUpdatable();
+        Artist artist = getApprovedArtistByMember(member);
 
         var data = toArtistData(request.artist(), request.history());
         artist.update(
