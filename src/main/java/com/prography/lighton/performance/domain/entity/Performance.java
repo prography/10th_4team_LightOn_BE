@@ -111,6 +111,47 @@ public class Performance extends BaseEntity {
         return perf;
     }
 
+    public void update(
+            List<Artist> newArtists,
+            Info info,
+            Schedule schedule,
+            Location location,
+            Payment payment,
+            Type type,
+            List<Seat> seats,
+            List<Genre> genres
+    ) {
+        this.info = info;
+        this.schedule = schedule;
+        this.location = location;
+        this.payment = payment;
+        this.type = type;
+        this.seats.clear();
+        this.seats.addAll(seats);
+
+        updateArtists(newArtists);
+        updateGenres(genres);
+    }
+
+    private void updateArtists(List<Artist> newArtists) {
+        Set<Long> newArtistIds = newArtists.stream()
+                .map(Artist::getId)
+                .collect(Collectors.toSet());
+
+        this.artists.removeIf(pa -> !newArtistIds.contains(pa.getArtist().getId()));
+
+        Set<Long> existingArtistIds = this.artists.stream()
+                .map(pa -> pa.getArtist().getId())
+                .collect(Collectors.toSet());
+
+        List<Artist> artistsToAdd = newArtists.stream()
+                .filter(a -> !existingArtistIds.contains(a.getId()))
+                .toList();
+
+        this.artists.addAll(PerformanceArtist.createListFor(this, artistsToAdd));
+    }
+
+
     private void updateGenres(List<Genre> newGenres) {
         Set<Long> newIds = newGenres.stream()
                 .map(Genre::getId)
