@@ -1,4 +1,4 @@
-package com.prography.lighton.common.utils.annotation;
+package com.prography.lighton.common.annotation;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

@@ -23,6 +23,8 @@ import io.jsonwebtoken.security.Keys;
 @Component
 public class JwtTokenProvider implements TokenProvider {
 
+	private final static String ROLE_KEY = "roles";
+
 	private final SecretKey key;
 	private final long accessTokenValidityInMilliseconds;
 	private final long refreshTokenValidityInMilliseconds;
@@ -52,7 +54,7 @@ public class JwtTokenProvider implements TokenProvider {
 
 		return Jwts.builder()
 				.setSubject(payload)
-				.claim("roles", roles) // ✅ 여기에 권한 추가
+				.claim(ROLE_KEY, roles) // ✅ 여기에 권한 추가
 				.setIssuedAt(now)
 				.setExpiration(validity)
 				.signWith(key, SignatureAlgorithm.HS256)
@@ -78,7 +80,7 @@ public class JwtTokenProvider implements TokenProvider {
 				.parseClaimsJws(token)
 				.getBody();
 
-		return claims.get("roles", String.class);
+		return claims.get(ROLE_KEY, String.class);
 	}
 
 

@@ -17,7 +17,6 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Slf4j
 @Component
@@ -25,6 +24,10 @@ import java.util.stream.Collectors;
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
 	private final TokenProvider tokenProvider;
+
+	private static final String AUTHORIZATION_HEADER = "Authorization";
+	private static final String BEARER_PREFIX = "Bearer ";
+	private static final String ROLE_PREFIX = "ROLE_";
 
 	@Override
 	protected void doFilterInternal(HttpServletRequest request,
@@ -39,7 +42,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 				String memberId = tokenProvider.getPayload(token); // subject (예: memberId)
 				String role = tokenProvider.getRole(token);        // 단일 role (예: "ADMIN")
 
-				var authority = new org.springframework.security.core.authority.SimpleGrantedAuthority("ROLE_" + role);
+				var authority = new org.springframework.security.core.authority.SimpleGrantedAuthority(ROLE_PREFIX + role);
 				var authorities = List.of(authority);
 
 				var authentication = new UsernamePasswordAuthenticationToken(
@@ -64,10 +67,11 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 	}
 
 	private String resolveToken(HttpServletRequest request) {
-		String bearer = request.getHeader("Authorization");
-		if (StringUtils.hasText(bearer) && bearer.startsWith("Bearer ")) {
-			return bearer.substring(7); // "Bearer " 제거
+		String bearer = request.getHeader(AUTHORIZATION_HEADER);
+		if (StringUtils.hasText(bearer) && bearer.startsWith(BEARER_PREFIX)) {
+			return bearer.substring(BEARER_PREFIX.length());
 		}
 		return null;
 	}
 }
+

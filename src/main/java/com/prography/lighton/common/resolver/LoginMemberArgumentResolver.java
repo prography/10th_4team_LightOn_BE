@@ -10,7 +10,7 @@ import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.method.support.ModelAndViewContainer;
 
 import com.prography.lighton.auth.exception.InvalidTokenException;
-import com.prography.lighton.common.utils.annotation.LoginMember;
+import com.prography.lighton.common.annotation.LoginMember;
 import com.prography.lighton.member.domain.entity.Member;
 import com.prography.lighton.member.domain.repository.MemberRepository;
 
