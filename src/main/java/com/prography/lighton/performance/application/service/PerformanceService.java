@@ -19,6 +19,12 @@ public class PerformanceService {
     private final PerformanceResolver performanceResolver;
     private final ArtistService artistService;
 
+    public Performance getApprovedPerformanceById(Long id) {
+        Performance performance = performanceRepository.getById(id);
+        performance.validateApproved();
+        return performance;
+    }
+
     @Transactional
     public void registerPerformance(Member member, PerformanceRegisterRequest request) {
         Artist artist = artistService.getApprovedArtistByMember(member);

@@ -11,6 +11,7 @@ import com.prography.lighton.performance.domain.entity.vo.Info;
 import com.prography.lighton.performance.domain.entity.vo.Location;
 import com.prography.lighton.performance.domain.entity.vo.Payment;
 import com.prography.lighton.performance.domain.entity.vo.Schedule;
+import com.prography.lighton.performance.domain.exeption.PerformanceNotApprovedException;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.CollectionTable;
 import jakarta.persistence.Column;
@@ -186,4 +187,9 @@ public class Performance extends BaseEntity {
         this.genres.addAll(PerformanceGenre.createListFor(this, genresToAdd));
     }
 
+    public void validateApproved() {
+        if (this.approveStatus != ApproveStatus.APPROVED) {
+            throw new PerformanceNotApprovedException();
+        }
+    }
 }
