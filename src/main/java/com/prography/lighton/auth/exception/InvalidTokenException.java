@@ -1,6 +1,8 @@
 package com.prography.lighton.auth.exception;
 
-public class InvalidTokenException extends RuntimeException {
+import com.prography.lighton.common.exception.base.InvalidException;
+
+public class InvalidTokenException extends InvalidException {
 
 	public InvalidTokenException(final String message) {
 		super(message);

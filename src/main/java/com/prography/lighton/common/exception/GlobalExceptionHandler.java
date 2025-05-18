@@ -4,11 +4,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import com.prography.lighton.auth.exception.InvalidTokenException;
+import com.prography.lighton.common.exception.base.InvalidException;
 import com.prography.lighton.common.exception.base.NotFoundException;
 import com.prography.lighton.common.utils.ApiUtils;
 import com.prography.lighton.common.utils.ApiUtils.ApiResult;
@@ -33,7 +35,7 @@ public class GlobalExceptionHandler {
 			InvalidMemberException.class,
 			InvalidTokenException.class
 	})
-	public ResponseEntity<?> handleInvalidMemberException(InvalidMemberException e) {
+	public ResponseEntity<?> handleInvalidMemberException(InvalidException e) {
 		return ResponseEntity.status(e.status()).body(ApiUtils.error(e.status(), e.getMessage()));
 	}
 
@@ -49,7 +51,14 @@ public class GlobalExceptionHandler {
 				.body(ApiUtils.error(HttpStatus.BAD_REQUEST, e.getMessage()));
 	}
 
-	@ExceptionHandler({MethodArgumentNotValidException.class})
+	@ExceptionHandler(AccessDeniedException.class)
+	public ResponseEntity<ApiResult<String>> handleAccessDenied(AccessDeniedException e) {
+		log.warn("AccessDeniedException: {}", e.getMessage());
+		return ResponseEntity.status(HttpStatus.FORBIDDEN)
+				.body(ApiUtils.error(HttpStatus.FORBIDDEN, "접근 권한이 없습니다."));
+	}
+
+	@ExceptionHandler(MethodArgumentNotValidException.class)
 	public ResponseEntity<?> handleMethodArgumentNotValidException(MethodArgumentNotValidException e) {
 		return ResponseEntity.status(HttpStatus.BAD_REQUEST)
 				.body(ApiUtils.error(HttpStatus.BAD_REQUEST, e.getFieldError().getDefaultMessage()));
