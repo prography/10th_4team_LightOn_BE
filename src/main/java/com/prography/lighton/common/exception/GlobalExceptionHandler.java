@@ -43,13 +43,13 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(HttpMessageNotReadableException.class)
-    public ApiUtils.ApiResult<Void> handleEnumBindingError(HttpMessageNotReadableException ex) {
+    public ApiUtils.ApiResult<Void> handleBindingError(HttpMessageNotReadableException ex) {
         if (ex.getCause() instanceof InvalidFormatException e) {
             String field = e.getPath().stream()
                     .map(Reference::getFieldName)
                     .collect(Collectors.joining("."));
 
-            String message = String.format("'%s'은(는) 필드 '%s'에 허용되지 않는 값입니다.", e.getValue(), field);
+            String message = String.format("'%s'은(는) 필드 '%s'에 허용되지 않는 형식입니다.", e.getValue(), field);
             return ApiUtils.error(HttpStatus.BAD_REQUEST, message);
         }
 
