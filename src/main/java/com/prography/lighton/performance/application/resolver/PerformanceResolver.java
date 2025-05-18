@@ -40,8 +40,7 @@ public class PerformanceResolver {
                 Type.NORMAL,
                 seats,
                 genres,
-                req.proof(),
-                req.poster()
+                req.proof()
         );
     }
 
@@ -52,7 +51,7 @@ public class PerformanceResolver {
                 i.description(),
                 i.place(),
                 i.notice(),
-                req.proof()
+                i.poster()
         );
     }
 

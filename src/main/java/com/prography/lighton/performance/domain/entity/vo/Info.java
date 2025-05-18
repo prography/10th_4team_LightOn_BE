@@ -22,13 +22,12 @@ public class Info {
     @Column(nullable = false)
     private String place;
 
-    @Column(nullable = false)
     private String notice;
 
     @Column(nullable = false)
-    private String ThumbnailImageUrl;
+    private String posterUrl;
 
-    public static Info of(String title, String description, String place, String notice, String thumbnailImageUrl) {
-        return new Info(title, description, place, notice, thumbnailImageUrl);
+    public static Info of(String title, String description, String place, String notice, String posterUrl) {
+        return new Info(title, description, place, notice, posterUrl);
     }
 }

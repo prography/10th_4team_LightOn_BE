@@ -94,9 +94,6 @@ public class Performance extends BaseEntity {
     @Column(nullable = false)
     private String proofUrl;
 
-    @Column(nullable = false)
-    private String posterUrl;
-
     private Performance(
             Artist master,
             Info info,
@@ -105,8 +102,7 @@ public class Performance extends BaseEntity {
             Payment payment,
             Type type,
             List<Seat> seats,
-            String proofUrl,
-            String posterUrl
+            String proofUrl
     ) {
         this.master = master;
         this.info = info;
@@ -115,7 +111,6 @@ public class Performance extends BaseEntity {
         this.payment = payment;
         this.type = type;
         this.proofUrl = proofUrl;
-        this.posterUrl = posterUrl;
         this.seats.addAll(seats);
     }
 
@@ -128,11 +123,9 @@ public class Performance extends BaseEntity {
             Type type,
             List<Seat> seats,
             List<Genre> genres,
-            String proofUrl,
-            String posterUrl
+            String proofUrl
     ) {
-        Performance perf = new Performance(initialArtist, info, schedule, location, payment, type, seats, proofUrl,
-                posterUrl);
+        Performance perf = new Performance(initialArtist, info, schedule, location, payment, type, seats, proofUrl);
         // 최초 등록 시 단일 아티스트 (수정 가능성 있음)
         perf.artists.add(new PerformanceArtist(initialArtist, perf));
         perf.updateGenres(genres);
