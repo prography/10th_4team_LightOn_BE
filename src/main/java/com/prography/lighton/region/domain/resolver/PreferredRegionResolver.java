@@ -8,15 +8,13 @@ import com.prography.lighton.region.domain.entity.SubRegion;
 import com.prography.lighton.region.domain.repository.RegionRepository;
 import com.prography.lighton.region.domain.repository.SubRegionRepository;
 
+import lombok.RequiredArgsConstructor;
+
 @Component
+@RequiredArgsConstructor
 public class PreferredRegionResolver {
 	private final RegionRepository regionRepository;
 	private final SubRegionRepository subRegionRepository;
-
-	public PreferredRegionResolver(RegionRepository regionRepository, SubRegionRepository subRegionRepository) {
-		this.regionRepository = regionRepository;
-		this.subRegionRepository = subRegionRepository;
-	}
 
 	public PreferredRegion resolve(Integer regionCode) {
 		Region region = regionRepository.getByRegionCode(getParentRegionCode(regionCode));
