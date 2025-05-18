@@ -35,7 +35,7 @@ public record ArtistRegisterRequest(
             Integer activityLocation,
 
             @NotEmpty(message = "장르는 하나 이상 선택해야 합니다.")
-            List<@NotBlank(message = "장르 항목은 비어 있을 수 없습니다.") Long> genre,
+            List<@NotNull(message = "장르 항목은 비어 있을 수 없습니다.") Long> genre,
 
             @NotBlank(message = "프로필 이미지 URL은 필수입니다.")
             @URL(message = "프로필 이미지는 올바른 URL 형식이어야 합니다.")
