@@ -5,5 +5,5 @@ import com.prography.lighton.member.presentation.dto.response.LoginMemberRespons
 
 public interface LoginMemberUseCase {
 
-	LoginMemberResponseDTO loginMember(final LoginMemberRequestDTO request);
+	LoginMemberResponseDTO login(final LoginMemberRequestDTO request);
 }

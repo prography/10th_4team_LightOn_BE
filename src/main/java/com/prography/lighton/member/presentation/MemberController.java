@@ -52,6 +52,6 @@ public class MemberController {
 
 	@PostMapping("/login")
 	public ApiResult<LoginMemberResponseDTO> login(@RequestBody @Valid LoginMemberRequestDTO request) {
-		return ApiUtils.success(loginMemberUseCase.loginMember(request));
+		return ApiUtils.success(loginMemberUseCase.login(request));
 	}
 }

@@ -28,23 +28,22 @@ public class LoginMemberService implements LoginMemberUseCase {
 	private final TokenProvider tokenProvider;
 
 	@Override
-	public LoginMemberResponseDTO loginMember(LoginMemberRequestDTO request) {
-		checkMemberCompleteMemberProfile(request);
+	public LoginMemberResponseDTO login(LoginMemberRequestDTO request) {
+		validateIsNotTemporaryMember(request.email());
 
 		Member loginMember = memberRepository.getMemberByEmail(Email.of(request.email()));
-
 		loginMember.validatePassword(request.password(), passwordEncoder);
 
-		return generateTokenResponse(loginMember);
+		return issueTokensFor(loginMember);
 	}
 
-	private void checkMemberCompleteMemberProfile(LoginMemberRequestDTO request) {
-		if (temporaryMemberRepository.existsByEmail(request.email())) {
-			throw new InvalidMemberException("개인 정보를 입력해주세요. 개인 정보 입력 후 로그인 가능합니다.");
+	private void validateIsNotTemporaryMember(String email) {
+		if (temporaryMemberRepository.existsByEmail(email)) {
+			throw new InvalidMemberException("개인 정보를 입력해주세요.");
 		}
 	}
 
-	private LoginMemberResponseDTO generateTokenResponse(Member member) {
+	private LoginMemberResponseDTO issueTokensFor(Member member) {
 		return LoginMemberResponseDTO.of(
 				tokenProvider.createAccessToken(String.valueOf(member.getId())),
 				tokenProvider.createRefreshToken(String.valueOf(member.getId())),
