@@ -104,7 +104,7 @@ public class Artist extends BaseEntity {
         return artist;
     }
 
-    public void updateGenres(List<Genre> newGenres) {
+    private void updateGenres(List<Genre> newGenres) {
         Set<Long> newGenreIds = newGenres.stream()
                 .map(Genre::getId)
                 .collect(Collectors.toSet());
