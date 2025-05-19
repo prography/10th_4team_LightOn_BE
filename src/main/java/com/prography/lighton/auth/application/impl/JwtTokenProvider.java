@@ -1,7 +1,7 @@
 package com.prography.lighton.auth.application.impl;
 
 import com.prography.lighton.auth.application.TokenProvider;
-import com.prography.lighton.auth.exception.InvalidTokenException;
+import com.prography.lighton.auth.application.exception.InvalidTokenException;
 import com.prography.lighton.member.domain.entity.enums.Authority;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtException;

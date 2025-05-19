@@ -1,10 +1,10 @@
-package com.prography.lighton.auth.presentation.filter;
+package com.prography.lighton.auth.security.filter;
 
 
 import static com.prography.lighton.common.constant.JwtConstants.CONTENT_TYPE;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.prography.lighton.auth.exception.InvalidTokenException;
+import com.prography.lighton.auth.application.exception.InvalidTokenException;
 import com.prography.lighton.common.utils.ApiUtils;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;

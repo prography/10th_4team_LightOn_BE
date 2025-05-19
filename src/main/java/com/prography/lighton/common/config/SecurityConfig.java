@@ -1,7 +1,7 @@
 package com.prography.lighton.common.config;
 
-import com.prography.lighton.auth.presentation.filter.JwtAuthenticationFilter;
-import com.prography.lighton.auth.presentation.filter.SecurityExceptionFilter;
+import com.prography.lighton.auth.security.filter.JwtAuthenticationFilter;
+import com.prography.lighton.auth.security.filter.SecurityExceptionFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

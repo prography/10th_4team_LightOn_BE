@@ -1,11 +1,11 @@
-package com.prography.lighton.auth.presentation.filter;
+package com.prography.lighton.auth.security.filter;
 
 import static com.prography.lighton.common.constant.JwtConstants.AUTHORIZATION_HEADER;
 import static com.prography.lighton.common.constant.JwtConstants.BEARER_PREFIX;
 import static com.prography.lighton.common.constant.JwtConstants.ROLE_PREFIX;
 
 import com.prography.lighton.auth.application.TokenProvider;
-import com.prography.lighton.auth.exception.InvalidTokenException;
+import com.prography.lighton.auth.application.exception.InvalidTokenException;
 import io.jsonwebtoken.Claims;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;

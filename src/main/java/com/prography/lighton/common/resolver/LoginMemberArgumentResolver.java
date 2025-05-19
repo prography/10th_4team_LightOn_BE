@@ -1,6 +1,6 @@
 package com.prography.lighton.common.resolver;
 
-import com.prography.lighton.auth.exception.InvalidTokenException;
+import com.prography.lighton.auth.application.exception.InvalidTokenException;
 import com.prography.lighton.common.annotation.LoginMember;
 import com.prography.lighton.member.domain.entity.Member;
 import com.prography.lighton.member.domain.repository.MemberRepository;

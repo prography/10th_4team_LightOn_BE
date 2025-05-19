@@ -1,6 +1,6 @@
 package com.prography.lighton.common.exception;
 
-import com.prography.lighton.auth.exception.InvalidTokenException;
+import com.prography.lighton.auth.application.exception.InvalidTokenException;
 import com.prography.lighton.common.exception.base.InvalidException;
 import com.prography.lighton.common.exception.base.NotFoundException;
 import com.prography.lighton.common.utils.ApiUtils;
