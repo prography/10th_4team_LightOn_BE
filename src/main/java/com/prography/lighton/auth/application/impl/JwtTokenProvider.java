@@ -41,6 +41,19 @@ public class JwtTokenProvider implements TokenProvider {
         return createToken(payload, refreshTokenValidityInMilliseconds, authority.toString());
     }
 
+    @Override
+    public Claims getClaims(String token) {
+        try {
+            return Jwts.parserBuilder()
+                    .setSigningKey(key)
+                    .build()
+                    .parseClaimsJws(token)
+                    .getBody();
+        } catch (JwtException | IllegalArgumentException e) {
+            throw new InvalidTokenException();
+        }
+    }
+
 
     private String createToken(String payload, Long validityInMilliseconds, String roles) {
         Date now = new Date();
