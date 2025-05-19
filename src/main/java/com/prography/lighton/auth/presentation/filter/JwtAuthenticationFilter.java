@@ -1,5 +1,10 @@
 package com.prography.lighton.auth.presentation.filter;
 
+import static com.prography.lighton.common.constant.JwtConstants.AUTHORIZATION_HEADER;
+import static com.prography.lighton.common.constant.JwtConstants.BEARER_PREFIX;
+import static com.prography.lighton.common.constant.JwtConstants.CONTENT_TYPE;
+import static com.prography.lighton.common.constant.JwtConstants.ROLE_PREFIX;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.prography.lighton.auth.application.TokenProvider;
 import com.prography.lighton.auth.exception.InvalidTokenException;
@@ -28,11 +33,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     private final TokenProvider tokenProvider;
     private final ObjectMapper objectMapper;
-
-    private static final String AUTHORIZATION_HEADER = "Authorization";
-    private static final String BEARER_PREFIX = "Bearer ";
-    private static final String ROLE_PREFIX = "ROLE_";
-    private static final String CONTENT_TYPE = "application/json;charset=UTF-8";
 
     @Override
     protected void doFilterInternal(HttpServletRequest request,

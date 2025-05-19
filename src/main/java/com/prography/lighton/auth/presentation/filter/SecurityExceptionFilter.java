@@ -1,6 +1,8 @@
 package com.prography.lighton.auth.presentation.filter;
 
 
+import static com.prography.lighton.common.constant.JwtConstants.CONTENT_TYPE;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.prography.lighton.auth.exception.InvalidTokenException;
 import com.prography.lighton.common.utils.ApiUtils;
@@ -39,7 +41,7 @@ public class SecurityExceptionFilter extends OncePerRequestFilter {
 
     private void sendErrorResponse(HttpServletResponse response, HttpStatus status, String message) throws IOException {
         response.setStatus(status.value());
-        response.setContentType("application/json;charset=UTF-8");
+        response.setContentType(CONTENT_TYPE);
         String json = objectMapper.writeValueAsString(ApiUtils.error(status, message));
         response.getWriter().write(json);
     }
