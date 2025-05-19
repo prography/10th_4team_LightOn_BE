@@ -18,6 +18,4 @@ public interface GoogleAuthClient {
             @RequestParam String redirectUri,
             @RequestParam String grantType
     );
-
-
 }
