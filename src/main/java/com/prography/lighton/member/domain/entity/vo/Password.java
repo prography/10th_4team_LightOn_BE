@@ -7,10 +7,10 @@ import java.util.regex.Pattern;
 
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-import com.prography.lighton.member.exception.InvalidMemberException;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
+import java.util.UUID;
 import lombok.AccessLevel;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
@@ -33,6 +33,10 @@ public class Password {
 		}
 		return new Password(encoder.encode(rawPassword));
 	}
+
+    public static Password forSocialLogin() {
+        return new Password(UUID.randomUUID().toString());
+    }
 
 	private Password(String encrypted) {
 		this.value = encrypted;
