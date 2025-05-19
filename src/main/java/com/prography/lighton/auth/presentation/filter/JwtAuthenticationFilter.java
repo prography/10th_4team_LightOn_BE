@@ -102,6 +102,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         response.getWriter().write(json);
     }
 
+    // TODO 추후 리팩토링 예정
     private boolean isPermitAllRequest(HttpServletRequest request) {
         String uri = request.getRequestURI();
         return uri.equals("/health") ||
