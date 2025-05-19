@@ -4,10 +4,8 @@ import static io.micrometer.common.util.StringUtils.isBlank;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
-import java.util.UUID;
 import java.util.regex.Pattern;
 import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
