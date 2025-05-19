@@ -2,13 +2,11 @@ package com.prography.lighton.auth.presentation.filter;
 
 import static com.prography.lighton.common.constant.JwtConstants.AUTHORIZATION_HEADER;
 import static com.prography.lighton.common.constant.JwtConstants.BEARER_PREFIX;
-import static com.prography.lighton.common.constant.JwtConstants.CONTENT_TYPE;
 import static com.prography.lighton.common.constant.JwtConstants.ROLE_PREFIX;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.prography.lighton.auth.application.TokenProvider;
 import com.prography.lighton.auth.exception.InvalidTokenException;
-import com.prography.lighton.common.utils.ApiUtils;
+import io.jsonwebtoken.Claims;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -17,7 +15,6 @@ import java.io.IOException;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -32,7 +29,7 @@ import org.springframework.web.filter.OncePerRequestFilter;
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     private final TokenProvider tokenProvider;
-    private final ObjectMapper objectMapper;
+
 
     @Override
     protected void doFilterInternal(HttpServletRequest request,
@@ -44,22 +41,15 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             return;
         }
 
-        try {
-            authenticateRequest(request);
-            filterChain.doFilter(request, response);
+        authenticateRequest(request);
+        filterChain.doFilter(request, response);
 
-        } catch (Exception e) {
-            log.error("JWT authentication failed: {}", e.getMessage());
-            sendUnauthorizedResponse(response, e.getMessage());
-        }
     }
 
     private void authenticateRequest(HttpServletRequest request) {
-        String token = extractToken(request);
-        tokenProvider.validateToken(token);
-
-        String memberId = tokenProvider.getPayload(token);
-        String role = tokenProvider.getRole(token);
+        Claims claims = tokenProvider.getClaims(extractToken(request));
+        String memberId = claims.getSubject();
+        String role = claims.get("roles", String.class);
 
         validateRole(role);
 
@@ -90,19 +80,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         }
     }
 
-    private void sendUnauthorizedResponse(HttpServletResponse response, String message) throws IOException {
-        response.setStatus(HttpStatus.UNAUTHORIZED.value());
-        response.setContentType(CONTENT_TYPE);
-
-        String json = objectMapper.writeValueAsString(
-
-                ApiUtils.error(HttpStatus.UNAUTHORIZED, message)
-        );
-
-        response.getWriter().write(json);
-    }
-
-    // TODO 추후 리팩토링 예정
     private boolean isPermitAllRequest(HttpServletRequest request) {
         String uri = request.getRequestURI();
         return uri.equals("/health") ||
