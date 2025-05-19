@@ -7,6 +7,8 @@ import java.util.regex.Pattern;
 
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import com.prography.lighton.member.exception.InvalidMemberException;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
 import lombok.AccessLevel;
@@ -35,4 +37,9 @@ public class Password {
 	private Password(String encrypted) {
 		this.value = encrypted;
 	}
+
+	public boolean matches(String rawPassword, PasswordEncoder encoder) {
+		return encoder.matches(rawPassword, this.value);
+	}
+
 }
