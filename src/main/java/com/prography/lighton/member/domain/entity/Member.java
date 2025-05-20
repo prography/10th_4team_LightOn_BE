@@ -18,14 +18,15 @@ import jakarta.persistence.OneToMany;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
+import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.SQLRestriction;
 
 @Entity
-@NoArgsConstructor
-@AllArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
 @SQLDelete(sql = "UPDATE member SET status = false WHERE id = ?")
 @SQLRestriction("status = true")
 public class Member extends BaseEntity {
