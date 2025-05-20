@@ -7,6 +7,8 @@ import com.prography.lighton.artist.application.exception.NoSuchArtistException;
 import com.prography.lighton.artist.domain.entity.Artist;
 import com.prography.lighton.artist.domain.entity.vo.History;
 import com.prography.lighton.artist.infrastructure.repository.ArtistRepository;
+import com.prography.lighton.artist.presentation.dto.request.ArtistDTO;
+import com.prography.lighton.artist.presentation.dto.request.HistoryDTO;
 import com.prography.lighton.artist.presentation.dto.request.RegisterArtistRequest;
 import com.prography.lighton.artist.presentation.dto.request.UpdateArtistRequest;
 import com.prography.lighton.common.domain.vo.RegionInfo;
@@ -80,8 +82,8 @@ public class ArtistService {
     }
 
     private ArtistData toArtistData(
-            RegisterArtistRequest.ArtistDTO artistDto,
-            RegisterArtistRequest.HistoryDTO historyDto
+            ArtistDTO artistDto,
+            HistoryDTO historyDto
     ) {
         RegionInfo activityRegion = regionCache.getRegionInfoByCode(artistDto.activityLocation());
         History history = History.of(historyDto.bio(), historyDto.activityPhotos());
