@@ -32,8 +32,8 @@ public class Schedule {
         return new Schedule(startDate, endDate, startTime, endTime);
     }
 
-    private static void validateSchedule(LocalDate startDate, LocalDate endDate, LocalTime startTime,
-                                         LocalTime endTime) {
+    private static void isValidSchedule(LocalDate startDate, LocalDate endDate, LocalTime startTime,
+                                        LocalTime endTime) {
         if (endDate.isBefore(startDate)) {
             throw new InvalidScheduleException("종료일은 시작일보다 빠를 수 없습니다.");
         }
