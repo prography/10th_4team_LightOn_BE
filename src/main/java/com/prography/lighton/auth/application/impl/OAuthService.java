@@ -81,7 +81,7 @@ public class OAuthService implements OAuthUseCase {
         TemporaryMember tempMember = temporaryMemberRepository.findByEmail(emailVO)
                 .orElseGet(() -> temporaryMemberRepository.save(TemporaryMember.socialLoginMemberOf(emailVO)));
 
-        return RegisterSocialMemberResponseDTO.of(tempMember.getId());
+        return RegisterSocialMemberResponseDTO.of(tempMember.isRegistered(), tempMember.getId());
     }
 
     private boolean isExistTemporaryMemberByEmail(String email) {
@@ -93,7 +93,8 @@ public class OAuthService implements OAuthUseCase {
     }
 
     private LoginSocialMemberResponseDTO issueTokensFor(Member member) {
-        return LoginSocialMemberResponseDTO.of(
+        return LoginSocialMemberResponseDTO.from(
+                true,
                 tokenProvider.createAccessToken(String.valueOf(member.getId()), member.getAuthority()),
                 tokenProvider.createRefreshToken(String.valueOf(member.getId()), member.getAuthority())
         );
