@@ -1,6 +1,6 @@
 package com.prography.lighton.region.domain.entity;
 
-import com.prography.lighton.common.domain.BaseEntity;
+import com.prography.lighton.common.BaseEntity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
