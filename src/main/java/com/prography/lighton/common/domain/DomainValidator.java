@@ -1,9 +1,7 @@
 package com.prography.lighton.common.domain;
 
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.util.StringUtils;
 
-@Slf4j
 public class DomainValidator {
 
     public static String requireNonBlank(String value) {
