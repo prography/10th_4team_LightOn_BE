@@ -1,8 +1,8 @@
 package com.prography.lighton.artist.presentation.controller;
 
 import com.prography.lighton.artist.application.service.ArtistService;
-import com.prography.lighton.artist.presentation.dto.RegisterArtistRequest;
-import com.prography.lighton.artist.presentation.dto.UpdateArtistRequest;
+import com.prography.lighton.artist.presentation.dto.request.RegisterArtistRequest;
+import com.prography.lighton.artist.presentation.dto.request.UpdateArtistRequest;
 import com.prography.lighton.common.utils.ApiUtils;
 import com.prography.lighton.common.utils.ApiUtils.ApiResult;
 import com.prography.lighton.member.domain.entity.Member;
