@@ -55,7 +55,7 @@ public class PerformanceService {
         // 여기 나중에 책임분리 하기
         Artist requestArtist = artistService.getApprovedArtistByMember(member);
         Performance performance = getApprovedPerformanceById(performanceId);
-        performance.validateMasterArtist(requestArtist);
+        performance.cancel(requestArtist);
         // 사용자에게 알림 필요
         performanceRepository.delete(performance);
     }
