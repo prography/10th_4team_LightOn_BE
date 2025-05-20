@@ -85,6 +85,12 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         return uri.equals("/health") ||
                 uri.equals("/api/members") ||
                 uri.equals("/api/members/login") ||
-                uri.matches("^/api/members/\\d+/info$");
+                uri.matches("^/api/members/\\d+/info$") ||
+
+                // Swagger & OpenAPI 관련 허용 경로 추가
+                uri.equals("/swagger-ui.html") ||
+                uri.startsWith("/swagger-ui") ||
+                uri.startsWith("/v3/api-docs") ||
+                uri.startsWith("/docs");
     }
 }
