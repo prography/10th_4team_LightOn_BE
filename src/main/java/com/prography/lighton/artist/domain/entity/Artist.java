@@ -83,6 +83,25 @@ public class Artist extends BaseEntity {
         this.proofUrl = proofUrl;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+
+        Artist artist = (Artist) o;
+
+        return this.getId() != null && this.getId().equals(artist.getId());
+    }
+
+    @Override
+    public int hashCode() {
+        return (getId() != null ? getId().hashCode() : 0);
+    }
+
     public static Artist create(
             Member member,
             String stageName,
