@@ -1,5 +1,17 @@
 package com.prography.lighton.auth.application.impl;
 
+import static com.prography.lighton.common.constant.AuthConstants.CLIENT_ID;
+import static com.prography.lighton.common.constant.AuthConstants.CONTENT_TYPE;
+import static com.prography.lighton.common.constant.AuthConstants.GRANT_TYPE;
+import static com.prography.lighton.common.constant.AuthConstants.KEY_VALUE_DELIMITER;
+import static com.prography.lighton.common.constant.AuthConstants.QUERY_DELIMITER;
+import static com.prography.lighton.common.constant.AuthConstants.QUERY_PREFIX;
+import static com.prography.lighton.common.constant.AuthConstants.REDIRECT_URI;
+import static com.prography.lighton.common.constant.AuthConstants.RESPONSE_TYPE;
+import static com.prography.lighton.common.constant.AuthConstants.RESPONSE_TYPE_CODE;
+import static com.prography.lighton.common.constant.AuthConstants.SCOPE;
+import static com.prography.lighton.common.constant.JwtConstants.BEARER_PREFIX;
+
 import com.prography.lighton.auth.application.SocialOauth;
 import com.prography.lighton.auth.infrastructure.client.google.GoogleApiClient;
 import com.prography.lighton.auth.infrastructure.client.google.GoogleAuthClient;
@@ -29,10 +41,6 @@ public class GoogleOauth implements SocialOauth {
     @Value("${spring.OAuth2.google.scope}")
     private String GOOGLE_DATA_ACCESS_SCOPE;
 
-    private static final String CONTENT_TYPE = "application/x-www-form-urlencoded;charset=utf-8";
-    private static final String GRANT_TYPE = "authorization_code";
-
-
     private final GoogleAuthClient googleAuthClient;
     private final GoogleApiClient googleApiClient;
 
@@ -41,18 +49,16 @@ public class GoogleOauth implements SocialOauth {
     public String getOauthRedirectURL() {
         Map<String, String> params = new HashMap<>();
 
-        params.put("scope", GOOGLE_DATA_ACCESS_SCOPE);
-        params.put("response_type", "code");
-        params.put("client_id", GOOGLE_SNS_CLIENT_ID);
-        params.put("redirect_uri", GOOGLE_SNS_CALLBACK_LOGIN_URL);
+        params.put(SCOPE, GOOGLE_DATA_ACCESS_SCOPE);
+        params.put(RESPONSE_TYPE, RESPONSE_TYPE_CODE);
+        params.put(CLIENT_ID, GOOGLE_SNS_CLIENT_ID);
+        params.put(REDIRECT_URI, GOOGLE_SNS_CALLBACK_LOGIN_URL);
 
         String parameterString = params.entrySet().stream()
-                .map(x -> x.getKey() + "=" + x.getValue())
-                .collect(Collectors.joining("&"));
-        String redirectURL = GOOGLE_SNS_URL + "?" + parameterString;
-        log.info("redirectURL = ", redirectURL);
+                .map(x -> x.getKey() + KEY_VALUE_DELIMITER + x.getValue())
+                .collect(Collectors.joining(QUERY_DELIMITER));
 
-        return redirectURL;
+        return GOOGLE_SNS_URL + QUERY_PREFIX + parameterString;
     }
 
     public GoogleOAuthToken requestAccessToken(String code) {
@@ -65,7 +71,7 @@ public class GoogleOauth implements SocialOauth {
     }
 
     public GoogleUser requestUserInfo(GoogleOAuthToken oAuthToken) {
-        GoogleUser googleUserInfo = googleApiClient.getGoogleUserInfo("Bearer " + oAuthToken.access_token());
+        GoogleUser googleUserInfo = googleApiClient.getGoogleUserInfo(BEARER_PREFIX + oAuthToken.access_token());
 
         log.info(googleUserInfo.toString());
 

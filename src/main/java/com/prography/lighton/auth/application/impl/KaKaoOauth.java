@@ -1,10 +1,21 @@
 package com.prography.lighton.auth.application.impl;
 
+import static com.prography.lighton.common.constant.AuthConstants.CLIENT_ID;
+import static com.prography.lighton.common.constant.AuthConstants.CONTENT_TYPE;
+import static com.prography.lighton.common.constant.AuthConstants.GRANT_TYPE;
+import static com.prography.lighton.common.constant.AuthConstants.KEY_VALUE_DELIMITER;
+import static com.prography.lighton.common.constant.AuthConstants.QUERY_DELIMITER;
+import static com.prography.lighton.common.constant.AuthConstants.QUERY_PREFIX;
+import static com.prography.lighton.common.constant.AuthConstants.REDIRECT_URI;
+import static com.prography.lighton.common.constant.AuthConstants.RESPONSE_TYPE;
+import static com.prography.lighton.common.constant.AuthConstants.RESPONSE_TYPE_CODE;
+
 import com.prography.lighton.auth.application.SocialOauth;
 import com.prography.lighton.auth.infrastructure.client.kakao.KaKaoApiClient;
 import com.prography.lighton.auth.infrastructure.client.kakao.KaKaoAuthClient;
 import com.prography.lighton.auth.presentation.dto.kakao.KaKaoOAuthTokenDTO;
 import com.prography.lighton.auth.presentation.dto.kakao.KaKaoUser;
+import com.prography.lighton.common.constant.JwtConstants;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -27,27 +38,22 @@ public class KaKaoOauth implements SocialOauth {
     @Value("${spring.OAuth2.kakao.callback-login-url}")
     private String KAKAO_SNS_CALLBACK_LOGIN_URL;
 
-    private static final String GRANT_TYPE = "authorization_code";
-    private static final String CONTENT_TYPE = "application/x-www-form-urlencoded;charset=utf-8";
-
     private final KaKaoApiClient kaKaoApiClient;
     private final KaKaoAuthClient kaKaoAuthClient;
 
     @Override
     public String getOauthRedirectURL() {
         Map<String, Object> params = new HashMap<>();
-        params.put("client_id", KAKAO_SNS_CLIENT_ID);
-        params.put("redirect_uri", KAKAO_SNS_CALLBACK_LOGIN_URL);
-        params.put("response_type", "code");
+        params.put(CLIENT_ID, KAKAO_SNS_CLIENT_ID);
+        params.put(REDIRECT_URI, KAKAO_SNS_CALLBACK_LOGIN_URL);
+        params.put(RESPONSE_TYPE, RESPONSE_TYPE_CODE);
         log.info(KAKAO_SNS_CALLBACK_LOGIN_URL);
 
         String parameterString = params.entrySet().stream()
-                .map(x -> x.getKey() + "=" + x.getValue())
-                .collect(Collectors.joining("&"));
+                .map(x -> x.getKey() + KEY_VALUE_DELIMITER + x.getValue())
+                .collect(Collectors.joining(QUERY_DELIMITER));
 
-        String redirectURL = KAKAO_SNS_URL + "?" + parameterString;
-        log.info("redirectURL = {}", redirectURL);
-        return redirectURL;
+        return KAKAO_SNS_URL + QUERY_PREFIX + parameterString;
     }
 
     public KaKaoOAuthTokenDTO requestAccessToken(String code) {
@@ -66,7 +72,7 @@ public class KaKaoOauth implements SocialOauth {
     }
 
     private static String getAccessToken(KaKaoOAuthTokenDTO kaKaoOAuthTokenDTO) {
-        return "Bearer " + kaKaoOAuthTokenDTO.access_token();
+        return JwtConstants.BEARER_PREFIX + kaKaoOAuthTokenDTO.access_token();
     }
 
 
