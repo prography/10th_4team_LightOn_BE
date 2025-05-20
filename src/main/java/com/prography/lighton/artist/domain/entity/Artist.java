@@ -5,6 +5,7 @@ import com.prography.lighton.artist.domain.entity.exception.ArtistRegistrationNo
 import com.prography.lighton.artist.domain.entity.exception.ArtistUpdateNotAllowedException;
 import com.prography.lighton.artist.domain.entity.vo.History;
 import com.prography.lighton.common.domain.BaseEntity;
+import com.prography.lighton.common.domain.DomainValidator;
 import com.prography.lighton.common.domain.vo.RegionInfo;
 import com.prography.lighton.genre.domain.entity.Genre;
 import com.prography.lighton.member.domain.entity.Member;
@@ -75,8 +76,8 @@ public class Artist extends BaseEntity {
     private Artist(Member member, String stageName, String description, RegionInfo activityLocation, History history,
                    String proofUrl) {
         this.member = member;
-        this.stageName = stageName;
-        this.description = description;
+        this.stageName = DomainValidator.requireNonBlank(stageName);
+        this.description = DomainValidator.requireNonBlank(description);
         this.activityLocation = activityLocation;
         this.history = history;
         this.proofUrl = proofUrl;
