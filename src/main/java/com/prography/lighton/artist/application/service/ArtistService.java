@@ -3,8 +3,8 @@ package com.prography.lighton.artist.application.service;
 import com.prography.lighton.artist.domain.entity.Artist;
 import com.prography.lighton.artist.domain.entity.vo.History;
 import com.prography.lighton.artist.infrastructure.repository.ArtistRepository;
-import com.prography.lighton.artist.presentation.dto.ArtistRegisterRequest;
-import com.prography.lighton.artist.presentation.dto.ArtistUpdateRequest;
+import com.prography.lighton.artist.presentation.dto.RegisterArtistRequest;
+import com.prography.lighton.artist.presentation.dto.UpdateArtistRequest;
 import com.prography.lighton.common.domain.vo.RegionInfo;
 import com.prography.lighton.genre.application.service.GenreService;
 import com.prography.lighton.genre.domain.entity.Genre;
@@ -25,7 +25,7 @@ public class ArtistService {
     private final RegionCache regionCache;
 
     @Transactional
-    public void registerArtist(Member member, ArtistRegisterRequest request) {
+    public void registerArtist(Member member, RegisterArtistRequest request) {
         artistRepository.findByMember(member)
                 .ifPresent(Artist::isValidRecreatable);
 
@@ -44,7 +44,7 @@ public class ArtistService {
     }
 
     @Transactional
-    public void updateArtist(Member member, ArtistUpdateRequest request) {
+    public void updateArtist(Member member, UpdateArtistRequest request) {
         Artist artist = artistRepository.getByMember(member);
         artist.isValidUpdatable();
 
@@ -59,8 +59,8 @@ public class ArtistService {
     }
 
     private ArtistData toArtistData(
-            ArtistRegisterRequest.ArtistDTO artistDto,
-            ArtistRegisterRequest.HistoryDTO historyDto
+            RegisterArtistRequest.ArtistDTO artistDto,
+            RegisterArtistRequest.HistoryDTO historyDto
     ) {
         RegionInfo activityRegion = regionCache.getRegionInfoByCode(artistDto.activityLocation());
         History history = History.of(historyDto.bio(), historyDto.activityPhotos());
