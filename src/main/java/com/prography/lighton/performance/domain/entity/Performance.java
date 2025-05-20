@@ -44,6 +44,8 @@ import org.hibernate.annotations.SQLRestriction;
 @SQLRestriction("status = true")
 public class Performance extends BaseEntity {
 
+    private static final int UPDATE_DEADLINE_DAYS = 3;
+
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     private Artist master;
 
@@ -209,7 +211,7 @@ public class Performance extends BaseEntity {
 
     private void validateUpdatable() {
         LocalDate today = LocalDate.now();
-        LocalDate updateDeadline = this.schedule.getStartDate().minusDays(3);
+        LocalDate updateDeadline = this.schedule.getStartDate().minusDays(UPDATE_DEADLINE_DAYS);
 
         if (today.isAfter(updateDeadline)) {
             throw new PerformanceUpdateNotAllowedException();
