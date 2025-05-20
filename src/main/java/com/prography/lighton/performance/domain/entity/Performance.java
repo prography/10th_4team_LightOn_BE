@@ -1,6 +1,6 @@
 package com.prography.lighton.performance.domain.entity;
 
-import com.prography.lighton.common.BaseEntity;
+import com.prography.lighton.common.domain.BaseEntity;
 import com.prography.lighton.performance.domain.entity.association.PerformanceArtist;
 import com.prography.lighton.performance.domain.entity.enums.Seat;
 import com.prography.lighton.performance.domain.entity.enums.Type;
