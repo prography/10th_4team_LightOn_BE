@@ -9,7 +9,7 @@ import com.prography.lighton.common.vo.RegionInfo;
 import com.prography.lighton.genre.application.service.GenreService;
 import com.prography.lighton.genre.domain.entity.Genre;
 import com.prography.lighton.member.domain.entity.Member;
-import com.prography.lighton.region.domain.resolver.RegionResolver;
+import com.prography.lighton.region.infrastructure.cache.RegionCache;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -22,7 +22,7 @@ public class ArtistService {
 
     private final ArtistRepository artistRepository;
     private final GenreService genreService;
-    private final RegionResolver regionResolver;
+    private final RegionCache regionCache;
 
     @Transactional
     public void registerArtist(Member member, ArtistRegisterRequest request) {
@@ -62,7 +62,7 @@ public class ArtistService {
             ArtistRegisterRequest.ArtistDTO artistDto,
             ArtistRegisterRequest.HistoryDTO historyDto
     ) {
-        RegionInfo activityRegion = regionResolver.resolve(artistDto.activityLocation());
+        RegionInfo activityRegion = regionCache.resolve(artistDto.activityLocation());
         History history = History.of(historyDto.bio(), historyDto.activityPhotos());
         List<Genre> genres = genreService.getGenresOrThrow(artistDto.genre());
         return new ArtistData(activityRegion, history, genres);
