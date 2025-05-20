@@ -1,7 +1,10 @@
 package com.prography.lighton.performance.application.resolver;
 
+import com.prography.lighton.artist.application.service.ArtistService;
+import com.prography.lighton.artist.domain.entity.Artist;
 import com.prography.lighton.genre.application.service.GenreService;
 import com.prography.lighton.genre.domain.entity.Genre;
+import com.prography.lighton.member.domain.entity.Member;
 import com.prography.lighton.performance.domain.entity.enums.Seat;
 import com.prography.lighton.performance.domain.entity.vo.Info;
 import com.prography.lighton.performance.domain.entity.vo.Location;
@@ -20,10 +23,14 @@ import org.springframework.stereotype.Component;
 public class PerformanceResolver {
 
     private final GenreService genreService;
+    private final ArtistService artistService;
     private final RegionCache regionCache;
 
-    public DomainData toDomainData(InfoDTO infoDTO, ScheduleDTO scheduleDTO, PaymentDTO paymentDTO, List<Seat> seats) {
+    public DomainData toDomainData(Member member, List<Long> artists, InfoDTO infoDTO, ScheduleDTO scheduleDTO,
+                                   PaymentDTO paymentDTO, List<Seat> seats) {
         return new DomainData(
+                toMasterArtist(member),
+                toArtists(artists),
                 toInfo(infoDTO),
                 toSchedule(scheduleDTO),
                 toLocation(infoDTO),
@@ -31,6 +38,14 @@ public class PerformanceResolver {
                 seats,
                 genreService.getGenresOrThrow(infoDTO.genre())
         );
+    }
+
+    private Artist toMasterArtist(Member member) {
+        return artistService.getApprovedArtistByMember(member);
+    }
+
+    private List<Artist> toArtists(List<Long> artistIds) {
+        return artistService.getApprovedArtistsByIds(artistIds);
     }
 
     private Info toInfo(InfoDTO req) {
@@ -75,6 +90,8 @@ public class PerformanceResolver {
     }
 
     public record DomainData(
+            Artist master,
+            List<Artist> artists,
             Info info,
             Schedule schedule,
             Location location,

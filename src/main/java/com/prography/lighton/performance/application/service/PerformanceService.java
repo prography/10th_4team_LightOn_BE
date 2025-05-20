@@ -10,7 +10,6 @@ import com.prography.lighton.performance.infrastructure.repository.PerformanceRe
 import com.prography.lighton.performance.presentation.dto.PerformanceRegisterRequest;
 import com.prography.lighton.performance.presentation.dto.PerformanceUpdateRequest;
 import jakarta.transaction.Transactional;
-import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -30,10 +29,10 @@ public class PerformanceService {
 
     @Transactional
     public void registerPerformance(Member member, PerformanceRegisterRequest request) {
-        Artist artist = artistService.getApprovedArtistByMember(member);
-        var data = performanceResolver.toDomainData(request.info(), request.schedule(), request.payment(),
+        var data = performanceResolver.toDomainData(member, request.artists(), request.info(), request.schedule(),
+                request.payment(),
                 request.seat());
-        Performance performance = Performance.create(artist, data.info(), data.schedule(), data.location(),
+        Performance performance = Performance.create(data.master(), data.info(), data.schedule(), data.location(),
                 data.payment(),
                 Type.NORMAL, data.seats(), data.genres(), request.proof());
         performanceRepository.save(performance);
@@ -41,18 +40,18 @@ public class PerformanceService {
 
     @Transactional
     public void updatePerformance(Member member, Long performanceId, PerformanceUpdateRequest request) {
-        Artist requestArtist = artistService.getApprovedArtistByMember(member);
         Performance performance = getApprovedPerformanceById(performanceId);
-        var data = performanceResolver.toDomainData(request.info(), request.schedule(), request.payment(),
+        var data = performanceResolver.toDomainData(member, request.artists(), request.info(), request.schedule(),
+                request.payment(),
                 request.seat());
-        List<Artist> artists = artistService.getApprovedArtistsByIds(request.artists());
-        performance.update(requestArtist, artists, data.info(), data.schedule(), data.location(), data.payment(),
+        performance.update(data.master(), data.artists(), data.info(), data.schedule(), data.location(), data.payment(),
                 data.seats(),
                 data.genres());
     }
 
     @Transactional
     public void cancelPerformance(Member member, Long performanceId) {
+        // 여기 나중에 책임분리 하기
         Artist requestArtist = artistService.getApprovedArtistByMember(member);
         Performance performance = getApprovedPerformanceById(performanceId);
         performance.validateMasterArtist(requestArtist);
