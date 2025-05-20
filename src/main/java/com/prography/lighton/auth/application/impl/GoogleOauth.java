@@ -12,7 +12,6 @@ import static com.prography.lighton.common.constant.AuthConstants.RESPONSE_TYPE_
 import static com.prography.lighton.common.constant.AuthConstants.SCOPE;
 import static com.prography.lighton.common.constant.JwtConstants.BEARER_PREFIX;
 
-import com.prography.lighton.auth.application.SocialOauth;
 import com.prography.lighton.auth.infrastructure.client.google.GoogleApiClient;
 import com.prography.lighton.auth.infrastructure.client.google.GoogleAuthClient;
 import com.prography.lighton.auth.presentation.dto.google.GoogleOAuthToken;
@@ -26,7 +25,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
-public class GoogleOauth implements SocialOauth {
+public class GoogleOauth {
 
     @Value("${spring.oauth2.google.url}")
     private String GOOGLE_SNS_URL;
@@ -42,8 +41,6 @@ public class GoogleOauth implements SocialOauth {
     private final GoogleAuthClient googleAuthClient;
     private final GoogleApiClient googleApiClient;
 
-
-    @Override
     public String getOauthRedirectURL() {
         Map<String, String> params = new HashMap<>();
 

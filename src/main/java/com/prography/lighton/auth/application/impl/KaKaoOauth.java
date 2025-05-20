@@ -10,7 +10,6 @@ import static com.prography.lighton.common.constant.AuthConstants.REDIRECT_URI;
 import static com.prography.lighton.common.constant.AuthConstants.RESPONSE_TYPE;
 import static com.prography.lighton.common.constant.AuthConstants.RESPONSE_TYPE_CODE;
 
-import com.prography.lighton.auth.application.SocialOauth;
 import com.prography.lighton.auth.infrastructure.client.kakao.KaKaoApiClient;
 import com.prography.lighton.auth.infrastructure.client.kakao.KaKaoAuthClient;
 import com.prography.lighton.auth.presentation.dto.kakao.KaKaoOAuthTokenDTO;
@@ -25,7 +24,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
-public class KaKaoOauth implements SocialOauth {
+public class KaKaoOauth {
 
     @Value("${spring.oauth2.kakao.url}")
     private String KAKAO_SNS_URL;
@@ -39,7 +38,6 @@ public class KaKaoOauth implements SocialOauth {
     private final KaKaoApiClient kaKaoApiClient;
     private final KaKaoAuthClient kaKaoAuthClient;
 
-    @Override
     public String getOauthRedirectURL() {
         Map<String, Object> params = new HashMap<>();
         params.put(CLIENT_ID, KAKAO_SNS_CLIENT_ID);
