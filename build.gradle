@@ -2,6 +2,8 @@ plugins {
     id 'java'
     id 'org.springframework.boot' version '3.3.11'
     id 'io.spring.dependency-management' version '1.1.7'
+    id 'com.epages.restdocs-api-spec' version '0.18.4'
+    id 'org.hidetake.swagger.generator' version '2.18.2'
 }
 
 group = 'com.prography'
@@ -68,6 +70,7 @@ dependencies {
 tasks.named('test') {
     useJUnitPlatform()
     outputs.dir snippetsDir
+    finalizedBy("openapi3")
 }
 
 openapi3 {
@@ -81,8 +84,7 @@ openapi3 {
 }
 
 tasks.register('copyOpenApiSpec', Copy) {
-    dependsOn 'test'
-    onlyIf { file("$buildDir/api-spec/openapi3.json").exists() }
+    dependsOn 'openapi3'
     from "$buildDir/api-spec/openapi3.json"
     into "$projectDir/src/main/resources/static/docs"
 }
