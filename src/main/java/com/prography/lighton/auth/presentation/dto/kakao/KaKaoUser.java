@@ -3,8 +3,8 @@ package com.prography.lighton.auth.presentation.dto.kakao;
 public record KaKaoUser(
         Long id,
         String connected_at,
-        KaKaoUser.KaKaoPropertiesDTO properties,
-        KaKaoUser.KaKaoAccountDTO kakao_account
+        KaKaoPropertiesDTO properties,
+        KaKaoAccountDTO kakao_account
 ) {
 
     public record KaKaoAccountDTO(
