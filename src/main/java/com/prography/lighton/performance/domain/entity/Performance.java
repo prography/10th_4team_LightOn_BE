@@ -4,21 +4,32 @@ import com.prography.lighton.common.BaseEntity;
 import com.prography.lighton.performance.domain.entity.association.PerformanceArtist;
 import com.prography.lighton.performance.domain.entity.enums.Seat;
 import com.prography.lighton.performance.domain.entity.enums.Type;
-import com.prography.lighton.performance.domain.entity.vo.*;
-import jakarta.persistence.*;
+import com.prography.lighton.performance.domain.entity.vo.Info;
+import com.prography.lighton.performance.domain.entity.vo.Location;
+import com.prography.lighton.performance.domain.entity.vo.Payment;
+import com.prography.lighton.performance.domain.entity.vo.Schedule;
+import jakarta.persistence.CollectionTable;
+import jakarta.persistence.Column;
+import jakarta.persistence.ElementCollection;
+import jakarta.persistence.Embedded;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.OneToMany;
 import jakarta.validation.constraints.NotEmpty;
+import java.util.ArrayList;
+import java.util.List;
+import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.SQLRestriction;
 
-import java.util.ArrayList;
-import java.util.List;
-
 @Entity
-@NoArgsConstructor
-@AllArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
 @SQLDelete(sql = "UPDATE performance SET status = false WHERE id = ?")
 @SQLRestriction("status = true")
 public class Performance extends BaseEntity {

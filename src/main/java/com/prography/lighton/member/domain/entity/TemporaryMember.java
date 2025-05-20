@@ -1,18 +1,19 @@
 package com.prography.lighton.member.domain.entity;
 
-import com.prography.lighton.common.BaseEntity;
-import com.prography.lighton.member.domain.entity.vo.Email;
-import com.prography.lighton.member.domain.entity.vo.Password;
-import jakarta.persistence.Column;
-import jakarta.persistence.Embedded;
-import jakarta.persistence.Entity;
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.SQLRestriction;
+
+import com.prography.lighton.common.BaseEntity;
+import com.prography.lighton.member.domain.entity.vo.Email;
+import com.prography.lighton.member.domain.entity.vo.Password;
+
+import jakarta.persistence.Column;
+import jakarta.persistence.Embedded;
+import jakarta.persistence.Entity;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -21,21 +22,21 @@ import org.hibernate.annotations.SQLRestriction;
 @SQLRestriction("status = true")
 public class TemporaryMember extends BaseEntity {
 
-    @Getter
-    @Embedded
-    private Email email;
+	@Getter
+	@Embedded
+	private Email email;
 
-    @Getter
-    @Embedded
-    private Password password;
+	@Getter
+	@Embedded
+	private Password password;
 
-    @Column(nullable = false)
-    @ColumnDefault("false")
-    private Boolean isRegistered = false;
+	@Column(nullable = false)
+	@ColumnDefault("false")
+	private Boolean isRegistered = false;
 
-    public static TemporaryMember of(Email email, Password password) {
-        return new TemporaryMember(email, password, false);
-    }
+	public static TemporaryMember of(Email email, Password password) {
+		return new TemporaryMember(email, password, false);
+	}
 
     public static TemporaryMember socialLoginMemberOf(Email email) {
         return new TemporaryMember(email, Password.forSocialLogin(), false);
@@ -45,7 +46,7 @@ public class TemporaryMember extends BaseEntity {
         this.isRegistered = true;
     }
 
-    public Boolean isRegistered() {
-        return isRegistered;
-    }
+	public Boolean isRegistered() {
+		return isRegistered;
+	}
 }
