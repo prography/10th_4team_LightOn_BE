@@ -112,6 +112,7 @@ public class Performance extends BaseEntity {
 
     public static Performance create(
             Artist initialArtist,
+            List<Artist> artists,
             Info info,
             Schedule schedule,
             Location location,
@@ -122,8 +123,7 @@ public class Performance extends BaseEntity {
             String proofUrl
     ) {
         Performance perf = new Performance(initialArtist, info, schedule, location, payment, type, seats, proofUrl);
-        // 최초 등록 시 단일 아티스트 (수정 가능성 있음)
-        perf.artists.add(new PerformanceArtist(initialArtist, perf));
+        perf.updateArtists(artists);
         perf.updateGenres(genres);
         return perf;
     }

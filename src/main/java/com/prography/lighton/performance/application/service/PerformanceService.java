@@ -32,7 +32,8 @@ public class PerformanceService {
         var data = performanceResolver.toDomainData(member, request.artists(), request.info(), request.schedule(),
                 request.payment(),
                 request.seat());
-        Performance performance = Performance.create(data.master(), data.info(), data.schedule(), data.location(),
+        Performance performance = Performance.create(data.master(), data.artists(), data.info(), data.schedule(),
+                data.location(),
                 data.payment(),
                 Type.NORMAL, data.seats(), data.genres(), request.proof());
         performanceRepository.save(performance);
