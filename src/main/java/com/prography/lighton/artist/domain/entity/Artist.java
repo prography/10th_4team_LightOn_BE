@@ -136,7 +136,7 @@ public class Artist extends BaseEntity {
         this.updateGenres(genres);
     }
 
-    public void validateCreatable() {
+    public void validateRecreatable() {
         if (this.approveStatus != ApproveStatus.REJECTED) {
             throw new ArtistRegistrationNotAllowedException();
         }
