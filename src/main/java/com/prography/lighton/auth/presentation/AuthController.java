@@ -2,9 +2,9 @@ package com.prography.lighton.auth.presentation;
 
 import com.prography.lighton.auth.application.OAuthUseCase;
 import com.prography.lighton.auth.domain.enums.SocialLoginType;
+import com.prography.lighton.auth.presentation.dto.response.login.SocialLoginResult;
 import com.prography.lighton.common.utils.ApiUtils;
 import com.prography.lighton.common.utils.ApiUtils.ApiResult;
-import com.prography.lighton.member.presentation.dto.response.LoginMemberResponseDTO;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import lombok.RequiredArgsConstructor;
@@ -36,7 +36,7 @@ public class AuthController {
 
 
     @GetMapping(value = "/oauth/{socialLoginType}/callback")
-    public ResponseEntity<ApiResult<LoginMemberResponseDTO>> socialLoginCallback(
+    public ResponseEntity<ApiResult<SocialLoginResult>> socialLoginCallback(
             @PathVariable(name = "socialLoginType") String socialLoginPath,
             @RequestParam(name = "code") String code) throws RuntimeException {
         SocialLoginType socialLoginType = SocialLoginType.valueOf(socialLoginPath.toUpperCase());
