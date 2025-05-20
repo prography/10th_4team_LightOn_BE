@@ -73,7 +73,7 @@ public class OAuthService implements OAuthUseCase {
         }
 
         if (isExistMemberByEmail(email)) {
-            Member member = memberRepository.findByEmail(emailVO).orElseThrow();
+            Member member = memberRepository.getMemberByEmail(emailVO);
             return issueTokensFor(member);
         }
 
