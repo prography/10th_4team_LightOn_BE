@@ -1,7 +1,7 @@
 package com.prography.lighton.member.domain.entity;
 
-import com.prography.lighton.common.BaseEntity;
-import com.prography.lighton.common.vo.RegionInfo;
+import com.prography.lighton.common.domain.BaseEntity;
+import com.prography.lighton.common.domain.vo.RegionInfo;
 import com.prography.lighton.member.domain.entity.association.PreferredArtist;
 import com.prography.lighton.member.domain.entity.enums.Authority;
 import com.prography.lighton.member.domain.entity.vo.Email;
