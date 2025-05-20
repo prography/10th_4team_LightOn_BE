@@ -88,12 +88,11 @@ public class Artist extends BaseEntity {
         if (this == o) {
             return true;
         }
-        if (o == null || getClass() != o.getClass()) {
+        if (!(o instanceof Artist)) {
             return false;
         }
 
         Artist artist = (Artist) o;
-
         return this.getId() != null && this.getId().equals(artist.getId());
     }
 
