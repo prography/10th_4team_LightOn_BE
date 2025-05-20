@@ -1,4 +1,4 @@
-package com.prography.lighton.common.vo;
+package com.prography.lighton.common.domain.vo;
 
 import com.prography.lighton.region.domain.entity.Region;
 import com.prography.lighton.region.domain.entity.SubRegion;

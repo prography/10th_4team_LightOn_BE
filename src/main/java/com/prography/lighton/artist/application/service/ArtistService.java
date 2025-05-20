@@ -5,7 +5,7 @@ import com.prography.lighton.artist.domain.entity.vo.History;
 import com.prography.lighton.artist.infrastructure.repository.ArtistRepository;
 import com.prography.lighton.artist.presentation.dto.ArtistRegisterRequest;
 import com.prography.lighton.artist.presentation.dto.ArtistUpdateRequest;
-import com.prography.lighton.common.vo.RegionInfo;
+import com.prography.lighton.common.domain.vo.RegionInfo;
 import com.prography.lighton.genre.application.service.GenreService;
 import com.prography.lighton.genre.domain.entity.Genre;
 import com.prography.lighton.member.domain.entity.Member;

@@ -1,4 +1,4 @@
-package com.prography.lighton.common;
+package com.prography.lighton.common.domain;
 
 
 import jakarta.persistence.Column;
