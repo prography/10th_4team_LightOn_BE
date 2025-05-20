@@ -1,5 +1,6 @@
 package com.prography.lighton.performance.presentation.controller;
 
+import com.prography.lighton.common.annotation.LoginMember;
 import com.prography.lighton.common.utils.ApiUtils;
 import com.prography.lighton.common.utils.ApiUtils.ApiResult;
 import com.prography.lighton.member.domain.entity.Member;
@@ -27,28 +28,24 @@ public class ArtistPerformanceController {
 
     @PostMapping
     public ResponseEntity<ApiResult<String>> registerPerformance(
+            @LoginMember Member member,
             @Valid @RequestBody PerformanceRegisterRequest request) {
-        // 나중에 수정 필요
-        Member member = Member.withId(1L);
         performanceService.registerPerformance(member, request);
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(ApiUtils.success());
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<ApiResult<String>> updatePerformance(@PathVariable Long id,
+    public ResponseEntity<ApiResult<String>> updatePerformance(@LoginMember Member member,
+                                                               @PathVariable Long id,
                                                                @Valid @RequestBody PerformanceUpdateRequest request) {
-        // 나중에 수정 필요
-        Member member = Member.withId(1L);
         performanceService.updatePerformance(member, id, request);
         return ResponseEntity.ok()
                 .body(ApiUtils.success());
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<ApiResult<String>> cancelPerformance(@PathVariable Long id) {
-        // 나중에 수정 필요
-        Member member = Member.withId(1L);
+    public ResponseEntity<ApiResult<String>> cancelPerformance(@LoginMember Member member, @PathVariable Long id) {
         performanceService.cancelPerformance(member, id);
         return ResponseEntity.ok()
                 .body(ApiUtils.success());
