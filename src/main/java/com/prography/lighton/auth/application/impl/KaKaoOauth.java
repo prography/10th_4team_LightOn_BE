@@ -27,13 +27,13 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class KaKaoOauth implements SocialOauth {
 
-    @Value("${spring.OAuth2.kakao.url}")
+    @Value("${spring.oauth2.kakao.url}")
     private String KAKAO_SNS_URL;
 
-    @Value("${spring.OAuth2.kakao.client-id}")
+    @Value("${spring.oauth2.kakao.client-id}")
     private String KAKAO_SNS_CLIENT_ID;
 
-    @Value("${spring.OAuth2.kakao.callback-login-url}")
+    @Value("${spring.oauth2.kakao.callback-login-url}")
     private String KAKAO_SNS_CALLBACK_LOGIN_URL;
 
     private final KaKaoApiClient kaKaoApiClient;

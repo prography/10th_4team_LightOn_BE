@@ -43,7 +43,7 @@ public class Member extends BaseEntity {
     private String name;
 
     @Embedded
-    private PreferredRegion preferredRegion;
+    private RegionInfo preferredRegion;
 
     @Embedded
     private Phone phone;

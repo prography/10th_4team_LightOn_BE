@@ -28,15 +28,15 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class GoogleOauth implements SocialOauth {
 
-    @Value("${spring.OAuth2.google.url}")
+    @Value("${spring.oauth2.google.url}")
     private String GOOGLE_SNS_URL;
-    @Value("${spring.OAuth2.google.client-id}")
+    @Value("${spring.oauth2.google.client-id}")
     private String GOOGLE_SNS_CLIENT_ID;
-    @Value("${spring.OAuth2.google.callback-login-url}")
+    @Value("${spring.oauth2.google.callback-login-url}")
     private String GOOGLE_SNS_CALLBACK_LOGIN_URL;
-    @Value("${spring.OAuth2.google.client-secret}")
+    @Value("${spring.oauth2.google.client-secret}")
     private String GOOGLE_SNS_CLIENT_SECRET;
-    @Value("${spring.OAuth2.google.scope}")
+    @Value("${spring.oauth2.google.scope}")
     private String GOOGLE_DATA_ACCESS_SCOPE;
 
     private final GoogleAuthClient googleAuthClient;

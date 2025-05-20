@@ -17,7 +17,7 @@ public class Phone {
 
     private static final String PHONE_NUMBER_PATTERN = "^\\d{3}\\d{3,4}\\d{4}$";
 
-    @Column(nullable = false, length = 11, unique = true, name = "phone")
+    @Column(nullable = false, length = 20, unique = true, name = "phone")
     private String value;
 
     public static Phone of(String phoneNumber) {
