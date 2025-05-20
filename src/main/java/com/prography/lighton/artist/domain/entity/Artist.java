@@ -137,13 +137,13 @@ public class Artist extends BaseEntity {
         this.updateGenres(genres);
     }
 
-    public void validateRecreatable() {
+    public void isValidRecreatable() {
         if (this.approveStatus != ApproveStatus.REJECTED) {
             throw new ArtistRegistrationNotAllowedException();
         }
     }
 
-    public void validateUpdatable() {
+    public void isValidUpdatable() {
         if (this.approveStatus != ApproveStatus.APPROVED) {
             throw new ArtistUpdateNotAllowedException();
         }
