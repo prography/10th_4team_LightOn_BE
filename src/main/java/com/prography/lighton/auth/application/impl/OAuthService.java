@@ -37,7 +37,8 @@ public class OAuthService implements OAuthUseCase {
         return switch (socialLoginType) {
             case GOOGLE -> googleOauth.getOauthRedirectURL();
             case KAKAO -> kaKaoOauth.getOauthRedirectURL();
-            case APPLE -> throw new UnsupportedOperationException("Apple login not implemented");
+            case APPLE -> throw new UnsupportedOperationException("Apple 로그인은 아직 지원되지 않습니다.");
+            default -> throw new UnsupportedOperationException("지원하지 않는 로그인 타입입니다.");
         };
     }
 
@@ -59,7 +60,8 @@ public class OAuthService implements OAuthUseCase {
                 GoogleUser user = googleOauth.requestUserInfo(token);
                 yield user.email();
             }
-            case APPLE -> throw new UnsupportedOperationException("Apple login not implemented");
+            case APPLE -> throw new UnsupportedOperationException("Apple 로그인은 아직 지원되지 않습니다.");
+            default -> throw new UnsupportedOperationException("지원하지 않는 로그인 타입입니다.");
         };
     }
 
