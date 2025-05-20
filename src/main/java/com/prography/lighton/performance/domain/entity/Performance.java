@@ -26,7 +26,6 @@ import jakarta.persistence.FetchType;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
-import jakarta.validation.constraints.NotEmpty;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -47,7 +46,6 @@ public class Performance extends BaseEntity {
     private Artist master;
 
     @OneToMany(mappedBy = "performance")
-    @NotEmpty
     private List<PerformanceArtist> artists = new ArrayList<>();
 
     @Embedded
