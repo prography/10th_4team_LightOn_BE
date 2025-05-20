@@ -23,7 +23,7 @@ public class RegionCache {
                 );
     }
 
-    public RegionInfo resolve(Integer regionCode) {
+    public RegionInfo getRegionInfoByCode(Integer regionCode) {
         RegionInfo info = cache.get(regionCode);
         if (info == null) {
             throw new NoSuchRegionException();

@@ -62,7 +62,7 @@ public class ArtistService {
             ArtistRegisterRequest.ArtistDTO artistDto,
             ArtistRegisterRequest.HistoryDTO historyDto
     ) {
-        RegionInfo activityRegion = regionCache.resolve(artistDto.activityLocation());
+        RegionInfo activityRegion = regionCache.getRegionInfoByCode(artistDto.activityLocation());
         History history = History.of(historyDto.bio(), historyDto.activityPhotos());
         List<Genre> genres = genreService.getGenresOrThrow(artistDto.genre());
         return new ArtistData(activityRegion, history, genres);
