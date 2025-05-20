@@ -1,12 +1,6 @@
 package com.prography.lighton.performance.domain.entity.vo;
 
-import com.prography.lighton.common.BaseEntity;
-import com.prography.lighton.performance.domain.entity.enums.Seat;
-import jakarta.persistence.*;
-import lombok.NoArgsConstructor;
-import org.hibernate.annotations.SQLDelete;
-import org.hibernate.annotations.SQLRestriction;
-import lombok.AllArgsConstructor;
+import jakarta.persistence.Embeddable;
 
 @Embeddable
 public class Payment {

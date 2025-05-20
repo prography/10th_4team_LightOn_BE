@@ -1,6 +1,6 @@
 package com.prography.lighton.artist.domain.entity;
 
-import com.prography.lighton.common.BaseEntity;
+import com.prography.lighton.common.domain.BaseEntity;
 import com.prography.lighton.genre.domain.entity.Genre;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
