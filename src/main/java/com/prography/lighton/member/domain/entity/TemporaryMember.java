@@ -6,6 +6,7 @@ import com.prography.lighton.member.domain.entity.vo.Password;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
+import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -14,8 +15,8 @@ import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.SQLRestriction;
 
 @Entity
-@NoArgsConstructor
-@AllArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
 @SQLDelete(sql = "UPDATE temporary_member SET status = false WHERE id = ?")
 @SQLRestriction("status = true")
 public class TemporaryMember extends BaseEntity {
