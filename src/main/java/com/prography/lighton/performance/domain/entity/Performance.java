@@ -21,7 +21,6 @@ import jakarta.validation.constraints.NotEmpty;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.SQLDelete;
@@ -29,7 +28,6 @@ import org.hibernate.annotations.SQLRestriction;
 
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@AllArgsConstructor(access = AccessLevel.PRIVATE)
 @SQLDelete(sql = "UPDATE performance SET status = false WHERE id = ?")
 @SQLRestriction("status = true")
 public class Performance extends BaseEntity {
