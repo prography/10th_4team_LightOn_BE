@@ -21,11 +21,9 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
-@Slf4j
 @Component
 @RequiredArgsConstructor
 public class GoogleOauth implements SocialOauth {
@@ -62,20 +60,15 @@ public class GoogleOauth implements SocialOauth {
     }
 
     public GoogleOAuthToken requestAccessToken(String code) {
-        GoogleOAuthToken googleAccessToken = googleAuthClient.getGoogleAccessToken(CONTENT_TYPE, code,
+
+        return googleAuthClient.getGoogleAccessToken(CONTENT_TYPE, code,
                 GOOGLE_SNS_CLIENT_ID, GOOGLE_SNS_CLIENT_SECRET,
                 GOOGLE_SNS_CALLBACK_LOGIN_URL, GRANT_TYPE);
-
-        log.info(googleAccessToken.toString());
-        return googleAccessToken;
     }
 
     public GoogleUser requestUserInfo(GoogleOAuthToken oAuthToken) {
-        GoogleUser googleUserInfo = googleApiClient.getGoogleUserInfo(BEARER_PREFIX + oAuthToken.access_token());
 
-        log.info(googleUserInfo.toString());
-
-        return googleUserInfo;
+        return googleApiClient.getGoogleUserInfo(BEARER_PREFIX + oAuthToken.access_token());
     }
 
 }

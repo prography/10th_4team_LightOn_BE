@@ -20,11 +20,9 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
-@Slf4j
 @Component
 @RequiredArgsConstructor
 public class KaKaoOauth implements SocialOauth {
@@ -47,7 +45,6 @@ public class KaKaoOauth implements SocialOauth {
         params.put(CLIENT_ID, KAKAO_SNS_CLIENT_ID);
         params.put(REDIRECT_URI, KAKAO_SNS_CALLBACK_LOGIN_URL);
         params.put(RESPONSE_TYPE, RESPONSE_TYPE_CODE);
-        log.info(KAKAO_SNS_CALLBACK_LOGIN_URL);
 
         String parameterString = params.entrySet().stream()
                 .map(x -> x.getKey() + KEY_VALUE_DELIMITER + x.getValue())
@@ -57,18 +54,14 @@ public class KaKaoOauth implements SocialOauth {
     }
 
     public KaKaoOAuthTokenDTO requestAccessToken(String code) {
-        KaKaoOAuthTokenDTO kaKaoAccessToken = kaKaoAuthClient.getKaKaoAccessToken(
+        return kaKaoAuthClient.getKaKaoAccessToken(
                 CONTENT_TYPE, GRANT_TYPE, KAKAO_SNS_CALLBACK_LOGIN_URL, KAKAO_SNS_CLIENT_ID, code);
-        log.info(kaKaoAccessToken.toString());
-        return kaKaoAccessToken;
     }
 
 
     public KaKaoUser requestUserInfo(KaKaoOAuthTokenDTO kaKaoOAuthTokenDTO) {
-        KaKaoUser kaKaoUser = kaKaoApiClient.getKaKaoUserInfo(
+        return kaKaoApiClient.getKaKaoUserInfo(
                 getAccessToken(kaKaoOAuthTokenDTO), CONTENT_TYPE);
-        log.info(kaKaoUser.toString());
-        return kaKaoUser;
     }
 
     private static String getAccessToken(KaKaoOAuthTokenDTO kaKaoOAuthTokenDTO) {
