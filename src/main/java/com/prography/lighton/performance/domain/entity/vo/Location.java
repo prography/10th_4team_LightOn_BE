@@ -1,6 +1,6 @@
 package com.prography.lighton.performance.domain.entity.vo;
 
-import com.prography.lighton.common.vo.RegionInfo;
+import com.prography.lighton.common.domain.vo.RegionInfo;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
 import jakarta.persistence.Embedded;

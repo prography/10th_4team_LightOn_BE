@@ -10,7 +10,7 @@ import com.prography.lighton.performance.domain.entity.vo.Schedule;
 import com.prography.lighton.performance.presentation.dto.InfoDTO;
 import com.prography.lighton.performance.presentation.dto.PaymentDTO;
 import com.prography.lighton.performance.presentation.dto.ScheduleDTO;
-import com.prography.lighton.region.domain.resolver.RegionResolver;
+import com.prography.lighton.region.infrastructure.cache.RegionCache;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -20,7 +20,7 @@ import org.springframework.stereotype.Component;
 public class PerformanceResolver {
 
     private final GenreService genreService;
-    private final RegionResolver regionResolver;
+    private final RegionCache regionCache;
 
     public DomainData toDomainData(InfoDTO infoDTO, ScheduleDTO scheduleDTO, PaymentDTO paymentDTO, List<Seat> seats) {
         return new DomainData(
@@ -60,7 +60,7 @@ public class PerformanceResolver {
         return Location.of(
                 latitude,
                 longitude,
-                regionResolver.resolve(req.location())
+                regionCache.getRegionInfoByCode(req.location())
         );
     }
 
