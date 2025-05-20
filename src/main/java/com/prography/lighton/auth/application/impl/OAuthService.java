@@ -2,19 +2,21 @@ package com.prography.lighton.auth.application.impl;
 
 import com.prography.lighton.auth.application.OAuthUseCase;
 import com.prography.lighton.auth.application.TokenProvider;
+import com.prography.lighton.auth.application.exception.MemberProfileIncompleteException;
 import com.prography.lighton.auth.domain.enums.SocialLoginType;
-import com.prography.lighton.auth.exception.MemberProfileIncompleteException;
 import com.prography.lighton.auth.presentation.dto.google.GoogleOAuthToken;
 import com.prography.lighton.auth.presentation.dto.google.GoogleUser;
 import com.prography.lighton.auth.presentation.dto.kakao.KaKaoOAuthTokenDTO;
 import com.prography.lighton.auth.presentation.dto.kakao.KaKaoUser;
+import com.prography.lighton.auth.presentation.dto.response.login.LoginSocialMemberResponseDTO;
+import com.prography.lighton.auth.presentation.dto.response.login.RegisterSocialMemberResponseDTO;
+import com.prography.lighton.auth.presentation.dto.response.login.SocialLoginResult;
 import com.prography.lighton.member.domain.entity.Member;
 import com.prography.lighton.member.domain.entity.TemporaryMember;
 import com.prography.lighton.member.domain.entity.vo.Email;
 import com.prography.lighton.member.domain.entity.vo.Password;
 import com.prography.lighton.member.domain.repository.MemberRepository;
 import com.prography.lighton.member.domain.repository.TemporaryMemberRepository;
-import com.prography.lighton.member.presentation.dto.response.LoginMemberResponseDTO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -41,7 +43,7 @@ public class OAuthService implements OAuthUseCase {
     }
 
     @Override
-    public LoginMemberResponseDTO oAuthLoginOrJoin(SocialLoginType socialLoginType, String code) {
+    public SocialLoginResult oAuthLoginOrJoin(SocialLoginType socialLoginType, String code) {
         String email = extractEmailFromSocialProvider(socialLoginType, code);
         return handleLoginOrRegister(email);
     }
@@ -51,7 +53,7 @@ public class OAuthService implements OAuthUseCase {
             case KAKAO -> {
                 KaKaoOAuthTokenDTO token = kaKaoOauth.requestAccessToken(code);
                 KaKaoUser user = kaKaoOauth.requestUserInfo(token);
-                yield user.kakao_account().email() == null ? "kminseok5167@gmail.com" : user.kakao_account().email();
+                yield user.kakao_account().email() == null ? "minsek5167@naver.com" : user.kakao_account().email();
             }
             case GOOGLE -> {
                 GoogleOAuthToken token = googleOauth.requestAccessToken(code);
@@ -62,7 +64,7 @@ public class OAuthService implements OAuthUseCase {
         };
     }
 
-    private LoginMemberResponseDTO handleLoginOrRegister(String email) {
+    private SocialLoginResult handleLoginOrRegister(String email) {
         Email emailVO = Email.of(email);
 
         if (isExistTemporaryMemberByEmail(email)) {
@@ -71,9 +73,9 @@ public class OAuthService implements OAuthUseCase {
 
         if (isExistMemberByEmail(email)) {
             Member member = memberRepository.findByEmail(emailVO).orElseThrow();
-            String accessToken = tokenProvider.createAccessToken(member.getId().toString());
-            String refreshToken = tokenProvider.createRefreshToken(member.getId().toString());
-            return LoginMemberResponseDTO.registered(accessToken, refreshToken, member.getId());
+            String accessToken = tokenProvider.createAccessToken(member.getId().toString(), member.getAuthority());
+            String refreshToken = tokenProvider.createRefreshToken(member.getId().toString(), member.getAuthority());
+            return LoginSocialMemberResponseDTO.of(accessToken, refreshToken);
         }
 
         TemporaryMember tempMember = temporaryMemberRepository.findByEmail(emailVO)
@@ -81,7 +83,7 @@ public class OAuthService implements OAuthUseCase {
                         TemporaryMember.of(emailVO, Password.forSocialLogin())
                 ));
 
-        return LoginMemberResponseDTO.temporary(tempMember.getId());
+        return RegisterSocialMemberResponseDTO.of(tempMember.getId());
     }
 
     private boolean isExistTemporaryMemberByEmail(String email) {

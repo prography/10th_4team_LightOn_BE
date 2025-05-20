@@ -43,8 +43,7 @@ public class LoginMemberService implements LoginMemberUseCase {
     private LoginMemberResponseDTO issueTokensFor(Member member) {
         return LoginMemberResponseDTO.of(
                 tokenProvider.createAccessToken(String.valueOf(member.getId()), member.getAuthority()),
-                tokenProvider.createRefreshToken(String.valueOf(member.getId()), member.getAuthority()),
-                member.getId()
+                tokenProvider.createRefreshToken(String.valueOf(member.getId()), member.getAuthority())
         );
     }
 }
