@@ -6,12 +6,26 @@ import com.prography.lighton.common.exception.base.NotFoundException;
 import com.prography.lighton.common.utils.ApiUtils;
 import com.prography.lighton.common.utils.ApiUtils.ApiResult;
 import lombok.extern.slf4j.Slf4j;
+import com.prography.lighton.common.exception.base.NotFoundException;
+import com.prography.lighton.common.utils.ApiUtils;
+import com.prography.lighton.member.exception.InvalidMemberException;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+
+import com.prography.lighton.common.exception.base.NotFoundException;
+import com.prography.lighton.common.utils.ApiUtils;
+import com.prography.lighton.common.utils.ApiUtils.ApiResult;
+import com.prography.lighton.region.exception.NoSuchRegionException;
+import com.prography.lighton.member.exception.InvalidMemberException;
+import com.prography.lighton.member.exception.NoSuchMemberException;
+
+import jakarta.persistence.EntityNotFoundException;
+import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @RestControllerAdvice
@@ -35,6 +49,7 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(IllegalArgumentException.class)
     public ResponseEntity<?> handleIllegalArgumentException(IllegalArgumentException e) {
+        log.error("Domain validation failed: {}", e.getMessage(), e);
         return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                 .body(ApiUtils.error(HttpStatus.BAD_REQUEST, e.getMessage()));
     }

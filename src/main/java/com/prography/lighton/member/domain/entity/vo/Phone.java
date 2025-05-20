@@ -1,11 +1,7 @@
 package com.prography.lighton.member.domain.entity.vo;
 
-import static io.micrometer.common.util.StringUtils.*;
+import static io.micrometer.common.util.StringUtils.isBlank;
 
-import java.util.Objects;
-
-import ch.qos.logback.core.util.StringUtil;
-import io.micrometer.common.util.StringUtils;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
 import lombok.AccessLevel;
@@ -19,10 +15,10 @@ public class Phone {
 
     private static final String PHONE_NUMBER_PATTERN = "^\\d{3}\\d{3,4}\\d{4}$";
 
-    @Column(nullable = false, length = 11, unique = true, name = "phone")
+    @Column(nullable = false, length = 20, unique = true, name = "phone")
     private String value;
 
-    private Phone (String value) {
+    private Phone(String value) {
         this.value = value;
     }
 
