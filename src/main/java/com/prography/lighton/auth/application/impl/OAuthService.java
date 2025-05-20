@@ -3,6 +3,7 @@ package com.prography.lighton.auth.application.impl;
 import com.prography.lighton.auth.application.OAuthUseCase;
 import com.prography.lighton.auth.application.TokenProvider;
 import com.prography.lighton.auth.application.exception.MemberProfileIncompleteException;
+import com.prography.lighton.auth.application.exception.UnsupportedSocialLoginTypeException;
 import com.prography.lighton.auth.domain.enums.SocialLoginType;
 import com.prography.lighton.auth.presentation.dto.google.GoogleOAuthToken;
 import com.prography.lighton.auth.presentation.dto.google.GoogleUser;
@@ -38,7 +39,7 @@ public class OAuthService implements OAuthUseCase {
             case GOOGLE -> googleOauth.getOauthRedirectURL();
             case KAKAO -> kaKaoOauth.getOauthRedirectURL();
             case APPLE -> throw new UnsupportedOperationException("Apple 로그인은 아직 지원되지 않습니다.");
-            default -> throw new UnsupportedOperationException("지원하지 않는 로그인 타입입니다.");
+            default -> throw new UnsupportedSocialLoginTypeException("지원하지 않는 로그인 타입입니다.");
         };
     }
 
@@ -61,7 +62,7 @@ public class OAuthService implements OAuthUseCase {
                 yield user.email();
             }
             case APPLE -> throw new UnsupportedOperationException("Apple 로그인은 아직 지원되지 않습니다.");
-            default -> throw new UnsupportedOperationException("지원하지 않는 로그인 타입입니다.");
+            default -> throw new UnsupportedSocialLoginTypeException("지원하지 않는 로그인 타입입니다.");
         };
     }
 
