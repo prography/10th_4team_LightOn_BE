@@ -1,13 +1,13 @@
 package com.prography.lighton.member.domain.entity;
 
 import com.prography.lighton.common.BaseEntity;
+import com.prography.lighton.common.vo.RegionInfo;
 import com.prography.lighton.member.domain.entity.association.PreferredArtist;
 import com.prography.lighton.member.domain.entity.enums.Authority;
 import com.prography.lighton.member.domain.entity.vo.Email;
 import com.prography.lighton.member.domain.entity.vo.MarketingAgreement;
 import com.prography.lighton.member.domain.entity.vo.Password;
 import com.prography.lighton.member.domain.entity.vo.Phone;
-import com.prography.lighton.member.domain.entity.vo.PreferredRegion;
 import com.prography.lighton.member.exception.InvalidMemberException;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embedded;
@@ -43,7 +43,7 @@ public class Member extends BaseEntity {
     private String name;
 
     @Embedded
-    private PreferredRegion preferredRegion;
+    private RegionInfo preferredRegion;
 
     @Embedded
     private Phone phone;
@@ -59,7 +59,7 @@ public class Member extends BaseEntity {
     @OneToMany(mappedBy = "member", fetch = FetchType.LAZY)
     private List<PreferredArtist> preferredArtists;
 
-    public static Member toNormalMember(Email email, Password password, PreferredRegion preferredRegion,
+    public static Member toNormalMember(Email email, Password password, RegionInfo preferredRegion,
                                         String name, Phone phone, MarketingAgreement marketingAgreement) {
         return new Member(
                 email,

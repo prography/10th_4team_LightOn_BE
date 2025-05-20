@@ -1,9 +1,9 @@
 package com.prography.lighton.artist.domain.entity;
 
 import com.prography.lighton.artist.domain.entity.enums.ApproveStatus;
-import com.prography.lighton.artist.domain.entity.vo.ActivityLocation;
 import com.prography.lighton.artist.domain.entity.vo.History;
 import com.prography.lighton.common.BaseEntity;
+import com.prography.lighton.common.vo.RegionInfo;
 import com.prography.lighton.member.domain.entity.Member;
 import com.prography.lighton.performance.domain.entity.association.PerformanceArtist;
 import jakarta.persistence.Column;
@@ -53,7 +53,7 @@ public class Artist extends BaseEntity {
     private String description;
 
     @Embedded
-    private ActivityLocation activityLocation;
+    private RegionInfo activityLocation;
 
     @Embedded
     private History history;

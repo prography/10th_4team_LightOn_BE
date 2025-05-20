@@ -1,21 +1,20 @@
 package com.prography.lighton.member.application;
 
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
 import com.prography.lighton.auth.application.TokenProvider;
-import com.prography.lighton.member.exception.DuplicateMemberException;
+import com.prography.lighton.common.vo.RegionInfo;
 import com.prography.lighton.member.domain.entity.Member;
 import com.prography.lighton.member.domain.entity.TemporaryMember;
 import com.prography.lighton.member.domain.entity.vo.MarketingAgreement;
 import com.prography.lighton.member.domain.entity.vo.Phone;
-import com.prography.lighton.member.domain.entity.vo.PreferredRegion;
+import com.prography.lighton.member.exception.DuplicateMemberException;
 import com.prography.lighton.member.infrastructure.repository.MemberRepository;
 import com.prography.lighton.member.infrastructure.repository.TemporaryMemberRepository;
 import com.prography.lighton.member.presentation.dto.request.CompleteMemberProfileRequestDTO;
 import com.prography.lighton.member.presentation.dto.response.CompleteMemberProfileResponseDTO;
-import com.prography.lighton.region.domain.resolver.PreferredRegionResolver;
+import com.prography.lighton.region.domain.resolver.RegionResolver;
 import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @Transactional
@@ -25,14 +24,14 @@ public class CompleteMemberProfileService implements CompleteMemberProfileUseCas
     private final TemporaryMemberRepository temporaryMemberRepository;
     private final MemberRepository memberRepository;
 
-    private final PreferredRegionResolver preferredRegionResolver;
+    private final RegionResolver regionResolver;
     private final TokenProvider tokenProvider;
 
     @Override
     public CompleteMemberProfileResponseDTO completeMemberProfile(final Long temporaryMemberId,
                                                                   final CompleteMemberProfileRequestDTO request) {
         TemporaryMember temporaryMember = getTemporaryMember(temporaryMemberId);
-        PreferredRegion preferredRegion = preferredRegionResolver.resolve(request.regionCode());
+        RegionInfo preferredRegion = regionResolver.resolve(request.regionCode());
         Phone phone = validatePhoneDuplicate(request.phone());
         MarketingAgreement marketingAgreement = toMarketingAgreement(request);
 
