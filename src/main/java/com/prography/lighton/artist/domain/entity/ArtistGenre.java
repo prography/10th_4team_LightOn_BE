@@ -8,9 +8,11 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import java.util.List;
 import lombok.AllArgsConstructor;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Entity
+@Getter
 @NoArgsConstructor
 @AllArgsConstructor
 public class ArtistGenre extends BaseEntity {
@@ -27,7 +29,7 @@ public class ArtistGenre extends BaseEntity {
                 .map(genre -> createFor(artist, genre))
                 .toList();
     }
-    
+
     private static ArtistGenre createFor(Artist artist, Genre genre) {
         return new ArtistGenre(artist, genre);
     }

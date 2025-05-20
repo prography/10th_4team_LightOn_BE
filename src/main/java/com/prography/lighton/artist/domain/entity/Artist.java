@@ -21,6 +21,8 @@ import jakarta.persistence.OneToOne;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -102,13 +104,22 @@ public class Artist extends BaseEntity {
         return artist;
     }
 
-    private void updateGenres(List<Genre> genreList) {
-        this.genres.clear();
-        this.genres.addAll(
-                genreList.stream()
-                        .map(genre -> new ArtistGenre(this, genre))
-                        .toList()
-        );
+    public void updateGenres(List<Genre> newGenres) {
+        Set<Long> newGenreIds = newGenres.stream()
+                .map(Genre::getId)
+                .collect(Collectors.toSet());
+
+        this.genres.removeIf(ag -> !newGenreIds.contains(ag.getGenre().getId()));
+
+        Set<Long> existingGenreIds = this.genres.stream()
+                .map(ag -> ag.getGenre().getId())
+                .collect(Collectors.toSet());
+
+        List<Genre> genresToAdd = newGenres.stream()
+                .filter(g -> !existingGenreIds.contains(g.getId()))
+                .toList();
+
+        this.genres.addAll(ArtistGenre.createListFor(this, genresToAdd));
     }
 
     public void update(

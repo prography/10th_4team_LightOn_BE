@@ -1,4 +1,4 @@
-package com.prography.lighton.genre.application.service;
+package com.prography.lighton.genre.infrastructure.cache;
 
 import com.prography.lighton.genre.application.exception.NoSuchGenreException;
 import com.prography.lighton.genre.domain.entity.Genre;
@@ -10,11 +10,13 @@ import java.util.Optional;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Component;
 
-@Service
+@Slf4j
+@Component
 @RequiredArgsConstructor
-public class GenreService {
+public class GenreCache {
 
     private final GenreRepository genreRepository;
 
@@ -24,6 +26,12 @@ public class GenreService {
     public void init() {
         this.cache = genreRepository.findAll().stream()
                 .collect(Collectors.toUnmodifiableMap(Genre::getId, Function.identity()));
+
+        if (cache.isEmpty()) {
+            throw new IllegalStateException("GenreCache 초기화 실패: 캐시 비어 있음");
+        }
+
+        log.info("장르 엔티티 캐시 초기화 성공 - size: {}", cache.size());
     }
 
     public List<Genre> getGenresOrThrow(List<Long> genreIds) {
