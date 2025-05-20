@@ -31,7 +31,7 @@ public class CompleteMemberProfileService implements CompleteMemberProfileUseCas
     public CompleteMemberProfileResponseDTO completeMemberProfile(final Long temporaryMemberId,
                                                                   final CompleteMemberProfileRequestDTO request) {
         TemporaryMember temporaryMember = getTemporaryMember(temporaryMemberId);
-        RegionInfo preferredRegion = regionCache.resolve(request.regionCode());
+        RegionInfo preferredRegion = regionCache.getRegionInfoByCode(request.regionCode());
         Phone phone = validatePhoneDuplicate(request.phone());
         MarketingAgreement marketingAgreement = toMarketingAgreement(request);
 
