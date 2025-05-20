@@ -94,6 +94,11 @@ public class Performance extends BaseEntity {
     @Column(nullable = false)
     private String proofUrl;
 
+    @Column(nullable = false)
+    @ColumnDefault("false")
+    private boolean canceled = false;
+
+
     private Performance(
             Artist master,
             Info info,
@@ -218,10 +223,17 @@ public class Performance extends BaseEntity {
         }
     }
 
-
     public void validateApproved() {
         if (this.approveStatus != ApproveStatus.APPROVED) {
             throw new PerformanceNotApprovedException();
         }
+    }
+
+    public void cancel(Artist artist) {
+        validateMasterArtist(artist);
+        if (this.canceled) {
+            throw new IllegalStateException("이미 취소된 공연입니다.");
+        }
+        this.canceled = true;
     }
 }
