@@ -14,7 +14,6 @@ import com.prography.lighton.auth.presentation.dto.response.login.SocialLoginRes
 import com.prography.lighton.member.domain.entity.Member;
 import com.prography.lighton.member.domain.entity.TemporaryMember;
 import com.prography.lighton.member.domain.entity.vo.Email;
-import com.prography.lighton.member.domain.entity.vo.Password;
 import com.prography.lighton.member.domain.repository.MemberRepository;
 import com.prography.lighton.member.domain.repository.TemporaryMemberRepository;
 import lombok.RequiredArgsConstructor;
@@ -53,7 +52,7 @@ public class OAuthService implements OAuthUseCase {
             case KAKAO -> {
                 KaKaoOAuthTokenDTO token = kaKaoOauth.requestAccessToken(code);
                 KaKaoUser user = kaKaoOauth.requestUserInfo(token);
-                yield user.kakao_account().email() == null ? "minsek5167@naver.com" : user.kakao_account().email();
+                yield user.kakao_account().email();
             }
             case GOOGLE -> {
                 GoogleOAuthToken token = googleOauth.requestAccessToken(code);
@@ -73,15 +72,11 @@ public class OAuthService implements OAuthUseCase {
 
         if (isExistMemberByEmail(email)) {
             Member member = memberRepository.findByEmail(emailVO).orElseThrow();
-            String accessToken = tokenProvider.createAccessToken(member.getId().toString(), member.getAuthority());
-            String refreshToken = tokenProvider.createRefreshToken(member.getId().toString(), member.getAuthority());
-            return LoginSocialMemberResponseDTO.of(accessToken, refreshToken);
+            return issueTokensFor(member);
         }
 
         TemporaryMember tempMember = temporaryMemberRepository.findByEmail(emailVO)
-                .orElseGet(() -> temporaryMemberRepository.save(
-                        TemporaryMember.of(emailVO, Password.forSocialLogin())
-                ));
+                .orElseGet(() -> temporaryMemberRepository.save(TemporaryMember.socialLoginMemberOf(emailVO)));
 
         return RegisterSocialMemberResponseDTO.of(tempMember.getId());
     }
@@ -92,5 +87,12 @@ public class OAuthService implements OAuthUseCase {
 
     private boolean isExistMemberByEmail(String email) {
         return memberRepository.existsByEmail(email);
+    }
+
+    private LoginSocialMemberResponseDTO issueTokensFor(Member member) {
+        return LoginSocialMemberResponseDTO.of(
+                tokenProvider.createAccessToken(String.valueOf(member.getId()), member.getAuthority()),
+                tokenProvider.createRefreshToken(String.valueOf(member.getId()), member.getAuthority())
+        );
     }
 }
