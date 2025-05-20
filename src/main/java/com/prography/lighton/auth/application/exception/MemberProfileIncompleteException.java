@@ -1,4 +1,4 @@
-package com.prography.lighton.auth.exception;
+package com.prography.lighton.auth.application.exception;
 
 import com.prography.lighton.common.utils.ApiUtils;
 import org.springframework.http.HttpStatus;

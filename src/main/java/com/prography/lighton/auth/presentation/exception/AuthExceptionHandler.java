@@ -1,6 +1,6 @@
 package com.prography.lighton.auth.presentation.exception;
 
-import com.prography.lighton.auth.exception.MemberProfileIncompleteException;
+import com.prography.lighton.auth.application.exception.MemberProfileIncompleteException;
 import com.prography.lighton.common.utils.ApiUtils;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
