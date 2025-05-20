@@ -1,4 +1,4 @@
-package com.prography.lighton.region.domain.resolver;
+package com.prography.lighton.region.infrastructure.cache;
 
 import com.prography.lighton.common.vo.RegionInfo;
 import com.prography.lighton.region.domain.repository.SubRegionRepository;
@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
-public class RegionResolver {
+public class RegionCache {
     private final SubRegionRepository subRegionRepository;
     private final Map<Integer, RegionInfo> cache = new ConcurrentHashMap<>();
 
