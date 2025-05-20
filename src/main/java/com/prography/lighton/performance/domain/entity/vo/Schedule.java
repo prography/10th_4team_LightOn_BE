@@ -29,6 +29,7 @@ public class Schedule {
     private LocalTime endTime;
 
     public static Schedule of(LocalDate startDate, LocalDate endDate, LocalTime startTime, LocalTime endTime) {
+        isValidSchedule(startDate, endDate, startTime, endTime);
         return new Schedule(startDate, endDate, startTime, endTime);
     }
 
