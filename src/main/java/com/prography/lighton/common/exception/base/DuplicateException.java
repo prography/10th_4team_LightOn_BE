@@ -3,15 +3,15 @@ package com.prography.lighton.common.exception.base;
 import com.prography.lighton.common.utils.ApiUtils;
 import org.springframework.http.HttpStatus;
 
-public class InvalidException extends RuntimeException {
+public class DuplicateException extends RuntimeException {
 
-    private static final String MESSAGE = "유효하지 않은 요청입니다.";
+    private static final String MESSAGE = "중복된 요청입니다.";
 
-    public InvalidException(final String message) {
+    public DuplicateException(final String message) {
         super(message);
     }
 
-    public InvalidException() {
+    public DuplicateException() {
         this(MESSAGE);
     }
 

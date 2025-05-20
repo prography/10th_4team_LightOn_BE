@@ -20,10 +20,10 @@ public interface ArtistRepository extends JpaRepository<Artist, Long> {
                 where a.member = :member
                   and a.status = true
             """)
-    Optional<Artist> findWithGenresByMember(@Param("member") Member member);
+    Optional<Artist> findByMemberWithGenres(@Param("member") Member member);
 
     default Artist getByMember(Member member) {
-        return findWithGenresByMember(member)
+        return findByMemberWithGenres(member)
                 .orElseThrow(NoSuchArtistException::new);
     }
 }

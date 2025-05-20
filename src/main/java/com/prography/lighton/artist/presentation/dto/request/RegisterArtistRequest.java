@@ -1,4 +1,4 @@
-package com.prography.lighton.artist.presentation.dto;
+package com.prography.lighton.artist.presentation.dto.request;
 
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
@@ -8,7 +8,7 @@ import jakarta.validation.constraints.Size;
 import java.util.List;
 import org.hibernate.validator.constraints.URL;
 
-public record ArtistRegisterRequest(
+public record RegisterArtistRequest(
 
         @NotNull(message = "아티스트 정보는 필수입니다.")
         @Valid

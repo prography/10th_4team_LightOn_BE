@@ -1,8 +1,9 @@
 package com.prography.lighton.artist.presentation.controller;
 
 import com.prography.lighton.artist.application.service.ArtistService;
-import com.prography.lighton.artist.presentation.dto.ArtistRegisterRequest;
-import com.prography.lighton.artist.presentation.dto.ArtistUpdateRequest;
+import com.prography.lighton.artist.presentation.dto.request.RegisterArtistRequest;
+import com.prography.lighton.artist.presentation.dto.request.UpdateArtistRequest;
+import com.prography.lighton.common.annotation.LoginMember;
 import com.prography.lighton.common.utils.ApiUtils;
 import com.prography.lighton.common.utils.ApiUtils.ApiResult;
 import com.prography.lighton.member.domain.entity.Member;
@@ -24,18 +25,16 @@ public class ArtistController {
     private final ArtistService artistService;
 
     @PostMapping
-    public ResponseEntity<ApiResult<String>> registerArtist(@Valid @RequestBody ArtistRegisterRequest request) {
-        // 나중에 수정 필요
-        Member member = Member.withId(1L);
+    public ResponseEntity<ApiResult<String>> registerArtist(@LoginMember Member member,
+                                                            @Valid @RequestBody RegisterArtistRequest request) {
         artistService.registerArtist(member, request);
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(ApiUtils.success());
     }
 
     @PutMapping
-    public ResponseEntity<ApiResult<String>> updateArtist(@Valid @RequestBody ArtistUpdateRequest request) {
-        // 나중에 수정 필요
-        Member member = Member.withId(1L);
+    public ResponseEntity<ApiResult<String>> updateArtist(@LoginMember Member member,
+                                                          @Valid @RequestBody UpdateArtistRequest request) {
         artistService.updateArtist(member, request);
         return ResponseEntity.ok()
                 .body(ApiUtils.success());
