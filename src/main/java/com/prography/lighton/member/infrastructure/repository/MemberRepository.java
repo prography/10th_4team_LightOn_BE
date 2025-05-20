@@ -1,14 +1,14 @@
-package com.prography.lighton.member.domain.repository;
+package com.prography.lighton.member.infrastructure.repository;
 
 import com.prography.lighton.member.domain.entity.Member;
 import com.prography.lighton.member.domain.entity.vo.Email;
 import com.prography.lighton.member.domain.entity.vo.Phone;
+import com.prography.lighton.member.exception.NoSuchMemberException;
 import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
-import com.prography.lighton.member.exception.NoSuchMemberException;
 
 @Repository
 public interface MemberRepository extends JpaRepository<Member, Long> {
@@ -20,9 +20,9 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
     @Query("SELECT COUNT(m) > 0 FROM Member m WHERE m.email.value = :email")
     boolean existsByEmail(@Param("email") String email);
 
-	default Member getMemberByEmail(Email email) {
-		return findByEmail(email)
-				.orElseThrow(NoSuchMemberException::new);
-	}
+    default Member getMemberByEmail(Email email) {
+        return findByEmail(email)
+                .orElseThrow(NoSuchMemberException::new);
+    }
 
 }

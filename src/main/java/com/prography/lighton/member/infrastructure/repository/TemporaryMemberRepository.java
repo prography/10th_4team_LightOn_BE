@@ -1,4 +1,4 @@
-package com.prography.lighton.member.domain.repository;
+package com.prography.lighton.member.infrastructure.repository;
 
 import com.prography.lighton.member.domain.entity.TemporaryMember;
 import com.prography.lighton.member.domain.entity.vo.Email;
@@ -18,8 +18,8 @@ public interface TemporaryMemberRepository extends JpaRepository<TemporaryMember
     @Query("SELECT COUNT(m) > 0 FROM TemporaryMember m WHERE m.email.value = :email")
     boolean existsByEmail(@Param("email") String email);
 
-	default TemporaryMember getById(final Long id) {
-		return findById(id)
-				.orElseThrow(NoSuchMemberException::new);
-	}
+    default TemporaryMember getById(final Long id) {
+        return findById(id)
+                .orElseThrow(NoSuchMemberException::new);
+    }
 }

@@ -14,8 +14,8 @@ import com.prography.lighton.auth.presentation.dto.response.login.SocialLoginRes
 import com.prography.lighton.member.domain.entity.Member;
 import com.prography.lighton.member.domain.entity.TemporaryMember;
 import com.prography.lighton.member.domain.entity.vo.Email;
-import com.prography.lighton.member.domain.repository.MemberRepository;
-import com.prography.lighton.member.domain.repository.TemporaryMemberRepository;
+import com.prography.lighton.member.infrastructure.repository.MemberRepository;
+import com.prography.lighton.member.infrastructure.repository.TemporaryMemberRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
