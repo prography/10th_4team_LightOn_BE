@@ -14,6 +14,7 @@ import com.prography.lighton.performance.domain.entity.vo.Payment;
 import com.prography.lighton.performance.domain.entity.vo.Schedule;
 import com.prography.lighton.performance.domain.exception.MasterArtistCannotBeRemovedException;
 import com.prography.lighton.performance.domain.exception.PerformanceNotApprovedException;
+import com.prography.lighton.performance.domain.exception.PerformanceUpdateNotAllowedException;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.CollectionTable;
 import jakarta.persistence.Column;
@@ -26,6 +27,7 @@ import jakarta.persistence.FetchType;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -139,6 +141,7 @@ public class Performance extends BaseEntity {
             List<Genre> genres
     ) {
         validateMasterArtist(artist);
+        validateUpdatable();
 
         this.info = info;
         this.schedule = schedule;
@@ -203,6 +206,16 @@ public class Performance extends BaseEntity {
 
         this.genres.addAll(PerformanceGenre.createListFor(this, genresToAdd));
     }
+
+    private void validateUpdatable() {
+        LocalDate today = LocalDate.now();
+        LocalDate updateDeadline = this.schedule.getStartDate().minusDays(3);
+
+        if (today.isAfter(updateDeadline)) {
+            throw new PerformanceUpdateNotAllowedException();
+        }
+    }
+
 
     public void validateApproved() {
         if (this.approveStatus != ApproveStatus.APPROVED) {
