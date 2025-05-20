@@ -1,6 +1,6 @@
 package com.prography.lighton.genre.domain.entity;
 
-import com.prography.lighton.common.domain.BaseEntity;
+import com.prography.lighton.common.BaseEntity;
 import jakarta.persistence.Entity;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;

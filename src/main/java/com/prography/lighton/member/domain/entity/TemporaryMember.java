@@ -1,6 +1,6 @@
 package com.prography.lighton.member.domain.entity;
 
-import com.prography.lighton.common.domain.BaseEntity;
+import com.prography.lighton.common.BaseEntity;
 import com.prography.lighton.member.domain.entity.vo.Email;
 import com.prography.lighton.member.domain.entity.vo.Password;
 import jakarta.persistence.Column;
