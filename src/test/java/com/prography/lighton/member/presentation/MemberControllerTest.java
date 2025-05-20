@@ -3,6 +3,7 @@ package com.prography.lighton.member.presentation;
 import static com.epages.restdocs.apispec.MockMvcRestDocumentationWrapper.document;
 import static com.epages.restdocs.apispec.ResourceDocumentation.resource;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.post;
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.preprocessRequest;
@@ -13,6 +14,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import com.epages.restdocs.apispec.ResourceSnippetParameters;
 import com.prography.lighton.common.presentation.ControllerTest;
+import com.prography.lighton.member.presentation.dto.response.CompleteMemberProfileResponseDTO;
 import com.prography.lighton.member.presentation.dto.response.LoginMemberResponseDTO;
 import com.prography.lighton.member.presentation.dto.response.RegisterMemberResponseDTO;
 import org.junit.jupiter.api.Test;
@@ -93,9 +95,9 @@ class MemberControllerTest extends ControllerTest {
                                 .tag("로그인 API")
                                 .summary("로그인 API")
                                 .description("""
-                                            ## 로그인 API입니다.
-                                            - 이메일, 비밀번호를 입력 받아 로그인을 진행합니다.
-                                            - 해당 API를 호출하면 accessToken과 refreshToken이 발급됩니다.
+                                        ## 로그인 API입니다.
+                                        - 이메일, 비밀번호를 입력 받아 로그인을 진행합니다.
+                                        - 해당 API를 호출하면 accessToken과 refreshToken이 발급됩니다.
                                         """)
                                 .requestFields(
                                         fieldWithPath("email").description("이메일"),
@@ -110,5 +112,70 @@ class MemberControllerTest extends ControllerTest {
                                 .build()
                         )
                 ));
+    }
+
+    @Test
+    @WithMockUser
+    void completeMember() throws Exception {
+        // given
+        given(completeMemberProfileUseCase.completeMemberProfile(anyLong(), any()))
+                .willReturn(CompleteMemberProfileResponseDTO.of("aaa.ccc.ddd", "refreshToken"));
+
+        // when & then: 로그인 API 호출 및 문서화
+        mockMvc.perform(post("/api/members/{temporaryMemberId}/info", 123L)
+                        .contentType("application/json")
+                        .with(SecurityMockMvcRequestPostProcessors.csrf())
+                        .content("""
+                                    {
+                                      "name": "홍길동",
+                                      "phone": "01012345678",
+                                      "regionCode": 201,
+                                      "agreements": {
+                                        "terms": true,
+                                        "privacy": true,
+                                        "over14": true,
+                                        "marketing": {
+                                          "sms": true,
+                                          "push": true,
+                                          "email": true
+                                        }
+                                      }
+                                    }
+                                """))
+                .andExpect(status().isOk())
+                .andDo(document("complete-member-info",
+                        preprocessRequest(prettyPrint()),
+                        preprocessResponse(prettyPrint()),
+                        resource(ResourceSnippetParameters.builder()
+                                .tag("개인 정보 입력  API")
+                                .summary("개인 정보 입력 API")
+                                .description("""
+                                        ## 개인 정보 입력 API입니다.
+                                        - Path Variable로 임시 회원 ID를 입력 받아 개인 정보를 입력합니다.
+                                        - 이메일, 비밀번호, 이름, 전화번호, 지역코드, 마케팅 동의 여부를 입력 받아 회원 정보를 완성합니다.
+                                        - 해당 API를 호출하면 accessToken과 refreshToken이 발급됩니다.
+                                        - 개인 정보 입력 후에는 정상적으로 서비스를 이용할 수 있습니다.
+                                        """)
+                                .requestFields(
+                                        fieldWithPath("name").description("이름"),
+                                        fieldWithPath("phone").description("전화번호"),
+                                        fieldWithPath("regionCode").description("지역 코드"),
+                                        fieldWithPath("agreements.terms").description("약관 동의 여부"),
+                                        fieldWithPath("agreements.privacy").description("개인정보 수집 및 이용 동의 여부"),
+                                        fieldWithPath("agreements.over14").description("14세 이상 동의 여부"),
+                                        fieldWithPath("agreements.marketing.sms").description("SMS 마케팅 동의 여부"),
+                                        fieldWithPath("agreements.marketing.push").description("푸시 마케팅 동의 여부"),
+                                        fieldWithPath("agreements.marketing.email").description("이메일 마케팅 동의 여부")
+                                )
+                                .responseFields(
+                                        fieldWithPath("success").description("응답 성공 여부"),
+                                        fieldWithPath("response.accessToken").description("엑세스 토큰"),
+                                        fieldWithPath("response.refreshToken").description("리프레시 토큰"),
+                                        fieldWithPath("error").description("에러 정보 (없으면 null)")
+                                )
+                                .build()
+                        )
+                ));
+
     }
 }
