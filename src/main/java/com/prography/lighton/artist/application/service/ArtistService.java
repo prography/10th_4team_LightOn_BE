@@ -27,7 +27,7 @@ public class ArtistService {
     @Transactional
     public void registerArtist(Member member, ArtistRegisterRequest request) {
         artistRepository.findByMember(member)
-                .ifPresent(Artist::validateRecreatable);
+                .ifPresent(Artist::isValidRecreatable);
 
         var data = toArtistData(request.artist(), request.history());
         Artist artist = Artist.create(
@@ -46,7 +46,7 @@ public class ArtistService {
     @Transactional
     public void updateArtist(Member member, ArtistUpdateRequest request) {
         Artist artist = artistRepository.getByMember(member);
-        artist.validateUpdatable();
+        artist.isValidUpdatable();
 
         var data = toArtistData(request.artist(), request.history());
         artist.update(
