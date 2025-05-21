@@ -2,6 +2,7 @@ package com.prography.lighton.member.application.admin;
 
 import static com.prography.lighton.artist.domain.entity.enums.ApproveStatus.PENDING;
 
+import com.prography.lighton.artist.application.exception.NoSuchArtistException;
 import com.prography.lighton.artist.domain.entity.Artist;
 import com.prography.lighton.artist.domain.entity.enums.ApproveStatus;
 import com.prography.lighton.artist.infrastructure.repository.ArtistRepository;
@@ -31,7 +32,8 @@ public class PendingArtistQueryService implements PendingArtistQueryUseCase {
 
     @Override
     public GetPendingArtistDetailResponseDTO getPendingArtistDetail(Long artistId) {
-        Artist artist = artistRepository.getByIdAndApproveStatus(artistId, PENDING);
+        Artist artist = artistRepository.findByIdAndApproveStatus(artistId, PENDING)
+                .orElseThrow(() -> new NoSuchArtistException("해당 아티스트는 이미 처리 되었거나 존재하지 않습니다."));
 
         return PendingArtistMapper.toPendingArtistDetailResponseDTO(artist);
     }
