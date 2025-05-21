@@ -33,6 +33,7 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.POST, "/api/members").permitAll()
                         .requestMatchers(HttpMethod.POST, "/api/members/login").permitAll()
                         .requestMatchers(HttpMethod.POST, "/api/members/*/info").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/oauth/**").permitAll()
 
                         // Swagger & OpenAPI
                         .requestMatchers(
