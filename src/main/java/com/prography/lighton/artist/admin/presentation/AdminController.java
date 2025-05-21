@@ -30,11 +30,14 @@ public class AdminController {
             @RequestParam(defaultValue = "10") int size,
             @RequestParam(required = false) String status
     ) {
-        GetArtistApplicationListResponseDTO result =
-                StringUtils.isBlank(status)
-                        ? artistApplicationQueryUseCase.getAllArtistApplications(page, size)
-                        : artistApplicationQueryUseCase.getArtistApplicationsByApproveStatus(page, size,
-                                ApproveStatus.from(status));
+        GetArtistApplicationListResponseDTO result;
+
+        if (StringUtils.isBlank(status)) {
+            result = artistApplicationQueryUseCase.getAllArtistApplications(page, size);
+        } else {
+            ApproveStatus approveStatus = ApproveStatus.from(status);
+            result = artistApplicationQueryUseCase.getArtistApplicationsByApproveStatus(page, size, approveStatus);
+        }
 
         return ResponseEntity.ok(ApiUtils.success(result));
     }
