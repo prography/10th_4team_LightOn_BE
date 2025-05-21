@@ -8,6 +8,7 @@ import com.prography.lighton.member.application.admin.PendingArtistQueryUseCase;
 import com.prography.lighton.member.presentation.dto.request.ManageArtistApplicationRequestDTO;
 import com.prography.lighton.member.presentation.dto.response.GetPendingArtistDetailResponseDTO;
 import com.prography.lighton.member.presentation.dto.response.GetPendingArtistListResponseDTO;
+import io.micrometer.common.util.StringUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -26,17 +27,21 @@ public class AdminController {
     private final PendingArtistQueryUseCase pendingArtistQueryUseCase;
     private final ManageArtistApplicationUseCase manageArtistApplicationUseCase;
 
-    // 신청 처리 대기 아티스트 정보 상세 조회 API
     @GetMapping("/applications/artists")
-    public ResponseEntity<ApiUtils.ApiResult<GetPendingArtistListResponseDTO>> getPendingArtistList(
-            @RequestParam(value = "page", defaultValue = "0") int page,
-            @RequestParam(value = "size", defaultValue = "10") int size,
-            @RequestParam String status
+    public ResponseEntity<ApiResult<GetPendingArtistListResponseDTO>> getPendingArtistList(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(required = false) String status
     ) {
+        GetPendingArtistListResponseDTO result =
+                StringUtils.isBlank(status)
+                        ? pendingArtistQueryUseCase.getAllPendingArtists(page, size)
+                        : pendingArtistQueryUseCase.getPendingArtistsByApproveStatus(page, size,
+                                ApproveStatus.from(status));
 
-        return ResponseEntity.ok(
-                ApiUtils.success(pendingArtistQueryUseCase.getPendingArtists(page, size, ApproveStatus.from(status))));
+        return ResponseEntity.ok(ApiUtils.success(result));
     }
+
 
     // 신청 처리 대기 아티스트 리스트 조회 API
     @GetMapping("/applications/artists/{artistId}")

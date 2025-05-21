@@ -48,6 +48,19 @@ public interface ArtistRepository extends JpaRepository<Artist, Long> {
                     """)
     Page<Artist> findByApproveStatus(@Param("approveStatus") ApproveStatus approveStatus, Pageable pageable);
 
+    @Query(value = """
+            select distinct a from Artist a
+            join fetch a.genres ag
+            where a.approveStatus != :approveStatus
+              and a.status = true
+            """,
+            countQuery = """
+                    select count(a) from Artist a
+                    where a.approveStatus != :approveStatus
+                      and a.status = true
+                    """)
+    Page<Artist> findByApproveStatusNotApproved(@Param("approveStatus") ApproveStatus approveStatus, Pageable pageable);
+
     default Artist getByMember(Member member) {
         return findByMemberWithGenres(member)
                 .orElseThrow(NoSuchArtistException::new);
