@@ -6,6 +6,7 @@ import com.prography.lighton.artist.common.domain.entity.Artist;
 import com.prography.lighton.artist.common.domain.entity.ArtistGenre;
 import com.prography.lighton.genre.domain.entity.Genre;
 import com.prography.lighton.genre.infrastructure.cache.GenreCache;
+import com.prography.lighton.region.infrastructure.cache.RegionCache;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -15,6 +16,7 @@ import org.springframework.stereotype.Component;
 public class PendingArtistMapper {
 
     private final GenreCache genreCache;
+    private final RegionCache regionCache;
 
     public ArtistApplicationDTO toPendingArtistDTO(Artist artist) {
         return ArtistApplicationDTO.of(
@@ -33,7 +35,7 @@ public class PendingArtistMapper {
                 artist.getApproveStatus(),
                 artist.getStageName(),
                 artist.getDescription(),
-                artist.getActivityLocation().getSubRegion().getCode(),
+                regionCache.getRegionCodeByInfo(artist.getActivityLocation()),
                 toRegionName(artist),
                 toGenres(artist.getGenres()),
                 artist.getHistory().getBio(),

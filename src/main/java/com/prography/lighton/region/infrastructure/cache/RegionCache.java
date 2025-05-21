@@ -16,12 +16,15 @@ import org.springframework.stereotype.Component;
 public class RegionCache {
     private final SubRegionRepository subRegionRepository;
     private final Map<Integer, RegionInfo> cache = new ConcurrentHashMap<>();
+    private final Map<RegionInfo, Integer> reverseCache = new ConcurrentHashMap<>();
 
     @PostConstruct
     public void init() {
         subRegionRepository.findAllActiveWithRegion()
-                .forEach(sr ->
-                        cache.put(sr.getCode(), RegionInfo.of(sr.getRegion(), sr))
+                .forEach(sr -> {
+                            cache.put(sr.getCode(), RegionInfo.of(sr.getRegion(), sr));
+                            reverseCache.put(RegionInfo.of(sr.getRegion(), sr), sr.getCode());
+                        }
                 );
 
         if (cache.isEmpty()) {
@@ -37,6 +40,14 @@ public class RegionCache {
             throw new NoSuchRegionException();
         }
         return info;
+    }
+
+    public Integer getRegionCodeByInfo(RegionInfo regionInfo) {
+        Integer code = reverseCache.get(regionInfo);
+        if (code == null) {
+            throw new NoSuchRegionException();
+        }
+        return code;
     }
 
     private Integer getParentRegionCode(Integer regionCode) {
