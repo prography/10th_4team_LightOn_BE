@@ -28,13 +28,13 @@ public class PendingPerformanceQueryService implements PendingPerformanceQueryUs
     private final AdminPerformanceRepository adminPerformanceRepository;
 
     @Override
-    public GetPerformanceApplicationListResponseDTO getAllPendingArtists(int page, int size) {
+    public GetPerformanceApplicationListResponseDTO getAllPendingPerformances(int page, int size) {
         return getPerformances(PageRequest.of(page, size), Optional.empty());
     }
 
     @Override
-    public GetPerformanceApplicationListResponseDTO getPendingArtistsByApproveStatus(int page, int size,
-                                                                                     ApproveStatus approveStatus) {
+    public GetPerformanceApplicationListResponseDTO getPendingPerformancesByApproveStatus(int page, int size,
+                                                                                          ApproveStatus approveStatus) {
         return getPerformances(PageRequest.of(page, size), Optional.of(approveStatus));
     }
 
@@ -50,7 +50,7 @@ public class PendingPerformanceQueryService implements PendingPerformanceQueryUs
     }
 
     @Override
-    public GetPerformanceApplicationDetailResponseDTO getPendingArtistDetail(Long artistId) {
+    public GetPerformanceApplicationDetailResponseDTO getPendingPerformanceDetail(Long performanceId) {
         return null;
     }
 }

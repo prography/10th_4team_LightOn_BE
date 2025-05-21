@@ -35,8 +35,8 @@ public class ManagePerformanceApplicationController {
     ) {
         GetPerformanceApplicationListResponseDTO result =
                 StringUtils.isBlank(status)
-                        ? pendingPerformanceQueryUseCase.getAllPendingArtists(page, size)
-                        : pendingPerformanceQueryUseCase.getPendingArtistsByApproveStatus(page, size,
+                        ? pendingPerformanceQueryUseCase.getAllPendingPerformances(page, size)
+                        : pendingPerformanceQueryUseCase.getPendingPerformancesByApproveStatus(page, size,
                                 ApproveStatus.from(status));
 
         return ResponseEntity.ok(ApiUtils.success(result));
@@ -47,7 +47,7 @@ public class ManagePerformanceApplicationController {
     public ResponseEntity<ApiUtils.ApiResult<GetPerformanceApplicationDetailResponseDTO>> getPerformanceApplicationList(
             @PathVariable Long performanceId) {
         return ResponseEntity.ok(ApiUtils.success(
-                pendingPerformanceQueryUseCase.getPendingArtistDetail(performanceId)));
+                pendingPerformanceQueryUseCase.getPendingPerformanceDetail(performanceId)));
     }
 
     // 아티스트 신청 승인 API

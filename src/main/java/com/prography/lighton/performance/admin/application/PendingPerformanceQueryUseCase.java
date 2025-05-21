@@ -6,10 +6,10 @@ import com.prography.lighton.performance.users.domain.entity.enums.ApproveStatus
 
 public interface PendingPerformanceQueryUseCase {
 
-    GetPerformanceApplicationListResponseDTO getAllPendingArtists(int page, int size);
+    GetPerformanceApplicationListResponseDTO getAllPendingPerformances(int page, int size);
 
-    GetPerformanceApplicationListResponseDTO getPendingArtistsByApproveStatus(int page, int size,
-                                                                              ApproveStatus approveStatus);
+    GetPerformanceApplicationListResponseDTO getPendingPerformancesByApproveStatus(int page, int size,
+                                                                                   ApproveStatus approveStatus);
 
-    GetPerformanceApplicationDetailResponseDTO getPendingArtistDetail(Long artistId);
+    GetPerformanceApplicationDetailResponseDTO getPendingPerformanceDetail(Long artistId);
 }
