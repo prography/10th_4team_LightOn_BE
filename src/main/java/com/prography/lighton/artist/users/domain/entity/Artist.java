@@ -1,5 +1,7 @@
 package com.prography.lighton.artist.users.domain.entity;
 
+import com.prography.lighton.artist.admin.domain.exception.InvalidApproveStatusTransitionException;
+import com.prography.lighton.artist.admin.domain.exception.SameApproveStatusException;
 import com.prography.lighton.artist.users.domain.entity.enums.ApproveStatus;
 import com.prography.lighton.artist.users.domain.entity.exception.ArtistNotApprovedException;
 import com.prography.lighton.artist.users.domain.entity.exception.ArtistRegistrationNotAllowedException;
@@ -172,10 +174,25 @@ public class Artist extends BaseEntity {
         }
     }
 
-    public void manageArtistApplication(ApproveStatus approveStatus) {
-        this.approveStatus = approveStatus;
-        if (approveStatus == ApproveStatus.APPROVED) {
-            this.approveAt = LocalDateTime.now();
+    public void manageArtistApplication(ApproveStatus targetStatus) {
+        if (this.approveStatus == targetStatus) {
+            throw new SameApproveStatusException("동일한 상태로는 변경할 수 없습니다.");
         }
+
+        // 예: 상태 전이 허용 규칙
+        if (this.approveStatus == ApproveStatus.PENDING) {
+            if (targetStatus == ApproveStatus.APPROVED || targetStatus == ApproveStatus.REJECTED) {
+                this.approveStatus = targetStatus;
+                return;
+            }
+        }
+
+        if (this.approveStatus == ApproveStatus.APPROVED && targetStatus == ApproveStatus.PENDING) {
+            this.approveStatus = targetStatus;
+            return;
+        }
+
+        throw new InvalidApproveStatusTransitionException("현재 상태에서는 해당 상태로 변경할 수 없습니다.");
     }
+
 }
