@@ -27,7 +27,7 @@ public class RegionCache {
                         }
                 );
 
-        if (cache.isEmpty()) {
+        if (cache.isEmpty() || reverseCache.isEmpty()) {
             throw new IllegalStateException("RegionCache 초기화 실패: 캐시 비어 있음");
         }
 
