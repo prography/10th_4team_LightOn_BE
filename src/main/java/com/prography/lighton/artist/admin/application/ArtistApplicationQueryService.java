@@ -21,7 +21,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
-public class PendingArtistQueryService implements PendingArtistQueryUseCase {
+public class ArtistApplicationQueryService implements ArtistApplicationQueryUseCase {
 
     private final ArtistRepository artistRepository;
     private final AdminArtistRepository adminArtistRepository;

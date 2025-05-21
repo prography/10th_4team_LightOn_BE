@@ -4,7 +4,7 @@ import com.prography.lighton.artist.admin.domain.enums.ApproveStatus;
 import com.prography.lighton.artist.admin.presentation.GetArtistApplicationDetailResponseDTO;
 import com.prography.lighton.artist.admin.presentation.GetArtistApplicationListResponseDTO;
 
-public interface PendingArtistQueryUseCase {
+public interface ArtistApplicationQueryUseCase {
 
     GetArtistApplicationListResponseDTO getAllPendingArtists(int page, int size);
 
