@@ -1,8 +1,8 @@
 package com.prography.lighton.artist.domain.entity;
 
 import com.prography.lighton.artist.domain.entity.enums.ApproveStatus;
+import com.prography.lighton.artist.domain.entity.exception.ArtistNotApprovedException;
 import com.prography.lighton.artist.domain.entity.exception.ArtistRegistrationNotAllowedException;
-import com.prography.lighton.artist.domain.entity.exception.ArtistUpdateNotAllowedException;
 import com.prography.lighton.artist.domain.entity.vo.History;
 import com.prography.lighton.common.domain.BaseEntity;
 import com.prography.lighton.common.domain.DomainValidator;
@@ -83,6 +83,24 @@ public class Artist extends BaseEntity {
         this.proofUrl = proofUrl;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof Artist)) {
+            return false;
+        }
+
+        Artist artist = (Artist) o;
+        return this.getId() != null && this.getId().equals(artist.getId());
+    }
+
+    @Override
+    public int hashCode() {
+        return (getId() != null ? getId().hashCode() : 0);
+    }
+
     public static Artist create(
             Member member,
             String stageName,
@@ -105,7 +123,7 @@ public class Artist extends BaseEntity {
         return artist;
     }
 
-    public void updateGenres(List<Genre> newGenres) {
+    private void updateGenres(List<Genre> newGenres) {
         Set<Long> newGenreIds = newGenres.stream()
                 .map(Genre::getId)
                 .collect(Collectors.toSet());
@@ -143,9 +161,9 @@ public class Artist extends BaseEntity {
         }
     }
 
-    public void isValidUpdatable() {
+    public void isValidApproved() {
         if (this.approveStatus != ApproveStatus.APPROVED) {
-            throw new ArtistUpdateNotAllowedException();
+            throw new ArtistNotApprovedException();
         }
     }
 }

@@ -1,10 +1,10 @@
-package com.prography.lighton.artist.domain.entity.exception;
+package com.prography.lighton.performance.domain.exception;
 
 import com.prography.lighton.common.utils.ApiUtils;
 import org.springframework.http.HttpStatus;
 
-public class ArtistUpdateNotAllowedException extends RuntimeException {
-    private final String message = "승인된 아티스트만 수정할 수 있습니다.";
+public class MasterArtistCannotBeRemovedException extends RuntimeException {
+    private static final String message = "공연 등록 아티스트는 삭제할 수 없습니다.";
 
     public ApiUtils.ApiResult<?> body() {
         return ApiUtils.error(HttpStatus.CONFLICT, message);

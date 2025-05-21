@@ -1,9 +1,23 @@
 package com.prography.lighton.performance.domain.entity.vo;
 
+import com.prography.lighton.performance.domain.exception.InvalidPaymentInfoException;
+import io.micrometer.common.util.StringUtils;
+import jakarta.persistence.Column;
+import jakarta.persistence.Embeddable;
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 import jakarta.persistence.Embeddable;
 
 @Embeddable
+@Getter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
 public class Payment {
+
+    @Column(nullable = false)
+    private Boolean isPaid;
 
     private String account;
 
@@ -13,6 +27,19 @@ public class Payment {
 
     private Integer fee;
 
-    // todo 나중에 값 검증 로직 구현하기
+    public static Payment of(Boolean isPaid, String account, String bank, String accountHolder, Integer fee) {
+        if (Boolean.TRUE.equals(isPaid) && isInvalid(account, bank, accountHolder, fee)) {
+            throw new InvalidPaymentInfoException();
+        }
+
+        return new Payment(isPaid, account, bank, accountHolder, fee);
+    }
+
+    private static boolean isInvalid(String account, String bank, String holder, Integer fee) {
+        return StringUtils.isBlank(account)
+                || StringUtils.isBlank(bank)
+                || StringUtils.isBlank(holder)
+                || fee == null || fee <= 0;
+    }
 }
 

@@ -1,4 +1,4 @@
-package com.prography.lighton.artist.domain.entity;
+package com.prography.lighton.performance.domain.entity;
 
 import com.prography.lighton.common.domain.BaseEntity;
 import com.prography.lighton.genre.domain.entity.Genre;
@@ -15,21 +15,21 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
-public class ArtistGenre extends BaseEntity {
+public class PerformanceGenre extends BaseEntity {
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    private Artist artist;
+    private Performance performance;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     private Genre genre;
 
-    public static List<ArtistGenre> createListFor(Artist artist, List<Genre> genres) {
+    public static List<PerformanceGenre> createListFor(Performance performance, List<Genre> genres) {
         return genres.stream()
-                .map(genre -> createFor(artist, genre))
+                .map(genre -> create(performance, genre))
                 .toList();
     }
 
-    private static ArtistGenre createFor(Artist artist, Genre genre) {
-        return new ArtistGenre(artist, genre);
+    private static PerformanceGenre create(Performance performance, Genre genre) {
+        return new PerformanceGenre(performance, genre);
     }
 }
