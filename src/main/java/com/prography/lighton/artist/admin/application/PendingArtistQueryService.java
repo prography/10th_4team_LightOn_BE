@@ -31,8 +31,8 @@ public class PendingArtistQueryService implements PendingArtistQueryUseCase {
     }
 
     @Override
-    public GetArtistApplicationListResponseDTO getPendingArtistsByApproveStatus(int page, int size,
-                                                                                ApproveStatus approveStatus) {
+    public GetArtistApplicationListResponseDTO getArtistsByApproveStatus(int page, int size,
+                                                                         ApproveStatus approveStatus) {
         return getArtists(PageRequest.of(page, size), Optional.of(approveStatus));
     }
 

@@ -1,10 +1,10 @@
 package com.prography.lighton.artist.admin.presentation;
 
+import com.prography.lighton.artist.admin.application.ManageArtistApplicationUseCase;
+import com.prography.lighton.artist.admin.application.PendingArtistQueryUseCase;
 import com.prography.lighton.artist.admin.domain.enums.ApproveStatus;
 import com.prography.lighton.common.utils.ApiUtils;
 import com.prography.lighton.common.utils.ApiUtils.ApiResult;
-import com.prography.lighton.artist.admin.application.ManageArtistApplicationUseCase;
-import com.prography.lighton.artist.admin.application.PendingArtistQueryUseCase;
 import io.micrometer.common.util.StringUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -33,7 +33,7 @@ public class AdminController {
         GetArtistApplicationListResponseDTO result =
                 StringUtils.isBlank(status)
                         ? pendingArtistQueryUseCase.getAllPendingArtists(page, size)
-                        : pendingArtistQueryUseCase.getPendingArtistsByApproveStatus(page, size,
+                        : pendingArtistQueryUseCase.getArtistsByApproveStatus(page, size,
                                 ApproveStatus.from(status));
 
         return ResponseEntity.ok(ApiUtils.success(result));

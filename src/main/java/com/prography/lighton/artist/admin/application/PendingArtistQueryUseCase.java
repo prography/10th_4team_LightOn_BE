@@ -8,8 +8,8 @@ public interface PendingArtistQueryUseCase {
 
     GetArtistApplicationListResponseDTO getAllPendingArtists(int page, int size);
 
-    GetArtistApplicationListResponseDTO getPendingArtistsByApproveStatus(int page, int size,
-                                                                         ApproveStatus approveStatus);
+    GetArtistApplicationListResponseDTO getArtistsByApproveStatus(int page, int size,
+                                                                  ApproveStatus approveStatus);
 
     GetArtistApplicationDetailResponseDTO getPendingArtistDetail(Long artistId);
 }
