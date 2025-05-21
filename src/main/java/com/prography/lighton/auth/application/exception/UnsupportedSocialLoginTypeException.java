@@ -1,9 +1,8 @@
 package com.prography.lighton.auth.application.exception;
 
-import com.prography.lighton.common.utils.ApiUtils;
-import org.springframework.http.HttpStatus;
+import com.prography.lighton.common.exception.base.UnsupportedTypeException;
 
-public class UnsupportedSocialLoginTypeException extends RuntimeException {
+public class UnsupportedSocialLoginTypeException extends UnsupportedTypeException {
 
     private static final String MESSAGE = "지원하지 않는 소셜 로그인 타입입니다.";
 
@@ -15,11 +14,4 @@ public class UnsupportedSocialLoginTypeException extends RuntimeException {
         this(MESSAGE);
     }
 
-    public ApiUtils.ApiResult<?> body() {
-        return ApiUtils.error(HttpStatus.BAD_REQUEST, getMessage());
-    }
-
-    public HttpStatus status() {
-        return HttpStatus.BAD_REQUEST;
-    }
 }
