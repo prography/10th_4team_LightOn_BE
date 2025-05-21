@@ -58,6 +58,7 @@ public class ArtistService {
                 member,
                 request.artist().name(),
                 request.artist().description(),
+                request.artist().profileImage(),
                 data.activityRegion(),
                 data.history(),
                 request.proof(),
@@ -75,6 +76,7 @@ public class ArtistService {
         artist.update(
                 request.artist().name(),
                 request.artist().description(),
+                request.artist().profileImage(),
                 data.activityRegion(),
                 data.history(),
                 data.genres()

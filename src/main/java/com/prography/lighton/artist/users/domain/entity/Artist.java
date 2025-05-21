@@ -79,11 +79,13 @@ public class Artist extends BaseEntity {
     @OneToMany(mappedBy = "artist", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ArtistGenre> genres = new ArrayList<>();
 
-    private Artist(Member member, String stageName, String description, RegionInfo activityLocation, History history,
+    private Artist(Member member, String stageName, String description, String profileImageUrl,
+                   RegionInfo activityLocation, History history,
                    String proofUrl) {
         this.member = member;
         this.stageName = DomainValidator.requireNonBlank(stageName);
         this.description = DomainValidator.requireNonBlank(description);
+        this.profileImageUrl = DomainValidator.requireNonBlank(profileImageUrl);
         this.activityLocation = activityLocation;
         this.history = history;
         this.proofUrl = proofUrl;
@@ -112,6 +114,7 @@ public class Artist extends BaseEntity {
             Member member,
             String stageName,
             String description,
+            String profileImageUrl,
             RegionInfo activityLocation,
             History history,
             String proofUrl,
@@ -121,6 +124,7 @@ public class Artist extends BaseEntity {
                 member,
                 stageName,
                 description,
+                profileImageUrl,
                 activityLocation,
                 history,
                 proofUrl
@@ -151,12 +155,14 @@ public class Artist extends BaseEntity {
     public void update(
             String stageName,
             String description,
+            String profileImageUrl,
             RegionInfo activityLocation,
             History history,
             List<Genre> genres
     ) {
         this.stageName = stageName;
         this.description = description;
+        this.profileImageUrl = profileImageUrl;
         this.activityLocation = activityLocation;
         this.history = history;
         this.updateGenres(genres);
