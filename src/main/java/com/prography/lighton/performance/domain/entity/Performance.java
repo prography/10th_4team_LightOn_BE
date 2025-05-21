@@ -45,6 +45,7 @@ import org.hibernate.annotations.SQLRestriction;
 public class Performance extends BaseEntity {
 
     private static final int UPDATE_DEADLINE_DAYS = 3;
+    private static final int CANCEL_DEADLINE_DAYS = 3;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     private Artist master;
@@ -231,6 +232,7 @@ public class Performance extends BaseEntity {
 
     public void cancel(Artist artist) {
         validateMasterArtist(artist);
+        validateWithinAllowedPeriod(CANCEL_DEADLINE_DAYS);
         if (this.canceled) {
             throw new IllegalStateException("이미 취소된 공연입니다.");
         }
