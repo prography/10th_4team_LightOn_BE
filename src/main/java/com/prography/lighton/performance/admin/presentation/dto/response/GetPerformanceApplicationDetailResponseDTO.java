@@ -10,7 +10,7 @@ import java.util.List;
 public record GetPerformanceApplicationDetailResponseDTO(
         Long id,
         Info info,
-        PerformanceArtistDTO artist,
+        List<PerformanceArtistDTO> artist,
         Schedule schedule,
         Location location,
         Type type,
@@ -18,6 +18,20 @@ public record GetPerformanceApplicationDetailResponseDTO(
         String proofUrl
 
 ) {
+    public static GetPerformanceApplicationDetailResponseDTO of(
+            Long id,
+            Info info,
+            List<PerformanceArtistDTO> artist,
+            Schedule schedule,
+            Location location,
+            Type type,
+            List<Seat> seats,
+            String proofUrl
+    ) {
+        return new GetPerformanceApplicationDetailResponseDTO(id, info, artist, schedule, location, type, seats,
+                proofUrl);
+    }
+
     public record PerformanceArtistDTO(
             Long id,
             String name,
