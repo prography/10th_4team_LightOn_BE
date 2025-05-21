@@ -1,6 +1,6 @@
 package com.prography.lighton.artist.domain.entity.enums;
 
-import com.prography.lighton.member.domain.exception.UnsupportedApproveStatusTypeException;
+import com.prography.lighton.member.users.domain.exception.UnsupportedApproveStatusTypeException;
 
 public enum ApproveStatus {
     PENDING, APPROVED, REJECTED;

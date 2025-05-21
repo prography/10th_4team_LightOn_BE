@@ -14,7 +14,7 @@ import com.prography.lighton.artist.presentation.dto.request.UpdateArtistRequest
 import com.prography.lighton.common.domain.vo.RegionInfo;
 import com.prography.lighton.genre.application.service.GenreService;
 import com.prography.lighton.genre.domain.entity.Genre;
-import com.prography.lighton.member.domain.entity.Member;
+import com.prography.lighton.member.users.domain.entity.Member;
 import com.prography.lighton.region.infrastructure.cache.RegionCache;
 import java.util.List;
 import lombok.RequiredArgsConstructor;

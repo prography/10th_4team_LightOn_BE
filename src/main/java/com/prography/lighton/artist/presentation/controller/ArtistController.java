@@ -6,7 +6,7 @@ import com.prography.lighton.artist.presentation.dto.request.UpdateArtistRequest
 import com.prography.lighton.common.annotation.LoginMember;
 import com.prography.lighton.common.utils.ApiUtils;
 import com.prography.lighton.common.utils.ApiUtils.ApiResult;
-import com.prography.lighton.member.domain.entity.Member;
+import com.prography.lighton.member.users.domain.entity.Member;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;

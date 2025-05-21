@@ -2,7 +2,6 @@ package com.prography.lighton.auth.application;
 
 import com.prography.lighton.auth.domain.enums.SocialLoginType;
 import com.prography.lighton.auth.presentation.dto.response.login.SocialLoginResult;
-import com.prography.lighton.member.presentation.dto.response.LoginMemberResponseDTO;
 import java.io.IOException;
 
 public interface OAuthUseCase {
