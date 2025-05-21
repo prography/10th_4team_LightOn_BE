@@ -1,10 +1,10 @@
 package com.prography.lighton.performance.application.resolver;
 
-import com.prography.lighton.artist.application.service.ArtistService;
-import com.prography.lighton.artist.domain.entity.Artist;
+import com.prography.lighton.artist.users.application.service.ArtistService;
+import com.prography.lighton.artist.users.domain.entity.Artist;
 import com.prography.lighton.genre.application.service.GenreService;
 import com.prography.lighton.genre.domain.entity.Genre;
-import com.prography.lighton.member.users.domain.entity.Member;
+import com.prography.lighton.member.domain.entity.Member;
 import com.prography.lighton.performance.domain.entity.enums.Seat;
 import com.prography.lighton.performance.domain.entity.vo.Info;
 import com.prography.lighton.performance.domain.entity.vo.Location;

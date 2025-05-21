@@ -1,7 +1,7 @@
 package com.prography.lighton.auth.application;
 
 
-import com.prography.lighton.member.users.domain.entity.enums.Authority;
+import com.prography.lighton.member.domain.entity.enums.Authority;
 import io.jsonwebtoken.Claims;
 
 public interface TokenProvider {

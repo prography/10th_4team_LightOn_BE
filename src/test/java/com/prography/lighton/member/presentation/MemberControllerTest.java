@@ -14,9 +14,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import com.epages.restdocs.apispec.ResourceSnippetParameters;
 import com.prography.lighton.common.presentation.ControllerTest;
-import com.prography.lighton.member.users.presentation.dto.response.CompleteMemberProfileResponseDTO;
-import com.prography.lighton.member.users.presentation.dto.response.LoginMemberResponseDTO;
-import com.prography.lighton.member.users.presentation.dto.response.RegisterMemberResponseDTO;
+import com.prography.lighton.member.presentation.dto.response.CompleteMemberProfileResponseDTO;
+import com.prography.lighton.member.presentation.dto.response.LoginMemberResponseDTO;
+import com.prography.lighton.member.presentation.dto.response.RegisterMemberResponseDTO;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.security.test.context.support.WithMockUser;
