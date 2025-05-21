@@ -3,16 +3,17 @@ package com.prography.lighton.member.presentation;
 import com.prography.lighton.artist.domain.entity.enums.ApproveStatus;
 import com.prography.lighton.common.utils.ApiUtils;
 import com.prography.lighton.common.utils.ApiUtils.ApiResult;
+import com.prography.lighton.member.application.admin.ManageArtistApplicationUseCase;
 import com.prography.lighton.member.application.admin.PendingArtistQueryUseCase;
-import com.prography.lighton.member.presentation.dto.request.ApproveArtistRequestDTO;
+import com.prography.lighton.member.presentation.dto.request.ManageArtistApplicationRequestDTO;
 import com.prography.lighton.member.presentation.dto.response.GetPendingArtistDetailResponseDTO;
 import com.prography.lighton.member.presentation.dto.response.GetPendingArtistListResponseDTO;
-import io.swagger.v3.oas.annotations.parameters.RequestBody;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -23,6 +24,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class AdminController {
 
     private final PendingArtistQueryUseCase pendingArtistQueryUseCase;
+    private final ManageArtistApplicationUseCase manageArtistApplicationUseCase;
 
     // 신청 처리 대기 아티스트 정보 상세 조회 API
     @GetMapping("/applications/artists")
@@ -45,8 +47,9 @@ public class AdminController {
 
     // 아티스트 신청 승인 API
     @PostMapping("/applications/artists/{artistId}/approve")
-    public ResponseEntity<ApiResult<?>> approveArtist(@PathVariable Long artistId,
-                                                      @RequestBody ApproveArtistRequestDTO request) {
+    public ResponseEntity<ApiResult<?>> manageArtistApplication(@PathVariable Long artistId,
+                                                                @RequestBody ManageArtistApplicationRequestDTO request) {
+        manageArtistApplicationUseCase.manageArtistApplication(artistId, request);
         return ResponseEntity.ok(ApiUtils.success());
     }
 
