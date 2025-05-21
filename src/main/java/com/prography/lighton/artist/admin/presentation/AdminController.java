@@ -32,8 +32,8 @@ public class AdminController {
     ) {
         GetArtistApplicationListResponseDTO result =
                 StringUtils.isBlank(status)
-                        ? artistApplicationQueryUseCase.getAllPendingArtists(page, size)
-                        : artistApplicationQueryUseCase.getArtistsByApproveStatus(page, size,
+                        ? artistApplicationQueryUseCase.getAllArtistApplications(page, size)
+                        : artistApplicationQueryUseCase.getArtistApplicationsByApproveStatus(page, size,
                                 ApproveStatus.from(status));
 
         return ResponseEntity.ok(ApiUtils.success(result));

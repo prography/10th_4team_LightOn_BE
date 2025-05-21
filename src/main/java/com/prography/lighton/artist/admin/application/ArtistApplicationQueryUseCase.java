@@ -6,10 +6,10 @@ import com.prography.lighton.artist.admin.presentation.GetArtistApplicationListR
 
 public interface ArtistApplicationQueryUseCase {
 
-    GetArtistApplicationListResponseDTO getAllPendingArtists(int page, int size);
+    GetArtistApplicationListResponseDTO getAllArtistApplications(int page, int size);
 
-    GetArtistApplicationListResponseDTO getArtistsByApproveStatus(int page, int size,
-                                                                  ApproveStatus approveStatus);
+    GetArtistApplicationListResponseDTO getArtistApplicationsByApproveStatus(int page, int size,
+                                                                             ApproveStatus approveStatus);
 
     GetArtistApplicationDetailResponseDTO getPendingArtistDetail(Long artistId);
 }

@@ -27,13 +27,13 @@ public class ArtistApplicationQueryService implements ArtistApplicationQueryUseC
     private final AdminArtistRepository adminArtistRepository;
 
     @Override
-    public GetArtistApplicationListResponseDTO getAllPendingArtists(int page, int size) {
+    public GetArtistApplicationListResponseDTO getAllArtistApplications(int page, int size) {
         return getArtists(PageRequest.of(page, size), Optional.empty());
     }
 
     @Override
-    public GetArtistApplicationListResponseDTO getArtistsByApproveStatus(int page, int size,
-                                                                         ApproveStatus approveStatus) {
+    public GetArtistApplicationListResponseDTO getArtistApplicationsByApproveStatus(int page, int size,
+                                                                                    ApproveStatus approveStatus) {
         return getArtists(PageRequest.of(page, size), Optional.of(approveStatus));
     }
 
