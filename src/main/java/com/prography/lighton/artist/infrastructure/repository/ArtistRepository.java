@@ -20,6 +20,14 @@ public interface ArtistRepository extends JpaRepository<Artist, Long> {
     @Query("""
                 select a from Artist a
                 join fetch a.genres ag
+                where a.id = :id
+                  and a.status = true
+            """)
+    Optional<Artist> findById(Long id);
+
+    @Query("""
+                select a from Artist a
+                join fetch a.genres ag
                 where a.member = :member
                   and a.status = true
             """)
@@ -66,8 +74,8 @@ public interface ArtistRepository extends JpaRepository<Artist, Long> {
                 .orElseThrow(NoSuchArtistException::new);
     }
 
-    default Artist getByIdAndApproveStatus(Long artistId, ApproveStatus approveStatus) {
-        return findByIdAndApproveStatus(artistId, approveStatus)
+    default Artist getById(Long artistId) {
+        return findById(artistId)
                 .orElseThrow(NoSuchArtistException::new);
     }
 }

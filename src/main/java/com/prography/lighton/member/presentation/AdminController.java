@@ -6,8 +6,8 @@ import com.prography.lighton.common.utils.ApiUtils.ApiResult;
 import com.prography.lighton.member.application.admin.ManageArtistApplicationUseCase;
 import com.prography.lighton.member.application.admin.PendingArtistQueryUseCase;
 import com.prography.lighton.member.presentation.dto.request.ManageArtistApplicationRequestDTO;
-import com.prography.lighton.member.presentation.dto.response.GetPendingArtistDetailResponseDTO;
-import com.prography.lighton.member.presentation.dto.response.GetPendingArtistListResponseDTO;
+import com.prography.lighton.member.presentation.dto.response.GetArtisApplicationListResponseDTO;
+import com.prography.lighton.member.presentation.dto.response.GetArtistApplicationDetailResponseDTO;
 import io.micrometer.common.util.StringUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -28,12 +28,12 @@ public class AdminController {
     private final ManageArtistApplicationUseCase manageArtistApplicationUseCase;
 
     @GetMapping("/applications/artists")
-    public ResponseEntity<ApiResult<GetPendingArtistListResponseDTO>> getPendingArtistList(
+    public ResponseEntity<ApiResult<GetArtisApplicationListResponseDTO>> getArtistApplicationList(
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size,
             @RequestParam(required = false) String status
     ) {
-        GetPendingArtistListResponseDTO result =
+        GetArtisApplicationListResponseDTO result =
                 StringUtils.isBlank(status)
                         ? pendingArtistQueryUseCase.getAllPendingArtists(page, size)
                         : pendingArtistQueryUseCase.getPendingArtistsByApproveStatus(page, size,
@@ -42,12 +42,11 @@ public class AdminController {
         return ResponseEntity.ok(ApiUtils.success(result));
     }
 
-
-    // 신청 처리 대기 아티스트 리스트 조회 API
     @GetMapping("/applications/artists/{artistId}")
-    public ResponseEntity<ApiUtils.ApiResult<GetPendingArtistDetailResponseDTO>> getPendingArtistDetail(
+    public ResponseEntity<ApiUtils.ApiResult<GetArtistApplicationDetailResponseDTO>> getArtistApplicationList(
             @PathVariable Long artistId) {
-        return ResponseEntity.ok(ApiUtils.success(pendingArtistQueryUseCase.getPendingArtistDetail(artistId)));
+        return ResponseEntity.ok(ApiUtils.success(
+                pendingArtistQueryUseCase.getPendingArtistDetail(artistId)));
     }
 
     // 아티스트 신청 승인 API

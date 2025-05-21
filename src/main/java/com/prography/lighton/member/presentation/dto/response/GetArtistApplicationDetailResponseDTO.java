@@ -1,9 +1,11 @@
 package com.prography.lighton.member.presentation.dto.response;
 
+import com.prography.lighton.artist.domain.entity.enums.ApproveStatus;
 import java.util.List;
 
-public record GetPendingArtistDetailResponseDTO(
+public record GetArtistApplicationDetailResponseDTO(
         Long id,
+        ApproveStatus approveStatus,
         String stageName,
         String description,
         Integer activityLocation,
@@ -12,8 +14,9 @@ public record GetPendingArtistDetailResponseDTO(
         List<String> activityImages,
         String proof
 ) {
-    public static GetPendingArtistDetailResponseDTO of(
+    public static GetArtistApplicationDetailResponseDTO of(
             Long id,
+            ApproveStatus approveStatus,
             String stageName,
             String description,
             Integer activityLocation,
@@ -22,8 +25,9 @@ public record GetPendingArtistDetailResponseDTO(
             List<String> activityImages,
             String proof
     ) {
-        return new GetPendingArtistDetailResponseDTO(
+        return new GetArtistApplicationDetailResponseDTO(
                 id,
+                approveStatus,
                 stageName,
                 description,
                 activityLocation,

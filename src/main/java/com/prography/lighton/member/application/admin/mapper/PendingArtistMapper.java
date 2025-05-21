@@ -3,14 +3,14 @@ package com.prography.lighton.member.application.admin.mapper;
 import com.prography.lighton.artist.domain.entity.Artist;
 import com.prography.lighton.artist.domain.entity.ArtistGenre;
 import com.prography.lighton.genre.domain.entity.Genre;
-import com.prography.lighton.member.presentation.dto.response.GetPendingArtistDetailResponseDTO;
-import com.prography.lighton.member.presentation.dto.response.GetPendingArtistListResponseDTO.PendingArtistDTO;
+import com.prography.lighton.member.presentation.dto.response.GetArtisApplicationListResponseDTO.ArtistApplicationDTO;
+import com.prography.lighton.member.presentation.dto.response.GetArtistApplicationDetailResponseDTO;
 import java.util.List;
 
 public class PendingArtistMapper {
 
-    public static PendingArtistDTO toPendingArtistDTO(Artist artist) {
-        return PendingArtistDTO.of(
+    public static ArtistApplicationDTO toPendingArtistDTO(Artist artist) {
+        return ArtistApplicationDTO.of(
                 artist.getId(),
                 artist.getStageName(),
                 artist.getApproveStatus(),
@@ -20,9 +20,10 @@ public class PendingArtistMapper {
         );
     }
 
-    public static GetPendingArtistDetailResponseDTO toPendingArtistDetailResponseDTO(Artist artist) {
-        return GetPendingArtistDetailResponseDTO.of(
+    public static GetArtistApplicationDetailResponseDTO toPendingArtistDetailResponseDTO(Artist artist) {
+        return GetArtistApplicationDetailResponseDTO.of(
                 artist.getId(),
+                artist.getApproveStatus(),
                 artist.getStageName(),
                 artist.getDescription(),
                 artist.getActivityLocation().getSubRegion().getCode(),

@@ -1,14 +1,15 @@
 package com.prography.lighton.member.application.admin;
 
 import com.prography.lighton.artist.domain.entity.enums.ApproveStatus;
-import com.prography.lighton.member.presentation.dto.response.GetPendingArtistDetailResponseDTO;
-import com.prography.lighton.member.presentation.dto.response.GetPendingArtistListResponseDTO;
+import com.prography.lighton.member.presentation.dto.response.GetArtisApplicationListResponseDTO;
+import com.prography.lighton.member.presentation.dto.response.GetArtistApplicationDetailResponseDTO;
 
 public interface PendingArtistQueryUseCase {
 
-    GetPendingArtistListResponseDTO getAllPendingArtists(int page, int size);
+    GetArtisApplicationListResponseDTO getAllPendingArtists(int page, int size);
 
-    GetPendingArtistListResponseDTO getPendingArtistsByApproveStatus(int page, int size, ApproveStatus approveStatus);
+    GetArtisApplicationListResponseDTO getPendingArtistsByApproveStatus(int page, int size,
+                                                                        ApproveStatus approveStatus);
 
-    GetPendingArtistDetailResponseDTO getPendingArtistDetail(Long artistId);
+    GetArtistApplicationDetailResponseDTO getPendingArtistDetail(Long artistId);
 }
