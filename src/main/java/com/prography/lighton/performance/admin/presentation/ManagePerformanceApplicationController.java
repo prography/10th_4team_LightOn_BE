@@ -20,14 +20,14 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/api/admins")
+@RequestMapping("/api/admin")
 @RequiredArgsConstructor
 public class ManagePerformanceApplicationController {
 
     private final ManagePerformanceApplicationUseCase managePerformanceApplicationUseCase;
     private final PendingPerformanceQueryUseCase pendingPerformanceQueryUseCase;
 
-    @GetMapping("/application/performances")
+    @GetMapping("/applications/performances")
     public ResponseEntity<ApiResult<GetPerformanceApplicationListResponseDTO>> getPerformanceApplicationList(
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size,
