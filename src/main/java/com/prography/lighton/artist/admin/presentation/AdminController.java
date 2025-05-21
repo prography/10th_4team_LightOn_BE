@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+@AdminOnly
 @RequestMapping("/api/admin")
 @RestController
 @RequiredArgsConstructor
@@ -28,7 +29,6 @@ public class AdminController {
     private final ArtistApplicationQueryUseCase artistApplicationQueryUseCase;
     private final ManageArtistApplicationUseCase manageArtistApplicationUseCase;
 
-    @AdminOnly
     @GetMapping("/applications/artists")
     public ResponseEntity<ApiResult<GetArtistApplicationListResponseDTO>> getArtistApplicationList(
             @RequestParam(defaultValue = "0") int page,
@@ -41,7 +41,6 @@ public class AdminController {
         return ResponseEntity.ok(ApiUtils.success(result));
     }
 
-    @AdminOnly
     @GetMapping("/applications/artists/{artistId}")
     public ResponseEntity<ApiUtils.ApiResult<GetArtistApplicationDetailResponseDTO>> getArtistApplicationDetail(
             @PathVariable Long artistId) {
@@ -49,7 +48,6 @@ public class AdminController {
                 artistApplicationQueryUseCase.getPendingArtistDetail(artistId)));
     }
 
-    @AdminOnly
     @PostMapping("/applications/artists/{artistId}/approve")
     public ResponseEntity<ApiResult<?>> manageArtistApplication(@PathVariable Long artistId,
                                                                 @RequestBody ManageArtistApplicationRequestDTO request) {
