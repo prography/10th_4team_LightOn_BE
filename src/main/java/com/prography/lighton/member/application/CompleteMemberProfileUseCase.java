@@ -5,5 +5,6 @@ import com.prography.lighton.member.presentation.dto.response.CompleteMemberProf
 
 public interface CompleteMemberProfileUseCase {
 
-	CompleteMemberProfileResponseDTO completeMemberProfile(final Long temporaryMemberId, final CompleteMemberProfileRequestDTO request);
+    CompleteMemberProfileResponseDTO completeMemberProfile(final Long temporaryMemberId,
+                                                           final CompleteMemberProfileRequestDTO request);
 }

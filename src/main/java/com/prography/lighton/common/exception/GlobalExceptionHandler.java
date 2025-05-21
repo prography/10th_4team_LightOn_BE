@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.exc.InvalidFormatException;
 import com.prography.lighton.common.exception.base.DuplicateException;
 import com.prography.lighton.common.exception.base.InvalidException;
 import com.prography.lighton.common.exception.base.NotFoundException;
+import com.prography.lighton.common.exception.base.UnsupportedTypeException;
 import com.prography.lighton.common.utils.ApiUtils;
 import com.prography.lighton.common.utils.ApiUtils.ApiResult;
 import com.prography.lighton.performance.users.domain.exception.MasterArtistCannotBeRemovedException;
@@ -52,6 +53,11 @@ public class GlobalExceptionHandler {
         log.warn("AccessDeniedException: {}", e.getMessage());
         return ResponseEntity.status(HttpStatus.FORBIDDEN)
                 .body(ApiUtils.error(HttpStatus.FORBIDDEN, "접근 권한이 없습니다."));
+    }
+
+    @ExceptionHandler(UnsupportedTypeException.class)
+    public ResponseEntity<?> handleUnsupportedTypeException(UnsupportedTypeException e) {
+        return ResponseEntity.status(e.status()).body(ApiUtils.error(e.status(), e.getMessage()));
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)

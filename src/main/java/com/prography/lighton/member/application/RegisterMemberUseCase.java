@@ -5,5 +5,5 @@ import com.prography.lighton.member.presentation.dto.response.RegisterMemberResp
 
 public interface RegisterMemberUseCase {
 
-	RegisterMemberResponseDTO registerMember(final RegisterMemberRequestDTO request);
+    RegisterMemberResponseDTO registerMember(final RegisterMemberRequestDTO request);
 }
