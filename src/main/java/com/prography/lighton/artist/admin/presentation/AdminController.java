@@ -5,7 +5,7 @@ import com.prography.lighton.artist.admin.application.ManageArtistApplicationUse
 import com.prography.lighton.artist.common.domain.entity.enums.ApproveStatus;
 import com.prography.lighton.common.utils.ApiUtils;
 import com.prography.lighton.common.utils.ApiUtils.ApiResult;
-import io.micrometer.common.util.StringUtils;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -28,19 +28,14 @@ public class AdminController {
     public ResponseEntity<ApiResult<GetArtistApplicationListResponseDTO>> getArtistApplicationList(
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size,
-            @RequestParam(required = false) String status
+            @RequestParam(required = false) List<ApproveStatus> statuses
     ) {
-        GetArtistApplicationListResponseDTO result;
-
-        if (StringUtils.isBlank(status)) {
-            result = artistApplicationQueryUseCase.getAllArtistApplications(page, size);
-        } else {
-            ApproveStatus approveStatus = ApproveStatus.from(status);
-            result = artistApplicationQueryUseCase.getArtistApplicationsByApproveStatus(page, size, approveStatus);
-        }
+        GetArtistApplicationListResponseDTO result =
+                artistApplicationQueryUseCase.getAllArtistApplications(page, size, statuses);
 
         return ResponseEntity.ok(ApiUtils.success(result));
     }
+
 
     @GetMapping("/applications/artists/{artistId}")
     public ResponseEntity<ApiUtils.ApiResult<GetArtistApplicationDetailResponseDTO>> getArtistApplicationDetail(

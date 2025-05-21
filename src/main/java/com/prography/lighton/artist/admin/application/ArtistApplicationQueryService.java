@@ -1,6 +1,7 @@
 package com.prography.lighton.artist.admin.application;
 
-import static com.prography.lighton.artist.common.domain.entity.enums.ApproveStatus.APPROVED;
+import static com.prography.lighton.artist.common.domain.entity.enums.ApproveStatus.PENDING;
+import static com.prography.lighton.artist.common.domain.entity.enums.ApproveStatus.REJECTED;
 
 import com.prography.lighton.artist.admin.application.mapper.PendingArtistMapper;
 import com.prography.lighton.artist.admin.infrastructure.repository.AdminArtistRepository;
@@ -9,7 +10,7 @@ import com.prography.lighton.artist.admin.presentation.GetArtistApplicationListR
 import com.prography.lighton.artist.common.domain.entity.Artist;
 import com.prography.lighton.artist.common.domain.entity.enums.ApproveStatus;
 import com.prography.lighton.artist.users.application.exception.NoSuchArtistException;
-import java.util.Optional;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -26,28 +27,26 @@ public class ArtistApplicationQueryService implements ArtistApplicationQueryUseC
     private final PendingArtistMapper pendingArtistMapper;
 
     @Override
-    public GetArtistApplicationListResponseDTO getAllArtistApplications(int page, int size) {
-        return getArtists(PageRequest.of(page, size), Optional.empty());
-    }
+    public GetArtistApplicationListResponseDTO getAllArtistApplications(int page, int size,
+                                                                        List<ApproveStatus> statuses) {
+        Pageable pageable = PageRequest.of(page, size);
 
-    @Override
-    public GetArtistApplicationListResponseDTO getArtistApplicationsByApproveStatus(int page, int size,
-                                                                                    ApproveStatus approveStatus) {
-        return getArtists(PageRequest.of(page, size), Optional.of(approveStatus));
-    }
+        List<ApproveStatus> effectiveStatuses;
+        if (statuses == null || statuses.isEmpty()) {
+            effectiveStatuses = List.of(PENDING, REJECTED); // 기본값
+        } else {
+            effectiveStatuses = statuses;
+        }
 
-    private GetArtistApplicationListResponseDTO getArtists(Pageable pageable, Optional<ApproveStatus> optionalStatus) {
-        Page<Artist> artists = optionalStatus
-                .map(status -> adminArtistRepository.findByApproveStatus(status, pageable))
-                .orElseGet(() -> adminArtistRepository.findUnapprovedArtists(APPROVED, pageable));
-
+        Page<Artist> artists = adminArtistRepository.findByApproveStatuses(effectiveStatuses, pageable);
         var dtoPage = artists.map(pendingArtistMapper::toPendingArtistDTO);
+
         return GetArtistApplicationListResponseDTO.of(dtoPage);
     }
 
     @Override
     public GetArtistApplicationDetailResponseDTO getPendingArtistDetail(Long artistId) {
-        Artist artist = adminArtistRepository.findByIdAndApproveStatus(artistId, ApproveStatus.PENDING)
+        Artist artist = adminArtistRepository.findByIdAndApproveStatus(artistId, PENDING)
                 .orElseThrow(() -> new NoSuchArtistException("해당 아티스트는 이미 처리 되었거나 존재하지 않습니다."));
 
         return pendingArtistMapper.toPendingArtistDetailResponseDTO(artist);
