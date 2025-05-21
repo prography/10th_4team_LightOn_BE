@@ -9,7 +9,7 @@ import com.prography.lighton.member.domain.entity.vo.Email;
 import com.prography.lighton.member.domain.entity.vo.MarketingAgreement;
 import com.prography.lighton.member.domain.entity.vo.Password;
 import com.prography.lighton.member.domain.entity.vo.Phone;
-import com.prography.lighton.member.exception.InvalidMemberException;
+import com.prography.lighton.member.domain.exception.InvalidMemberException;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
@@ -85,6 +85,10 @@ public class Member extends BaseEntity {
         if (!this.password.matches(rawPassword, encoder)) {
             throw new InvalidMemberException("비밀번호가 일치하지 않습니다.");
         }
+    }
+
+    public boolean isAdmin() {
+        return this.authority == Authority.ADMIN;
     }
 
 }
