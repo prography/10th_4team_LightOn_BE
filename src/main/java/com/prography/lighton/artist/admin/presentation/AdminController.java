@@ -3,6 +3,7 @@ package com.prography.lighton.artist.admin.presentation;
 import com.prography.lighton.artist.admin.application.ArtistApplicationQueryUseCase;
 import com.prography.lighton.artist.admin.application.ManageArtistApplicationUseCase;
 import com.prography.lighton.artist.common.domain.entity.enums.ApproveStatus;
+import com.prography.lighton.common.annotation.AdminOnly;
 import com.prography.lighton.common.utils.ApiUtils;
 import com.prography.lighton.common.utils.ApiUtils.ApiResult;
 import java.util.List;
@@ -24,6 +25,7 @@ public class AdminController {
     private final ArtistApplicationQueryUseCase artistApplicationQueryUseCase;
     private final ManageArtistApplicationUseCase manageArtistApplicationUseCase;
 
+    @AdminOnly
     @GetMapping("/applications/artists")
     public ResponseEntity<ApiResult<GetArtistApplicationListResponseDTO>> getArtistApplicationList(
             @RequestParam(defaultValue = "0") int page,
@@ -36,7 +38,7 @@ public class AdminController {
         return ResponseEntity.ok(ApiUtils.success(result));
     }
 
-
+    @AdminOnly
     @GetMapping("/applications/artists/{artistId}")
     public ResponseEntity<ApiUtils.ApiResult<GetArtistApplicationDetailResponseDTO>> getArtistApplicationDetail(
             @PathVariable Long artistId) {
@@ -44,7 +46,7 @@ public class AdminController {
                 artistApplicationQueryUseCase.getPendingArtistDetail(artistId)));
     }
 
-    // 아티스트 신청 승인 API
+    @AdminOnly
     @PostMapping("/applications/artists/{artistId}/approve")
     public ResponseEntity<ApiResult<?>> manageArtistApplication(@PathVariable Long artistId,
                                                                 @RequestBody ManageArtistApplicationRequestDTO request) {
