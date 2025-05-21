@@ -1,5 +1,6 @@
 package com.prography.lighton.member.presentation;
 
+import com.prography.lighton.artist.domain.entity.enums.ApproveStatus;
 import com.prography.lighton.common.utils.ApiUtils;
 import com.prography.lighton.common.utils.ApiUtils.ApiResult;
 import com.prography.lighton.member.application.admin.PendingArtistQueryUseCase;
@@ -27,10 +28,12 @@ public class AdminController {
     @GetMapping("/applications/artists")
     public ResponseEntity<ApiUtils.ApiResult<GetPendingArtistListResponseDTO>> getPendingArtistList(
             @RequestParam(value = "page", defaultValue = "0") int page,
-            @RequestParam(value = "size", defaultValue = "10") int size
+            @RequestParam(value = "size", defaultValue = "10") int size,
+            @RequestParam String status
     ) {
 
-        return ResponseEntity.ok(ApiUtils.success(pendingArtistQueryUseCase.getPendingArtists(page, size)));
+        return ResponseEntity.ok(
+                ApiUtils.success(pendingArtistQueryUseCase.getPendingArtists(page, size, ApproveStatus.from(status))));
     }
 
     // 신청 처리 대기 아티스트 리스트 조회 API
