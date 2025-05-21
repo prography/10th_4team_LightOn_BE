@@ -1,11 +1,11 @@
 package com.prography.lighton.performance.users.domain.entity;
 
 import com.prography.lighton.artist.domain.entity.Artist;
-import com.prography.lighton.artist.domain.entity.enums.ApproveStatus;
 import com.prography.lighton.artist.domain.entity.exception.NotAMasterArtistException;
 import com.prography.lighton.common.domain.BaseEntity;
 import com.prography.lighton.genre.domain.entity.Genre;
 import com.prography.lighton.performance.users.domain.entity.association.PerformanceArtist;
+import com.prography.lighton.performance.users.domain.entity.enums.ApproveStatus;
 import com.prography.lighton.performance.users.domain.entity.enums.Seat;
 import com.prography.lighton.performance.users.domain.entity.enums.Type;
 import com.prography.lighton.performance.users.domain.entity.vo.Info;
@@ -243,5 +243,9 @@ public class Performance extends BaseEntity {
             throw new IllegalStateException("이미 취소된 공연입니다.");
         }
         this.canceled = true;
+    }
+
+    public void managePerformanceApplication(ApproveStatus approveStatus) {
+        this.approveStatus = approveStatus;
     }
 }
