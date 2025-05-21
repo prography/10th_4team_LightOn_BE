@@ -39,7 +39,7 @@ public class PendingArtistQueryService implements PendingArtistQueryUseCase {
     private GetPendingArtistListResponseDTO getArtists(Pageable pageable, Optional<ApproveStatus> optionalStatus) {
         Page<Artist> artists = optionalStatus
                 .map(status -> artistRepository.findByApproveStatus(status, pageable))
-                .orElseGet(() -> artistRepository.findByApproveStatusNotApproved(APPROVED, pageable));
+                .orElseGet(() -> artistRepository.findUnapprovedArtists(APPROVED, pageable));
 
         var dtoPage = artists.map(PendingArtistMapper::toPendingArtistDTO);
         return GetPendingArtistListResponseDTO.of(dtoPage);

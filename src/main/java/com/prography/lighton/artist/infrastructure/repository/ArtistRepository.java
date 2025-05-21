@@ -59,7 +59,7 @@ public interface ArtistRepository extends JpaRepository<Artist, Long> {
                     where a.approveStatus != :approveStatus
                       and a.status = true
                     """)
-    Page<Artist> findByApproveStatusNotApproved(@Param("approveStatus") ApproveStatus approveStatus, Pageable pageable);
+    Page<Artist> findUnapprovedArtists(@Param("approveStatus") ApproveStatus approveStatus, Pageable pageable);
 
     default Artist getByMember(Member member) {
         return findByMemberWithGenres(member)
