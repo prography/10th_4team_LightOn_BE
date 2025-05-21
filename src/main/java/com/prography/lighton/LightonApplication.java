@@ -6,7 +6,6 @@ import org.springframework.cloud.openfeign.EnableFeignClients;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 
 @EnableFeignClients
-@EnableJpaAuditing
 @SpringBootApplication
 public class LightonApplication {
 

@@ -6,6 +6,7 @@ import static com.prography.lighton.common.constant.JwtConstants.ROLE_PREFIX;
 
 import com.prography.lighton.auth.application.TokenProvider;
 import com.prography.lighton.auth.application.exception.InvalidTokenException;
+import com.prography.lighton.common.constant.SecurityWhitelist;
 import io.jsonwebtoken.Claims;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -13,6 +14,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
+import java.util.stream.Stream;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -80,15 +82,11 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         }
     }
 
-
-    // TODO 화이트 리스트 관리 방법 추후 개선 예정
-    // TODO 현재 /api/oauth/** 엔드포인트는 소셜 로그인 뿐이라서 우선 이렇게 허용
     private boolean isPermitAllRequest(HttpServletRequest request) {
         String uri = request.getRequestURI();
-        return uri.equals("/health") ||
-                uri.equals("/api/members") ||
-                uri.equals("/api/members/login") ||
-                uri.matches("^/api/members/\\d+/info$") ||
-                uri.startsWith("/api/oauth");
+        return Stream.of(SecurityWhitelist.EXACT_MATCH).anyMatch(uri::equals)
+                || Stream.of(SecurityWhitelist.PREFIX_MATCH).anyMatch(uri::startsWith)
+                || Stream.of(SecurityWhitelist.REGEX_MATCH).anyMatch(uri::matches);
     }
+
 }
