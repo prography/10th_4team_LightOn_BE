@@ -1,0 +1,32 @@
+[
+  {
+    "name": "🔧 feature",
+    "color": "0e8a16",
+    "description": "새로운 기능 개발"
+  },
+  {
+    "name": "🐞 bug",
+    "color": "d73a4a",
+    "description": "버그 수정"
+  },
+  {
+    "name": "🛠 refactor",
+    "color": "cfd3d7",
+    "description": "리팩토링"
+  },
+  {
+    "name": "💭 thinking",
+    "color": "5319e7",
+    "description": "고민 공유"
+  },
+  {
+    "name": "🚑 hotfix",
+    "color": "b60205",
+    "description": "긴급 수정 사항"
+  },
+  {
+    "name": "📝 documentation",
+    "color": "0075ca",
+    "description": "문서 관련 작업"
+  }
+]
