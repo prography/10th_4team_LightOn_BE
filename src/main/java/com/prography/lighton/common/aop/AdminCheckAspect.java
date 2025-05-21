@@ -19,7 +19,7 @@ public class AdminCheckAspect {
 
     @Before("@annotation(com.prography.lighton.common.annotation.AdminOnly)")
     public void checkAdminAuthority() {
-        Long memberId = SecurityUtils.getCurrentMemberId(); // 토큰에서 ID 꺼냄
+        Long memberId = SecurityUtils.getCurrentMemberId();
 
         Member member = memberRepository.findById(memberId)
                 .orElseThrow(() -> new UnauthorizedException("회원 정보가 존재하지 않습니다."));

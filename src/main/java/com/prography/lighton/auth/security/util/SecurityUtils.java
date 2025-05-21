@@ -12,6 +12,6 @@ public class SecurityUtils {
             throw new UnauthorizedException("인증되지 않은 요청입니다.");
         }
 
-        return Long.valueOf(authentication.getName()); // ID가 name 필드에 들어 있다고 가정
+        return Long.valueOf(authentication.getName());
     }
 }

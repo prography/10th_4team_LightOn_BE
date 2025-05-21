@@ -184,8 +184,7 @@ public class Artist extends BaseEntity {
         if (this.approveStatus == targetStatus) {
             throw new SameApproveStatusException("동일한 상태로는 변경할 수 없습니다.");
         }
-
-        // 예: 상태 전이 허용 규칙
+        
         if (this.approveStatus == ApproveStatus.PENDING) {
             if (targetStatus == ApproveStatus.APPROVED || targetStatus == ApproveStatus.REJECTED) {
                 this.approveStatus = targetStatus;
