@@ -43,7 +43,9 @@ public class SecurityConfig {
                         ).permitAll()
 
                         .anyRequest().authenticated()
-                );
+                )
+                .formLogin(AbstractHttpConfigurer::disable)
+                .httpBasic(AbstractHttpConfigurer::disable);
 
         return http.build();
     }

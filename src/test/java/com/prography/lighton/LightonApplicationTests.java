@@ -1,5 +1,7 @@
 package com.prography.lighton;
 
+import com.prography.lighton.auth.application.impl.GoogleOauth;
+import com.prography.lighton.auth.application.impl.KaKaoOauth;
 import com.prography.lighton.genre.infrastructure.cache.GenreCache;
 import com.prography.lighton.region.infrastructure.cache.RegionCache;
 import org.junit.jupiter.api.Test;
@@ -18,6 +20,12 @@ class LightonApplicationTests {
 
     @MockBean
     private GenreCache genreCache;
+
+    @MockBean
+    protected GoogleOauth googleOauth;
+
+    @MockBean
+    protected KaKaoOauth kaKaoOauth;
 
 
 }

@@ -4,7 +4,7 @@ import com.prography.lighton.auth.application.TokenProvider;
 import com.prography.lighton.member.application.CompleteMemberProfileUseCase;
 import com.prography.lighton.member.application.LoginMemberUseCase;
 import com.prography.lighton.member.application.RegisterMemberUseCase;
-import com.prography.lighton.member.domain.repository.MemberRepository;
+import com.prography.lighton.member.infrastructure.repository.MemberRepository;
 import com.prography.lighton.member.presentation.MemberController;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;

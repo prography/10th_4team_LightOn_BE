@@ -3,7 +3,7 @@ package com.prography.lighton.common.resolver;
 import com.prography.lighton.auth.application.exception.InvalidTokenException;
 import com.prography.lighton.common.annotation.LoginMember;
 import com.prography.lighton.member.domain.entity.Member;
-import com.prography.lighton.member.domain.repository.MemberRepository;
+import com.prography.lighton.member.infrastructure.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.MethodParameter;
 import org.springframework.security.core.Authentication;
