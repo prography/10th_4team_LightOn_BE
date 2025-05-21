@@ -14,6 +14,7 @@ public interface AdminArtistRepository extends JpaRepository<Artist, Long> {
     @Query("""
                 select a from Artist a
                 join fetch a.genres ag
+                join fetch ag.genre g
                 where a.id = :id
                   and a.approveStatus = :approveStatus
                   and a.status = true
@@ -23,6 +24,7 @@ public interface AdminArtistRepository extends JpaRepository<Artist, Long> {
     @Query(value = """
             select distinct a from Artist a
             join fetch a.genres ag
+            join fetch ag.genre g
             where a.approveStatus = :approveStatus
               and a.status = true
             """,
@@ -36,6 +38,7 @@ public interface AdminArtistRepository extends JpaRepository<Artist, Long> {
     @Query(value = """
             select distinct a from Artist a
             join fetch a.genres ag
+            join fetch ag.genre g
             where a.approveStatus != :approveStatus
               and a.status = true
             """,

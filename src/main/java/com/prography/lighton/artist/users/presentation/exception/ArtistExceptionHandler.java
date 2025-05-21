@@ -1,5 +1,7 @@
 package com.prography.lighton.artist.users.presentation.exception;
 
+import com.prography.lighton.artist.admin.domain.exception.InvalidApproveStatusTransitionException;
+import com.prography.lighton.artist.admin.domain.exception.SameApproveStatusException;
 import com.prography.lighton.artist.users.domain.entity.exception.ArtistNotApprovedException;
 import com.prography.lighton.artist.users.domain.entity.exception.ArtistRegistrationNotAllowedException;
 import com.prography.lighton.artist.users.domain.entity.exception.NotAMasterArtistException;
@@ -27,5 +29,16 @@ public class ArtistExceptionHandler {
     public ResponseEntity<ApiUtils.ApiResult<?>> notAMasterArtistException(
             NotAMasterArtistException exception) {
         return new ResponseEntity<>(exception.body(), exception.status());
+    }
+
+    @ExceptionHandler(InvalidApproveStatusTransitionException.class)
+    public ApiUtils.ApiResult<?> handleInvalidApproveStatusTransitionException(
+            InvalidApproveStatusTransitionException exception) {
+        return ApiUtils.error(exception.status(), exception.getMessage());
+    }
+
+    @ExceptionHandler(SameApproveStatusException.class)
+    public ApiUtils.ApiResult<?> handleSameApproveStatusException(SameApproveStatusException exception) {
+        return ApiUtils.error(exception.status(), exception.getMessage());
     }
 }
