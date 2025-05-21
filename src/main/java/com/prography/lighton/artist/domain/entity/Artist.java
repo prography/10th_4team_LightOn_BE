@@ -47,6 +47,8 @@ public class Artist extends BaseEntity {
     @Column(nullable = false, columnDefinition = "varchar(20) default 'PENDING'")
     private ApproveStatus approveStatus = ApproveStatus.PENDING;
 
+    private LocalDateTime requestAt;
+
     private LocalDateTime approveAt;
 
     @Column(nullable = false, columnDefinition = "BIGINT DEFAULT 0")
@@ -57,6 +59,8 @@ public class Artist extends BaseEntity {
 
     @Column(nullable = false)
     private String description;
+
+    private String profileImageUrl;
 
     @Embedded
     private RegionInfo activityLocation;
