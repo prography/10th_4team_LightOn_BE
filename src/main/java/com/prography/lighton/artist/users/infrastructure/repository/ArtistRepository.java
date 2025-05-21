@@ -1,7 +1,7 @@
 package com.prography.lighton.artist.users.infrastructure.repository;
 
+import com.prography.lighton.artist.common.domain.entity.Artist;
 import com.prography.lighton.artist.users.application.exception.NoSuchArtistException;
-import com.prography.lighton.artist.users.domain.entity.Artist;
 import com.prography.lighton.member.domain.entity.Member;
 import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;

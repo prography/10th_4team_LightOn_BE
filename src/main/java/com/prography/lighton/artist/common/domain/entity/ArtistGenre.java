@@ -1,4 +1,4 @@
-package com.prography.lighton.artist.users.domain.entity;
+package com.prography.lighton.artist.common.domain.entity;
 
 import com.prography.lighton.common.domain.BaseEntity;
 import com.prography.lighton.genre.domain.entity.Genre;

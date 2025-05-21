@@ -1,4 +1,4 @@
-package com.prography.lighton.artist.users.domain.entity.exception;
+package com.prography.lighton.artist.common.domain.entity.exception;
 
 import com.prography.lighton.common.utils.ApiUtils;
 import org.springframework.http.HttpStatus;

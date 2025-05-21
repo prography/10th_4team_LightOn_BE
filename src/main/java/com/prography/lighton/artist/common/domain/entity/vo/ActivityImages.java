@@ -1,4 +1,4 @@
-package com.prography.lighton.artist.users.domain.entity.vo;
+package com.prography.lighton.artist.common.domain.entity.vo;
 
 import com.prography.lighton.common.domain.DomainValidator;
 import jakarta.persistence.Column;

@@ -3,9 +3,9 @@ package com.prography.lighton.artist.users.application.service;
 import static java.util.stream.Collectors.collectingAndThen;
 import static java.util.stream.Collectors.toList;
 
+import com.prography.lighton.artist.common.domain.entity.Artist;
+import com.prography.lighton.artist.common.domain.entity.vo.History;
 import com.prography.lighton.artist.users.application.exception.NoSuchArtistException;
-import com.prography.lighton.artist.users.domain.entity.Artist;
-import com.prography.lighton.artist.users.domain.entity.vo.History;
 import com.prography.lighton.artist.users.infrastructure.repository.ArtistRepository;
 import com.prography.lighton.artist.users.presentation.dto.request.ArtistDTO;
 import com.prography.lighton.artist.users.presentation.dto.request.HistoryDTO;

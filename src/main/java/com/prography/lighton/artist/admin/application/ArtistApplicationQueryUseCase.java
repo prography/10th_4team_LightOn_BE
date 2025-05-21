@@ -2,7 +2,7 @@ package com.prography.lighton.artist.admin.application;
 
 import com.prography.lighton.artist.admin.presentation.GetArtistApplicationDetailResponseDTO;
 import com.prography.lighton.artist.admin.presentation.GetArtistApplicationListResponseDTO;
-import com.prography.lighton.artist.users.domain.entity.enums.ApproveStatus;
+import com.prography.lighton.artist.common.domain.entity.enums.ApproveStatus;
 
 public interface ArtistApplicationQueryUseCase {
 

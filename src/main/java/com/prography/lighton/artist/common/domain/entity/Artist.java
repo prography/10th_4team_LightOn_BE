@@ -1,11 +1,11 @@
-package com.prography.lighton.artist.users.domain.entity;
+package com.prography.lighton.artist.common.domain.entity;
 
 import com.prography.lighton.artist.admin.domain.exception.InvalidApproveStatusTransitionException;
 import com.prography.lighton.artist.admin.domain.exception.SameApproveStatusException;
-import com.prography.lighton.artist.users.domain.entity.enums.ApproveStatus;
-import com.prography.lighton.artist.users.domain.entity.exception.ArtistNotApprovedException;
-import com.prography.lighton.artist.users.domain.entity.exception.ArtistRegistrationNotAllowedException;
-import com.prography.lighton.artist.users.domain.entity.vo.History;
+import com.prography.lighton.artist.common.domain.entity.enums.ApproveStatus;
+import com.prography.lighton.artist.common.domain.entity.exception.ArtistNotApprovedException;
+import com.prography.lighton.artist.common.domain.entity.exception.ArtistRegistrationNotAllowedException;
+import com.prography.lighton.artist.common.domain.entity.vo.History;
 import com.prography.lighton.common.domain.BaseEntity;
 import com.prography.lighton.common.domain.DomainValidator;
 import com.prography.lighton.common.domain.vo.RegionInfo;

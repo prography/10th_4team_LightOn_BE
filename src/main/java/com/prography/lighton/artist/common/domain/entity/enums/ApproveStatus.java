@@ -1,4 +1,4 @@
-package com.prography.lighton.artist.users.domain.entity.enums;
+package com.prography.lighton.artist.common.domain.entity.enums;
 
 import com.prography.lighton.artist.admin.domain.exception.UnsupportedApproveStatusTypeException;
 

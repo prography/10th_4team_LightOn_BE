@@ -2,7 +2,7 @@ package com.prography.lighton.artist.admin.presentation;
 
 import com.prography.lighton.artist.admin.application.ArtistApplicationQueryUseCase;
 import com.prography.lighton.artist.admin.application.ManageArtistApplicationUseCase;
-import com.prography.lighton.artist.users.domain.entity.enums.ApproveStatus;
+import com.prography.lighton.artist.common.domain.entity.enums.ApproveStatus;
 import com.prography.lighton.common.utils.ApiUtils;
 import com.prography.lighton.common.utils.ApiUtils.ApiResult;
 import io.micrometer.common.util.StringUtils;

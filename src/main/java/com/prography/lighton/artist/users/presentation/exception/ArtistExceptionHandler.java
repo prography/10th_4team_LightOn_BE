@@ -2,9 +2,9 @@ package com.prography.lighton.artist.users.presentation.exception;
 
 import com.prography.lighton.artist.admin.domain.exception.InvalidApproveStatusTransitionException;
 import com.prography.lighton.artist.admin.domain.exception.SameApproveStatusException;
-import com.prography.lighton.artist.users.domain.entity.exception.ArtistNotApprovedException;
-import com.prography.lighton.artist.users.domain.entity.exception.ArtistRegistrationNotAllowedException;
-import com.prography.lighton.artist.users.domain.entity.exception.NotAMasterArtistException;
+import com.prography.lighton.artist.common.domain.entity.exception.ArtistNotApprovedException;
+import com.prography.lighton.artist.common.domain.entity.exception.ArtistRegistrationNotAllowedException;
+import com.prography.lighton.artist.common.domain.entity.exception.NotAMasterArtistException;
 import com.prography.lighton.common.utils.ApiUtils;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;

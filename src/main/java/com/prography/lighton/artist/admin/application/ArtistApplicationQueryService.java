@@ -1,14 +1,14 @@
 package com.prography.lighton.artist.admin.application;
 
-import static com.prography.lighton.artist.users.domain.entity.enums.ApproveStatus.APPROVED;
+import static com.prography.lighton.artist.common.domain.entity.enums.ApproveStatus.APPROVED;
 
 import com.prography.lighton.artist.admin.application.mapper.PendingArtistMapper;
 import com.prography.lighton.artist.admin.infrastructure.repository.AdminArtistRepository;
 import com.prography.lighton.artist.admin.presentation.GetArtistApplicationDetailResponseDTO;
 import com.prography.lighton.artist.admin.presentation.GetArtistApplicationListResponseDTO;
+import com.prography.lighton.artist.common.domain.entity.Artist;
+import com.prography.lighton.artist.common.domain.entity.enums.ApproveStatus;
 import com.prography.lighton.artist.users.application.exception.NoSuchArtistException;
-import com.prography.lighton.artist.users.domain.entity.Artist;
-import com.prography.lighton.artist.users.domain.entity.enums.ApproveStatus;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
