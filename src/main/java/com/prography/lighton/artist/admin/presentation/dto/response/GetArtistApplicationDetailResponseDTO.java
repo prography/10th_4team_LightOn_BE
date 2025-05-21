@@ -1,4 +1,4 @@
-package com.prography.lighton.artist.admin.presentation;
+package com.prography.lighton.artist.admin.presentation.dto.response;
 
 import com.prography.lighton.artist.common.domain.entity.enums.ApproveStatus;
 import java.util.List;
@@ -8,6 +8,7 @@ public record GetArtistApplicationDetailResponseDTO(
         ApproveStatus approveStatus,
         String stageName,
         String description,
+        String profileImageUrl,
         Integer activityLocation,
         String regionName,
         List<String> genres,
@@ -20,6 +21,7 @@ public record GetArtistApplicationDetailResponseDTO(
             ApproveStatus approveStatus,
             String stageName,
             String description,
+            String profileImageUrl,
             Integer activityLocation,
             String regionName,
             List<String> genres,
@@ -32,6 +34,7 @@ public record GetArtistApplicationDetailResponseDTO(
                 approveStatus,
                 stageName,
                 description,
+                profileImageUrl,
                 activityLocation,
                 regionName,
                 genres,

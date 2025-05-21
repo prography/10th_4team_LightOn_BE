@@ -1,7 +1,7 @@
 package com.prography.lighton.artist.admin.application.mapper;
 
-import com.prography.lighton.artist.admin.presentation.GetArtistApplicationDetailResponseDTO;
-import com.prography.lighton.artist.admin.presentation.GetArtistApplicationListResponseDTO.ArtistApplicationDTO;
+import com.prography.lighton.artist.admin.presentation.dto.response.GetArtistApplicationDetailResponseDTO;
+import com.prography.lighton.artist.admin.presentation.dto.response.GetArtistApplicationListResponseDTO.ArtistApplicationDTO;
 import com.prography.lighton.artist.common.domain.entity.Artist;
 import com.prography.lighton.artist.common.domain.entity.ArtistGenre;
 import com.prography.lighton.genre.domain.entity.Genre;
@@ -35,6 +35,7 @@ public class PendingArtistMapper {
                 artist.getApproveStatus(),
                 artist.getStageName(),
                 artist.getDescription(),
+                artist.getProfileImageUrl(),
                 regionCache.getRegionCodeByInfo(artist.getActivityLocation()),
                 toRegionName(artist),
                 toGenres(artist.getGenres()),

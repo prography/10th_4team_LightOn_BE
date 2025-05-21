@@ -5,8 +5,8 @@ import static com.prography.lighton.artist.common.domain.entity.enums.ApproveSta
 
 import com.prography.lighton.artist.admin.application.mapper.PendingArtistMapper;
 import com.prography.lighton.artist.admin.infrastructure.repository.AdminArtistRepository;
-import com.prography.lighton.artist.admin.presentation.GetArtistApplicationDetailResponseDTO;
-import com.prography.lighton.artist.admin.presentation.GetArtistApplicationListResponseDTO;
+import com.prography.lighton.artist.admin.presentation.dto.response.GetArtistApplicationDetailResponseDTO;
+import com.prography.lighton.artist.admin.presentation.dto.response.GetArtistApplicationListResponseDTO;
 import com.prography.lighton.artist.common.domain.entity.Artist;
 import com.prography.lighton.artist.common.domain.entity.enums.ApproveStatus;
 import com.prography.lighton.artist.users.application.exception.NoSuchArtistException;

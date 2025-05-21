@@ -1,6 +1,6 @@
 package com.prography.lighton.artist.admin.application;
 
-import com.prography.lighton.artist.admin.presentation.ManageArtistApplicationRequestDTO;
+import com.prography.lighton.artist.admin.presentation.dto.request.ManageArtistApplicationRequestDTO;
 
 public interface ManageArtistApplicationUseCase {
 

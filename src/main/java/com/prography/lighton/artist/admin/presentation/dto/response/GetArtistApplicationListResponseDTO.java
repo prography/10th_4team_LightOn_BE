@@ -1,4 +1,4 @@
-package com.prography.lighton.artist.admin.presentation;
+package com.prography.lighton.artist.admin.presentation.dto.response;
 
 import com.prography.lighton.artist.common.domain.entity.enums.ApproveStatus;
 import java.time.LocalDateTime;
