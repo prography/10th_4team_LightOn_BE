@@ -34,6 +34,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
+import org.apache.commons.lang3.StringUtils;
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.SQLRestriction;
@@ -45,6 +46,7 @@ import org.hibernate.annotations.SQLRestriction;
 public class Performance extends BaseEntity {
 
     private static final int UPDATE_DEADLINE_DAYS = 3;
+    private static final int CANCEL_DEADLINE_DAYS = 3;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     private Artist master;
@@ -145,10 +147,11 @@ public class Performance extends BaseEntity {
             Location location,
             Payment payment,
             List<Seat> seats,
-            List<Genre> genres
+            List<Genre> genres,
+            String proofUrl
     ) {
         validateMasterArtist(artist);
-        validateUpdatable();
+        validateWithinAllowedPeriod(UPDATE_DEADLINE_DAYS);
 
         this.info = info;
         this.schedule = schedule;
@@ -156,6 +159,10 @@ public class Performance extends BaseEntity {
         this.payment = payment;
         this.seats.clear();
         this.seats.addAll(seats);
+
+        if (!this.proofUrl.equals(proofUrl) && !StringUtils.isEmpty(proofUrl)) {
+            this.proofUrl = proofUrl;
+        }
 
         updateArtists(newArtists);
         updateGenres(genres);
@@ -214,9 +221,9 @@ public class Performance extends BaseEntity {
         this.genres.addAll(PerformanceGenre.createListFor(this, genresToAdd));
     }
 
-    private void validateUpdatable() {
+    private void validateWithinAllowedPeriod(int daysBeforePerformance) {
         LocalDate today = LocalDate.now();
-        LocalDate updateDeadline = this.schedule.getStartDate().minusDays(UPDATE_DEADLINE_DAYS);
+        LocalDate updateDeadline = this.schedule.getStartDate().minusDays(daysBeforePerformance);
 
         if (today.isAfter(updateDeadline)) {
             throw new PerformanceUpdateNotAllowedException();
@@ -231,6 +238,7 @@ public class Performance extends BaseEntity {
 
     public void cancel(Artist artist) {
         validateMasterArtist(artist);
+        validateWithinAllowedPeriod(CANCEL_DEADLINE_DAYS);
         if (this.canceled) {
             throw new IllegalStateException("이미 취소된 공연입니다.");
         }

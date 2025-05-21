@@ -1,11 +1,13 @@
 package com.prography.lighton.member.application;
 
 import com.prography.lighton.auth.application.TokenProvider;
+import com.prography.lighton.auth.application.validator.DuplicateEmailValidator;
+import com.prography.lighton.auth.domain.enums.SocialLoginType;
 import com.prography.lighton.member.domain.entity.Member;
 import com.prography.lighton.member.domain.entity.vo.Email;
-import com.prography.lighton.member.domain.repository.MemberRepository;
-import com.prography.lighton.member.domain.repository.TemporaryMemberRepository;
 import com.prography.lighton.member.exception.InvalidMemberException;
+import com.prography.lighton.member.infrastructure.repository.MemberRepository;
+import com.prography.lighton.member.infrastructure.repository.TemporaryMemberRepository;
 import com.prography.lighton.member.presentation.dto.request.LoginMemberRequestDTO;
 import com.prography.lighton.member.presentation.dto.response.LoginMemberResponseDTO;
 import lombok.RequiredArgsConstructor;
@@ -23,9 +25,11 @@ public class LoginMemberService implements LoginMemberUseCase {
 
     private final PasswordEncoder passwordEncoder;
     private final TokenProvider tokenProvider;
+    private final DuplicateEmailValidator duplicateEmailValidator;
 
     @Override
     public LoginMemberResponseDTO login(LoginMemberRequestDTO request) {
+        duplicateEmailValidator.validateConflictingLoginType(request.email(), SocialLoginType.DEFAULT);
         validateIsNotTemporaryMember(request.email());
 
         Member loginMember = memberRepository.getMemberByEmail(Email.of(request.email()));
@@ -43,8 +47,7 @@ public class LoginMemberService implements LoginMemberUseCase {
     private LoginMemberResponseDTO issueTokensFor(Member member) {
         return LoginMemberResponseDTO.of(
                 tokenProvider.createAccessToken(String.valueOf(member.getId()), member.getAuthority()),
-                tokenProvider.createRefreshToken(String.valueOf(member.getId()), member.getAuthority()),
-                member.getId()
+                tokenProvider.createRefreshToken(String.valueOf(member.getId()), member.getAuthority())
         );
     }
 }

@@ -47,7 +47,7 @@ public class PerformanceService {
                 request.seat());
         performance.update(data.master(), data.artists(), data.info(), data.schedule(), data.location(), data.payment(),
                 data.seats(),
-                data.genres());
+                data.genres(), request.proof());
     }
 
     @Transactional
@@ -56,7 +56,5 @@ public class PerformanceService {
         Artist requestArtist = artistService.getApprovedArtistByMember(member);
         Performance performance = getApprovedPerformanceById(performanceId);
         performance.cancel(requestArtist);
-        // 사용자에게 알림 필요
-        performanceRepository.delete(performance);
     }
 }
