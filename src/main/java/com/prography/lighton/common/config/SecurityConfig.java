@@ -34,6 +34,7 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.POST, "/api/members/login").permitAll()
                         .requestMatchers(HttpMethod.POST, "/api/members/*/info").permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/oauth/**").permitAll()
+                        .requestMatchers("api/admin/**").hasRole("ADMIN")
 
                         // Swagger & OpenAPI
                         .requestMatchers(
