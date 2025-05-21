@@ -85,6 +85,7 @@ public class Artist extends BaseEntity {
         this.activityLocation = activityLocation;
         this.history = history;
         this.proofUrl = proofUrl;
+        this.requestAt = LocalDateTime.now(); // 신청 시각을 현재 시각으로 설정, 임시 설정, 추후 변경 예정
     }
 
     public static Artist create(
@@ -150,6 +151,15 @@ public class Artist extends BaseEntity {
     public void isValidUpdatable() {
         if (this.approveStatus != ApproveStatus.APPROVED) {
             throw new ArtistUpdateNotAllowedException();
+        }
+    }
+
+    public void manageArtistApplication(ApproveStatus approveStatus) {
+        this.approveStatus = approveStatus;
+        if (approveStatus == ApproveStatus.APPROVED) {
+            this.approveAt = LocalDateTime.now();
+        } else if (approveStatus == ApproveStatus.REJECTED) {
+            this.approveAt = null;
         }
     }
 }
