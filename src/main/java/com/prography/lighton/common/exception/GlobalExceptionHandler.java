@@ -7,6 +7,9 @@ import com.prography.lighton.common.exception.base.InvalidException;
 import com.prography.lighton.common.exception.base.NotFoundException;
 import com.prography.lighton.common.utils.ApiUtils;
 import com.prography.lighton.common.utils.ApiUtils.ApiResult;
+import com.prography.lighton.performance.domain.exception.MasterArtistCannotBeRemovedException;
+import com.prography.lighton.performance.domain.exception.PerformanceNotApprovedException;
+import com.prography.lighton.performance.domain.exception.PerformanceUpdateNotAllowedException;
 import java.util.stream.Collectors;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -77,4 +80,26 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                 .body(ApiUtils.error(HttpStatus.INTERNAL_SERVER_ERROR, "서버 오류가 발생했습니다."));
     }
+
+    // 나중에 수정 필요
+
+    @ExceptionHandler(PerformanceNotApprovedException.class)
+    public ResponseEntity<ApiResult<?>> performanceNotApprovedException(
+            PerformanceNotApprovedException exception) {
+        return new ResponseEntity<>(exception.body(), exception.status());
+    }
+
+    @ExceptionHandler(MasterArtistCannotBeRemovedException.class)
+    public ResponseEntity<ApiResult<?>> masterArtistCannotBeRemovedException(
+            MasterArtistCannotBeRemovedException exception) {
+        return new ResponseEntity<>(exception.body(), exception.status());
+    }
+
+    @ExceptionHandler(PerformanceUpdateNotAllowedException.class)
+    public ResponseEntity<ApiResult<?>> performanceUpdateNotAllowedException(
+            PerformanceUpdateNotAllowedException exception) {
+        return new ResponseEntity<>(exception.body(), exception.status());
+    }
+
+
 }
