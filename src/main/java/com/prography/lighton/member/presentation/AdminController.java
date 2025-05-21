@@ -6,8 +6,8 @@ import com.prography.lighton.common.utils.ApiUtils.ApiResult;
 import com.prography.lighton.member.application.admin.ManageArtistApplicationUseCase;
 import com.prography.lighton.member.application.admin.PendingArtistQueryUseCase;
 import com.prography.lighton.member.presentation.dto.request.ManageArtistApplicationRequestDTO;
-import com.prography.lighton.member.presentation.dto.response.GetArtisApplicationListResponseDTO;
 import com.prography.lighton.member.presentation.dto.response.GetArtistApplicationDetailResponseDTO;
+import com.prography.lighton.member.presentation.dto.response.GetArtistApplicationListResponseDTO;
 import io.micrometer.common.util.StringUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -28,12 +28,12 @@ public class AdminController {
     private final ManageArtistApplicationUseCase manageArtistApplicationUseCase;
 
     @GetMapping("/applications/artists")
-    public ResponseEntity<ApiResult<GetArtisApplicationListResponseDTO>> getArtistApplicationList(
+    public ResponseEntity<ApiResult<GetArtistApplicationListResponseDTO>> getArtistApplicationList(
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size,
             @RequestParam(required = false) String status
     ) {
-        GetArtisApplicationListResponseDTO result =
+        GetArtistApplicationListResponseDTO result =
                 StringUtils.isBlank(status)
                         ? pendingArtistQueryUseCase.getAllPendingArtists(page, size)
                         : pendingArtistQueryUseCase.getPendingArtistsByApproveStatus(page, size,

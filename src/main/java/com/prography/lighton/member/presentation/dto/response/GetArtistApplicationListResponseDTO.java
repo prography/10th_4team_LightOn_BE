@@ -5,11 +5,11 @@ import java.time.LocalDateTime;
 import java.util.List;
 import org.springframework.data.domain.Page;
 
-public record GetArtisApplicationListResponseDTO(
+public record GetArtistApplicationListResponseDTO(
         Page<ArtistApplicationDTO> requests
 ) {
-    public static GetArtisApplicationListResponseDTO of(Page<ArtistApplicationDTO> requests) {
-        return new GetArtisApplicationListResponseDTO(requests);
+    public static GetArtistApplicationListResponseDTO of(Page<ArtistApplicationDTO> requests) {
+        return new GetArtistApplicationListResponseDTO(requests);
     }
 
     public record ArtistApplicationDTO(
