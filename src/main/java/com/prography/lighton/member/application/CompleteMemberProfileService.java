@@ -41,6 +41,7 @@ public class CompleteMemberProfileService implements CompleteMemberProfileUseCas
                 preferredRegion,
                 request.name(),
                 phone,
+                temporaryMember.getLoginType(),
                 marketingAgreement
         );
 

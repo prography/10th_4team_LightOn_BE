@@ -46,7 +46,7 @@ public class OAuthService implements OAuthUseCase {
     @Override
     public SocialLoginResult oAuthLoginOrJoin(SocialLoginType socialLoginType, String code) {
         String email = extractEmailFromSocialProvider(socialLoginType, code);
-        return handleLoginOrRegister(email);
+        return handleLoginOrRegister(email, socialLoginType);
     }
 
     private String extractEmailFromSocialProvider(SocialLoginType socialLoginType, String code) {
@@ -66,7 +66,7 @@ public class OAuthService implements OAuthUseCase {
         };
     }
 
-    private SocialLoginResult handleLoginOrRegister(String email) {
+    private SocialLoginResult handleLoginOrRegister(String email, SocialLoginType socialLoginType) {
         Email emailVO = Email.of(email);
 
         if (isExistTemporaryMemberByEmail(email)) {
@@ -79,7 +79,8 @@ public class OAuthService implements OAuthUseCase {
         }
 
         TemporaryMember tempMember = temporaryMemberRepository.findByEmail(emailVO)
-                .orElseGet(() -> temporaryMemberRepository.save(TemporaryMember.socialLoginMemberOf(emailVO)));
+                .orElseGet(() -> temporaryMemberRepository.save(
+                        TemporaryMember.socialLoginMemberOf(emailVO, socialLoginType)));
 
         return RegisterSocialMemberResponseDTO.of(tempMember.isRegistered(), tempMember.getId());
     }
