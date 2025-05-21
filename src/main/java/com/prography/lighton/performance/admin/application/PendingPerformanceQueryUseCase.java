@@ -11,5 +11,5 @@ public interface PendingPerformanceQueryUseCase {
     GetPerformanceApplicationListResponseDTO getPendingPerformancesByApproveStatus(int page, int size,
                                                                                    ApproveStatus approveStatus);
 
-    GetPerformanceApplicationDetailResponseDTO getPendingPerformanceDetail(Long artistId);
+    GetPerformanceApplicationDetailResponseDTO getPendingPerformanceDetail(Long performanceId);
 }

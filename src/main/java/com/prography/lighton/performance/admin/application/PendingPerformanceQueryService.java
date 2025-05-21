@@ -51,6 +51,8 @@ public class PendingPerformanceQueryService implements PendingPerformanceQueryUs
 
     @Override
     public GetPerformanceApplicationDetailResponseDTO getPendingPerformanceDetail(Long performanceId) {
-        return null;
+        Performance performance = performanceRepository.getById(performanceId);
+
+        return PendingPerformanceMapper.toPendingPerformanceDetailResponseDTO(performance);
     }
 }

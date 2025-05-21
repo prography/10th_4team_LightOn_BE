@@ -3,16 +3,15 @@ package com.prography.lighton.performance.admin.presentation.dto.response;
 import com.prography.lighton.performance.users.domain.entity.enums.Seat;
 import com.prography.lighton.performance.users.domain.entity.enums.Type;
 import com.prography.lighton.performance.users.domain.entity.vo.Info;
-import com.prography.lighton.performance.users.domain.entity.vo.Location;
 import com.prography.lighton.performance.users.domain.entity.vo.Schedule;
 import java.util.List;
 
 public record GetPerformanceApplicationDetailResponseDTO(
         Long id,
         Info info,
-        List<PerformanceArtistDTO> artist,
+        List<PerformanceArtistDTO> artists,
         Schedule schedule,
-        Location location,
+        Integer regionCode,
         Type type,
         List<Seat> seats,
         String proofUrl
@@ -21,14 +20,14 @@ public record GetPerformanceApplicationDetailResponseDTO(
     public static GetPerformanceApplicationDetailResponseDTO of(
             Long id,
             Info info,
-            List<PerformanceArtistDTO> artist,
+            List<PerformanceArtistDTO> artists,
             Schedule schedule,
-            Location location,
+            Integer regionCode,
             Type type,
             List<Seat> seats,
             String proofUrl
     ) {
-        return new GetPerformanceApplicationDetailResponseDTO(id, info, artist, schedule, location, type, seats,
+        return new GetPerformanceApplicationDetailResponseDTO(id, info, artists, schedule, regionCode, type, seats,
                 proofUrl);
     }
 

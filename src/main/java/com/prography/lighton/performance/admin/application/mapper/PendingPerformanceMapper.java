@@ -38,7 +38,7 @@ public class PendingPerformanceMapper {
                 performance.getInfo(),
                 artistDTOs,
                 performance.getSchedule(),
-                performance.getLocation(),
+                performance.getLocation().getRegion().getSubRegion().getCode(), // 프록시 객체를 직렬화 이슈로 인해서 fetch join 불가능
                 performance.getType(),
                 performance.getSeats(),
                 performance.getProofUrl()
