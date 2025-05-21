@@ -1,6 +1,5 @@
 package com.prography.lighton.member.presentation.dto.response;
 
-import com.prography.lighton.genre.domain.entity.Genre;
 import java.util.List;
 
 public record GetPendingArtistDetailResponseDTO(
@@ -8,8 +7,7 @@ public record GetPendingArtistDetailResponseDTO(
         String stageName,
         String description,
         Integer activityLocation,
-        List<Genre> genres,
-        String profileImageUrl,
+        List<String> genres,
         String bio,
         List<String> activityImages,
         String proof
@@ -19,8 +17,7 @@ public record GetPendingArtistDetailResponseDTO(
             String stageName,
             String description,
             Integer activityLocation,
-            List<Genre> genres,
-            String profileImageUrl,
+            List<String> genres,
             String bio,
             List<String> activityImages,
             String proof
@@ -31,7 +28,6 @@ public record GetPendingArtistDetailResponseDTO(
                 description,
                 activityLocation,
                 genres,
-                profileImageUrl,
                 bio,
                 activityImages,
                 proof

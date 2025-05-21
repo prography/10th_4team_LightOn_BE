@@ -2,6 +2,7 @@ package com.prography.lighton.artist.infrastructure.repository;
 
 import com.prography.lighton.artist.application.exception.NoSuchArtistException;
 import com.prography.lighton.artist.domain.entity.Artist;
+import com.prography.lighton.artist.domain.entity.enums.ApproveStatus;
 import com.prography.lighton.member.domain.entity.Member;
 import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -22,8 +23,15 @@ public interface ArtistRepository extends JpaRepository<Artist, Long> {
             """)
     Optional<Artist> findByMemberWithGenres(@Param("member") Member member);
 
+    Optional<Artist> findByIdAndApproveStatus(Long id, ApproveStatus approveStatus);
+
     default Artist getByMember(Member member) {
         return findByMemberWithGenres(member)
+                .orElseThrow(NoSuchArtistException::new);
+    }
+
+    default Artist getByIdAndApproveStatus(Long artistId, ApproveStatus approveStatus) {
+        return findByIdAndApproveStatus(artistId, approveStatus)
                 .orElseThrow(NoSuchArtistException::new);
     }
 }
