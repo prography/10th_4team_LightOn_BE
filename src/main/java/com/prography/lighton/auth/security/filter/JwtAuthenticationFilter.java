@@ -80,11 +80,15 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         }
     }
 
+
+    // TODO 화이트 리스트 관리 방법 추후 개선 예정
+    // TODO 현재 /api/oauth/** 엔드포인트는 소셜 로그인 뿐이라서 우선 이렇게 허용
     private boolean isPermitAllRequest(HttpServletRequest request) {
         String uri = request.getRequestURI();
         return uri.equals("/health") ||
                 uri.equals("/api/members") ||
                 uri.equals("/api/members/login") ||
-                uri.matches("^/api/members/\\d+/info$");
+                uri.matches("^/api/members/\\d+/info$") ||
+                uri.startsWith("/api/oauth");
     }
 }

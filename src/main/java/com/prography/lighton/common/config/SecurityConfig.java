@@ -31,6 +31,8 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.POST, "/api/members").permitAll()
                         .requestMatchers(HttpMethod.POST, "/api/members/login").permitAll()
                         .requestMatchers(HttpMethod.POST, "/api/members/{temporaryMemberId}/info").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/oauth/**")
+                        .permitAll() // TODO 현재 /api/oauth/** 엔드포인트는 소셜 로그인 뿐이라서 우선 이렇게 허용
                         .anyRequest().authenticated()
                 )
                 .formLogin(AbstractHttpConfigurer::disable)

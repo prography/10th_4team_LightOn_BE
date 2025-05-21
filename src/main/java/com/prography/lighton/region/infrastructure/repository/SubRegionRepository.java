@@ -1,4 +1,4 @@
-package com.prography.lighton.region.domain.repository;
+package com.prography.lighton.region.infrastructure.repository;
 
 import com.prography.lighton.region.domain.entity.SubRegion;
 import java.util.List;
