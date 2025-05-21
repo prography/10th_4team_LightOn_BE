@@ -47,7 +47,7 @@ public class PerformanceService {
                 request.seat());
         performance.update(data.master(), data.artists(), data.info(), data.schedule(), data.location(), data.payment(),
                 data.seats(),
-                data.genres());
+                data.genres(), request.proof());
     }
 
     @Transactional
