@@ -42,7 +42,6 @@ public interface ArtistRepository extends JpaRepository<Artist, Long> {
             """)
     Optional<Artist> findByIdAndApproveStatus(Long id, ApproveStatus approveStatus);
 
-    // 신청 대기 아티스트 전체 조회
     @Query(value = """
             select distinct a from Artist a
             join fetch a.genres ag
