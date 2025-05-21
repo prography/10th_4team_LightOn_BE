@@ -2,12 +2,13 @@ package com.prography.lighton.artist.admin.application;
 
 import static com.prography.lighton.artist.admin.domain.enums.ApproveStatus.APPROVED;
 
-import com.prography.lighton.artist.users.domain.entity.Artist;
-import com.prography.lighton.artist.admin.domain.enums.ApproveStatus;
-import com.prography.lighton.artist.users.infrastructure.repository.ArtistRepository;
 import com.prography.lighton.artist.admin.application.mapper.PendingArtistMapper;
+import com.prography.lighton.artist.admin.domain.enums.ApproveStatus;
+import com.prography.lighton.artist.admin.infrastructure.repository.AdminArtistRepository;
 import com.prography.lighton.artist.admin.presentation.GetArtistApplicationDetailResponseDTO;
 import com.prography.lighton.artist.admin.presentation.GetArtistApplicationListResponseDTO;
+import com.prography.lighton.artist.users.domain.entity.Artist;
+import com.prography.lighton.artist.users.infrastructure.repository.ArtistRepository;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -22,6 +23,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class PendingArtistQueryService implements PendingArtistQueryUseCase {
 
     private final ArtistRepository artistRepository;
+    private final AdminArtistRepository adminArtistRepository;
 
     @Override
     public GetArtistApplicationListResponseDTO getAllPendingArtists(int page, int size) {
@@ -36,8 +38,8 @@ public class PendingArtistQueryService implements PendingArtistQueryUseCase {
 
     private GetArtistApplicationListResponseDTO getArtists(Pageable pageable, Optional<ApproveStatus> optionalStatus) {
         Page<Artist> artists = optionalStatus
-                .map(status -> artistRepository.findByApproveStatus(status, pageable))
-                .orElseGet(() -> artistRepository.findUnapprovedArtists(APPROVED, pageable));
+                .map(status -> adminArtistRepository.findByApproveStatus(status, pageable))
+                .orElseGet(() -> adminArtistRepository.findUnapprovedArtists(APPROVED, pageable));
 
         var dtoPage = artists.map(PendingArtistMapper::toPendingArtistDTO);
         return GetArtistApplicationListResponseDTO.of(dtoPage);
