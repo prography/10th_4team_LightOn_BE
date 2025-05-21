@@ -6,7 +6,7 @@ import com.prography.lighton.member.domain.entity.Member;
 import com.prography.lighton.member.domain.entity.TemporaryMember;
 import com.prography.lighton.member.domain.entity.vo.MarketingAgreement;
 import com.prography.lighton.member.domain.entity.vo.Phone;
-import com.prography.lighton.member.exception.DuplicateMemberException;
+import com.prography.lighton.member.domain.exception.DuplicateMemberException;
 import com.prography.lighton.member.infrastructure.repository.MemberRepository;
 import com.prography.lighton.member.infrastructure.repository.TemporaryMemberRepository;
 import com.prography.lighton.member.presentation.dto.request.CompleteMemberProfileRequestDTO;

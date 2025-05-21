@@ -3,7 +3,7 @@ package com.prography.lighton.member.infrastructure.repository;
 import com.prography.lighton.member.domain.entity.Member;
 import com.prography.lighton.member.domain.entity.vo.Email;
 import com.prography.lighton.member.domain.entity.vo.Phone;
-import com.prography.lighton.member.exception.NoSuchMemberException;
+import com.prography.lighton.member.domain.exception.NoSuchMemberException;
 import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;

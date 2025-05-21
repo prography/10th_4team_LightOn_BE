@@ -1,16 +1,11 @@
 package com.prography.lighton.member.domain.entity.vo;
 
-import static io.micrometer.common.util.StringUtils.*;
+import static io.micrometer.common.util.StringUtils.isBlank;
 
-import java.util.Objects;
-import java.util.regex.Pattern;
-
-import org.springframework.http.HttpStatus;
-
-import com.prography.lighton.member.exception.InvalidMemberException;
-
+import com.prography.lighton.member.domain.exception.InvalidMemberException;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
+import java.util.regex.Pattern;
 import lombok.AccessLevel;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;

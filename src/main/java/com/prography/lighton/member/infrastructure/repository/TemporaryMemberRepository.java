@@ -1,7 +1,7 @@
 package com.prography.lighton.member.infrastructure.repository;
 
 import com.prography.lighton.member.domain.entity.TemporaryMember;
-import com.prography.lighton.member.exception.NoSuchMemberException;
+import com.prography.lighton.member.domain.exception.NoSuchMemberException;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
