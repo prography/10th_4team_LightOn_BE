@@ -2,9 +2,9 @@ package com.prography.lighton.member.presentation;
 
 import com.prography.lighton.common.utils.ApiUtils;
 import com.prography.lighton.common.utils.ApiUtils.ApiResult;
-import com.prography.lighton.member.application.CompleteMemberProfileUseCase;
-import com.prography.lighton.member.application.LoginMemberUseCase;
-import com.prography.lighton.member.application.RegisterMemberUseCase;
+import com.prography.lighton.member.application.member.CompleteMemberProfileUseCase;
+import com.prography.lighton.member.application.member.LoginMemberUseCase;
+import com.prography.lighton.member.application.member.RegisterMemberUseCase;
 import com.prography.lighton.member.presentation.dto.request.CompleteMemberProfileRequestDTO;
 import com.prography.lighton.member.presentation.dto.request.LoginMemberRequestDTO;
 import com.prography.lighton.member.presentation.dto.request.RegisterMemberRequestDTO;

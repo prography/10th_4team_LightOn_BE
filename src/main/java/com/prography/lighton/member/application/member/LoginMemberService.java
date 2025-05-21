@@ -1,4 +1,4 @@
-package com.prography.lighton.member.application;
+package com.prography.lighton.member.application.member;
 
 import com.prography.lighton.auth.application.TokenProvider;
 import com.prography.lighton.member.domain.entity.Member;

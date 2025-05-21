@@ -1,4 +1,4 @@
-package com.prography.lighton.member.application;
+package com.prography.lighton.member.application.member;
 
 import static com.prography.lighton.member.domain.entity.vo.Email.of;
 import static com.prography.lighton.member.domain.entity.vo.Password.encodeAndCreate;
