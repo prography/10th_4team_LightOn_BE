@@ -43,7 +43,7 @@ public class AdminController {
     }
 
     @GetMapping("/applications/artists/{artistId}")
-    public ResponseEntity<ApiUtils.ApiResult<GetArtistApplicationDetailResponseDTO>> getArtistApplicationList(
+    public ResponseEntity<ApiUtils.ApiResult<GetArtistApplicationDetailResponseDTO>> getArtistApplicationDetail(
             @PathVariable Long artistId) {
         return ResponseEntity.ok(ApiUtils.success(
                 artistApplicationQueryUseCase.getPendingArtistDetail(artistId)));
