@@ -1,7 +1,7 @@
 package com.prography.lighton.region.infrastructure.cache;
 
 import com.prography.lighton.common.domain.vo.RegionInfo;
-import com.prography.lighton.region.exception.NoSuchRegionException;
+import com.prography.lighton.region.domain.exception.NoSuchRegionException;
 import com.prography.lighton.region.infrastructure.repository.SubRegionRepository;
 import jakarta.annotation.PostConstruct;
 import java.util.Map;

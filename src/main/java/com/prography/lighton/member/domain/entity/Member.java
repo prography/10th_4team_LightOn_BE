@@ -9,7 +9,7 @@ import com.prography.lighton.member.domain.entity.vo.Email;
 import com.prography.lighton.member.domain.entity.vo.MarketingAgreement;
 import com.prography.lighton.member.domain.entity.vo.Password;
 import com.prography.lighton.member.domain.entity.vo.Phone;
-import com.prography.lighton.member.exception.InvalidMemberException;
+import com.prography.lighton.member.domain.exception.InvalidMemberException;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;

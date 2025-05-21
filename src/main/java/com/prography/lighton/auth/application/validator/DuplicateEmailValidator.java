@@ -1,7 +1,7 @@
 package com.prography.lighton.auth.application.validator;
 
 import com.prography.lighton.auth.domain.enums.SocialLoginType;
-import com.prography.lighton.member.exception.DuplicateMemberException;
+import com.prography.lighton.member.domain.exception.DuplicateMemberException;
 import com.prography.lighton.member.infrastructure.repository.MemberRepository;
 import com.prography.lighton.member.infrastructure.repository.TemporaryMemberRepository;
 import lombok.RequiredArgsConstructor;

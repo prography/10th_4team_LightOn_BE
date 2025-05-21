@@ -5,7 +5,7 @@ import com.prography.lighton.auth.application.validator.DuplicateEmailValidator;
 import com.prography.lighton.auth.domain.enums.SocialLoginType;
 import com.prography.lighton.member.domain.entity.Member;
 import com.prography.lighton.member.domain.entity.vo.Email;
-import com.prography.lighton.member.exception.InvalidMemberException;
+import com.prography.lighton.member.domain.exception.InvalidMemberException;
 import com.prography.lighton.member.infrastructure.repository.MemberRepository;
 import com.prography.lighton.member.infrastructure.repository.TemporaryMemberRepository;
 import com.prography.lighton.member.presentation.dto.request.LoginMemberRequestDTO;

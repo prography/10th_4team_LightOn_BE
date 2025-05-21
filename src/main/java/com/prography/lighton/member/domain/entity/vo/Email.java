@@ -2,7 +2,7 @@ package com.prography.lighton.member.domain.entity.vo;
 
 import static io.micrometer.common.util.StringUtils.isBlank;
 
-import com.prography.lighton.member.exception.InvalidMemberException;
+import com.prography.lighton.member.domain.exception.InvalidMemberException;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
 import java.util.regex.Pattern;

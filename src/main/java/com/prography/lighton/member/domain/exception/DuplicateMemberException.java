@@ -1,4 +1,4 @@
-package com.prography.lighton.member.exception;
+package com.prography.lighton.member.domain.exception;
 
 import com.prography.lighton.common.exception.base.DuplicateException;
 
