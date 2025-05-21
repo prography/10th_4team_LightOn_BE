@@ -9,7 +9,7 @@ import com.prography.lighton.common.domain.DomainValidator;
 import com.prography.lighton.common.domain.vo.RegionInfo;
 import com.prography.lighton.genre.domain.entity.Genre;
 import com.prography.lighton.member.domain.entity.Member;
-import com.prography.lighton.performance.domain.entity.association.PerformanceArtist;
+import com.prography.lighton.performance.users.domain.entity.association.PerformanceArtist;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embedded;
