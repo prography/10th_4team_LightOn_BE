@@ -13,6 +13,8 @@ import com.prography.lighton.member.presentation.dto.response.LoginMemberRespons
 import com.prography.lighton.member.presentation.dto.response.RegisterMemberResponseDTO;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -33,24 +35,30 @@ public class MemberController {
     private final LoginMemberUseCase loginMemberUseCase;
 
     @PostMapping
-    public ApiResult<RegisterMemberResponseDTO> register(@RequestBody @Valid RegisterMemberRequestDTO request) {
-        return ApiUtils.success(registerMemberUseCase.registerMember(request));
+    public ResponseEntity<ApiResult<RegisterMemberResponseDTO>> register(
+            @RequestBody @Valid RegisterMemberRequestDTO request) {
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(ApiUtils.success(registerMemberUseCase.registerMember(request)));
     }
 
     @PostMapping("/{temporaryMemberId}/info")
-    public ApiResult<CompleteMemberProfileResponseDTO> completeMemberProfile(@PathVariable Long temporaryMemberId,
-                                                                             @RequestBody @Valid CompleteMemberProfileRequestDTO request) {
-        return ApiUtils.success(completeMemberProfileUseCase.completeMemberProfile(temporaryMemberId, request));
+    public ResponseEntity<ApiResult<CompleteMemberProfileResponseDTO>> completeMemberProfile(
+            @PathVariable Long temporaryMemberId,
+            @RequestBody @Valid CompleteMemberProfileRequestDTO request) {
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(ApiUtils.success(completeMemberProfileUseCase.completeMemberProfile(temporaryMemberId, request)));
     }
 
     @GetMapping("/duplicate-check")
-    public ApiResult<?> duplicateCheck(@RequestParam String email) {
-        return ApiUtils.success();
+    public ResponseEntity<ApiResult<?>> duplicateCheck(@RequestParam String email) {
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(ApiUtils.success());
     }
 
     // TODO: 추후 토큰 헤더에 담아서 응답하도록 변경
     @PostMapping("/login")
-    public ApiResult<LoginMemberResponseDTO> login(@RequestBody @Valid LoginMemberRequestDTO request) {
-        return ApiUtils.success(loginMemberUseCase.login(request));
+    public ResponseEntity<ApiResult<LoginMemberResponseDTO>> login(@RequestBody @Valid LoginMemberRequestDTO request) {
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(ApiUtils.success(loginMemberUseCase.login(request)));
     }
 }

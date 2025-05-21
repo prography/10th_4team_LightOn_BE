@@ -41,6 +41,7 @@ public class CompleteMemberProfileService implements CompleteMemberProfileUseCas
                 preferredRegion,
                 request.name(),
                 phone,
+                temporaryMember.getLoginType(),
                 marketingAgreement
         );
 
@@ -76,8 +77,7 @@ public class CompleteMemberProfileService implements CompleteMemberProfileUseCas
     private CompleteMemberProfileResponseDTO generateTokenResponse(Member savedMember) {
         return CompleteMemberProfileResponseDTO.of(
                 tokenProvider.createAccessToken(String.valueOf(savedMember.getId()), savedMember.getAuthority()),
-                tokenProvider.createRefreshToken(String.valueOf(savedMember.getId()), savedMember.getAuthority()),
-                savedMember.getId()
+                tokenProvider.createRefreshToken(String.valueOf(savedMember.getId()), savedMember.getAuthority())
         );
     }
 

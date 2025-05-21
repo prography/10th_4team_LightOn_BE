@@ -1,8 +1,14 @@
 package com.prography.lighton.artist.application.service;
 
+import static java.util.stream.Collectors.collectingAndThen;
+import static java.util.stream.Collectors.toList;
+
+import com.prography.lighton.artist.application.exception.NoSuchArtistException;
 import com.prography.lighton.artist.domain.entity.Artist;
 import com.prography.lighton.artist.domain.entity.vo.History;
 import com.prography.lighton.artist.infrastructure.repository.ArtistRepository;
+import com.prography.lighton.artist.presentation.dto.request.ArtistDTO;
+import com.prography.lighton.artist.presentation.dto.request.HistoryDTO;
 import com.prography.lighton.artist.presentation.dto.request.RegisterArtistRequest;
 import com.prography.lighton.artist.presentation.dto.request.UpdateArtistRequest;
 import com.prography.lighton.common.domain.vo.RegionInfo;
@@ -23,6 +29,24 @@ public class ArtistService {
     private final ArtistRepository artistRepository;
     private final GenreService genreService;
     private final RegionCache regionCache;
+
+    public Artist getApprovedArtistByMember(Member member) {
+        Artist artist = artistRepository.getByMember(member);
+        artist.isValidApproved();
+        return artist;
+    }
+
+    public List<Artist> getApprovedArtistsByIds(List<Long> artistIds) {
+        return artistRepository.findAllById(artistIds).stream()
+                .peek(Artist::isValidApproved)
+                .collect(collectingAndThen(toList(), list -> {
+                    if (list.size() != artistIds.size()) {
+                        throw new NoSuchArtistException();
+                    }
+                    return list;
+                }));
+    }
+
 
     @Transactional
     public void registerArtist(Member member, RegisterArtistRequest request) {
@@ -45,8 +69,7 @@ public class ArtistService {
 
     @Transactional
     public void updateArtist(Member member, UpdateArtistRequest request) {
-        Artist artist = artistRepository.getByMember(member);
-        artist.isValidUpdatable();
+        Artist artist = getApprovedArtistByMember(member);
 
         var data = toArtistData(request.artist(), request.history());
         artist.update(
@@ -59,8 +82,8 @@ public class ArtistService {
     }
 
     private ArtistData toArtistData(
-            RegisterArtistRequest.ArtistDTO artistDto,
-            RegisterArtistRequest.HistoryDTO historyDto
+            ArtistDTO artistDto,
+            HistoryDTO historyDto
     ) {
         RegionInfo activityRegion = regionCache.getRegionInfoByCode(artistDto.activityLocation());
         History history = History.of(historyDto.bio(), historyDto.activityPhotos());

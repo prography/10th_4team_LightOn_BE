@@ -1,5 +1,6 @@
 package com.prography.lighton.member.domain.entity;
 
+import com.prography.lighton.auth.domain.enums.SocialLoginType;
 import com.prography.lighton.common.domain.BaseEntity;
 import com.prography.lighton.common.domain.vo.RegionInfo;
 import com.prography.lighton.member.domain.entity.association.PreferredArtist;
@@ -48,6 +49,10 @@ public class Member extends BaseEntity {
     @Embedded
     private Phone phone;
 
+    @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
+    private SocialLoginType loginType;
+
     @Embedded
     private MarketingAgreement marketingAgreement;
 
@@ -60,13 +65,15 @@ public class Member extends BaseEntity {
     private List<PreferredArtist> preferredArtists;
 
     public static Member toNormalMember(Email email, Password password, RegionInfo preferredRegion,
-                                        String name, Phone phone, MarketingAgreement marketingAgreement) {
+                                        String name, Phone phone, SocialLoginType loginType,
+                                        MarketingAgreement marketingAgreement) {
         return new Member(
                 email,
                 password,
                 name,
                 preferredRegion,
                 phone,
+                loginType,
                 marketingAgreement,
                 Authority.NORMAL,
                 new ArrayList<>()

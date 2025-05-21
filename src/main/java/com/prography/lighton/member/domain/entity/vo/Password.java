@@ -4,8 +4,10 @@ import static io.micrometer.common.util.StringUtils.isBlank;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
+import java.util.UUID;
 import java.util.regex.Pattern;
 import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -13,6 +15,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @Embeddable
 @EqualsAndHashCode
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
 public class Password {
 
     private static final Pattern PASSWORD_PATTERN = Pattern.compile(
@@ -29,8 +32,9 @@ public class Password {
         return new Password(encoder.encode(rawPassword));
     }
 
-    private Password(String encrypted) {
-        this.value = encrypted;
+    public static Password forSocialLogin() {
+        return new Password(UUID.randomUUID().toString());
+
     }
 
     public boolean matches(String rawPassword, PasswordEncoder encoder) {
