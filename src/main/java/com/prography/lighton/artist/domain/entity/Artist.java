@@ -158,8 +158,6 @@ public class Artist extends BaseEntity {
         this.approveStatus = approveStatus;
         if (approveStatus == ApproveStatus.APPROVED) {
             this.approveAt = LocalDateTime.now();
-        } else if (approveStatus == ApproveStatus.REJECTED) {
-            this.approveAt = null;
         }
     }
 }
