@@ -3,6 +3,7 @@ package com.prography.lighton.artist.domain.entity.vo;
 import com.prography.lighton.common.domain.DomainValidator;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
+import java.util.ArrayList;
 import java.util.List;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
@@ -36,4 +37,18 @@ public class ActivityImages {
         }
         return new ActivityImages(images[0], images[1], images[2], images[3], images[4]);
     }
+
+    public List<String> toList() {
+        List<String> result = new ArrayList<>(5);
+
+        for (String url : new String[]{imageUrl1, imageUrl2, imageUrl3, imageUrl4, imageUrl5}) {
+            if (url != null && !url.isBlank()) {
+                result.add(url);
+            }
+        }
+
+        return result;
+    }
+
+
 }

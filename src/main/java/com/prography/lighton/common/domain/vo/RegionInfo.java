@@ -7,6 +7,7 @@ import jakarta.persistence.FetchType;
 import jakarta.persistence.ManyToOne;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Embeddable
@@ -18,6 +19,7 @@ public class RegionInfo {
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private Region region;
 
+    @Getter
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private SubRegion subRegion;
 
