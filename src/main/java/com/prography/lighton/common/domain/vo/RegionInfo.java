@@ -10,6 +10,7 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+@Getter
 @Embeddable
 @AllArgsConstructor
 @NoArgsConstructor
@@ -19,7 +20,6 @@ public class RegionInfo {
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private Region region;
 
-    @Getter
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private SubRegion subRegion;
 

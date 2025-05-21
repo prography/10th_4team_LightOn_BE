@@ -9,7 +9,6 @@ import com.prography.lighton.artist.admin.presentation.GetArtistApplicationListR
 import com.prography.lighton.artist.users.application.exception.NoSuchArtistException;
 import com.prography.lighton.artist.users.domain.entity.Artist;
 import com.prography.lighton.artist.users.domain.entity.enums.ApproveStatus;
-import com.prography.lighton.artist.users.infrastructure.repository.ArtistRepository;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -23,8 +22,8 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class ArtistApplicationQueryService implements ArtistApplicationQueryUseCase {
 
-    private final ArtistRepository artistRepository;
     private final AdminArtistRepository adminArtistRepository;
+    private final PendingArtistMapper pendingArtistMapper;
 
     @Override
     public GetArtistApplicationListResponseDTO getAllArtistApplications(int page, int size) {
@@ -42,7 +41,7 @@ public class ArtistApplicationQueryService implements ArtistApplicationQueryUseC
                 .map(status -> adminArtistRepository.findByApproveStatus(status, pageable))
                 .orElseGet(() -> adminArtistRepository.findUnapprovedArtists(APPROVED, pageable));
 
-        var dtoPage = artists.map(PendingArtistMapper::toPendingArtistDTO);
+        var dtoPage = artists.map(pendingArtistMapper::toPendingArtistDTO);
         return GetArtistApplicationListResponseDTO.of(dtoPage);
     }
 
@@ -51,6 +50,6 @@ public class ArtistApplicationQueryService implements ArtistApplicationQueryUseC
         Artist artist = adminArtistRepository.findByIdAndApproveStatus(artistId, ApproveStatus.PENDING)
                 .orElseThrow(() -> new NoSuchArtistException("해당 아티스트는 이미 처리 되었거나 존재하지 않습니다."));
 
-        return PendingArtistMapper.toPendingArtistDetailResponseDTO(artist);
+        return pendingArtistMapper.toPendingArtistDetailResponseDTO(artist);
     }
 }

@@ -5,11 +5,18 @@ import com.prography.lighton.artist.admin.presentation.GetArtistApplicationListR
 import com.prography.lighton.artist.users.domain.entity.Artist;
 import com.prography.lighton.artist.users.domain.entity.ArtistGenre;
 import com.prography.lighton.genre.domain.entity.Genre;
+import com.prography.lighton.genre.infrastructure.cache.GenreCache;
 import java.util.List;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Component;
 
+@Component
+@RequiredArgsConstructor
 public class PendingArtistMapper {
 
-    public static ArtistApplicationDTO toPendingArtistDTO(Artist artist) {
+    private final GenreCache genreCache;
+
+    public ArtistApplicationDTO toPendingArtistDTO(Artist artist) {
         return ArtistApplicationDTO.of(
                 artist.getId(),
                 artist.getStageName(),
@@ -20,13 +27,14 @@ public class PendingArtistMapper {
         );
     }
 
-    public static GetArtistApplicationDetailResponseDTO toPendingArtistDetailResponseDTO(Artist artist) {
+    public GetArtistApplicationDetailResponseDTO toPendingArtistDetailResponseDTO(Artist artist) {
         return GetArtistApplicationDetailResponseDTO.of(
                 artist.getId(),
                 artist.getApproveStatus(),
                 artist.getStageName(),
                 artist.getDescription(),
                 artist.getActivityLocation().getSubRegion().getCode(),
+                toRegionName(artist),
                 toGenres(artist.getGenres()),
                 artist.getHistory().getBio(),
                 artist.getHistory().getActivityImages().toList(),
@@ -34,10 +42,19 @@ public class PendingArtistMapper {
         );
     }
 
-    private static List<String> toGenres(List<ArtistGenre> artistGenres) {
-        return artistGenres.stream()
-                .map(ArtistGenre::getGenre)
+    private static String toRegionName(Artist artist) {
+        return artist.getActivityLocation().getRegion().getName()
+                + " " + artist.getActivityLocation().getSubRegion().getName();
+    }
+
+    private List<String> toGenres(List<ArtistGenre> artistGenres) {
+        List<Long> genreIds = artistGenres.stream()
+                .map(ag -> ag.getGenre().getId()) // Lazy X, 프록시에서 ID만 추출
+                .toList();
+
+        return genreCache.getGenresOrThrow(genreIds).stream()
                 .map(Genre::getName)
                 .toList();
     }
+
 }
