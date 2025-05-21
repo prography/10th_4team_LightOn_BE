@@ -22,7 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/api/admin")
 @RequiredArgsConstructor
-public class AdminController {
+public class AdminPerformanceController {
 
     private final ManagePerformanceApplicationUseCase managePerformanceApplicationUseCase;
     private final PendingPerformanceQueryUseCase pendingPerformanceQueryUseCase;
