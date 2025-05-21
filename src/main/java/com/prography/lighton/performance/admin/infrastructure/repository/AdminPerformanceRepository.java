@@ -28,13 +28,11 @@ public interface AdminPerformanceRepository extends JpaRepository<Performance, L
     @Query(value = """
             select distinct p from Performance p
             join fetch p.genres pg
-            where p.approveStatus != :approveStatus
-              and p.status = true
+            where p.status = true
             """,
             countQuery = """
                     select count(p) from Performance p
-                    where p.approveStatus != :approveStatus
-                      and p.status = true
+                    where p.status = true
                     """)
-    Page<Performance> findByUnapprovedPerformances(ApproveStatus approveStatus, Pageable pageable);
+    Page<Performance> findAllPerformanceApplications(Pageable pageable);
 }

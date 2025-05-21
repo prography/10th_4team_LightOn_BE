@@ -1,7 +1,5 @@
 package com.prography.lighton.performance.admin.application;
 
-import static com.prography.lighton.performance.users.domain.entity.enums.ApproveStatus.APPROVED;
-
 import com.prography.lighton.performance.admin.application.mapper.PendingPerformanceMapper;
 import com.prography.lighton.performance.admin.infrastructure.repository.AdminPerformanceRepository;
 import com.prography.lighton.performance.admin.presentation.dto.response.GetPerformanceApplicationDetailResponseDTO;
@@ -42,7 +40,7 @@ public class PendingPerformanceQueryService implements PendingPerformanceQueryUs
                                                                      Optional<ApproveStatus> optionalStatus) {
         Page<Performance> performances = optionalStatus
                 .map(status -> adminPerformanceRepository.findByApproveStatus(status, pageable))
-                .orElseGet(() -> adminPerformanceRepository.findByUnapprovedPerformances(APPROVED, pageable));
+                .orElseGet(() -> adminPerformanceRepository.findAllPerformanceApplications(pageable));
 
         log.info(performances.toString());
         var dtoPage = performances.map(PendingPerformanceMapper::toPendingPerformanceDTO);
