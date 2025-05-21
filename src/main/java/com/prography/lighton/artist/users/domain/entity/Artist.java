@@ -1,6 +1,6 @@
 package com.prography.lighton.artist.users.domain.entity;
 
-import com.prography.lighton.artist.admin.domain.enums.ApproveStatus;
+import com.prography.lighton.artist.users.domain.entity.enums.ApproveStatus;
 import com.prography.lighton.artist.users.domain.entity.exception.ArtistNotApprovedException;
 import com.prography.lighton.artist.users.domain.entity.exception.ArtistRegistrationNotAllowedException;
 import com.prography.lighton.artist.users.domain.entity.vo.History;

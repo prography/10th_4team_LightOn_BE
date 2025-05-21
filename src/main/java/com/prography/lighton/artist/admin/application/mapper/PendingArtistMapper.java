@@ -1,10 +1,10 @@
 package com.prography.lighton.artist.admin.application.mapper;
 
+import com.prography.lighton.artist.admin.presentation.GetArtistApplicationDetailResponseDTO;
+import com.prography.lighton.artist.admin.presentation.GetArtistApplicationListResponseDTO.ArtistApplicationDTO;
 import com.prography.lighton.artist.users.domain.entity.Artist;
 import com.prography.lighton.artist.users.domain.entity.ArtistGenre;
 import com.prography.lighton.genre.domain.entity.Genre;
-import com.prography.lighton.artist.admin.presentation.GetArtistApplicationDetailResponseDTO;
-import com.prography.lighton.artist.admin.presentation.GetArtistApplicationListResponseDTO.ArtistApplicationDTO;
 import java.util.List;
 
 public class PendingArtistMapper {

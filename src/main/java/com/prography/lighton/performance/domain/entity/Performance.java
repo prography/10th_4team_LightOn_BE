@@ -1,7 +1,7 @@
 package com.prography.lighton.performance.domain.entity;
 
 import com.prography.lighton.artist.users.domain.entity.Artist;
-import com.prography.lighton.artist.admin.domain.enums.ApproveStatus;
+import com.prography.lighton.artist.users.domain.entity.enums.ApproveStatus;
 import com.prography.lighton.artist.users.domain.entity.exception.NotAMasterArtistException;
 import com.prography.lighton.common.domain.BaseEntity;
 import com.prography.lighton.genre.domain.entity.Genre;

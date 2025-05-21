@@ -1,7 +1,7 @@
 package com.prography.lighton.artist.admin.infrastructure.repository;
 
-import com.prography.lighton.artist.admin.domain.enums.ApproveStatus;
 import com.prography.lighton.artist.users.domain.entity.Artist;
+import com.prography.lighton.artist.users.domain.entity.enums.ApproveStatus;
 import java.util.Optional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

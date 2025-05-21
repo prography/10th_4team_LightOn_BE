@@ -1,6 +1,6 @@
 package com.prography.lighton.artist.admin.presentation;
 
-import com.prography.lighton.artist.admin.domain.enums.ApproveStatus;
+import com.prography.lighton.artist.users.domain.entity.enums.ApproveStatus;
 import java.time.LocalDateTime;
 import java.util.List;
 import org.springframework.data.domain.Page;

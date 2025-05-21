@@ -1,6 +1,6 @@
 package com.prography.lighton.artist.admin.presentation;
 
-import com.prography.lighton.artist.admin.domain.enums.ApproveStatus;
+import com.prography.lighton.artist.users.domain.entity.enums.ApproveStatus;
 import java.util.List;
 
 public record GetArtistApplicationDetailResponseDTO(

@@ -1,10 +1,10 @@
 package com.prography.lighton.artist.admin.application;
 
-import com.prography.lighton.artist.admin.domain.enums.ApproveStatus;
 import com.prography.lighton.artist.admin.infrastructure.repository.AdminArtistRepository;
 import com.prography.lighton.artist.admin.presentation.ManageArtistApplicationRequestDTO;
 import com.prography.lighton.artist.users.application.exception.NoSuchArtistException;
 import com.prography.lighton.artist.users.domain.entity.Artist;
+import com.prography.lighton.artist.users.domain.entity.enums.ApproveStatus;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
