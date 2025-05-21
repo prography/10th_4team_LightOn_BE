@@ -148,7 +148,7 @@ public class Performance extends BaseEntity {
             List<Genre> genres
     ) {
         validateMasterArtist(artist);
-        validateUpdatable();
+        validateWithinAllowedPeriod(UPDATE_DEADLINE_DAYS);
 
         this.info = info;
         this.schedule = schedule;
@@ -214,9 +214,9 @@ public class Performance extends BaseEntity {
         this.genres.addAll(PerformanceGenre.createListFor(this, genresToAdd));
     }
 
-    private void validateUpdatable() {
+    private void validateWithinAllowedPeriod(int daysBeforePerformance) {
         LocalDate today = LocalDate.now();
-        LocalDate updateDeadline = this.schedule.getStartDate().minusDays(UPDATE_DEADLINE_DAYS);
+        LocalDate updateDeadline = this.schedule.getStartDate().minusDays(daysBeforePerformance);
 
         if (today.isAfter(updateDeadline)) {
             throw new PerformanceUpdateNotAllowedException();
