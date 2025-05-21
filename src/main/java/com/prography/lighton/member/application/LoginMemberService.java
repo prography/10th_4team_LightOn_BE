@@ -1,6 +1,8 @@
 package com.prography.lighton.member.application;
 
 import com.prography.lighton.auth.application.TokenProvider;
+import com.prography.lighton.auth.application.validator.DuplicateEmailValidator;
+import com.prography.lighton.auth.domain.enums.SocialLoginType;
 import com.prography.lighton.member.domain.entity.Member;
 import com.prography.lighton.member.domain.entity.vo.Email;
 import com.prography.lighton.member.exception.InvalidMemberException;
@@ -23,9 +25,11 @@ public class LoginMemberService implements LoginMemberUseCase {
 
     private final PasswordEncoder passwordEncoder;
     private final TokenProvider tokenProvider;
+    private final DuplicateEmailValidator duplicateEmailValidator;
 
     @Override
     public LoginMemberResponseDTO login(LoginMemberRequestDTO request) {
+        duplicateEmailValidator.validateConflictingLoginType(request.email(), SocialLoginType.DEFAULT);
         validateIsNotTemporaryMember(request.email());
 
         Member loginMember = memberRepository.getMemberByEmail(Email.of(request.email()));

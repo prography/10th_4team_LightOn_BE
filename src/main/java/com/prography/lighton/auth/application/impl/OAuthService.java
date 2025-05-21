@@ -4,6 +4,7 @@ import com.prography.lighton.auth.application.OAuthUseCase;
 import com.prography.lighton.auth.application.TokenProvider;
 import com.prography.lighton.auth.application.exception.MemberProfileIncompleteException;
 import com.prography.lighton.auth.application.exception.UnsupportedSocialLoginTypeException;
+import com.prography.lighton.auth.application.validator.DuplicateEmailValidator;
 import com.prography.lighton.auth.domain.enums.SocialLoginType;
 import com.prography.lighton.auth.presentation.dto.google.GoogleOAuthToken;
 import com.prography.lighton.auth.presentation.dto.google.GoogleUser;
@@ -29,6 +30,7 @@ public class OAuthService implements OAuthUseCase {
     private final KaKaoOauth kaKaoOauth;
     private final GoogleOauth googleOauth;
     private final TokenProvider tokenProvider;
+    private final DuplicateEmailValidator duplicateEmailValidator;
 
     private final TemporaryMemberRepository temporaryMemberRepository;
     private final MemberRepository memberRepository;
@@ -67,11 +69,13 @@ public class OAuthService implements OAuthUseCase {
     }
 
     private SocialLoginResult handleLoginOrRegister(String email, SocialLoginType socialLoginType) {
-        Email emailVO = Email.of(email);
+        duplicateEmailValidator.validateConflictingLoginType(email, socialLoginType);
 
         if (isExistTemporaryMemberByEmail(email)) {
             throw new MemberProfileIncompleteException();
         }
+
+        Email emailVO = Email.of(email);
 
         if (isExistMemberByEmail(email)) {
             Member member = memberRepository.getMemberByEmail(emailVO);
@@ -84,6 +88,7 @@ public class OAuthService implements OAuthUseCase {
 
         return RegisterSocialMemberResponseDTO.of(tempMember.isRegistered(), tempMember.getId());
     }
+
 
     private boolean isExistTemporaryMemberByEmail(String email) {
         return temporaryMemberRepository.existsByEmailAndNotRegistered(email);

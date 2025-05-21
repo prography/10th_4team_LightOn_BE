@@ -1,5 +1,6 @@
 package com.prography.lighton.member.infrastructure.repository;
 
+import com.prography.lighton.auth.domain.enums.SocialLoginType;
 import com.prography.lighton.member.domain.entity.TemporaryMember;
 import com.prography.lighton.member.domain.entity.vo.Email;
 import com.prography.lighton.member.exception.NoSuchMemberException;
@@ -17,6 +18,9 @@ public interface TemporaryMemberRepository extends JpaRepository<TemporaryMember
 
     @Query("SELECT COUNT(m) > 0 FROM TemporaryMember m WHERE m.email.value = :email")
     boolean existsByEmail(@Param("email") String email);
+
+    @Query("SELECT COUNT(m) > 0 FROM Member m WHERE m.email.value = :email and m.loginType <> :loginType and m.status = true")
+    boolean existsConflictingLoginTypeByEmail(String email, SocialLoginType loginType);
 
     default TemporaryMember getById(final Long id) {
         return findById(id)

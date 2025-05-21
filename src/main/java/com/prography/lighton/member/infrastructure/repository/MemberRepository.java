@@ -1,5 +1,6 @@
 package com.prography.lighton.member.infrastructure.repository;
 
+import com.prography.lighton.auth.domain.enums.SocialLoginType;
 import com.prography.lighton.member.domain.entity.Member;
 import com.prography.lighton.member.domain.entity.vo.Email;
 import com.prography.lighton.member.domain.entity.vo.Phone;
@@ -19,6 +20,9 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
 
     @Query("SELECT COUNT(m) > 0 FROM Member m WHERE m.email.value = :email and m.status = true")
     boolean existsByEmail(@Param("email") String email);
+
+    @Query("SELECT COUNT(m) > 0 FROM Member m WHERE m.email.value = :email and m.loginType <> :loginType and m.status = true")
+    boolean existsConflictingLoginTypeByEmail(String email, SocialLoginType loginType);
 
 
     default Member getMemberByEmail(Email email) {
