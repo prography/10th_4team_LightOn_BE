@@ -26,6 +26,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class PerformanceApplicationQueryService implements PerformanceApplicationQueryUseCase {
 
     private final AdminPerformanceRepository adminPerformanceRepository;
+    private final PendingPerformanceMapper pendingPerformanceMapper;
 
     @Override
     public GetPerformanceApplicationListResponseDTO getAllPerformanceApplications(int page, int size,
@@ -39,7 +40,7 @@ public class PerformanceApplicationQueryService implements PerformanceApplicatio
             effectiveStatuses = approveStatuses;
         }
         Page<Performance> performances = adminPerformanceRepository.findByApproveStatuses(effectiveStatuses, pageable);
-        var dtoPage = performances.map(PendingPerformanceMapper::toPendingPerformanceDTO);
+        var dtoPage = performances.map(pendingPerformanceMapper::toPendingPerformanceDTO);
         return GetPerformanceApplicationListResponseDTO.of(dtoPage);
     }
 
@@ -48,6 +49,6 @@ public class PerformanceApplicationQueryService implements PerformanceApplicatio
         Performance performance = adminPerformanceRepository.findByIdAndApproveStatus(performanceId, PENDING)
                 .orElseThrow(() -> new NoSuchPerformanceException("해당 공연은 이미 처리 되었거나 존재하지 않습니다."));
 
-        return PendingPerformanceMapper.toPendingPerformanceDetailResponseDTO(performance);
+        return pendingPerformanceMapper.toPendingPerformanceDetailResponseDTO(performance);
     }
 }
