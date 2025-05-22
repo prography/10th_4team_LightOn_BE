@@ -16,7 +16,8 @@ public final class SecurityWhitelist {
             "/v3/api-docs",
             "/docs",
             "/swagger-resources",
-            "/webjars"
+            "/webjars",
+            "/api/oauth"
     };
 
     // 정규식으로 매칭되는 경로들

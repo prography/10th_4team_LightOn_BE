@@ -17,7 +17,7 @@ public class AdminCheckAspect {
 
     private final MemberRepository memberRepository;
 
-    @Before("@annotation(com.prography.lighton.common.annotation.AdminOnly)")
+    @Before("@annotation(com.prography.lighton.common.annotation.AdminOnly) || @within(com.prography.lighton.common.annotation.AdminOnly)")
     public void checkAdminAuthority() {
         Long memberId = SecurityUtils.getCurrentMemberId();
 
