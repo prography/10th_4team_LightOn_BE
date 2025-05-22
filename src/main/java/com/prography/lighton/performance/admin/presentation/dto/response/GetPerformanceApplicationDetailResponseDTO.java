@@ -10,6 +10,7 @@ public record GetPerformanceApplicationDetailResponseDTO(
         Long id,
         Info info,
         List<PerformanceArtistDTO> artists,
+        List<String> genres,
         Schedule schedule,
         Integer regionCode,
         String regionName,
@@ -22,6 +23,7 @@ public record GetPerformanceApplicationDetailResponseDTO(
             Long id,
             Info info,
             List<PerformanceArtistDTO> artists,
+            List<String> genres,
             Schedule schedule,
             Integer regionCode,
             String regionName,
@@ -29,7 +31,8 @@ public record GetPerformanceApplicationDetailResponseDTO(
             List<Seat> seats,
             String proofUrl
     ) {
-        return new GetPerformanceApplicationDetailResponseDTO(id, info, artists, schedule, regionCode, regionName, type,
+        return new GetPerformanceApplicationDetailResponseDTO(id, info, artists, genres, schedule, regionCode,
+                regionName, type,
                 seats,
                 proofUrl);
     }

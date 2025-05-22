@@ -47,6 +47,7 @@ public class PendingPerformanceMapper {
                 performance.getId(),
                 performance.getInfo(),
                 artistDTOs,
+                toGenres(performance.getGenres()),
                 performance.getSchedule(),
                 regionCache.getRegionCodeByInfo(performance.getLocation().getRegion()),
                 toRegionName(performance),
