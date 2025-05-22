@@ -1,5 +1,6 @@
 package com.prography.lighton.performance.admin.presentation;
 
+import com.prography.lighton.common.annotation.AdminOnly;
 import com.prography.lighton.common.utils.ApiUtils;
 import com.prography.lighton.common.utils.ApiUtils.ApiResult;
 import com.prography.lighton.performance.admin.application.ManagePerformanceApplicationUseCase;
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+@AdminOnly
 @RestController
 @RequestMapping("/api/admin")
 @RequiredArgsConstructor
@@ -26,7 +28,7 @@ public class AdminPerformanceController {
 
     private final ManagePerformanceApplicationUseCase managePerformanceApplicationUseCase;
     private final PerformanceApplicationQueryUseCase performanceApplicationQueryUseCase;
-
+    
     @GetMapping("/applications/performances")
     public ResponseEntity<ApiResult<GetPerformanceApplicationListResponseDTO>> getPerformanceApplicationList(
             @RequestParam(defaultValue = "0") int page,
