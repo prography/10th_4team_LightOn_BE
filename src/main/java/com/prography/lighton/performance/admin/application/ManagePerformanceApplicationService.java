@@ -2,9 +2,9 @@ package com.prography.lighton.performance.admin.application;
 
 import com.prography.lighton.performance.admin.infrastructure.repository.AdminPerformanceRepository;
 import com.prography.lighton.performance.admin.presentation.dto.request.ManagePerformanceApplicationRequestDTO;
-import com.prography.lighton.performance.users.domain.entity.Performance;
-import com.prography.lighton.performance.users.domain.entity.enums.ApproveStatus;
-import com.prography.lighton.performance.users.domain.exception.NoSuchPerformanceException;
+import com.prography.lighton.performance.common.domain.entity.Performance;
+import com.prography.lighton.performance.common.domain.entity.enums.ApproveStatus;
+import com.prography.lighton.performance.common.domain.exception.NoSuchPerformanceException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

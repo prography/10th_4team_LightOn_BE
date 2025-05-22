@@ -1,4 +1,4 @@
-package com.prography.lighton.performance.users.domain.entity.vo;
+package com.prography.lighton.performance.common.domain.entity.vo;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;

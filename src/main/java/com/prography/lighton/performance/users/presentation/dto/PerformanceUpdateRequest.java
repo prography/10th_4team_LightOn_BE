@@ -1,6 +1,6 @@
 package com.prography.lighton.performance.users.presentation.dto;
 
-import com.prography.lighton.performance.users.domain.entity.enums.Seat;
+import com.prography.lighton.performance.common.domain.entity.enums.Seat;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;

@@ -1,6 +1,6 @@
-package com.prography.lighton.performance.users.domain.entity.vo;
+package com.prography.lighton.performance.common.domain.entity.vo;
 
-import com.prography.lighton.performance.users.domain.exception.InvalidPaymentInfoException;
+import com.prography.lighton.performance.common.domain.exception.InvalidPaymentInfoException;
 import io.micrometer.common.util.StringUtils;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;

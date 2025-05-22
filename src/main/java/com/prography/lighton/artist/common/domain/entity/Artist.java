@@ -11,7 +11,7 @@ import com.prography.lighton.common.domain.DomainValidator;
 import com.prography.lighton.common.domain.vo.RegionInfo;
 import com.prography.lighton.genre.domain.entity.Genre;
 import com.prography.lighton.member.domain.entity.Member;
-import com.prography.lighton.performance.users.domain.entity.association.PerformanceArtist;
+import com.prography.lighton.performance.common.domain.entity.association.PerformanceArtist;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embedded;
@@ -184,7 +184,7 @@ public class Artist extends BaseEntity {
         if (this.approveStatus == targetStatus) {
             throw new SameApproveStatusException("동일한 상태로는 변경할 수 없습니다.");
         }
-        
+
         if (this.approveStatus == ApproveStatus.PENDING) {
             if (targetStatus == ApproveStatus.APPROVED || targetStatus == ApproveStatus.REJECTED) {
                 this.approveStatus = targetStatus;

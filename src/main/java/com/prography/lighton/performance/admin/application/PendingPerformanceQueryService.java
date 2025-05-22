@@ -4,8 +4,8 @@ import com.prography.lighton.performance.admin.application.mapper.PendingPerform
 import com.prography.lighton.performance.admin.infrastructure.repository.AdminPerformanceRepository;
 import com.prography.lighton.performance.admin.presentation.dto.response.GetPerformanceApplicationDetailResponseDTO;
 import com.prography.lighton.performance.admin.presentation.dto.response.GetPerformanceApplicationListResponseDTO;
-import com.prography.lighton.performance.users.domain.entity.Performance;
-import com.prography.lighton.performance.users.domain.entity.enums.ApproveStatus;
+import com.prography.lighton.performance.common.domain.entity.Performance;
+import com.prography.lighton.performance.common.domain.entity.enums.ApproveStatus;
 import com.prography.lighton.performance.users.infrastructure.repository.PerformanceRepository;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;

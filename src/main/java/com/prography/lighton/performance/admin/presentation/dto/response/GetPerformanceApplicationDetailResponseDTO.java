@@ -1,9 +1,9 @@
 package com.prography.lighton.performance.admin.presentation.dto.response;
 
-import com.prography.lighton.performance.users.domain.entity.enums.Seat;
-import com.prography.lighton.performance.users.domain.entity.enums.Type;
-import com.prography.lighton.performance.users.domain.entity.vo.Info;
-import com.prography.lighton.performance.users.domain.entity.vo.Schedule;
+import com.prography.lighton.performance.common.domain.entity.enums.Seat;
+import com.prography.lighton.performance.common.domain.entity.enums.Type;
+import com.prography.lighton.performance.common.domain.entity.vo.Info;
+import com.prography.lighton.performance.common.domain.entity.vo.Schedule;
 import java.util.List;
 
 public record GetPerformanceApplicationDetailResponseDTO(

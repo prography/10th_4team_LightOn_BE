@@ -4,9 +4,9 @@ import com.prography.lighton.genre.domain.entity.Genre;
 import com.prography.lighton.performance.admin.presentation.dto.response.GetPerformanceApplicationDetailResponseDTO;
 import com.prography.lighton.performance.admin.presentation.dto.response.GetPerformanceApplicationDetailResponseDTO.PerformanceArtistDTO;
 import com.prography.lighton.performance.admin.presentation.dto.response.GetPerformanceApplicationListResponseDTO.PerformanceApplicationDTO;
-import com.prography.lighton.performance.users.domain.entity.Performance;
-import com.prography.lighton.performance.users.domain.entity.PerformanceGenre;
-import com.prography.lighton.performance.users.domain.entity.association.PerformanceArtist;
+import com.prography.lighton.performance.common.domain.entity.Performance;
+import com.prography.lighton.performance.common.domain.entity.PerformanceGenre;
+import com.prography.lighton.performance.common.domain.entity.association.PerformanceArtist;
 import java.util.List;
 
 public class PendingPerformanceMapper {

@@ -1,4 +1,4 @@
-package com.prography.lighton.performance.users.domain.entity.vo;
+package com.prography.lighton.performance.common.domain.entity.vo;
 
 import com.prography.lighton.common.domain.vo.RegionInfo;
 import jakarta.persistence.Column;

@@ -1,4 +1,4 @@
-package com.prography.lighton.performance.users.domain.exception;
+package com.prography.lighton.performance.common.domain.exception;
 
 import com.prography.lighton.common.exception.base.InvalidException;
 

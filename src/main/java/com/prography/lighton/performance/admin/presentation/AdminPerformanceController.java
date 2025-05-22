@@ -7,7 +7,7 @@ import com.prography.lighton.performance.admin.application.PendingPerformanceQue
 import com.prography.lighton.performance.admin.presentation.dto.request.ManagePerformanceApplicationRequestDTO;
 import com.prography.lighton.performance.admin.presentation.dto.response.GetPerformanceApplicationDetailResponseDTO;
 import com.prography.lighton.performance.admin.presentation.dto.response.GetPerformanceApplicationListResponseDTO;
-import com.prography.lighton.performance.users.domain.entity.enums.ApproveStatus;
+import com.prography.lighton.performance.common.domain.entity.enums.ApproveStatus;
 import io.micrometer.common.util.StringUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;

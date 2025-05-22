@@ -1,7 +1,7 @@
 package com.prography.lighton.performance.admin.presentation.dto.response;
 
-import com.prography.lighton.performance.users.domain.entity.enums.ApproveStatus;
-import com.prography.lighton.performance.users.domain.entity.vo.Schedule;
+import com.prography.lighton.performance.common.domain.entity.enums.ApproveStatus;
+import com.prography.lighton.performance.common.domain.entity.vo.Schedule;
 import java.util.List;
 import org.springframework.data.domain.Page;
 

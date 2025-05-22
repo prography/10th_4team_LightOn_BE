@@ -1,9 +1,9 @@
-package com.prography.lighton.performance.users.domain.entity.association;
+package com.prography.lighton.performance.common.domain.entity.association;
 
 
 import com.prography.lighton.artist.common.domain.entity.Artist;
 import com.prography.lighton.common.domain.BaseEntity;
-import com.prography.lighton.performance.users.domain.entity.Performance;
+import com.prography.lighton.performance.common.domain.entity.Performance;
 import jakarta.persistence.Entity;
 import jakarta.persistence.ManyToOne;
 import java.util.List;

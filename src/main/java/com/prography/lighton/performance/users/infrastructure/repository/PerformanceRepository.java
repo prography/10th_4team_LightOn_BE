@@ -1,7 +1,7 @@
 package com.prography.lighton.performance.users.infrastructure.repository;
 
-import com.prography.lighton.performance.users.domain.entity.Performance;
-import com.prography.lighton.performance.users.domain.exception.NoSuchPerformanceException;
+import com.prography.lighton.performance.common.domain.entity.Performance;
+import com.prography.lighton.performance.common.domain.exception.NoSuchPerformanceException;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface PerformanceRepository extends JpaRepository<Performance, Long> {

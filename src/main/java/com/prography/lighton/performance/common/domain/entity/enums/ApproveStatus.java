@@ -1,4 +1,4 @@
-package com.prography.lighton.performance.users.domain.entity.enums;
+package com.prography.lighton.performance.common.domain.entity.enums;
 
 public enum ApproveStatus {
     PENDING, APPROVED, REJECTED;
