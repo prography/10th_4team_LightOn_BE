@@ -1,5 +1,7 @@
 package com.prography.lighton.performance.common.domain.entity;
 
+import com.prography.lighton.artist.admin.domain.exception.InvalidApproveStatusTransitionException;
+import com.prography.lighton.artist.admin.domain.exception.SameApproveStatusException;
 import com.prography.lighton.artist.common.domain.entity.Artist;
 import com.prography.lighton.artist.common.domain.entity.exception.NotAMasterArtistException;
 import com.prography.lighton.common.domain.BaseEntity;
@@ -247,7 +249,23 @@ public class Performance extends BaseEntity {
         this.canceled = true;
     }
 
-    public void managePerformanceApplication(ApproveStatus approveStatus) {
-        this.approveStatus = approveStatus;
+    public void managePerformanceApplication(ApproveStatus targetStatus) {
+        if (this.approveStatus == targetStatus) {
+            throw new SameApproveStatusException("동일한 상태로는 변경할 수 없습니다.");
+        }
+
+        if (this.approveStatus == ApproveStatus.PENDING) {
+            if (targetStatus == ApproveStatus.APPROVED || targetStatus == ApproveStatus.REJECTED) {
+                this.approveStatus = targetStatus;
+                return;
+            }
+        }
+
+        if (this.approveStatus == ApproveStatus.APPROVED && targetStatus == ApproveStatus.PENDING) {
+            this.approveStatus = targetStatus;
+            return;
+        }
+
+        throw new InvalidApproveStatusTransitionException("현재 상태에서는 해당 상태로 변경할 수 없습니다.");
     }
 }

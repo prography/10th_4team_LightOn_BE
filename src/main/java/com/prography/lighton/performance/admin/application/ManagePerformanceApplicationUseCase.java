@@ -4,5 +4,5 @@ import com.prography.lighton.performance.admin.presentation.dto.request.ManagePe
 
 public interface ManagePerformanceApplicationUseCase {
 
-    void manageArtistApplication(Long performanceId, ManagePerformanceApplicationRequestDTO requestDTO);
+    void managePerformanceApplication(Long performanceId, ManagePerformanceApplicationRequestDTO requestDTO);
 }

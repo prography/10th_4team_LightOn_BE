@@ -55,7 +55,7 @@ public class AdminPerformanceController {
     public ResponseEntity<ApiResult<?>> managePerformanceApplication(@PathVariable Long performanceId,
                                                                      @RequestBody
                                                                      ManagePerformanceApplicationRequestDTO request) {
-        managePerformanceApplicationUseCase.manageArtistApplication(performanceId, request);
+        managePerformanceApplicationUseCase.managePerformanceApplication(performanceId, request);
         return ResponseEntity.ok(ApiUtils.success());
     }
 }
