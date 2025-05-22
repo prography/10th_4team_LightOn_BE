@@ -5,7 +5,7 @@ import com.prography.lighton.performance.admin.presentation.dto.response.GetPerf
 import com.prography.lighton.performance.common.domain.entity.enums.ApproveStatus;
 import java.util.List;
 
-public interface PendingPerformanceQueryUseCase {
+public interface PerformanceApplicationQueryUseCase {
 
     GetPerformanceApplicationListResponseDTO getAllPerformanceApplications(int page, int size,
                                                                            List<ApproveStatus> approveStatuses);

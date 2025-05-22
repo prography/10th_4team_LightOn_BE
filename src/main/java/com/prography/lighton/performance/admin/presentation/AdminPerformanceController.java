@@ -3,7 +3,7 @@ package com.prography.lighton.performance.admin.presentation;
 import com.prography.lighton.common.utils.ApiUtils;
 import com.prography.lighton.common.utils.ApiUtils.ApiResult;
 import com.prography.lighton.performance.admin.application.ManagePerformanceApplicationUseCase;
-import com.prography.lighton.performance.admin.application.PendingPerformanceQueryUseCase;
+import com.prography.lighton.performance.admin.application.PerformanceApplicationQueryUseCase;
 import com.prography.lighton.performance.admin.presentation.dto.request.ManagePerformanceApplicationRequestDTO;
 import com.prography.lighton.performance.admin.presentation.dto.response.GetPerformanceApplicationDetailResponseDTO;
 import com.prography.lighton.performance.admin.presentation.dto.response.GetPerformanceApplicationListResponseDTO;
@@ -25,7 +25,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class AdminPerformanceController {
 
     private final ManagePerformanceApplicationUseCase managePerformanceApplicationUseCase;
-    private final PendingPerformanceQueryUseCase pendingPerformanceQueryUseCase;
+    private final PerformanceApplicationQueryUseCase performanceApplicationQueryUseCase;
 
     @GetMapping("/applications/performances")
     public ResponseEntity<ApiResult<GetPerformanceApplicationListResponseDTO>> getPerformanceApplicationList(
@@ -34,7 +34,7 @@ public class AdminPerformanceController {
             @RequestParam(required = false) List<ApproveStatus> statuses
     ) {
         GetPerformanceApplicationListResponseDTO result =
-                pendingPerformanceQueryUseCase.getAllPerformanceApplications(page, size, statuses);
+                performanceApplicationQueryUseCase.getAllPerformanceApplications(page, size, statuses);
 
         return ResponseEntity.ok(ApiUtils.success(result));
     }
@@ -44,7 +44,7 @@ public class AdminPerformanceController {
     public ResponseEntity<ApiUtils.ApiResult<GetPerformanceApplicationDetailResponseDTO>> getPerformanceApplicationList(
             @PathVariable Long performanceId) {
         return ResponseEntity.ok(ApiUtils.success(
-                pendingPerformanceQueryUseCase.getPendingPerformanceDetail(performanceId)));
+                performanceApplicationQueryUseCase.getPendingPerformanceDetail(performanceId)));
     }
 
     // 아티스트 신청 승인 API

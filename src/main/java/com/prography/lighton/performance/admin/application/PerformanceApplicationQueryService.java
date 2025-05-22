@@ -10,7 +10,6 @@ import com.prography.lighton.performance.admin.presentation.dto.response.GetPerf
 import com.prography.lighton.performance.common.domain.entity.Performance;
 import com.prography.lighton.performance.common.domain.entity.enums.ApproveStatus;
 import com.prography.lighton.performance.common.domain.exception.NoSuchPerformanceException;
-import com.prography.lighton.performance.users.infrastructure.repository.PerformanceRepository;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -24,11 +23,9 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
-public class PendingPerformanceQueryService implements PendingPerformanceQueryUseCase {
+public class PerformanceApplicationQueryService implements PerformanceApplicationQueryUseCase {
 
-    private final PerformanceRepository performanceRepository;
     private final AdminPerformanceRepository adminPerformanceRepository;
-
 
     @Override
     public GetPerformanceApplicationListResponseDTO getAllPerformanceApplications(int page, int size,
