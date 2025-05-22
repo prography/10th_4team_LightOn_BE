@@ -17,14 +17,16 @@ public record GetPerformanceApplicationListResponseDTO(Page<PerformanceApplicati
             String title,
             List<String> genres,
             Schedule schedule,
-            Integer region,
+            Integer regionCode,
+            String regionName,
             ApproveStatus status
     ) {
 
         public static PerformanceApplicationDTO of(Long id, String imageUrl, String title,
-                                                   List<String> genres, Schedule schedule, Integer region,
+                                                   List<String> genres, Schedule schedule, Integer regionCode,
+                                                   String regionName,
                                                    ApproveStatus status) {
-            return new PerformanceApplicationDTO(id, imageUrl, title, genres, schedule, region, status);
+            return new PerformanceApplicationDTO(id, imageUrl, title, genres, schedule, regionCode, regionName, status);
         }
     }
 }

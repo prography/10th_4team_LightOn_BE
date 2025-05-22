@@ -34,5 +34,5 @@ public interface AdminPerformanceRepository extends JpaRepository<Performance, L
                     where p.approveStatus in :statuses
                       and p.status = true
                     """)
-    Page<Performance> findByApproveStatuses(@Param("statues") List<ApproveStatus> approveStatus, Pageable pageable);
+    Page<Performance> findByApproveStatuses(@Param("statuses") List<ApproveStatus> approveStatus, Pageable pageable);
 }

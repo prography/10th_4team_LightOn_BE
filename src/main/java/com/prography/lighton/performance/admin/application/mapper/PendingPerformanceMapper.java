@@ -27,7 +27,8 @@ public class PendingPerformanceMapper {
                 performance.getInfo().getTitle(),
                 toGenres(performance.getGenres()),
                 performance.getSchedule(),
-                performance.getLocation().getRegion().getSubRegion().getCode(),
+                regionCache.getRegionCodeByInfo(performance.getLocation().getRegion()),
+                toRegionName(performance),
                 performance.getApproveStatus()
         );
     }
@@ -48,10 +49,16 @@ public class PendingPerformanceMapper {
                 artistDTOs,
                 performance.getSchedule(),
                 regionCache.getRegionCodeByInfo(performance.getLocation().getRegion()),
+                toRegionName(performance),
                 performance.getType(),
                 performance.getSeats(),
                 performance.getProofUrl()
         );
+    }
+
+    private static String toRegionName(Performance performance) {
+        return performance.getLocation().getRegion().getRegion().getName()
+                + " " + performance.getLocation().getRegion().getSubRegion().getName();
     }
 
     private List<String> toGenres(List<PerformanceGenre> performanceGenres) {
