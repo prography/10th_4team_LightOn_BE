@@ -8,11 +8,8 @@ import java.util.function.Supplier;
 public final class SafeFeignExecutor {
 
     private SafeFeignExecutor() {
-    }  // util class
+    }
 
-    /**
-     * Feign 호출 래핑. - 401, 403 → InvalidTokenException - 기타 → ExternalApiCallException
-     */
     public static <T> T run(Supplier<T> call) {
         try {
             return call.get();
