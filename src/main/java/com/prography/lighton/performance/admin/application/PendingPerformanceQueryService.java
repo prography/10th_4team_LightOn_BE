@@ -7,7 +7,7 @@ import com.prography.lighton.performance.admin.presentation.dto.response.GetPerf
 import com.prography.lighton.performance.common.domain.entity.Performance;
 import com.prography.lighton.performance.common.domain.entity.enums.ApproveStatus;
 import com.prography.lighton.performance.users.infrastructure.repository.PerformanceRepository;
-import java.util.Optional;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -25,24 +25,19 @@ public class PendingPerformanceQueryService implements PendingPerformanceQueryUs
     private final PerformanceRepository performanceRepository;
     private final AdminPerformanceRepository adminPerformanceRepository;
 
-    @Override
-    public GetPerformanceApplicationListResponseDTO getAllPendingPerformances(int page, int size) {
-        return getPerformances(PageRequest.of(page, size), Optional.empty());
-    }
 
     @Override
-    public GetPerformanceApplicationListResponseDTO getPendingPerformancesByApproveStatus(int page, int size,
-                                                                                          ApproveStatus approveStatus) {
-        return getPerformances(PageRequest.of(page, size), Optional.of(approveStatus));
-    }
+    public GetPerformanceApplicationListResponseDTO getAllPerformanceApplications(int page, int size,
+                                                                                  List<ApproveStatus> approveStatuses) {
+        Pageable pageable = PageRequest.of(page, size);
 
-    private GetPerformanceApplicationListResponseDTO getPerformances(Pageable pageable,
-                                                                     Optional<ApproveStatus> optionalStatus) {
-        Page<Performance> performances = optionalStatus
-                .map(status -> adminPerformanceRepository.findByApproveStatus(status, pageable))
-                .orElseGet(() -> adminPerformanceRepository.findAllPerformanceApplications(pageable));
-
-        log.info(performances.toString());
+        List<ApproveStatus> effectiveStatuses;
+        if (approveStatuses == null || approveStatuses.isEmpty()) {
+            effectiveStatuses = List.of(ApproveStatus.PENDING, ApproveStatus.REJECTED); // 기본값
+        } else {
+            effectiveStatuses = approveStatuses;
+        }
+        Page<Performance> performances = adminPerformanceRepository.findByApproveStatuses(effectiveStatuses, pageable);
         var dtoPage = performances.map(PendingPerformanceMapper::toPendingPerformanceDTO);
         return GetPerformanceApplicationListResponseDTO.of(dtoPage);
     }

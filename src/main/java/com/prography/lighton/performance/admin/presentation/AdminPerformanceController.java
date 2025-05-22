@@ -8,7 +8,7 @@ import com.prography.lighton.performance.admin.presentation.dto.request.ManagePe
 import com.prography.lighton.performance.admin.presentation.dto.response.GetPerformanceApplicationDetailResponseDTO;
 import com.prography.lighton.performance.admin.presentation.dto.response.GetPerformanceApplicationListResponseDTO;
 import com.prography.lighton.performance.common.domain.entity.enums.ApproveStatus;
-import io.micrometer.common.util.StringUtils;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -31,13 +31,10 @@ public class AdminPerformanceController {
     public ResponseEntity<ApiResult<GetPerformanceApplicationListResponseDTO>> getPerformanceApplicationList(
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size,
-            @RequestParam(required = false) String status
+            @RequestParam(required = false) List<ApproveStatus> statuses
     ) {
         GetPerformanceApplicationListResponseDTO result =
-                StringUtils.isBlank(status)
-                        ? pendingPerformanceQueryUseCase.getAllPendingPerformances(page, size)
-                        : pendingPerformanceQueryUseCase.getPendingPerformancesByApproveStatus(page, size,
-                                ApproveStatus.from(status));
+                pendingPerformanceQueryUseCase.getAllPerformanceApplications(page, size, statuses);
 
         return ResponseEntity.ok(ApiUtils.success(result));
     }

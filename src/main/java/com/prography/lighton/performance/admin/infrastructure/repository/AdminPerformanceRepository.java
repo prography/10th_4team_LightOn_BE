@@ -2,37 +2,26 @@ package com.prography.lighton.performance.admin.infrastructure.repository;
 
 import com.prography.lighton.performance.common.domain.entity.Performance;
 import com.prography.lighton.performance.common.domain.entity.enums.ApproveStatus;
-import java.util.Optional;
+import java.util.List;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 public interface AdminPerformanceRepository extends JpaRepository<Performance, Long> {
 
-    Optional<Performance> findByIdAndApproveStatus(Long id, ApproveStatus approveStatus);
-
     @Query(value = """
             select distinct p from Performance p
             join fetch p.genres pg
-            where p.approveStatus = :approveStatus
+            join fetch pg.genre g
+            where p.approveStatus in :statuses
               and p.status = true
             """,
             countQuery = """
-                    select count(p) from Performance p
-                    where p.approveStatus = :approveStatus
+                    select count(distinct p) from Performance p
+                    where p.approveStatus in :statuses
                       and p.status = true
                     """)
-    Page<Performance> findByApproveStatus(ApproveStatus approveStatus, Pageable pageable);
-
-    @Query(value = """
-            select distinct p from Performance p
-            join fetch p.genres pg
-            where p.status = true
-            """,
-            countQuery = """
-                    select count(p) from Performance p
-                    where p.status = true
-                    """)
-    Page<Performance> findAllPerformanceApplications(Pageable pageable);
+    Page<Performance> findByApproveStatuses(@Param("statues") List<ApproveStatus> approveStatus, Pageable pageable);
 }
