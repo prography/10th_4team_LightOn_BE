@@ -7,7 +7,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 @FeignClient(
         name = "kakaoLocal",
-        url = "${kakao.local.base-url}"
+        url = "${kakao.local.base-url}",
+        configuration = {FeignRetryConfig.class}
 )
 public interface KakaoLocalFeignClient {
 
