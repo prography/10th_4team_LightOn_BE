@@ -1,11 +1,15 @@
 package com.prography.lighton.performance.admin.application;
 
+import static com.prography.lighton.performance.common.domain.entity.enums.ApproveStatus.PENDING;
+import static com.prography.lighton.performance.common.domain.entity.enums.ApproveStatus.REJECTED;
+
 import com.prography.lighton.performance.admin.application.mapper.PendingPerformanceMapper;
 import com.prography.lighton.performance.admin.infrastructure.repository.AdminPerformanceRepository;
 import com.prography.lighton.performance.admin.presentation.dto.response.GetPerformanceApplicationDetailResponseDTO;
 import com.prography.lighton.performance.admin.presentation.dto.response.GetPerformanceApplicationListResponseDTO;
 import com.prography.lighton.performance.common.domain.entity.Performance;
 import com.prography.lighton.performance.common.domain.entity.enums.ApproveStatus;
+import com.prography.lighton.performance.common.domain.exception.NoSuchPerformanceException;
 import com.prography.lighton.performance.users.infrastructure.repository.PerformanceRepository;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -33,7 +37,7 @@ public class PendingPerformanceQueryService implements PendingPerformanceQueryUs
 
         List<ApproveStatus> effectiveStatuses;
         if (approveStatuses == null || approveStatuses.isEmpty()) {
-            effectiveStatuses = List.of(ApproveStatus.PENDING, ApproveStatus.REJECTED); // 기본값
+            effectiveStatuses = List.of(PENDING, REJECTED); // 기본값
         } else {
             effectiveStatuses = approveStatuses;
         }
@@ -44,7 +48,8 @@ public class PendingPerformanceQueryService implements PendingPerformanceQueryUs
 
     @Override
     public GetPerformanceApplicationDetailResponseDTO getPendingPerformanceDetail(Long performanceId) {
-        Performance performance = performanceRepository.getById(performanceId);
+        Performance performance = adminPerformanceRepository.findByIdAndApproveStatus(performanceId, PENDING)
+                .orElseThrow(() -> new NoSuchPerformanceException("해당 공연은 이미 처리 되었거나 존재하지 않습니다."));
 
         return PendingPerformanceMapper.toPendingPerformanceDetailResponseDTO(performance);
     }
