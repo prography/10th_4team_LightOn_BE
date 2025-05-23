@@ -1,5 +1,6 @@
 package com.prography.lighton.region.infrastructure.api;
 
+import com.prography.lighton.common.config.FeignRetryConfig;
 import com.prography.lighton.region.application.dto.KakaoAddressSearchResponse;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
