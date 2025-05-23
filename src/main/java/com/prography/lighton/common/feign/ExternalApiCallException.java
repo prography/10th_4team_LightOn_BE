@@ -1,4 +1,4 @@
-package com.prography.lighton.region.infrastructure.api;
+package com.prography.lighton.common.feign;
 
 public class ExternalApiCallException extends RuntimeException {
 

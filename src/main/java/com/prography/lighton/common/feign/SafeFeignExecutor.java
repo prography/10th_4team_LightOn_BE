@@ -1,7 +1,6 @@
-package com.prography.lighton.region.application.service;
+package com.prography.lighton.common.feign;
 
 import com.prography.lighton.auth.application.exception.InvalidTokenException;
-import com.prography.lighton.region.infrastructure.api.ExternalApiCallException;
 import feign.FeignException;
 import java.util.function.Supplier;
 
