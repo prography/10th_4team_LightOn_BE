@@ -1,4 +1,4 @@
-package com.prography.lighton.region.infrastructure.api;
+package com.prography.lighton.region.infrastructure.client;
 
 import feign.RequestInterceptor;
 import feign.RequestTemplate;
@@ -12,7 +12,7 @@ public class KakaoAuthRequestInterceptor implements RequestInterceptor {
 
     @Value("${kakao.local.rest-api-key}")
     private String restApiKey;
-    
+
     @Override
     public void apply(RequestTemplate template) {
         template.header("Authorization", "KakaoAK " + restApiKey);

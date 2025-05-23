@@ -1,4 +1,4 @@
-package com.prography.lighton.region.infrastructure.api;
+package com.prography.lighton.region.infrastructure.client;
 
 import com.prography.lighton.common.config.FeignRetryConfig;
 import com.prography.lighton.region.application.dto.KakaoAddressSearchResponse;
