@@ -13,6 +13,8 @@ import com.prography.lighton.performance.common.domain.entity.vo.Schedule;
 import com.prography.lighton.performance.users.presentation.dto.InfoDTO;
 import com.prography.lighton.performance.users.presentation.dto.PaymentDTO;
 import com.prography.lighton.performance.users.presentation.dto.ScheduleDTO;
+import com.prography.lighton.region.application.dto.Coordinate;
+import com.prography.lighton.region.application.service.AddressGeocodingService;
 import com.prography.lighton.region.infrastructure.cache.RegionCache;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -25,6 +27,7 @@ public class PerformanceResolver {
     private final GenreService genreService;
     private final ArtistService artistService;
     private final RegionCache regionCache;
+    private final AddressGeocodingService addressGeocodingService;
 
     public DomainData toDomainData(Member member, List<Long> artists, InfoDTO infoDTO, ScheduleDTO scheduleDTO,
                                    PaymentDTO paymentDTO, List<Seat> seats) {
@@ -68,9 +71,9 @@ public class PerformanceResolver {
     }
 
     private Location toLocation(InfoDTO req) {
-        // 위도&경도는 외부 api 사용, 나중에 수정 필요
-        Double latitude = 0.0;
-        Double longitude = 0.0;
+        Coordinate coordinate = addressGeocodingService.geocode(req.place());
+        Double latitude = coordinate.latitude();
+        Double longitude = coordinate.longitude();
 
         return Location.of(
                 latitude,

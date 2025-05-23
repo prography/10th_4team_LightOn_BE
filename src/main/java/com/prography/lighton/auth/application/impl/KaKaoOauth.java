@@ -10,12 +10,12 @@ import static com.prography.lighton.common.constant.AuthConstants.REDIRECT_URI;
 import static com.prography.lighton.common.constant.AuthConstants.RESPONSE_TYPE;
 import static com.prography.lighton.common.constant.AuthConstants.RESPONSE_TYPE_CODE;
 
-import com.prography.lighton.auth.infrastructure.client.SafeFeignExecutor;
 import com.prography.lighton.auth.infrastructure.client.kakao.KaKaoApiClient;
 import com.prography.lighton.auth.infrastructure.client.kakao.KaKaoAuthClient;
 import com.prography.lighton.auth.presentation.dto.kakao.KaKaoOAuthTokenDTO;
 import com.prography.lighton.auth.presentation.dto.kakao.KaKaoUser;
 import com.prography.lighton.common.constant.JwtConstants;
+import com.prography.lighton.common.feign.SafeFeignExecutor;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -53,21 +53,17 @@ public class KaKaoOauth {
     }
 
     public KaKaoOAuthTokenDTO requestAccessToken(String code) {
-        return SafeFeignExecutor.execute(
+        return SafeFeignExecutor.run(
                 () -> kaKaoAuthClient.getKaKaoAccessToken(
                         KAKAO_SNS_CLIENT_ID, code, KAKAO_SNS_CALLBACK_LOGIN_URL,
-                        GRANT_TYPE, CONTENT_TYPE),
-                "카카오 액세스 토큰 요청에 실패했습니다."
-        );
+                        GRANT_TYPE, CONTENT_TYPE));
     }
 
 
     public KaKaoUser requestUserInfo(KaKaoOAuthTokenDTO kaKaoOAuthTokenDTO) {
-        return SafeFeignExecutor.execute(
+        return SafeFeignExecutor.run(
                 () -> kaKaoApiClient.getKaKaoUserInfo(
-                        getAccessToken(kaKaoOAuthTokenDTO), CONTENT_TYPE),
-                "카카오 사용자 정보 요청에 실패했습니다."
-        );
+                        getAccessToken(kaKaoOAuthTokenDTO), CONTENT_TYPE));
     }
 
     private static String getAccessToken(KaKaoOAuthTokenDTO kaKaoOAuthTokenDTO) {

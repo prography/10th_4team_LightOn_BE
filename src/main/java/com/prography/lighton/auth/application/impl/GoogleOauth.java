@@ -12,11 +12,11 @@ import static com.prography.lighton.common.constant.AuthConstants.RESPONSE_TYPE_
 import static com.prography.lighton.common.constant.AuthConstants.SCOPE;
 import static com.prography.lighton.common.constant.JwtConstants.BEARER_PREFIX;
 
-import com.prography.lighton.auth.infrastructure.client.SafeFeignExecutor;
 import com.prography.lighton.auth.infrastructure.client.google.GoogleApiClient;
 import com.prography.lighton.auth.infrastructure.client.google.GoogleAuthClient;
 import com.prography.lighton.auth.presentation.dto.google.GoogleOAuthToken;
 import com.prography.lighton.auth.presentation.dto.google.GoogleUser;
+import com.prography.lighton.common.feign.SafeFeignExecutor;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -65,9 +65,7 @@ public class GoogleOauth {
     }
 
     public GoogleUser requestUserInfo(GoogleOAuthToken oAuthToken) {
-        return SafeFeignExecutor.execute(
-                () -> googleApiClient.getGoogleUserInfo(BEARER_PREFIX + oAuthToken.access_token()),
-                "구글 사용자 정보 요청에 실패했습니다."
-        );
+        return SafeFeignExecutor.run(
+                () -> googleApiClient.getGoogleUserInfo(BEARER_PREFIX + oAuthToken.access_token()));
     }
 }
