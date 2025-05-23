@@ -1,5 +1,8 @@
 package com.prography.lighton.region.infrastructure.client;
 
+import static com.prography.lighton.common.constant.AuthConstants.HEADER_AUTHORIZATION;
+import static com.prography.lighton.common.constant.AuthConstants.HEADER_CONTENT_TYPE;
+
 import feign.RequestInterceptor;
 import feign.RequestTemplate;
 import lombok.RequiredArgsConstructor;
@@ -15,7 +18,7 @@ public class KakaoAuthRequestInterceptor implements RequestInterceptor {
 
     @Override
     public void apply(RequestTemplate template) {
-        template.header("Authorization", "KakaoAK " + restApiKey);
-        template.header("Content-Type", "application/json");
+        template.header(HEADER_AUTHORIZATION, "KakaoAK " + restApiKey);
+        template.header(HEADER_CONTENT_TYPE, "application/json");
     }
 }

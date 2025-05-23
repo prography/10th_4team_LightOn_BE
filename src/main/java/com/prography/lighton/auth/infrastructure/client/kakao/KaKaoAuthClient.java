@@ -1,5 +1,7 @@
 package com.prography.lighton.auth.infrastructure.client.kakao;
 
+import static com.prography.lighton.common.constant.AuthConstants.HEADER_CONTENT_TYPE;
+
 import com.prography.lighton.auth.presentation.dto.kakao.KaKaoOAuthTokenDTO;
 import com.prography.lighton.common.config.FeignRetryConfig;
 import org.springframework.cloud.openfeign.FeignClient;
@@ -13,7 +15,7 @@ public interface KaKaoAuthClient {
 
     @PostMapping("/oauth/token")
     KaKaoOAuthTokenDTO getKaKaoAccessToken(
-            @RequestHeader("Content-Type") String contentType,
+            @RequestHeader(HEADER_CONTENT_TYPE) String contentType,
             @RequestParam String grant_type,
             @RequestParam String redirectUri,
             @RequestParam String client_id,
