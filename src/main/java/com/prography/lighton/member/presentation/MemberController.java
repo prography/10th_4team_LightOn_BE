@@ -8,6 +8,7 @@ import com.prography.lighton.member.application.RegisterMemberUseCase;
 import com.prography.lighton.member.presentation.dto.request.CompleteMemberProfileRequestDTO;
 import com.prography.lighton.member.presentation.dto.request.LoginMemberRequestDTO;
 import com.prography.lighton.member.presentation.dto.request.RegisterMemberRequestDTO;
+import com.prography.lighton.member.presentation.dto.response.CheckDuplicateEmailResponseDTO;
 import com.prography.lighton.member.presentation.dto.response.CompleteMemberProfileResponseDTO;
 import com.prography.lighton.member.presentation.dto.response.LoginMemberResponseDTO;
 import com.prography.lighton.member.presentation.dto.response.RegisterMemberResponseDTO;
@@ -50,9 +51,9 @@ public class MemberController {
     }
 
     @GetMapping("/duplicate-check")
-    public ResponseEntity<ApiResult<?>> duplicateCheck(@RequestParam String email) {
+    public ResponseEntity<ApiResult<CheckDuplicateEmailResponseDTO>> duplicateCheck(@RequestParam String email) {
         return ResponseEntity.status(HttpStatus.OK)
-                .body(ApiUtils.success());
+                .body(ApiUtils.success(registerMemberUseCase.checkEmailExists(email)));
     }
 
     // TODO: 추후 토큰 헤더에 담아서 응답하도록 변경

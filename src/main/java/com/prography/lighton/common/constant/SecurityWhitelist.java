@@ -7,6 +7,7 @@ public final class SecurityWhitelist {
             "/health",
             "/api/members",
             "/api/members/login",
+            "/api/members/duplicate-check",
             "/swagger-ui.html"
     };
 

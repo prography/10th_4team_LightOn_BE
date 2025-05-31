@@ -5,8 +5,10 @@ import static com.prography.lighton.member.domain.entity.vo.Password.encodeAndCr
 
 import com.prography.lighton.member.domain.entity.TemporaryMember;
 import com.prography.lighton.member.domain.exception.DuplicateMemberException;
+import com.prography.lighton.member.infrastructure.repository.MemberRepository;
 import com.prography.lighton.member.infrastructure.repository.TemporaryMemberRepository;
 import com.prography.lighton.member.presentation.dto.request.RegisterMemberRequestDTO;
+import com.prography.lighton.member.presentation.dto.response.CheckDuplicateEmailResponseDTO;
 import com.prography.lighton.member.presentation.dto.response.RegisterMemberResponseDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -19,6 +21,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class RegisterMemberService implements RegisterMemberUseCase {
 
     private final TemporaryMemberRepository temporaryMemberRepository;
+    private final MemberRepository memberRepository;
     private final PasswordEncoder passwordEncoder;
 
     @Override
@@ -33,5 +36,13 @@ public class RegisterMemberService implements RegisterMemberUseCase {
         temporaryMemberRepository.save(temporaryMember);
 
         return RegisterMemberResponseDTO.of(temporaryMember.getId());
+    }
+
+    @Override
+    public CheckDuplicateEmailResponseDTO checkEmailExists(String email) {
+        boolean isDuplicate = temporaryMemberRepository.existsByEmail(email)
+                || memberRepository.existsByEmail(email);
+
+        return CheckDuplicateEmailResponseDTO.of(isDuplicate);
     }
 }
