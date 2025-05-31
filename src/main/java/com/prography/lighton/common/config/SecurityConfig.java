@@ -34,6 +34,7 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.GET, "/health").permitAll()
                         .requestMatchers(HttpMethod.POST, "/api/members").permitAll()
                         .requestMatchers(HttpMethod.POST, "/api/members/login").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/members/duplicate-check").permitAll()
                         .requestMatchers(HttpMethod.POST, "/api/members/{temporaryMemberId}/info").permitAll()
                         .requestMatchers("/api/admin/**").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.POST, "/api/members/*/info").permitAll()
