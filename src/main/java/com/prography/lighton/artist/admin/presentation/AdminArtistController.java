@@ -24,7 +24,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/admin")
 @RestController
 @RequiredArgsConstructor
-public class AdminController {
+public class AdminArtistController {
 
     private final ArtistApplicationQueryUseCase artistApplicationQueryUseCase;
     private final ManageArtistApplicationUseCase manageArtistApplicationUseCase;
