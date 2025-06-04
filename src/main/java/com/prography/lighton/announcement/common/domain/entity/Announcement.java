@@ -26,4 +26,10 @@ public class Announcement extends BaseEntity {
     public static Announcement of(String title, String content, String imageUrl) {
         return new Announcement(title, content, imageUrl);
     }
+
+    public void update(String title, String content, String imageUrl) {
+        this.title = title;
+        this.content = content;
+        this.imageUrl = imageUrl;
+    }
 }
