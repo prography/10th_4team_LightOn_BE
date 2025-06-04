@@ -35,4 +35,20 @@ public interface AdminPerformanceRepository extends JpaRepository<Performance, L
                       and p.status = true
                     """)
     Page<Performance> findByApproveStatuses(@Param("statuses") List<ApproveStatus> approveStatus, Pageable pageable);
+
+    Long countByApproveStatusAndStatus(ApproveStatus approveStatus, Boolean status);
+
+    @Query("""
+            SELECT COUNT(p) FROM Performance p
+            WHERE p.approveStatus = :approveStatus
+            AND p.status = :status
+            AND (
+                p.schedule.endDate < CURRENT_DATE
+                OR (p.schedule.endDate = CURRENT_DATE AND p.schedule.endTime <= CURRENT_TIME)
+            )
+            """)
+    Long countEndedByApproveStatusAndStatus(
+            @Param("approveStatus") ApproveStatus approveStatus,
+            @Param("status") Boolean status
+    );
 }
