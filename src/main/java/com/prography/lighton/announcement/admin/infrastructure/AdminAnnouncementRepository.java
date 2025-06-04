@@ -1,6 +1,6 @@
 package com.prography.lighton.announcement.admin.infrastructure;
 
-import com.prography.lighton.announcement.admin.application.exception.NoSuchAnnouncementException;
+import com.prography.lighton.announcement.common.application.exception.NoSuchAnnouncementException;
 import com.prography.lighton.announcement.common.domain.entity.Announcement;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;

@@ -1,4 +1,4 @@
-package com.prography.lighton.announcement.admin.application.exception;
+package com.prography.lighton.announcement.common.application.exception;
 
 import com.prography.lighton.common.exception.base.NotFoundException;
 
