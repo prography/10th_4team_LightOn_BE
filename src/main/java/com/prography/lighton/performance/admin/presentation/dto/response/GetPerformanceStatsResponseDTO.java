@@ -1,17 +1,17 @@
 package com.prography.lighton.performance.admin.presentation.dto.response;
 
 public record GetPerformanceStatsResponseDTO(
-        Long totalPerformanceCount,
-        Long totalRegisteredPerformanceCount
+        Long totalCompletedPerformanceCount,
+        Long totalCreatedPerformanceCount
 ) {
 
     public static GetPerformanceStatsResponseDTO of(
-            Long totalPerformanceCount,
-            Long totalRegisteredPerformanceCount
+            Long totalCompletedPerformanceCount,
+            Long totalCreatedPerformanceCount
     ) {
         return new GetPerformanceStatsResponseDTO(
-                totalPerformanceCount,
-                totalRegisteredPerformanceCount
+                totalCompletedPerformanceCount,
+                totalCreatedPerformanceCount
         );
     }
 }
