@@ -1,10 +1,12 @@
 package com.prography.lighton.artist.admin.presentation;
 
 import com.prography.lighton.artist.admin.application.ArtistApplicationQueryUseCase;
+import com.prography.lighton.artist.admin.application.GetArtistStatsUseCase;
 import com.prography.lighton.artist.admin.application.ManageArtistApplicationUseCase;
 import com.prography.lighton.artist.admin.presentation.dto.request.ManageArtistApplicationRequestDTO;
 import com.prography.lighton.artist.admin.presentation.dto.response.GetArtistApplicationDetailResponseDTO;
 import com.prography.lighton.artist.admin.presentation.dto.response.GetArtistApplicationListResponseDTO;
+import com.prography.lighton.artist.admin.presentation.dto.response.GetArtistStatsResponseDTO;
 import com.prography.lighton.artist.common.domain.entity.enums.ApproveStatus;
 import com.prography.lighton.common.annotation.AdminOnly;
 import com.prography.lighton.common.utils.ApiUtils;
@@ -28,6 +30,7 @@ public class AdminArtistController {
 
     private final ArtistApplicationQueryUseCase artistApplicationQueryUseCase;
     private final ManageArtistApplicationUseCase manageArtistApplicationUseCase;
+    private final GetArtistStatsUseCase getArtistStatsUseCase;
 
     @GetMapping("/applications/artists")
     public ResponseEntity<ApiResult<GetArtistApplicationListResponseDTO>> getArtistApplicationList(
@@ -53,6 +56,11 @@ public class AdminArtistController {
                                                                 @RequestBody ManageArtistApplicationRequestDTO request) {
         manageArtistApplicationUseCase.manageArtistApplication(artistId, request);
         return ResponseEntity.ok(ApiUtils.success());
+    }
+
+    @GetMapping("/artists/stats")
+    public ResponseEntity<ApiResult<GetArtistStatsResponseDTO>> getArtistStats() {
+        return ResponseEntity.ok(ApiUtils.success(getArtistStatsUseCase.getArtistStats()));
     }
 
 }
