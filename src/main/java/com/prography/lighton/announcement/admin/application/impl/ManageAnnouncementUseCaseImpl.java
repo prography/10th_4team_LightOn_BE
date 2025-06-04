@@ -16,6 +16,7 @@ public class ManageAnnouncementUseCaseImpl implements ManageAnnouncementUseCase 
     private final AdminAnnouncementRepository adminAnnouncementRepository;
 
     @Override
+    @Transactional
     public void registerAnnouncement(ManageAnnouncementRequestDTO request) {
         Announcement announcement = Announcement.of(
                 request.title(),
@@ -27,6 +28,7 @@ public class ManageAnnouncementUseCaseImpl implements ManageAnnouncementUseCase 
     }
 
     @Override
+    @Transactional
     public void updateAnnouncement(Long announcementId, ManageAnnouncementRequestDTO request) {
         Announcement announcement = adminAnnouncementRepository.getById(announcementId);
 
@@ -38,6 +40,7 @@ public class ManageAnnouncementUseCaseImpl implements ManageAnnouncementUseCase 
     }
 
     @Override
+    @Transactional
     public void deleteAnnouncement(Long announcementId) {
         Announcement announcement = adminAnnouncementRepository.getById(announcementId);
 
