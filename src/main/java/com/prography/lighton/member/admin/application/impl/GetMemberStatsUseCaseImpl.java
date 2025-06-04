@@ -16,6 +16,6 @@ public class GetMemberStatsUseCaseImpl implements GetMemberStatsUseCase {
 
     @Override
     public GetMemberStatsResponseDTO getMemberStats() {
-        return GetMemberStatsResponseDTO.of(adminMemberRepository.countByStatus(true));
+        return GetMemberStatsResponseDTO.of(adminMemberRepository.count());
     }
 }

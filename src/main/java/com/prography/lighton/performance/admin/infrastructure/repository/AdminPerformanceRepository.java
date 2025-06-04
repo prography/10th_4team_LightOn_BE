@@ -36,7 +36,7 @@ public interface AdminPerformanceRepository extends JpaRepository<Performance, L
                     """)
     Page<Performance> findByApproveStatuses(@Param("statuses") List<ApproveStatus> approveStatus, Pageable pageable);
 
-    Long countByApproveStatusAndStatus(ApproveStatus approveStatus, Boolean status);
+    Long countByApproveStatus(ApproveStatus approveStatus);
 
     @Query("""
             SELECT COUNT(p) FROM Performance p

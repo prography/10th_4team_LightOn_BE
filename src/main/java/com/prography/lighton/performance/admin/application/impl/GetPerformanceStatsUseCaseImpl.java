@@ -19,7 +19,7 @@ public class GetPerformanceStatsUseCaseImpl implements GetPerformanceStatsUseCas
     public GetPerformanceStatsResponseDTO getPerformanceStats() {
         return GetPerformanceStatsResponseDTO.of(
                 adminPerformanceRepository.countEndedByApproveStatusAndStatus(ApproveStatus.APPROVED, true),
-                adminPerformanceRepository.countByApproveStatusAndStatus(ApproveStatus.APPROVED, true)
+                adminPerformanceRepository.countByApproveStatus(ApproveStatus.APPROVED)
         );
     }
 }
