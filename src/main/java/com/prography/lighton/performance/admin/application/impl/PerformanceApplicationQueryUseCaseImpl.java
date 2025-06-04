@@ -1,8 +1,9 @@
-package com.prography.lighton.performance.admin.application;
+package com.prography.lighton.performance.admin.application.impl;
 
 import static com.prography.lighton.performance.common.domain.entity.enums.ApproveStatus.PENDING;
 import static com.prography.lighton.performance.common.domain.entity.enums.ApproveStatus.REJECTED;
 
+import com.prography.lighton.performance.admin.application.PerformanceApplicationQueryUseCase;
 import com.prography.lighton.performance.admin.application.mapper.PendingPerformanceMapper;
 import com.prography.lighton.performance.admin.infrastructure.repository.AdminPerformanceRepository;
 import com.prography.lighton.performance.admin.presentation.dto.response.GetPerformanceApplicationDetailResponseDTO;
@@ -23,7 +24,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
-public class PerformanceApplicationQueryService implements PerformanceApplicationQueryUseCase {
+public class PerformanceApplicationQueryUseCaseImpl implements PerformanceApplicationQueryUseCase {
 
     private final AdminPerformanceRepository adminPerformanceRepository;
     private final PendingPerformanceMapper pendingPerformanceMapper;

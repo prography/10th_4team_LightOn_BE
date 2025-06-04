@@ -1,5 +1,6 @@
-package com.prography.lighton.performance.admin.application;
+package com.prography.lighton.performance.admin.application.impl;
 
+import com.prography.lighton.performance.admin.application.ManagePerformanceApplicationUseCase;
 import com.prography.lighton.performance.admin.infrastructure.repository.AdminPerformanceRepository;
 import com.prography.lighton.performance.admin.presentation.dto.request.ManagePerformanceApplicationRequestDTO;
 import com.prography.lighton.performance.common.domain.entity.Performance;
@@ -12,7 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 @Transactional
 @RequiredArgsConstructor
-public class ManagePerformanceApplicationService implements ManagePerformanceApplicationUseCase {
+public class ManagePerformanceApplicationUseCaseImpl implements ManagePerformanceApplicationUseCase {
 
     private final AdminPerformanceRepository adminPerformanceRepository;
     private final PerformanceRepository performanceRepository;
