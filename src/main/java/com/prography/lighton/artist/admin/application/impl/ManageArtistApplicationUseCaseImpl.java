@@ -1,5 +1,6 @@
-package com.prography.lighton.artist.admin.application;
+package com.prography.lighton.artist.admin.application.impl;
 
+import com.prography.lighton.artist.admin.application.ManageArtistApplicationUseCase;
 import com.prography.lighton.artist.admin.presentation.dto.request.ManageArtistApplicationRequestDTO;
 import com.prography.lighton.artist.common.domain.entity.Artist;
 import com.prography.lighton.artist.common.domain.entity.enums.ApproveStatus;
@@ -11,7 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 @Transactional
 @RequiredArgsConstructor
-public class ManageArtistApplicationService implements ManageArtistApplicationUseCase {
+public class ManageArtistApplicationUseCaseImpl implements ManageArtistApplicationUseCase {
 
     private final ArtistRepository artistRepository;
 

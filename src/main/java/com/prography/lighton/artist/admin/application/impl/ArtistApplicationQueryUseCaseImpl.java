@@ -1,8 +1,9 @@
-package com.prography.lighton.artist.admin.application;
+package com.prography.lighton.artist.admin.application.impl;
 
 import static com.prography.lighton.artist.common.domain.entity.enums.ApproveStatus.PENDING;
 import static com.prography.lighton.artist.common.domain.entity.enums.ApproveStatus.REJECTED;
 
+import com.prography.lighton.artist.admin.application.ArtistApplicationQueryUseCase;
 import com.prography.lighton.artist.admin.application.mapper.PendingArtistMapper;
 import com.prography.lighton.artist.admin.infrastructure.repository.AdminArtistRepository;
 import com.prography.lighton.artist.admin.presentation.dto.response.GetArtistApplicationDetailResponseDTO;
@@ -21,7 +22,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
-public class ArtistApplicationQueryService implements ArtistApplicationQueryUseCase {
+public class ArtistApplicationQueryUseCaseImpl implements ArtistApplicationQueryUseCase {
 
     private final AdminArtistRepository adminArtistRepository;
     private final PendingArtistMapper pendingArtistMapper;
