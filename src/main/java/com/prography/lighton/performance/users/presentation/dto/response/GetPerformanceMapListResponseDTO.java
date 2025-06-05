@@ -1,30 +1,37 @@
 package com.prography.lighton.performance.users.presentation.dto.response;
 
 import com.prography.lighton.performance.common.domain.entity.Performance;
-import com.prography.lighton.performance.common.domain.entity.vo.Info;
-import com.prography.lighton.performance.common.domain.entity.vo.Location;
-import com.prography.lighton.performance.common.domain.entity.vo.Schedule;
-import org.springframework.data.domain.Page;
+import java.time.LocalDate;
+import java.util.List;
 
-public record GetPerformanceMapListResponseDTO(Page<PerformanceMapDTO> performanceMapList) {
+public record GetPerformanceMapListResponseDTO(List<PerformanceMapDTO> performanceMapList) {
 
-    public static GetPerformanceMapListResponseDTO from(Page<Performance> performances) {
-        return new GetPerformanceMapListResponseDTO(performances.map(PerformanceMapDTO::from));
+    public static GetPerformanceMapListResponseDTO from(List<Performance> performances) {
+        List<PerformanceMapDTO> performanceMapList = performances.stream()
+                .map(PerformanceMapDTO::from)
+                .toList();
+        return new GetPerformanceMapListResponseDTO(performanceMapList);
     }
 
     public record PerformanceMapDTO(
             Long id,
-            Info info,
-            Location location,
-            Schedule schedule
+            String posterUrl,
+            String title,
+            Double latitude,
+            Double longitude,
+            LocalDate startDate,
+            LocalDate endDate
     ) {
 
         public static PerformanceMapDTO from(Performance performance) {
             return new PerformanceMapDTO(
                     performance.getId(),
-                    performance.getInfo(),
-                    performance.getLocation(),
-                    performance.getSchedule()
+                    performance.getInfo().getPosterUrl(),
+                    performance.getInfo().getTitle(),
+                    performance.getLocation().getLatitude(),
+                    performance.getLocation().getLongitude(),
+                    performance.getSchedule().getStartDate(),
+                    performance.getSchedule().getEndDate()
             );
         }
     }
