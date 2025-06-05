@@ -4,6 +4,7 @@ import com.prography.lighton.common.annotation.LoginMember;
 import com.prography.lighton.common.utils.ApiUtils;
 import com.prography.lighton.common.utils.ApiUtils.ApiResult;
 import com.prography.lighton.member.domain.entity.Member;
+import com.prography.lighton.performance.common.domain.entity.enums.PerformanceFilterType;
 import com.prography.lighton.performance.users.application.service.PerformanceService;
 import com.prography.lighton.performance.users.presentation.dto.response.GetPerformanceMapListResponseDTO;
 import lombok.RequiredArgsConstructor;
@@ -31,7 +32,7 @@ public class UserPerformanceController {
 
     @GetMapping("/highlight")
     public ResponseEntity<ApiResult<GetPerformanceMapListResponseDTO>> getFilteredPerformances(
-            @RequestParam String type,
+            @RequestParam PerformanceFilterType type,
             @RequestParam double latitude,
             @RequestParam double longitude,
             @RequestParam(defaultValue = "50") int radius,

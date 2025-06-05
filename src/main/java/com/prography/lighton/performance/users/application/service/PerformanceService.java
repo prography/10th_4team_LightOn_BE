@@ -6,6 +6,7 @@ import com.prography.lighton.common.geo.BoundingBox;
 import com.prography.lighton.common.geo.GeoUtils;
 import com.prography.lighton.member.domain.entity.Member;
 import com.prography.lighton.performance.common.domain.entity.Performance;
+import com.prography.lighton.performance.common.domain.entity.enums.PerformanceFilterType;
 import com.prography.lighton.performance.common.domain.entity.enums.Type;
 import com.prography.lighton.performance.users.application.resolver.PerformanceResolver;
 import com.prography.lighton.performance.users.infrastructure.repository.PerformanceRepository;
@@ -77,7 +78,8 @@ public class PerformanceService {
         return GetPerformanceMapListResponseDTO.from(performances);
     }
 
-    public GetPerformanceMapListResponseDTO findFilteredPerformances(String type, double latitude, double longitude,
+    public GetPerformanceMapListResponseDTO findFilteredPerformances(PerformanceFilterType type, double latitude,
+                                                                     double longitude,
                                                                      int radius, Member member) {
 
         // 회원은 추후 나의 취향 추천 기능을 위해 사용될 예정
@@ -85,14 +87,14 @@ public class PerformanceService {
         BoundingBox box = GeoUtils.getBoundingBox(latitude, longitude, radius);
 
         List<Performance> performances = switch (type) {
-            case "recommend" -> performanceRepository.findRandomRecommendedWithinBox(
+            case RECOMMENDED -> performanceRepository.findRandomRecommendedWithinBox(
                     box.minLatitude(), box.maxLatitude(), box.minLongitude(), box.maxLongitude()
             );
-            case "recent" -> performanceRepository.findRegisteredInLastWeekWithinBox(
+            case RECENT -> performanceRepository.findRegisteredInLastWeekWithinBox(
                     box.minLatitude(), box.maxLatitude(), box.minLongitude(), box.maxLongitude(),
                     today.minusDays(DAY_OF_WEEK).atStartOfDay()
             );
-            case "closingSoon" -> performanceRepository.findClosingSoonWithinBox(
+            case CLOSING_SOON -> performanceRepository.findClosingSoonWithinBox(
                     box.minLatitude(), box.maxLatitude(), box.minLongitude(), box.maxLongitude(),
                     today.plusDays(CLOSING_SOON_DAYS)
             );
