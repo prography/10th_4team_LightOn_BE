@@ -47,8 +47,7 @@ public interface AdminPerformanceRepository extends JpaRepository<Performance, L
                 OR (p.schedule.endDate = CURRENT_DATE AND p.schedule.endTime <= CURRENT_TIME)
             )
             """)
-    Long countEndedByApproveStatusAndStatus(
-            @Param("approveStatus") ApproveStatus approveStatus,
-            @Param("status") Boolean status
+    Long countEndedByApproveStatus(
+            @Param("approveStatus") ApproveStatus approveStatus
     );
 }
