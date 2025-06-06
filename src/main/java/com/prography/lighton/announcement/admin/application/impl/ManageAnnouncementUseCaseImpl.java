@@ -21,7 +21,7 @@ public class ManageAnnouncementUseCaseImpl implements ManageAnnouncementUseCase 
         Announcement announcement = Announcement.of(
                 request.title(),
                 request.content(),
-                request.imageUrl()
+                request.imageUrls()
         );
 
         adminAnnouncementRepository.save(announcement);
@@ -35,7 +35,7 @@ public class ManageAnnouncementUseCaseImpl implements ManageAnnouncementUseCase 
         announcement.update(
                 request.title(),
                 request.content(),
-                request.imageUrl()
+                request.imageUrls()
         );
     }
 

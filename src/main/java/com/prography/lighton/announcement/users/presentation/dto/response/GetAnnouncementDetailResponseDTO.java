@@ -1,17 +1,19 @@
 package com.prography.lighton.announcement.users.presentation.dto.response;
 
+import java.util.List;
+
 public record GetAnnouncementDetailResponseDTO(
         Long id,
         String title,
         String content,
-        String imageUrl
+        List<String> imageUrls
 ) {
     public static GetAnnouncementDetailResponseDTO of(
             Long id,
             String title,
             String content,
-            String imageUrl
+            List<String> imageUrls
     ) {
-        return new GetAnnouncementDetailResponseDTO(id, title, content, imageUrl);
+        return new GetAnnouncementDetailResponseDTO(id, title, content, imageUrls);
     }
 }

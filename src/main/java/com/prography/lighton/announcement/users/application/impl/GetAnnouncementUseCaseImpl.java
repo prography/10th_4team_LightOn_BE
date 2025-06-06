@@ -27,7 +27,7 @@ public class GetAnnouncementUseCaseImpl implements GetAnnouncementUseCase {
                 announcement.getId(),
                 announcement.getTitle(),
                 announcement.getContent(),
-                announcement.getImageUrl());
+                announcement.getImages());
     }
 
     @Override

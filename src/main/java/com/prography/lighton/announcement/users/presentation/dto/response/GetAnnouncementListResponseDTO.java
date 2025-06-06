@@ -1,6 +1,7 @@
 package com.prography.lighton.announcement.users.presentation.dto.response;
 
 import com.prography.lighton.announcement.common.domain.entity.Announcement;
+import java.util.List;
 import org.springframework.data.domain.Page;
 
 public record GetAnnouncementListResponseDTO(Page<AnnouncementDTO> announcements) {
@@ -11,7 +12,7 @@ public record GetAnnouncementListResponseDTO(Page<AnnouncementDTO> announcements
                         announcement.getId(),
                         announcement.getTitle(),
                         announcement.getContent(),
-                        announcement.getImageUrl()
+                        announcement.getImages()
                 )
         );
         return new GetAnnouncementListResponseDTO(announcementDTOS);
@@ -21,15 +22,15 @@ public record GetAnnouncementListResponseDTO(Page<AnnouncementDTO> announcements
             Long id,
             String title,
             String content,
-            String imageUrl
+            List<String> imageUrls
     ) {
         public static AnnouncementDTO of(
                 Long id,
                 String title,
                 String content,
-                String imageUrl
+                List<String> imageUrls
         ) {
-            return new AnnouncementDTO(id, title, content, imageUrl);
+            return new AnnouncementDTO(id, title, content, imageUrls);
         }
     }
 }

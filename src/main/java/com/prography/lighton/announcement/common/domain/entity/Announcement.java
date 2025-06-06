@@ -1,7 +1,14 @@
 package com.prography.lighton.announcement.common.domain.entity;
 
+import com.prography.lighton.announcement.common.domain.exception.InvalidAnnouncementException;
 import com.prography.lighton.common.domain.BaseEntity;
+import jakarta.persistence.CollectionTable;
+import jakarta.persistence.Column;
+import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
+import jakarta.persistence.JoinColumn;
+import java.util.ArrayList;
+import java.util.List;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -21,15 +28,25 @@ public class Announcement extends BaseEntity {
 
     private String content;
 
-    private String imageUrl;
+    @ElementCollection
+    @CollectionTable(name = "announcement_images", joinColumns = @JoinColumn(name = "announcement_id"))
+    @Column(name = "image_url")
+    private List<String> images = new ArrayList<>();
 
-    public static Announcement of(String title, String content, String imageUrl) {
-        return new Announcement(title, content, imageUrl);
+    public static Announcement of(String title, String content, List<String> images) {
+        validateImages(images);
+        return new Announcement(title, content, images);
     }
 
-    public void update(String title, String content, String imageUrl) {
+    public static void validateImages(List<String> images) {
+        if (images.size() > 3) {
+            throw new InvalidAnnouncementException("공지사항 이미지는 최대 3개까지 등록할 수 있습니다.");
+        }
+    }
+
+    public void update(String title, String content, List<String> images) {
         this.title = title;
         this.content = content;
-        this.imageUrl = imageUrl;
+        this.images = images;
     }
 }
