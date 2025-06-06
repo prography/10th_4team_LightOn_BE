@@ -24,6 +24,8 @@ import org.hibernate.annotations.SQLRestriction;
 @SQLRestriction("status = true")
 public class Announcement extends BaseEntity {
 
+    public static final int MAX_IMAGE_COUNT = 3;
+
     private String title;
 
     private String content;
@@ -39,8 +41,8 @@ public class Announcement extends BaseEntity {
     }
 
     public static void validateImages(List<String> images) {
-        if (images.size() > 3) {
-            throw new InvalidAnnouncementException("공지사항 이미지는 최대 3개까지 등록할 수 있습니다.");
+        if (images.size() > MAX_IMAGE_COUNT) {
+            throw new InvalidAnnouncementException("공지사항 이미지는 최대 " + MAX_IMAGE_COUNT + "개까지 등록할 수 있습니다.");
         }
     }
 
