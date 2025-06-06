@@ -2,20 +2,30 @@ package com.prography.lighton.performance.users.application.service;
 
 import com.prography.lighton.artist.common.domain.entity.Artist;
 import com.prography.lighton.artist.users.application.service.ArtistService;
+import com.prography.lighton.common.geo.BoundingBox;
+import com.prography.lighton.common.geo.GeoUtils;
 import com.prography.lighton.member.domain.entity.Member;
 import com.prography.lighton.performance.common.domain.entity.Performance;
+import com.prography.lighton.performance.common.domain.entity.enums.PerformanceFilterType;
 import com.prography.lighton.performance.common.domain.entity.enums.Type;
 import com.prography.lighton.performance.users.application.resolver.PerformanceResolver;
 import com.prography.lighton.performance.users.infrastructure.repository.PerformanceRepository;
 import com.prography.lighton.performance.users.presentation.dto.PerformanceRegisterRequest;
 import com.prography.lighton.performance.users.presentation.dto.PerformanceUpdateRequest;
+import com.prography.lighton.performance.users.presentation.dto.response.GetPerformanceMapListResponseDTO;
 import jakarta.transaction.Transactional;
+import java.time.LocalDate;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
 public class PerformanceService {
+
+    private static final Integer DAY_OF_WEEK = 7;
+    private static final Integer CLOSING_SOON_DAYS = 1;
+
 
     private final PerformanceRepository performanceRepository;
     private final PerformanceResolver performanceResolver;
@@ -56,5 +66,41 @@ public class PerformanceService {
         Artist requestArtist = artistService.getApprovedArtistByMember(member);
         Performance performance = getApprovedPerformanceById(performanceId);
         performance.cancel(requestArtist);
+    }
+
+    public GetPerformanceMapListResponseDTO findNearbyPerformances(double latitude, double longitude, int radius) {
+        BoundingBox box = GeoUtils.getBoundingBox(latitude, longitude, radius);
+
+        List<Performance> performances = performanceRepository.findRoughlyWithinBox(
+                box.minLatitude(), box.maxLatitude(), box.minLongitude(), box.maxLongitude()
+        );
+
+        return GetPerformanceMapListResponseDTO.from(performances);
+    }
+
+    public GetPerformanceMapListResponseDTO findFilteredPerformances(PerformanceFilterType type, double latitude,
+                                                                     double longitude,
+                                                                     int radius, Member member) {
+
+        // 회원은 추후 나의 취향 추천 기능을 위해 사용될 예정
+        LocalDate today = LocalDate.now();
+        BoundingBox box = GeoUtils.getBoundingBox(latitude, longitude, radius);
+
+        List<Performance> performances = switch (type) {
+            case RECOMMENDED -> performanceRepository.findRandomRecommendedWithinBox(
+                    box.minLatitude(), box.maxLatitude(), box.minLongitude(), box.maxLongitude()
+            );
+            case RECENT -> performanceRepository.findRegisteredInLastWeekWithinBox(
+                    box.minLatitude(), box.maxLatitude(), box.minLongitude(), box.maxLongitude(),
+                    today.minusDays(DAY_OF_WEEK).atStartOfDay()
+            );
+            case CLOSING_SOON -> performanceRepository.findClosingSoonWithinBox(
+                    box.minLatitude(), box.maxLatitude(), box.minLongitude(), box.maxLongitude(),
+                    today.plusDays(CLOSING_SOON_DAYS)
+            );
+            default -> List.of();
+        };
+
+        return GetPerformanceMapListResponseDTO.from(performances);
     }
 }
