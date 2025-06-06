@@ -3,11 +3,13 @@ package com.prography.lighton.performance.admin.presentation;
 import com.prography.lighton.common.annotation.AdminOnly;
 import com.prography.lighton.common.utils.ApiUtils;
 import com.prography.lighton.common.utils.ApiUtils.ApiResult;
+import com.prography.lighton.performance.admin.application.GetPerformanceStatsUseCase;
 import com.prography.lighton.performance.admin.application.ManagePerformanceApplicationUseCase;
 import com.prography.lighton.performance.admin.application.PerformanceApplicationQueryUseCase;
 import com.prography.lighton.performance.admin.presentation.dto.request.ManagePerformanceApplicationRequestDTO;
 import com.prography.lighton.performance.admin.presentation.dto.response.GetPerformanceApplicationDetailResponseDTO;
 import com.prography.lighton.performance.admin.presentation.dto.response.GetPerformanceApplicationListResponseDTO;
+import com.prography.lighton.performance.admin.presentation.dto.response.GetPerformanceStatsResponseDTO;
 import com.prography.lighton.performance.common.domain.entity.enums.ApproveStatus;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -28,7 +30,8 @@ public class AdminPerformanceController {
 
     private final ManagePerformanceApplicationUseCase managePerformanceApplicationUseCase;
     private final PerformanceApplicationQueryUseCase performanceApplicationQueryUseCase;
-    
+    private final GetPerformanceStatsUseCase getPerformanceStatsUseCase;
+
     @GetMapping("/applications/performances")
     public ResponseEntity<ApiResult<GetPerformanceApplicationListResponseDTO>> getPerformanceApplicationList(
             @RequestParam(defaultValue = "0") int page,
@@ -56,5 +59,10 @@ public class AdminPerformanceController {
                                                                      ManagePerformanceApplicationRequestDTO request) {
         managePerformanceApplicationUseCase.managePerformanceApplication(performanceId, request);
         return ResponseEntity.ok(ApiUtils.success());
+    }
+
+    @GetMapping("/performances/stats")
+    public ResponseEntity<ApiResult<GetPerformanceStatsResponseDTO>> getPerformanceStats() {
+        return ResponseEntity.ok(ApiUtils.success(getPerformanceStatsUseCase.getPerformanceStats()));
     }
 }

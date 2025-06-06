@@ -36,5 +36,5 @@ public interface AdminArtistRepository extends JpaRepository<Artist, Long> {
                     """)
     Page<Artist> findByApproveStatuses(@Param("statuses") List<ApproveStatus> statuses, Pageable pageable);
 
-
+    Long countByApproveStatus(ApproveStatus approveStatus);
 }
