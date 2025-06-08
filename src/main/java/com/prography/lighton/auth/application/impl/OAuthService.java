@@ -101,8 +101,8 @@ public class OAuthService implements OAuthUseCase {
     private LoginSocialMemberResponseDTO issueTokensFor(Member member) {
         return LoginSocialMemberResponseDTO.from(
                 true,
-                tokenProvider.createAccessToken(String.valueOf(member.getId()), member.getAuthority()),
-                tokenProvider.createRefreshToken(String.valueOf(member.getId()), member.getAuthority())
+                tokenProvider.createAccessToken(String.valueOf(member.getId()), member.getAuthority().toString()),
+                tokenProvider.createRefreshToken(String.valueOf(member.getId()), member.getAuthority().toString())
         );
     }
 }
