@@ -80,14 +80,16 @@ public class PerformanceService {
     }
 
     public GetPerformanceMapListResponseDTO findFilteredPerformances(PerformanceFilterType type, double latitude,
-                                                                     double longitude,
-                                                                     int radius, Member member) {
-
-        // 회원은 추후 나의 취향 추천 기능을 위해 사용될 예정
+                                                                     double longitude, int radius, Member member) {
         LocalDate today = LocalDate.now();
         BoundingBox box = GeoUtils.getBoundingBox(latitude, longitude, radius);
 
-        List<Performance> performances = switch (type) {
+        List<Performance> performances = findPerformancesByType(type, today, box);
+        return GetPerformanceMapListResponseDTO.from(performances);
+    }
+
+    private List<Performance> findPerformancesByType(PerformanceFilterType type, LocalDate today, BoundingBox box) {
+        return switch (type) {
             case RECOMMENDED -> performanceRepository.findRandomRecommendedWithinBox(
                     box.minLatitude(), box.maxLatitude(), box.minLongitude(), box.maxLongitude()
             );
@@ -101,7 +103,5 @@ public class PerformanceService {
             );
             default -> List.of();
         };
-
-        return GetPerformanceMapListResponseDTO.from(performances);
     }
 }
