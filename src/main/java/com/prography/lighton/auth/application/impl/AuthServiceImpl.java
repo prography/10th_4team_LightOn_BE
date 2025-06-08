@@ -1,35 +1,42 @@
 package com.prography.lighton.auth.application.impl;
 
 import com.prography.lighton.auth.application.AuthService;
+import com.prography.lighton.auth.application.RefreshTokenService;
 import com.prography.lighton.auth.application.TokenProvider;
-import com.prography.lighton.auth.application.dto.TokenDTO;
 import com.prography.lighton.auth.presentation.dto.response.ReissueTokenResponse;
 import com.prography.lighton.member.domain.entity.Member;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-@Slf4j
 @Service
-@Transactional(readOnly = true)
 @RequiredArgsConstructor
+@Transactional(readOnly = true)
 public class AuthServiceImpl implements AuthService {
 
+    private final static String ROLE_KEY = "roles";
+
     private final TokenProvider tokenProvider;
+    private final RefreshTokenService refreshTokenService;
 
     @Override
     public ReissueTokenResponse reissueLoginTokens(String refreshToken) {
-        TokenDTO tokenDTO = tokenProvider.reissueTokens(refreshToken);
+        var claims = tokenProvider.getClaims(refreshToken);
 
-        return ReissueTokenResponse.of(
-                tokenDTO.accessToken(),
-                tokenDTO.refreshToken()
-        );
+        var userId = claims.getSubject();
+        var role = claims.get(ROLE_KEY, String.class);
+
+        refreshTokenService.validate(userId, refreshToken);
+
+        String newAccessToken = tokenProvider.createAccessToken(userId, role);
+        String newRefreshToken = tokenProvider.createRefreshToken(userId, role);
+        refreshTokenService.save(userId, newRefreshToken);
+
+        return ReissueTokenResponse.of(newAccessToken, newRefreshToken);
     }
 
     @Override
     public void logout(Member member) {
-        tokenProvider.expireTokens(member.getId());
+        refreshTokenService.delete(member.getId().toString());
     }
 }
