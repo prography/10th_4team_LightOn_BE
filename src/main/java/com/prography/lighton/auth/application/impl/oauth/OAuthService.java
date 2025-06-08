@@ -1,4 +1,4 @@
-package com.prography.lighton.auth.application.impl;
+package com.prography.lighton.auth.application.impl.oauth;
 
 import com.prography.lighton.auth.application.OAuthUseCase;
 import com.prography.lighton.auth.application.TokenProvider;
