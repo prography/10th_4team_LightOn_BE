@@ -17,6 +17,8 @@ public interface PerformanceRepository extends JpaRepository<Performance, Long> 
 
     @Query("""
                 SELECT p FROM Performance p
+                JOIN FETCH p.location pl
+                JOIN FETCH p.genres pg
                 WHERE p.location.latitude BETWEEN :minLat AND :maxLat
                   AND p.location.longitude BETWEEN :minLng AND :maxLng
                   AND p.status = true
@@ -25,6 +27,8 @@ public interface PerformanceRepository extends JpaRepository<Performance, Long> 
 
     @Query(value = """
                 SELECT * FROM performance p
+                JOIN FETCH p.location pl
+                JOIN FETCH p.genres pg
                 WHERE p.latitude BETWEEN :minLat AND :maxLat
                   AND p.longitude BETWEEN :minLng AND :maxLng
                 ORDER BY RAND()
@@ -35,6 +39,8 @@ public interface PerformanceRepository extends JpaRepository<Performance, Long> 
 
     @Query("""
                 SELECT p FROM Performance p
+                JOIN FETCH p.location pl
+                JOIN FETCH p.genres pg
                 WHERE p.createdAt >= :fromDate
                   AND p.location.latitude BETWEEN :minLat AND :maxLat
                   AND p.location.longitude BETWEEN :minLng AND :maxLng
@@ -45,6 +51,8 @@ public interface PerformanceRepository extends JpaRepository<Performance, Long> 
 
     @Query("""
                 SELECT p FROM Performance p
+                JOIN FETCH p.location pl
+                JOIN FETCH p.genres pg
                 WHERE p.schedule.startDate = :targetDate
                   AND p.location.latitude BETWEEN :minLat AND :maxLat
                   AND p.location.longitude BETWEEN :minLng AND :maxLng
