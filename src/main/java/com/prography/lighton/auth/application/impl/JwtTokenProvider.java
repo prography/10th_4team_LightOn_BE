@@ -126,4 +126,9 @@ public class JwtTokenProvider implements TokenProvider {
         );
     }
 
+    @Override
+    public void expireTokens(Long id) {
+        redisTokenService.deleteRefreshToken(id.toString());
+    }
+
 }

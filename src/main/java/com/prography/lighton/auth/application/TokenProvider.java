@@ -19,4 +19,6 @@ public interface TokenProvider {
     void validateToken(final String token);
 
     TokenDTO reissueTokens(final String refreshToken);
+
+    void expireTokens(final Long id);
 }
