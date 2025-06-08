@@ -1,6 +1,7 @@
 package com.prography.lighton.auth.application.impl.oauth;
 
 import com.prography.lighton.auth.application.OAuthUseCase;
+import com.prography.lighton.auth.application.RefreshTokenService;
 import com.prography.lighton.auth.application.TokenProvider;
 import com.prography.lighton.auth.application.exception.MemberProfileIncompleteException;
 import com.prography.lighton.auth.application.exception.UnsupportedSocialLoginTypeException;
@@ -31,6 +32,7 @@ public class OAuthService implements OAuthUseCase {
     private final GoogleOauth googleOauth;
     private final TokenProvider tokenProvider;
     private final DuplicateEmailValidator duplicateEmailValidator;
+    private final RefreshTokenService refreshTokenService;
 
     private final TemporaryMemberRepository temporaryMemberRepository;
     private final MemberRepository memberRepository;
@@ -102,7 +104,14 @@ public class OAuthService implements OAuthUseCase {
         return LoginSocialMemberResponseDTO.from(
                 true,
                 tokenProvider.createAccessToken(String.valueOf(member.getId()), member.getAuthority().toString()),
-                tokenProvider.createRefreshToken(String.valueOf(member.getId()), member.getAuthority().toString())
-        );
+                createAndSaveRefreshToken(member));
+    }
+
+    private String createAndSaveRefreshToken(Member member) {
+        String refreshToken = tokenProvider.createRefreshToken(String.valueOf(member.getId()),
+                member.getAuthority().toString());
+
+        refreshTokenService.save(String.valueOf(member.getId()), refreshToken);
+        return refreshToken;
     }
 }
