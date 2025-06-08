@@ -5,8 +5,10 @@ import com.prography.lighton.auth.application.OAuthUseCase;
 import com.prography.lighton.auth.domain.enums.SocialLoginType;
 import com.prography.lighton.auth.presentation.dto.response.ReissueTokenResponse;
 import com.prography.lighton.auth.presentation.dto.response.login.SocialLoginResult;
+import com.prography.lighton.common.annotation.LoginMember;
 import com.prography.lighton.common.utils.ApiUtils;
 import com.prography.lighton.common.utils.ApiUtils.ApiResult;
+import com.prography.lighton.member.domain.entity.Member;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import lombok.RequiredArgsConstructor;
@@ -55,5 +57,12 @@ public class AuthController {
         ReissueTokenResponse response = authService.reissueLoginTokens(refreshToken);
         return ResponseEntity.status(HttpStatus.OK)
                 .body(ApiUtils.success(response));
+    }
+
+    @PostMapping("/auth/logout")
+    public ResponseEntity<ApiResult<String>> logout(@LoginMember Member member) {
+        authService.logout(member);
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(ApiUtils.success());
     }
 }
