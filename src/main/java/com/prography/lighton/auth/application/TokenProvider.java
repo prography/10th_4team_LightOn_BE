@@ -5,10 +5,10 @@ import io.jsonwebtoken.Claims;
 
 public interface TokenProvider {
 
-    String createAccessToken(final String payload, final String authority);
+    String createAccessToken(String payload, String authority);
 
-    String createRefreshToken(final String payload, final String authority);
+    String createRefreshToken(String payload, String authority);
 
-    Claims getClaims(final String token);
+    Claims getClaims(String token);
 
 }

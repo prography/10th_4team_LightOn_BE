@@ -19,7 +19,7 @@ import org.springframework.stereotype.Component;
 public class JwtTokenProvider implements TokenProvider {
 
     private final static String ROLE_KEY = "roles";
-    
+
     private final SecretKey key;
     private final long accessTokenValidityInMilliseconds;
     private final long refreshTokenValidityInMilliseconds;
@@ -33,12 +33,12 @@ public class JwtTokenProvider implements TokenProvider {
     }
 
     @Override
-    public String createAccessToken(final String payload, final String authority) {
+    public String createAccessToken(String payload, String authority) {
         return createToken(payload, accessTokenValidityInMilliseconds, authority);
     }
 
     @Override
-    public String createRefreshToken(final String payload, final String authority) {
+    public String createRefreshToken(String payload, String authority) {
         return createToken(payload, refreshTokenValidityInMilliseconds, authority);
     }
 
