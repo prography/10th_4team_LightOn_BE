@@ -6,6 +6,7 @@ import com.prography.lighton.member.application.CompleteMemberProfileUseCase;
 import com.prography.lighton.member.application.LoginMemberUseCase;
 import com.prography.lighton.member.application.RegisterMemberUseCase;
 import com.prography.lighton.member.presentation.dto.request.CompleteMemberProfileRequestDTO;
+import com.prography.lighton.member.presentation.dto.request.EditMemberGenreRequestDTO;
 import com.prography.lighton.member.presentation.dto.request.LoginMemberRequestDTO;
 import com.prography.lighton.member.presentation.dto.request.RegisterMemberRequestDTO;
 import com.prography.lighton.member.presentation.dto.response.CheckDuplicateEmailResponseDTO;
@@ -48,6 +49,14 @@ public class MemberController {
             @RequestBody @Valid CompleteMemberProfileRequestDTO request) {
         return ResponseEntity.status(HttpStatus.OK)
                 .body(ApiUtils.success(completeMemberProfileUseCase.completeMemberProfile(temporaryMemberId, request)));
+    }
+
+    @PostMapping("/{memberId}/genres")
+    public ResponseEntity<ApiResult<?>> editMemberGenre(
+            @PathVariable Long memberId,
+            @RequestBody @Valid EditMemberGenreRequestDTO request) {
+        completeMemberProfileUseCase.editMemberGenre(memberId, request);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).body(ApiUtils.success());
     }
 
     @GetMapping("/duplicate-check")
