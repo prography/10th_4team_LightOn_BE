@@ -97,4 +97,8 @@ public class Member extends BaseEntity {
         return this.authority == Authority.ADMIN;
     }
 
+    public void editPreferredGenres(List<PreferredGenre> preferredGenres) {
+        this.preferredGenres.clear();
+        this.preferredGenres.addAll(preferredGenres);
+    }
 }
