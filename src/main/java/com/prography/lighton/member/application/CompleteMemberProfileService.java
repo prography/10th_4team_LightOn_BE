@@ -2,21 +2,16 @@ package com.prography.lighton.member.application;
 
 import com.prography.lighton.auth.application.TokenProvider;
 import com.prography.lighton.common.domain.vo.RegionInfo;
-import com.prography.lighton.genre.infrastructure.cache.GenreCache;
 import com.prography.lighton.member.domain.entity.Member;
 import com.prography.lighton.member.domain.entity.TemporaryMember;
-import com.prography.lighton.member.domain.entity.association.PreferredGenre;
 import com.prography.lighton.member.domain.entity.vo.MarketingAgreement;
 import com.prography.lighton.member.domain.entity.vo.Phone;
 import com.prography.lighton.member.domain.exception.DuplicateMemberException;
 import com.prography.lighton.member.infrastructure.repository.MemberRepository;
-import com.prography.lighton.member.infrastructure.repository.PreferredGenreRepository;
 import com.prography.lighton.member.infrastructure.repository.TemporaryMemberRepository;
 import com.prography.lighton.member.presentation.dto.request.CompleteMemberProfileRequestDTO;
-import com.prography.lighton.member.presentation.dto.request.EditMemberGenreRequestDTO;
 import com.prography.lighton.member.presentation.dto.response.CompleteMemberProfileResponseDTO;
 import com.prography.lighton.region.infrastructure.cache.RegionCache;
-import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -28,10 +23,8 @@ public class CompleteMemberProfileService implements CompleteMemberProfileUseCas
 
     private final TemporaryMemberRepository temporaryMemberRepository;
     private final MemberRepository memberRepository;
-    private final PreferredGenreRepository preferredGenreRepository;
 
     private final RegionCache regionCache;
-    private final GenreCache genreCache;
     private final TokenProvider tokenProvider;
 
     @Override
@@ -55,18 +48,6 @@ public class CompleteMemberProfileService implements CompleteMemberProfileUseCas
         Member savedMember = registerMember(temporaryMember, member);
 
         return generateTokenResponse(savedMember);
-    }
-
-    @Override
-    public void editMemberGenre(Long memberId, EditMemberGenreRequestDTO request) {
-        Member member = memberRepository.getMemberById(memberId);
-
-        List<PreferredGenre> preferredGenres = genreCache.getGenresByNameOrThrow(request.genres()).stream()
-                .map((genre -> PreferredGenre.of(member, genre)))
-                .toList();
-
-        member.editPreferredGenres(preferredGenres);
-        preferredGenreRepository.saveAll(preferredGenres);
     }
 
     private static MarketingAgreement toMarketingAgreement(CompleteMemberProfileRequestDTO request) {
