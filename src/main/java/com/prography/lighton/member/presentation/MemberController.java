@@ -4,6 +4,7 @@ import com.prography.lighton.common.utils.ApiUtils;
 import com.prography.lighton.common.utils.ApiUtils.ApiResult;
 import com.prography.lighton.member.application.CompleteMemberProfileUseCase;
 import com.prography.lighton.member.application.LoginMemberUseCase;
+import com.prography.lighton.member.application.ManagePreferredGenreUseCase;
 import com.prography.lighton.member.application.RegisterMemberUseCase;
 import com.prography.lighton.member.presentation.dto.request.CompleteMemberProfileRequestDTO;
 import com.prography.lighton.member.presentation.dto.request.EditMemberGenreRequestDTO;
@@ -11,6 +12,7 @@ import com.prography.lighton.member.presentation.dto.request.LoginMemberRequestD
 import com.prography.lighton.member.presentation.dto.request.RegisterMemberRequestDTO;
 import com.prography.lighton.member.presentation.dto.response.CheckDuplicateEmailResponseDTO;
 import com.prography.lighton.member.presentation.dto.response.CompleteMemberProfileResponseDTO;
+import com.prography.lighton.member.presentation.dto.response.GetPreferredGenreResponseDTO;
 import com.prography.lighton.member.presentation.dto.response.LoginMemberResponseDTO;
 import com.prography.lighton.member.presentation.dto.response.RegisterMemberResponseDTO;
 import jakarta.validation.Valid;
@@ -35,6 +37,7 @@ public class MemberController {
     private final RegisterMemberUseCase registerMemberUseCase;
     private final CompleteMemberProfileUseCase completeMemberProfileUseCase;
     private final LoginMemberUseCase loginMemberUseCase;
+    private final ManagePreferredGenreUseCase managePreferredGenreUseCase;
 
     @PostMapping
     public ResponseEntity<ApiResult<RegisterMemberResponseDTO>> register(
@@ -55,7 +58,7 @@ public class MemberController {
     public ResponseEntity<ApiResult<?>> editMemberGenre(
             @PathVariable Long memberId,
             @RequestBody @Valid EditMemberGenreRequestDTO request) {
-        completeMemberProfileUseCase.editMemberGenre(memberId, request);
+        managePreferredGenreUseCase.editMemberGenre(memberId, request);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).body(ApiUtils.success());
     }
 
