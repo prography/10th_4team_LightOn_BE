@@ -59,6 +59,12 @@ public class MemberController {
         return ResponseEntity.status(HttpStatus.NO_CONTENT).body(ApiUtils.success());
     }
 
+    @GetMapping("/{memberId}/genres")
+    public ResponseEntity<ApiResult<GetPreferredGenreResponseDTO>> getMemberGenres(@PathVariable Long memberId) {
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(ApiUtils.success(managePreferredGenreUseCase.getPreferredGenre(memberId)));
+    }
+
     @GetMapping("/duplicate-check")
     public ResponseEntity<ApiResult<CheckDuplicateEmailResponseDTO>> duplicateCheck(@RequestParam String email) {
         return ResponseEntity.status(HttpStatus.OK)
