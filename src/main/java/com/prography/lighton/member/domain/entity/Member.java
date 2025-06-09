@@ -4,6 +4,7 @@ import com.prography.lighton.auth.domain.enums.SocialLoginType;
 import com.prography.lighton.common.domain.BaseEntity;
 import com.prography.lighton.common.domain.vo.RegionInfo;
 import com.prography.lighton.member.domain.entity.association.PreferredArtist;
+import com.prography.lighton.member.domain.entity.association.PreferredGenre;
 import com.prography.lighton.member.domain.entity.enums.Authority;
 import com.prography.lighton.member.domain.entity.vo.Email;
 import com.prography.lighton.member.domain.entity.vo.MarketingAgreement;
@@ -64,6 +65,10 @@ public class Member extends BaseEntity {
     @OneToMany(mappedBy = "member", fetch = FetchType.LAZY)
     private List<PreferredArtist> preferredArtists;
 
+    @OneToMany(mappedBy = "member", fetch = FetchType.LAZY)
+    private List<PreferredGenre> preferredGenres;
+
+
     public static Member toNormalMember(Email email, Password password, RegionInfo preferredRegion,
                                         String name, Phone phone, SocialLoginType loginType,
                                         MarketingAgreement marketingAgreement) {
@@ -76,6 +81,7 @@ public class Member extends BaseEntity {
                 loginType,
                 marketingAgreement,
                 Authority.NORMAL,
+                new ArrayList<>(),
                 new ArrayList<>()
         );
     }
