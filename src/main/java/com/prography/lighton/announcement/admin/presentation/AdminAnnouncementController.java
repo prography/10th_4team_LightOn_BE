@@ -7,6 +7,7 @@ import com.prography.lighton.common.utils.ApiUtils;
 import com.prography.lighton.common.utils.ApiUtils.ApiResult;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -28,7 +29,7 @@ public class AdminAnnouncementController {
     public ResponseEntity<ApiResult<?>> registerAnnouncement(
             @RequestBody @Valid ManageAnnouncementRequestDTO request) {
         manageAnnouncementUseCase.registerAnnouncement(request);
-        return ResponseEntity.ok(ApiUtils.success());
+        return ResponseEntity.status(HttpStatus.CREATED).body(ApiUtils.success());
     }
 
     @PutMapping("/{announcementId}")
