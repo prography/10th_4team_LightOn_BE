@@ -1,5 +1,6 @@
 package com.prography.lighton.member.presentation;
 
+import com.prography.lighton.auth.security.util.SecurityUtils;
 import com.prography.lighton.common.utils.ApiUtils;
 import com.prography.lighton.common.utils.ApiUtils.ApiResult;
 import com.prography.lighton.member.application.CompleteMemberProfileUseCase;
@@ -54,12 +55,11 @@ public class MemberController {
                 .body(ApiUtils.success(completeMemberProfileUseCase.completeMemberProfile(temporaryMemberId, request)));
     }
 
-    @PostMapping("/{memberId}/genres")
+    @PostMapping("/genres")
     public ResponseEntity<ApiResult<?>> editMemberGenre(
-            @PathVariable Long memberId,
             @RequestBody @Valid EditMemberGenreRequestDTO request) {
-        managePreferredGenreUseCase.editMemberGenre(memberId, request);
-        return ResponseEntity.status(HttpStatus.NO_CONTENT).body(ApiUtils.success());
+        managePreferredGenreUseCase.editMemberGenre(SecurityUtils.getCurrentMemberId(), request);
+        return ResponseEntity.status(HttpStatus.CREATED).body(ApiUtils.success());
     }
 
     @GetMapping("/{memberId}/genres")
