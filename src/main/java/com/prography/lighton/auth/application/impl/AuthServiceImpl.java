@@ -26,17 +26,17 @@ public class AuthServiceImpl implements AuthService {
         var userId = claims.getSubject();
         var role = claims.get(ROLE_KEY, String.class);
 
-        refreshTokenService.validate(userId, refreshToken);
+        refreshTokenService.validateRefreshToken(userId, refreshToken);
 
         String newAccessToken = tokenProvider.createAccessToken(userId, role);
         String newRefreshToken = tokenProvider.createRefreshToken(userId, role);
-        refreshTokenService.save(userId, newRefreshToken);
+        refreshTokenService.saveRefreshToken(userId, newRefreshToken);
 
         return ReissueTokenResponse.of(newAccessToken, newRefreshToken);
     }
 
     @Override
     public void logout(Member member) {
-        refreshTokenService.delete(member.getId().toString());
+        refreshTokenService.deleteRefreshToken(member.getId().toString());
     }
 }

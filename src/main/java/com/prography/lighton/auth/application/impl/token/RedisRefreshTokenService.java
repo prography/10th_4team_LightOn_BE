@@ -24,12 +24,12 @@ public class RedisRefreshTokenService implements RefreshTokenService {
     }
 
     @Override
-    public void save(String userId, String refreshToken) {
+    public void saveRefreshToken(String userId, String refreshToken) {
         redisRepository.save(key(userId), refreshToken, Duration.ofMillis(refreshTokenExpireMillis));
     }
 
     @Override
-    public void validate(String userId, String refreshToken) {
+    public void validateRefreshToken(String userId, String refreshToken) {
         String stored = redisRepository.find(key(userId));
         if (!refreshToken.equals(stored)) {
             throw new ExpiredTokenException();
@@ -37,7 +37,7 @@ public class RedisRefreshTokenService implements RefreshTokenService {
     }
 
     @Override
-    public void delete(String userId) {
+    public void deleteRefreshToken(String userId) {
         redisRepository.delete(key(userId));
     }
 }

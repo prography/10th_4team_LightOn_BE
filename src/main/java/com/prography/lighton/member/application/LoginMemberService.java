@@ -57,7 +57,7 @@ public class LoginMemberService implements LoginMemberUseCase {
         String refreshToken = tokenProvider.createRefreshToken(String.valueOf(member.getId()),
                 member.getAuthority().toString());
 
-        refreshTokenService.save(String.valueOf(member.getId()), refreshToken);
+        refreshTokenService.saveRefreshToken(String.valueOf(member.getId()), refreshToken);
         return refreshToken;
     }
 }

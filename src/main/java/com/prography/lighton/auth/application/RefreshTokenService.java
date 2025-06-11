@@ -1,9 +1,9 @@
 package com.prography.lighton.auth.application;
 
 public interface RefreshTokenService {
-    void save(String userId, String refreshToken);
+    void saveRefreshToken(String userId, String refreshToken);
 
-    void validate(String userId, String refreshToken);
+    void validateRefreshToken(String userId, String refreshToken);
 
-    void delete(String userId);
+    void deleteRefreshToken(String userId);
 }
