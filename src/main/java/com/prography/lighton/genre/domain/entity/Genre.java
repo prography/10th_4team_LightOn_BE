@@ -16,4 +16,6 @@ import org.hibernate.annotations.SQLRestriction;
 public class Genre extends BaseEntity {
 
     private String name;
+
+    private String imageUrl;
 }

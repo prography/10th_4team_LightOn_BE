@@ -30,4 +30,9 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
                 .orElseThrow(NoSuchMemberException::new);
     }
 
+    default Member getMemberById(Long memberId) {
+        return findById(memberId)
+                .orElseThrow(NoSuchMemberException::new);
+    }
+
 }

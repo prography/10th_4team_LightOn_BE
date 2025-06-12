@@ -21,11 +21,16 @@ public class GenreCache {
     private final GenreRepository genreRepository;
 
     private Map<Long, Genre> cache;
+    private Map<String, Genre> nameCache;
 
     @PostConstruct
     public void init() {
-        this.cache = genreRepository.findAll().stream()
+        List<Genre> allGenres = genreRepository.findAll();
+
+        this.cache = allGenres.stream()
                 .collect(Collectors.toUnmodifiableMap(Genre::getId, Function.identity()));
+        this.nameCache = allGenres.stream()
+                .collect(Collectors.toUnmodifiableMap(Genre::getName, Function.identity()));
 
         if (cache.isEmpty()) {
             throw new IllegalStateException("GenreCache 초기화 실패: 캐시 비어 있음");
@@ -38,6 +43,13 @@ public class GenreCache {
         return genreIds.stream()
                 .map(id -> Optional.ofNullable(cache.get(id))
                         .orElseThrow(NoSuchGenreException::new))
+                .toList();
+    }
+
+    public List<Genre> getGenresByNameOrThrow(List<String> genreNames) {
+        return genreNames.stream()
+                .map(name -> Optional.ofNullable(nameCache.get(name))
+                        .orElseThrow(() -> new NoSuchGenreException("존재하지 않는 장르 명 입니다.")))
                 .toList();
     }
 }
