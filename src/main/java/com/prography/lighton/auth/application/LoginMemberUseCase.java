@@ -1,4 +1,4 @@
-package com.prography.lighton.member.application;
+package com.prography.lighton.auth.application;
 
 import com.prography.lighton.member.presentation.dto.request.LoginMemberRequestDTO;
 import com.prography.lighton.member.presentation.dto.response.LoginMemberResponseDTO;

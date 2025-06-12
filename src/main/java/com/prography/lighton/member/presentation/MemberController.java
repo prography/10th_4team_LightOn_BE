@@ -4,17 +4,14 @@ import com.prography.lighton.auth.security.util.SecurityUtils;
 import com.prography.lighton.common.utils.ApiUtils;
 import com.prography.lighton.common.utils.ApiUtils.ApiResult;
 import com.prography.lighton.member.application.CompleteMemberProfileUseCase;
-import com.prography.lighton.member.application.LoginMemberUseCase;
 import com.prography.lighton.member.application.ManagePreferredGenreUseCase;
 import com.prography.lighton.member.application.RegisterMemberUseCase;
 import com.prography.lighton.member.presentation.dto.request.CompleteMemberProfileRequestDTO;
 import com.prography.lighton.member.presentation.dto.request.EditMemberGenreRequestDTO;
-import com.prography.lighton.member.presentation.dto.request.LoginMemberRequestDTO;
 import com.prography.lighton.member.presentation.dto.request.RegisterMemberRequestDTO;
 import com.prography.lighton.member.presentation.dto.response.CheckDuplicateEmailResponseDTO;
 import com.prography.lighton.member.presentation.dto.response.CompleteMemberProfileResponseDTO;
 import com.prography.lighton.member.presentation.dto.response.GetPreferredGenreResponseDTO;
-import com.prography.lighton.member.presentation.dto.response.LoginMemberResponseDTO;
 import com.prography.lighton.member.presentation.dto.response.RegisterMemberResponseDTO;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -37,7 +34,6 @@ public class MemberController {
 
     private final RegisterMemberUseCase registerMemberUseCase;
     private final CompleteMemberProfileUseCase completeMemberProfileUseCase;
-    private final LoginMemberUseCase loginMemberUseCase;
     private final ManagePreferredGenreUseCase managePreferredGenreUseCase;
 
     @PostMapping
@@ -72,12 +68,5 @@ public class MemberController {
     public ResponseEntity<ApiResult<CheckDuplicateEmailResponseDTO>> duplicateCheck(@RequestParam String email) {
         return ResponseEntity.status(HttpStatus.OK)
                 .body(ApiUtils.success(registerMemberUseCase.checkEmailExists(email)));
-    }
-
-    // TODO: 추후 토큰 헤더에 담아서 응답하도록 변경
-    @PostMapping("/login")
-    public ResponseEntity<ApiResult<LoginMemberResponseDTO>> login(@RequestBody @Valid LoginMemberRequestDTO request) {
-        return ResponseEntity.status(HttpStatus.OK)
-                .body(ApiUtils.success(loginMemberUseCase.login(request)));
     }
 }
