@@ -6,7 +6,7 @@ public final class SecurityWhitelist {
     public static final String[] EXACT_MATCH = {
             "/health",
             "/api/members",
-            "/api/members/login",
+            "/api/auth/login",
             "/api/members/duplicate-check",
             "/swagger-ui.html",
             "/api/auth/token/refresh",

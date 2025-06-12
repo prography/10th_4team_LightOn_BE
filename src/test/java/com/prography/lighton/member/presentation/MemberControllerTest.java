@@ -78,7 +78,7 @@ class MemberControllerTest extends ControllerTest {
                 .willReturn(LoginMemberResponseDTO.of("aaa.ccc.ddd", "refreshToken"));
 
         // when & then: 로그인 API 호출 및 문서화
-        mockMvc.perform(post("/api/members/login")
+        mockMvc.perform(post("/api/auth/login")
                         .contentType("application/json")
                         .with(SecurityMockMvcRequestPostProcessors.csrf())
                         .content("""

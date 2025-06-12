@@ -1,16 +1,16 @@
 package com.prography.lighton.member.users.presentation;
 
-import com.prography.lighton.auth.application.LoginMemberUseCase;
+import com.prography.lighton.auth.security.util.SecurityUtils;
 import com.prography.lighton.common.utils.ApiUtils;
 import com.prography.lighton.common.utils.ApiUtils.ApiResult;
 import com.prography.lighton.member.users.application.CompleteMemberProfileUseCase;
+import com.prography.lighton.member.users.application.ManagePreferredGenreUseCase;
 import com.prography.lighton.member.users.application.RegisterMemberUseCase;
 import com.prography.lighton.member.users.presentation.dto.request.CompleteMemberProfileRequestDTO;
-import com.prography.lighton.member.users.presentation.dto.request.LoginMemberRequestDTO;
 import com.prography.lighton.member.users.presentation.dto.request.RegisterMemberRequestDTO;
 import com.prography.lighton.member.users.presentation.dto.response.CheckDuplicateEmailResponseDTO;
 import com.prography.lighton.member.users.presentation.dto.response.CompleteMemberProfileResponseDTO;
-import com.prography.lighton.member.users.presentation.dto.response.LoginMemberResponseDTO;
+import com.prography.lighton.member.users.presentation.dto.response.GetPreferredGenreResponseDTO;
 import com.prography.lighton.member.users.presentation.dto.response.RegisterMemberResponseDTO;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -33,7 +33,7 @@ public class MemberController {
 
     private final RegisterMemberUseCase registerMemberUseCase;
     private final CompleteMemberProfileUseCase completeMemberProfileUseCase;
-    private final LoginMemberUseCase loginMemberUseCase;
+    private final ManagePreferredGenreUseCase managePreferredGenreUseCase;
 
     @PostMapping
     public ResponseEntity<ApiResult<RegisterMemberResponseDTO>> register(
@@ -50,16 +50,22 @@ public class MemberController {
                 .body(ApiUtils.success(completeMemberProfileUseCase.completeMemberProfile(temporaryMemberId, request)));
     }
 
+    @PostMapping("/genres")
+    public ResponseEntity<ApiResult<?>> editMemberGenre(
+            @RequestBody @Valid com.prography.lighton.member.presentation.dto.request.EditMemberGenreRequestDTO request) {
+        managePreferredGenreUseCase.editMemberGenre(SecurityUtils.getCurrentMemberId(), request);
+        return ResponseEntity.status(HttpStatus.CREATED).body(ApiUtils.success());
+    }
+
+    @GetMapping("/{memberId}/genres")
+    public ResponseEntity<ApiResult<GetPreferredGenreResponseDTO>> getMemberGenres(@PathVariable Long memberId) {
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(ApiUtils.success(managePreferredGenreUseCase.getPreferredGenre(memberId)));
+    }
+
     @GetMapping("/duplicate-check")
     public ResponseEntity<ApiResult<CheckDuplicateEmailResponseDTO>> duplicateCheck(@RequestParam String email) {
         return ResponseEntity.status(HttpStatus.OK)
                 .body(ApiUtils.success(registerMemberUseCase.checkEmailExists(email)));
-    }
-
-    // TODO: 추후 토큰 헤더에 담아서 응답하도록 변경
-    @PostMapping("/login")
-    public ResponseEntity<ApiResult<LoginMemberResponseDTO>> login(@RequestBody @Valid LoginMemberRequestDTO request) {
-        return ResponseEntity.status(HttpStatus.OK)
-                .body(ApiUtils.success(loginMemberUseCase.login(request)));
     }
 }
