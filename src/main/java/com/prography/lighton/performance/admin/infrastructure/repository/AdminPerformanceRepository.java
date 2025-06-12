@@ -17,7 +17,6 @@ public interface AdminPerformanceRepository extends JpaRepository<Performance, L
                 join fetch p.genres pg
                 where p.id = :id
                   and p.approveStatus = :approveStatus
-                  and p.status = true
             """)
     Optional<Performance> findByIdAndApproveStatus(Long id, ApproveStatus approveStatus);
 
@@ -27,12 +26,10 @@ public interface AdminPerformanceRepository extends JpaRepository<Performance, L
             join fetch p.genres pg
             join fetch pg.genre g
             where p.approveStatus in :statuses
-              and p.status = true
             """,
             countQuery = """
                     select count(distinct p) from Performance p
                     where p.approveStatus in :statuses
-                      and p.status = true
                     """)
     Page<Performance> findByApproveStatuses(@Param("statuses") List<ApproveStatus> approveStatus, Pageable pageable);
 
