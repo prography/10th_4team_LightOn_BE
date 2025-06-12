@@ -22,6 +22,7 @@ public interface PerformanceRepository extends JpaRepository<Performance, Long> 
                 JOIN FETCH p.genres pg
                 WHERE p.location.latitude BETWEEN :minLat AND :maxLat
                   AND p.location.longitude BETWEEN :minLng AND :maxLng
+                  AND p.status = true
             """)
     List<Performance> findRoughlyWithinBox(double minLat, double maxLat, double minLng, double maxLng);
 
@@ -30,7 +31,8 @@ public interface PerformanceRepository extends JpaRepository<Performance, Long> 
                 JOIN performance_location pl ON p.location_id = pl.id
                 JOIN performance_genre pg ON p.id = pg.performance_id
                 WHERE p.latitude BETWEEN :minLat AND :maxLat
-                  AND p.longitude BETWEEN :minLng AND :maxLng
+                AND p.longitude BETWEEN :minLng AND :maxLng
+                AND p.status = true
                 ORDER BY RAND()
                 LIMIT 3
             """, nativeQuery = true)
@@ -41,9 +43,10 @@ public interface PerformanceRepository extends JpaRepository<Performance, Long> 
                 SELECT p FROM Performance p
                 JOIN FETCH p.location pl
                 JOIN FETCH p.genres pg
-                WHERE p.createdAt >= :fromDate
+                WHERE p.approvedAt >= :fromDate
                   AND p.location.latitude BETWEEN :minLat AND :maxLat
                   AND p.location.longitude BETWEEN :minLng AND :maxLng
+                  AND p.status = true
             """)
     List<Performance> findRegisteredInLastWeekWithinBox(double minLat, double maxLat,
                                                         double minLng, double maxLng,
@@ -61,6 +64,7 @@ public interface PerformanceRepository extends JpaRepository<Performance, Long> 
                 )
                 AND p.location.latitude BETWEEN :minLat AND :maxLat
                 AND p.location.longitude BETWEEN :minLng AND :maxLng
+                AND p.status = true
             """)
     List<Performance> findClosingSoonWithinBox(
             @Param("minLat") double minLat,
