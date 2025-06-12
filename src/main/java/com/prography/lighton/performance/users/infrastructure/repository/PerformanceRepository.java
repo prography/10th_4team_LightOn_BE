@@ -21,7 +21,6 @@ public interface PerformanceRepository extends JpaRepository<Performance, Long> 
                 JOIN FETCH p.genres pg
                 WHERE p.location.latitude BETWEEN :minLat AND :maxLat
                   AND p.location.longitude BETWEEN :minLng AND :maxLng
-                  AND p.status = true
             """)
     List<Performance> findRoughlyWithinBox(double minLat, double maxLat, double minLng, double maxLng);
 
