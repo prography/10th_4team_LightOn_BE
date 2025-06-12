@@ -1,8 +1,8 @@
 package com.prography.lighton.common.presentation;
 
+import com.prography.lighton.auth.application.LoginMemberUseCase;
 import com.prography.lighton.auth.application.TokenProvider;
 import com.prography.lighton.member.application.CompleteMemberProfileUseCase;
-import com.prography.lighton.member.application.LoginMemberUseCase;
 import com.prography.lighton.member.application.RegisterMemberUseCase;
 import com.prography.lighton.member.infrastructure.repository.MemberRepository;
 import com.prography.lighton.member.presentation.MemberController;

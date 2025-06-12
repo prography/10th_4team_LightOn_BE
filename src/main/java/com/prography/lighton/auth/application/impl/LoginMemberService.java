@@ -1,5 +1,6 @@
-package com.prography.lighton.member.application;
+package com.prography.lighton.auth.application.impl;
 
+import com.prography.lighton.auth.application.LoginMemberUseCase;
 import com.prography.lighton.auth.application.RefreshTokenService;
 import com.prography.lighton.auth.application.TokenProvider;
 import com.prography.lighton.auth.application.validator.DuplicateEmailValidator;
