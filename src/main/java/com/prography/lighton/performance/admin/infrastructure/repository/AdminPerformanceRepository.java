@@ -41,7 +41,6 @@ public interface AdminPerformanceRepository extends JpaRepository<Performance, L
     @Query("""
             SELECT COUNT(p) FROM Performance p
             WHERE p.approveStatus = :approveStatus
-            AND p.status = :status
             AND (
                 p.schedule.endDate < CURRENT_DATE
                 OR (p.schedule.endDate = CURRENT_DATE AND p.schedule.endTime <= CURRENT_TIME)
