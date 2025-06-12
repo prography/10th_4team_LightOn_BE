@@ -76,8 +76,10 @@ public class CompleteMemberProfileService implements CompleteMemberProfileUseCas
 
     private CompleteMemberProfileResponseDTO generateTokenResponse(Member savedMember) {
         return CompleteMemberProfileResponseDTO.of(
-                tokenProvider.createAccessToken(String.valueOf(savedMember.getId()), savedMember.getAuthority()),
-                tokenProvider.createRefreshToken(String.valueOf(savedMember.getId()), savedMember.getAuthority())
+                tokenProvider.createAccessToken(String.valueOf(savedMember.getId()),
+                        savedMember.getAuthority().toString()),
+                tokenProvider.createRefreshToken(String.valueOf(savedMember.getId()),
+                        savedMember.getAuthority().toString())
         );
     }
 
