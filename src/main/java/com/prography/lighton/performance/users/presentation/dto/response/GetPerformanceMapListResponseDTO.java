@@ -1,5 +1,7 @@
 package com.prography.lighton.performance.users.presentation.dto.response;
 
+import static com.prography.lighton.performance.users.presentation.util.PerformanceRegionFormatter.getAddress;
+
 import com.prography.lighton.genre.domain.entity.Genre;
 import com.prography.lighton.performance.common.domain.entity.Performance;
 import com.prography.lighton.performance.common.domain.entity.PerformanceGenre;
@@ -8,7 +10,6 @@ import java.util.List;
 
 public record GetPerformanceMapListResponseDTO(List<PerformanceMapDTO> performanceMapList) {
 
-    private static final String BLANK = " ";
 
     public static GetPerformanceMapListResponseDTO from(List<Performance> performances) {
         List<PerformanceMapDTO> performanceMapList = performances.stream()
@@ -47,9 +48,6 @@ public record GetPerformanceMapListResponseDTO(List<PerformanceMapDTO> performan
             );
         }
 
-        private static String getAddress(Performance performance) {
-            return performance.getLocation().getRegion().getRegion().getName()
-                    + BLANK + performance.getLocation().getRegion().getSubRegion().getName();
-        }
+
     }
 }
