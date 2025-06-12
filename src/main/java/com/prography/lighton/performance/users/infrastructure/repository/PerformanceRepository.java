@@ -7,6 +7,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 public interface PerformanceRepository extends JpaRepository<Performance, Long> {
 
@@ -49,14 +50,23 @@ public interface PerformanceRepository extends JpaRepository<Performance, Long> 
                                                         LocalDateTime fromDate);
 
     @Query("""
-                SELECT p FROM Performance p
+                SELECT DISTINCT p FROM Performance p
                 JOIN FETCH p.location pl
                 JOIN FETCH p.genres pg
-                WHERE p.schedule.startDate = :targetDate
-                  AND p.location.latitude BETWEEN :minLat AND :maxLat
-                  AND p.location.longitude BETWEEN :minLng AND :maxLng
+                WHERE (
+                    p.schedule.endDate < :targetDate
+                    OR (
+                        p.schedule.endDate = :targetDate AND p.schedule.endTime > CURRENT_TIME
+                    )
+                )
+                AND p.location.latitude BETWEEN :minLat AND :maxLat
+                AND p.location.longitude BETWEEN :minLng AND :maxLng
             """)
-    List<Performance> findClosingSoonWithinBox(double minLat, double maxLat,
-                                               double minLng, double maxLng,
-                                               LocalDate targetDate);
+    List<Performance> findClosingSoonWithinBox(
+            @Param("minLat") double minLat,
+            @Param("maxLat") double maxLat,
+            @Param("minLng") double minLng,
+            @Param("maxLng") double maxLng,
+            @Param("targetDate") LocalDate targetDate
+    );
 }
