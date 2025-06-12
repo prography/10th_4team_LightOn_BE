@@ -26,9 +26,9 @@ public interface PerformanceRepository extends JpaRepository<Performance, Long> 
     List<Performance> findRoughlyWithinBox(double minLat, double maxLat, double minLng, double maxLng);
 
     @Query(value = """
-                SELECT * FROM performance p
-                JOIN FETCH p.location pl
-                JOIN FETCH p.genres pg
+                SELECT p.* FROM performance p
+                JOIN performance_location pl ON p.location_id = pl.id
+                JOIN performance_genre pg ON p.id = pg.performance_id
                 WHERE p.latitude BETWEEN :minLat AND :maxLat
                   AND p.longitude BETWEEN :minLng AND :maxLng
                 ORDER BY RAND()
