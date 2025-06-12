@@ -1,5 +1,6 @@
 package com.prography.lighton.auth.application.impl.token;
 
+import com.prography.lighton.auth.application.RefreshTokenService;
 import com.prography.lighton.auth.application.TokenProvider;
 import com.prography.lighton.auth.application.exception.InvalidTokenException;
 import io.jsonwebtoken.Claims;
@@ -20,13 +21,17 @@ public class JwtTokenProvider implements TokenProvider {
 
     private final static String ROLE_KEY = "roles";
 
+    private final RefreshTokenService refreshTokenService;
+
     private final SecretKey key;
     private final long accessTokenValidityInMilliseconds;
     private final long refreshTokenValidityInMilliseconds;
 
-    public JwtTokenProvider(@Value("${security.jwt.token.secret-key}") final String secretKey,
+    public JwtTokenProvider(RefreshTokenService refreshTokenService,
+                            @Value("${security.jwt.token.secret-key}") final String secretKey,
                             @Value("${security.jwt.token.access.expire-length}") final long accessTokenValidityInMilliseconds,
                             @Value("${security.jwt.token.refresh.expire-length}") final long refreshTokenValidityInMilliseconds) {
+        this.refreshTokenService = refreshTokenService;
         this.key = Keys.hmacShaKeyFor(secretKey.getBytes(StandardCharsets.UTF_8));
         this.accessTokenValidityInMilliseconds = accessTokenValidityInMilliseconds;
         this.refreshTokenValidityInMilliseconds = refreshTokenValidityInMilliseconds;
@@ -39,7 +44,9 @@ public class JwtTokenProvider implements TokenProvider {
 
     @Override
     public String createRefreshToken(String payload, String authority) {
-        return createToken(payload, refreshTokenValidityInMilliseconds, authority);
+        String refreshToken = createToken(payload, refreshTokenValidityInMilliseconds, authority);
+        refreshTokenService.saveRefreshToken(payload, refreshToken);
+        return refreshToken;
     }
 
     @Override
