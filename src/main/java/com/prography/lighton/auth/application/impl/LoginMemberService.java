@@ -1,5 +1,6 @@
-package com.prography.lighton.member.application;
+package com.prography.lighton.auth.application.impl;
 
+import com.prography.lighton.auth.application.LoginMemberUseCase;
 import com.prography.lighton.auth.application.TokenProvider;
 import com.prography.lighton.auth.application.validator.DuplicateEmailValidator;
 import com.prography.lighton.auth.domain.enums.SocialLoginType;
@@ -46,8 +47,10 @@ public class LoginMemberService implements LoginMemberUseCase {
 
     private LoginMemberResponseDTO issueTokensFor(Member member) {
         return LoginMemberResponseDTO.of(
-                tokenProvider.createAccessToken(String.valueOf(member.getId()), member.getAuthority()),
-                tokenProvider.createRefreshToken(String.valueOf(member.getId()), member.getAuthority())
+                tokenProvider.createAccessToken(String.valueOf(member.getId()), member.getAuthority().toString()),
+                tokenProvider.createRefreshToken(String.valueOf(member.getId()), member.getAuthority().toString())
         );
     }
+
+
 }
