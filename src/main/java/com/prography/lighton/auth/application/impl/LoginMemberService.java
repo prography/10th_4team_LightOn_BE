@@ -1,8 +1,4 @@
-<<<<<<<< HEAD:src/main/java/com/prography/lighton/member/users/application/LoginMemberService.java
-package com.prography.lighton.member.users.application;
-========
 package com.prography.lighton.auth.application.impl;
->>>>>>>> develop:src/main/java/com/prography/lighton/auth/application/impl/LoginMemberService.java
 
 import com.prography.lighton.auth.application.LoginMemberUseCase;
 import com.prography.lighton.auth.application.TokenProvider;

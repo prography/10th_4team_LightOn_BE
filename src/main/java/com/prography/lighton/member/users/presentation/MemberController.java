@@ -1,17 +1,17 @@
-package com.prography.lighton.member.presentation;
+package com.prography.lighton.member.users.presentation;
 
 import com.prography.lighton.auth.application.LoginMemberUseCase;
 import com.prography.lighton.common.utils.ApiUtils;
 import com.prography.lighton.common.utils.ApiUtils.ApiResult;
-import com.prography.lighton.member.application.CompleteMemberProfileUseCase;
-import com.prography.lighton.member.application.RegisterMemberUseCase;
-import com.prography.lighton.member.presentation.dto.request.CompleteMemberProfileRequestDTO;
-import com.prography.lighton.member.presentation.dto.request.LoginMemberRequestDTO;
-import com.prography.lighton.member.presentation.dto.request.RegisterMemberRequestDTO;
-import com.prography.lighton.member.presentation.dto.response.CheckDuplicateEmailResponseDTO;
-import com.prography.lighton.member.presentation.dto.response.CompleteMemberProfileResponseDTO;
-import com.prography.lighton.member.presentation.dto.response.LoginMemberResponseDTO;
-import com.prography.lighton.member.presentation.dto.response.RegisterMemberResponseDTO;
+import com.prography.lighton.member.users.application.CompleteMemberProfileUseCase;
+import com.prography.lighton.member.users.application.RegisterMemberUseCase;
+import com.prography.lighton.member.users.presentation.dto.request.CompleteMemberProfileRequestDTO;
+import com.prography.lighton.member.users.presentation.dto.request.LoginMemberRequestDTO;
+import com.prography.lighton.member.users.presentation.dto.request.RegisterMemberRequestDTO;
+import com.prography.lighton.member.users.presentation.dto.response.CheckDuplicateEmailResponseDTO;
+import com.prography.lighton.member.users.presentation.dto.response.CompleteMemberProfileResponseDTO;
+import com.prography.lighton.member.users.presentation.dto.response.LoginMemberResponseDTO;
+import com.prography.lighton.member.users.presentation.dto.response.RegisterMemberResponseDTO;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;

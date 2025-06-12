@@ -4,7 +4,7 @@ import com.prography.lighton.auth.application.AuthService;
 import com.prography.lighton.auth.application.RefreshTokenService;
 import com.prography.lighton.auth.application.TokenProvider;
 import com.prography.lighton.auth.presentation.dto.response.ReissueTokenResponse;
-import com.prography.lighton.member.domain.entity.Member;
+import com.prography.lighton.member.common.domain.entity.Member;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
