@@ -2,9 +2,9 @@ package com.prography.lighton.performance.users.application.service;
 
 import com.prography.lighton.artist.common.domain.entity.Artist;
 import com.prography.lighton.artist.users.application.service.ArtistService;
+import com.prography.lighton.member.common.domain.entity.Member;
 import com.prography.lighton.common.geo.BoundingBox;
 import com.prography.lighton.common.geo.GeoUtils;
-import com.prography.lighton.member.domain.entity.Member;
 import com.prography.lighton.performance.common.domain.entity.Performance;
 import com.prography.lighton.performance.common.domain.entity.enums.PerformanceFilterType;
 import com.prography.lighton.performance.common.domain.entity.enums.Type;

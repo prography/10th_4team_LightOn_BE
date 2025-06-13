@@ -27,12 +27,27 @@ public interface AdminPerformanceRepository extends JpaRepository<Performance, L
             join fetch p.genres pg
             join fetch pg.genre g
             where p.approveStatus in :statuses
-              and p.status = true
+            and p.status = true
             """,
             countQuery = """
                     select count(distinct p) from Performance p
                     where p.approveStatus in :statuses
-                      and p.status = true
+                    and p.status = true
                     """)
     Page<Performance> findByApproveStatuses(@Param("statuses") List<ApproveStatus> approveStatus, Pageable pageable);
+
+    Long countByApproveStatus(ApproveStatus approveStatus);
+
+    @Query("""
+            SELECT COUNT(p) FROM Performance p
+            WHERE p.approveStatus = :approveStatus
+            AND (
+                p.schedule.endDate < CURRENT_DATE
+                OR (p.schedule.endDate = CURRENT_DATE AND p.schedule.endTime <= CURRENT_TIME)
+            )
+            and p.status = true
+            """)
+    Long countEndedByApproveStatus(
+            @Param("approveStatus") ApproveStatus approveStatus
+    );
 }
