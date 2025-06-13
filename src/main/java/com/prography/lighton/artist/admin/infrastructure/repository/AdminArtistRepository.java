@@ -26,15 +26,15 @@ public interface AdminArtistRepository extends JpaRepository<Artist, Long> {
             select distinct a from Artist a
             join fetch a.genres ag
             join fetch ag.genre g
-            where a.approveStatus in :statuses
-              and a.status = true
+            where a.approveStatus in :statusesㄴ
+            and a.status = true
             """,
             countQuery = """
                     select count(distinct a) from Artist a
                     where a.approveStatus in :statuses
-                      and a.status = true
+                    and a.status = true
                     """)
     Page<Artist> findByApproveStatuses(@Param("statuses") List<ApproveStatus> statuses, Pageable pageable);
 
-
+    Long countByApproveStatus(ApproveStatus approveStatus);
 }

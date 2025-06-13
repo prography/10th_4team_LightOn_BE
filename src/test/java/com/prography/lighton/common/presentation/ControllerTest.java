@@ -6,12 +6,12 @@ import com.prography.lighton.auth.application.OAuthUseCase;
 import com.prography.lighton.auth.application.TokenProvider;
 import com.prography.lighton.auth.presentation.AuthController;
 import com.prography.lighton.genre.infrastructure.cache.GenreCache;
-import com.prography.lighton.member.application.CompleteMemberProfileUseCase;
-import com.prography.lighton.member.application.ManagePreferredGenreUseCase;
-import com.prography.lighton.member.application.RegisterMemberUseCase;
-import com.prography.lighton.member.infrastructure.repository.MemberRepository;
-import com.prography.lighton.member.infrastructure.repository.PreferredGenreRepository;
-import com.prography.lighton.member.presentation.MemberController;
+import com.prography.lighton.member.users.application.CompleteMemberProfileUseCase;
+import com.prography.lighton.member.users.application.ManagePreferredGenreUseCase;
+import com.prography.lighton.member.users.application.RegisterMemberUseCase;
+import com.prography.lighton.member.users.infrastructure.repository.MemberRepository;
+import com.prography.lighton.member.users.infrastructure.repository.PreferredGenreRepository;
+import com.prography.lighton.member.users.presentation.MemberController;
 import com.prography.lighton.region.infrastructure.cache.RegionCache;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
@@ -40,7 +40,7 @@ public abstract class ControllerTest {
 
     @MockBean
     protected AuthService authService;
-    
+
     @MockBean
     protected ManagePreferredGenreUseCase managePreferredGenreUseCase;
 
