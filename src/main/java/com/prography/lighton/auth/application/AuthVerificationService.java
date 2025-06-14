@@ -8,5 +8,5 @@ public interface AuthVerificationService {
 
     void saveVerifiedStatus(String phoneNumber);
 
-    boolean isVerified(String phoneNumber);
+    void checkIsVerified(String phoneNumber);
 }

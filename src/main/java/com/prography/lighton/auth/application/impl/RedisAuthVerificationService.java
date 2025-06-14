@@ -1,6 +1,7 @@
 package com.prography.lighton.auth.application.impl;
 
 import com.prography.lighton.auth.application.AuthVerificationService;
+import com.prography.lighton.auth.application.exception.PhoneNotVerifiedException;
 import com.prography.lighton.common.infrastructure.redis.RedisRepository;
 import java.time.Duration;
 import lombok.RequiredArgsConstructor;
@@ -36,7 +37,13 @@ public class RedisAuthVerificationService implements AuthVerificationService {
     }
 
     @Override
-    public boolean isVerified(String phoneNumber) {
+    public void checkIsVerified(String phoneNumber) {
+        if (!isVerified(phoneNumber)) {
+            throw new PhoneNotVerifiedException();
+        }
+    }
+
+    private boolean isVerified(String phoneNumber) {
         return VERIFIED_STATUS.equals(redisRepository.find(buildStatusKey(phoneNumber)));
     }
 
