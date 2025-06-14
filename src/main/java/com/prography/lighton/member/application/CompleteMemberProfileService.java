@@ -1,5 +1,6 @@
 package com.prography.lighton.member.application;
 
+import com.prography.lighton.auth.application.AuthVerificationService;
 import com.prography.lighton.auth.application.TokenProvider;
 import com.prography.lighton.common.domain.vo.RegionInfo;
 import com.prography.lighton.member.domain.entity.Member;
@@ -26,10 +27,13 @@ public class CompleteMemberProfileService implements CompleteMemberProfileUseCas
 
     private final RegionCache regionCache;
     private final TokenProvider tokenProvider;
+    private final AuthVerificationService authVerificationService;
 
     @Override
     public CompleteMemberProfileResponseDTO completeMemberProfile(final Long temporaryMemberId,
                                                                   final CompleteMemberProfileRequestDTO request) {
+        authVerificationService.checkIsVerified(request.phone());
+
         TemporaryMember temporaryMember = getTemporaryMember(temporaryMemberId);
         RegionInfo preferredRegion = regionCache.getRegionInfoByCode(request.regionCode());
         Phone phone = validatePhoneDuplicate(request.phone());
