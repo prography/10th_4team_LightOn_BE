@@ -2,6 +2,7 @@ package com.prography.lighton.auth.presentation.exception;
 
 import com.prography.lighton.auth.application.exception.MemberProfileIncompleteException;
 import com.prography.lighton.auth.application.exception.UnsupportedSocialLoginTypeException;
+import com.prography.lighton.auth.infrastructure.sms.exception.SmsSendFailedException;
 import com.prography.lighton.auth.security.exception.ForbiddenException;
 import com.prography.lighton.auth.security.exception.UnauthorizedException;
 import com.prography.lighton.common.utils.ApiUtils;
@@ -37,6 +38,11 @@ public class AuthExceptionHandler {
     @ExceptionHandler(UnsupportedSocialLoginTypeException.class)
     public ResponseEntity<?> handleUnsupportedSocialLoginTypeException(UnsupportedSocialLoginTypeException e) {
         return ResponseEntity.status(e.status()).body(ApiUtils.error(e.status(), e.getMessage()));
+    }
+
+    @ExceptionHandler(SmsSendFailedException.class)
+    public ResponseEntity<ApiUtils.ApiResult<?>> smsSendFailedException(SmsSendFailedException exception) {
+        return new ResponseEntity<>(exception.body(), exception.status());
     }
 
 }
