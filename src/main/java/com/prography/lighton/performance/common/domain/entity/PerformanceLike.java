@@ -5,12 +5,14 @@ import static lombok.AccessLevel.PROTECTED;
 
 import com.prography.lighton.common.domain.BaseEntity;
 import com.prography.lighton.member.common.domain.entity.Member;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import jakarta.persistence.UniqueConstraint;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.SQLRestriction;
 
@@ -33,6 +35,10 @@ public class PerformanceLike extends BaseEntity {
     @ManyToOne(fetch = LAZY, optional = false)
     private Performance performance;
 
+    @Column(nullable = false)
+    @ColumnDefault("true")
+    private boolean liked = true;
+
     private PerformanceLike(Member member, Performance performance) {
         this.member = member;
         this.performance = performance;
@@ -40,6 +46,14 @@ public class PerformanceLike extends BaseEntity {
 
     public static PerformanceLike of(Member member, Performance p) {
         return new PerformanceLike(member, p);
+    }
+
+    public void like() {
+        this.liked = true;
+    }
+
+    public void unlike() {
+        this.liked = false;
     }
 }
 
