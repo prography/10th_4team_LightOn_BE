@@ -32,6 +32,7 @@ import org.hibernate.annotations.SQLRestriction;
 public class Busking extends Performance {
 
     private static final int UPDATE_DEADLINE_DAYS = 3;
+    private static final int CANCEL_DEADLINE_DAYS = 3;
 
     @ManyToOne(fetch = LAZY, optional = false)
     private Member performer;
@@ -82,6 +83,12 @@ public class Busking extends Performance {
                 proofUrl,
                 genres
         );
+    }
+
+    public void cancel(Member performer) {
+        validatePerformer(performer);
+        validateWithinAllowedPeriod(CANCEL_DEADLINE_DAYS);
+        cancelInternal();
     }
 
     private void validatePerformer(Member member) {

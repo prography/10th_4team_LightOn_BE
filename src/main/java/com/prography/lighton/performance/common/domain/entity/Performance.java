@@ -270,6 +270,10 @@ public class Performance extends BaseEntity {
     public void cancel(Artist artist) {
         validateMasterArtist(artist);
         validateWithinAllowedPeriod(CANCEL_DEADLINE_DAYS);
+        cancelInternal();
+    }
+
+    protected void cancelInternal() {
         if (this.canceled) {
             throw new IllegalStateException("이미 취소된 공연입니다.");
         }
