@@ -11,6 +11,8 @@ import jakarta.persistence.Table;
 import jakarta.persistence.UniqueConstraint;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.SQLRestriction;
 
 @Entity
 @Table(
@@ -21,6 +23,8 @@ import lombok.NoArgsConstructor;
 )
 @Getter
 @NoArgsConstructor(access = PROTECTED)
+@SQLDelete(sql = "UPDATE performance_like SET status = false WHERE id = ?")
+@SQLRestriction("status = true")
 public class PerformanceLike extends BaseEntity {
 
     @ManyToOne(fetch = LAZY, optional = false)
