@@ -33,15 +33,15 @@ public class BuskingService {
     }
 
     @Transactional
-    public void updateBusking(Member member, Long performanceId, BuskingUpdateRequest request) {
-        Busking busking = getApprovedBuskingById(performanceId);
+    public void updateBusking(Member member, Long buskingId, BuskingUpdateRequest request) {
+        Busking busking = getApprovedBuskingById(buskingId);
         var data = performanceResolver.toBuskingData(member, request.info(), request.schedule());
         busking.update(member, data.info(), data.schedule(), data.location(), data.genres(), request.proof());
     }
 
     @Transactional
-    public void cancelPerformance(Member member, Long performanceId) {
-        Busking busking = getApprovedBuskingById(performanceId);
+    public void cancelBusking(Member member, Long buskingId) {
+        Busking busking = getApprovedBuskingById(buskingId);
         busking.cancel(member);
     }
 }
