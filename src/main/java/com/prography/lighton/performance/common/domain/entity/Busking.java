@@ -23,7 +23,6 @@ import lombok.NoArgsConstructor;
 public class Busking extends Performance {
 
     private static final int UPDATE_DEADLINE_DAYS = 3;
-    private static final int CANCEL_DEADLINE_DAYS = 3;
 
     public static Busking create(
             Member performer,
