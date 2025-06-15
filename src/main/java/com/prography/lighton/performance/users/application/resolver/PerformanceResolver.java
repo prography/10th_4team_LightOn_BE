@@ -43,6 +43,15 @@ public class PerformanceResolver {
         );
     }
 
+    public BuskingData toBuskingData(Member member, InfoDTO infoDTO, ScheduleDTO scheduleDTO) {
+        return new BuskingData(
+                member,
+                toInfo(infoDTO),
+                toSchedule(scheduleDTO),
+                toLocation(infoDTO),
+                genreService.getGenresOrThrow(infoDTO.genre()));
+    }
+
     private Artist toMasterArtist(Member member) {
         return artistService.getApprovedArtistByMember(member);
     }
@@ -100,6 +109,16 @@ public class PerformanceResolver {
             Location location,
             Payment payment,
             List<Seat> seats,
+            List<Genre> genres
+    ) {
+    }
+
+    public record BuskingData(
+            Member performer,
+            Info info,
+
+            Schedule schedule,
+            Location location,
             List<Genre> genres
     ) {
     }
