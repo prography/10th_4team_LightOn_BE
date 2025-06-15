@@ -35,6 +35,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -111,6 +112,8 @@ public class Performance extends BaseEntity {
     @Column(nullable = false)
     @ColumnDefault("false")
     private boolean canceled = false;
+
+    private LocalDateTime approvedAt;
 
     private Performance(
             Artist master,
@@ -280,22 +283,51 @@ public class Performance extends BaseEntity {
     }
 
     public void managePerformanceApplication(ApproveStatus targetStatus) {
-        if (this.approveStatus == targetStatus) {
-            throw new SameApproveStatusException("동일한 상태로는 변경할 수 없습니다.");
+        validateDifferentStatus(targetStatus);
+
+        if (isFromPending()) {
+            handlePendingTransition(targetStatus);
+            return;
         }
 
-        if (this.approveStatus == ApproveStatus.PENDING) {
-            if (targetStatus == ApproveStatus.APPROVED || targetStatus == ApproveStatus.REJECTED) {
-                this.approveStatus = targetStatus;
-                return;
-            }
-        }
-
-        if (this.approveStatus == ApproveStatus.APPROVED && targetStatus == ApproveStatus.PENDING) {
+        if (isFromApprovedToPending(targetStatus)) {
             this.approveStatus = targetStatus;
             return;
         }
 
         throw new InvalidApproveStatusTransitionException("현재 상태에서는 해당 상태로 변경할 수 없습니다.");
+    }
+
+    private void validateDifferentStatus(ApproveStatus targetStatus) {
+        if (this.approveStatus == targetStatus) {
+            throw new SameApproveStatusException("동일한 상태로는 변경할 수 없습니다.");
+        }
+    }
+
+    private boolean isFromPending() {
+        return this.approveStatus == ApproveStatus.PENDING;
+    }
+
+    private boolean isFromApprovedToPending(ApproveStatus targetStatus) {
+        return this.approveStatus == ApproveStatus.APPROVED && targetStatus == ApproveStatus.PENDING;
+    }
+
+    private void handlePendingTransition(ApproveStatus targetStatus) {
+        if (targetStatus == ApproveStatus.APPROVED) {
+            approvePerformance();
+        } else if (targetStatus == ApproveStatus.REJECTED) {
+            rejectPerformance();
+        } else {
+            throw new InvalidApproveStatusTransitionException("PENDING 상태에서는 APPROVED 또는 REJECTED로만 변경할 수 있습니다.");
+        }
+    }
+
+    private void approvePerformance() {
+        this.approveStatus = ApproveStatus.APPROVED;
+        this.approvedAt = LocalDateTime.now();
+    }
+
+    private void rejectPerformance() {
+        this.approveStatus = ApproveStatus.REJECTED;
     }
 }
