@@ -32,7 +32,6 @@ public class PerformanceResolver {
     public DomainData toDomainData(Member member, List<Long> artists, InfoDTO infoDTO, ScheduleDTO scheduleDTO,
                                    PaymentDTO paymentDTO, List<Seat> seats) {
         return new DomainData(
-                toMasterArtist(member),
                 toArtists(artists),
                 toInfo(infoDTO),
                 toSchedule(scheduleDTO),
@@ -50,10 +49,6 @@ public class PerformanceResolver {
                 toSchedule(scheduleDTO),
                 toLocation(infoDTO),
                 genreService.getGenresOrThrow(infoDTO.genre()));
-    }
-
-    private Artist toMasterArtist(Member member) {
-        return artistService.getApprovedArtistByMember(member);
     }
 
     private List<Artist> toArtists(List<Long> artistIds) {
@@ -102,7 +97,6 @@ public class PerformanceResolver {
     }
 
     public record DomainData(
-            Artist master,
             List<Artist> artists,
             Info info,
             Schedule schedule,
