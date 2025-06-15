@@ -1,0 +1,43 @@
+package com.prography.lighton.performance.users.application.service;
+
+import com.prography.lighton.member.common.domain.entity.Member;
+import com.prography.lighton.performance.common.domain.entity.Performance;
+import com.prography.lighton.performance.common.domain.entity.PerformanceLike;
+import com.prography.lighton.performance.users.infrastructure.repository.PerformanceLikeRepository;
+import com.prography.lighton.performance.users.infrastructure.repository.PerformanceRepository;
+import com.prography.lighton.performance.users.presentation.dto.response.LikePerformanceResponse;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+@Service
+@Transactional(readOnly = true)
+@RequiredArgsConstructor
+public class PerformanceLikeService {
+
+    private final PerformanceRepository performanceRepository;
+    private final PerformanceLikeRepository performanceLikeRepository;
+
+    @Transactional
+    public LikePerformanceResponse likeOrUnlikePerformance(Member member, Long performanceId) {
+        Performance performance = performanceRepository.getById(performanceId);
+
+        PerformanceLike like = performanceLikeRepository.findByMemberAndPerformance(member, performance)
+                .orElseGet(() -> PerformanceLike.of(member, performance));
+
+        boolean isNowLiked;
+
+        if (like.isLiked()) {
+            like.unlike();
+            performance.decreaseLike();
+            isNowLiked = false;
+        } else {
+            like.like();
+            performance.increaseLike();
+            isNowLiked = true;
+        }
+
+        return LikePerformanceResponse.of(isNowLiked);
+    }
+}
+
