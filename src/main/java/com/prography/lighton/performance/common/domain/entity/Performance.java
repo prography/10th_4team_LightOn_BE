@@ -300,4 +300,14 @@ public class Performance extends BaseEntity {
     private void rejectPerformance() {
         this.approveStatus = ApproveStatus.REJECTED;
     }
+
+    public void increaseLike() {
+        this.likeCount++;
+    }
+
+    public void decreaseLike() {
+        if (this.likeCount > 0) {
+            this.likeCount--;
+        }
+    }
 }
