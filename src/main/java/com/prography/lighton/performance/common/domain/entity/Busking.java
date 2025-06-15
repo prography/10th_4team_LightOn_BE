@@ -1,6 +1,5 @@
 package com.prography.lighton.performance.common.domain.entity;
 
-import static jakarta.persistence.FetchType.LAZY;
 import static lombok.AccessLevel.PROTECTED;
 
 import com.prography.lighton.common.domain.DomainValidator;
@@ -11,10 +10,8 @@ import com.prography.lighton.performance.common.domain.entity.vo.Info;
 import com.prography.lighton.performance.common.domain.entity.vo.Location;
 import com.prography.lighton.performance.common.domain.entity.vo.Payment;
 import com.prography.lighton.performance.common.domain.entity.vo.Schedule;
-import com.prography.lighton.performance.common.domain.exception.NotAuthorizedPerformanceException;
 import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
-import jakarta.persistence.ManyToOne;
 import java.util.List;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -32,9 +29,6 @@ public class Busking extends Performance {
     private static final int UPDATE_DEADLINE_DAYS = 3;
     private static final int CANCEL_DEADLINE_DAYS = 3;
 
-    @ManyToOne(fetch = LAZY, optional = false)
-    private Member performer;
-
     public static Busking create(
             Member performer,
             Info info,
@@ -44,8 +38,8 @@ public class Busking extends Performance {
             String proofUrl
     ) {
         Busking busking = new Busking();
-        busking.performer = performer;
         busking.initCommonFields(
+                performer,
                 info,
                 schedule,
                 location,
@@ -69,6 +63,7 @@ public class Busking extends Performance {
         validateWithinAllowedPeriod(UPDATE_DEADLINE_DAYS);
         DomainValidator.requireNonBlank(proofUrl);
         initCommonFields(
+                performer,
                 info,
                 schedule,
                 location,
@@ -77,17 +72,5 @@ public class Busking extends Performance {
                 proofUrl,
                 genres
         );
-    }
-
-    public void cancel(Member performer) {
-        validatePerformer(performer);
-        validateWithinAllowedPeriod(CANCEL_DEADLINE_DAYS);
-        cancelInternal();
-    }
-
-    private void validatePerformer(Member member) {
-        if (!performer.equals(member)) {
-            throw new NotAuthorizedPerformanceException();
-        }
     }
 }

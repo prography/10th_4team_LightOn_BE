@@ -204,7 +204,7 @@ public class Performance extends BaseEntity {
         updateGenres(genres);
     }
 
-    private void validatePerformer(Member member) {
+    protected void validatePerformer(Member member) {
         if (!performer.equals(member)) {
             throw new NotAuthorizedPerformanceException();
         }
@@ -275,10 +275,6 @@ public class Performance extends BaseEntity {
     public void cancel(Member member) {
         validatePerformer(member);
         validateWithinAllowedPeriod(CANCEL_DEADLINE_DAYS);
-        cancelInternal();
-    }
-
-    protected void cancelInternal() {
         if (this.canceled) {
             throw new IllegalStateException("이미 취소된 공연입니다.");
         }
