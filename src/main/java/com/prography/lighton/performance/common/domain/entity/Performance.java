@@ -252,7 +252,7 @@ public class Performance extends BaseEntity {
         this.genres.addAll(PerformanceGenre.createListFor(this, genresToAdd));
     }
 
-    private void validateWithinAllowedPeriod(int daysBeforePerformance) {
+    protected void validateWithinAllowedPeriod(int daysBeforePerformance) {
         LocalDate today = LocalDate.now();
         LocalDate updateDeadline = this.schedule.getStartDate().minusDays(daysBeforePerformance);
 
