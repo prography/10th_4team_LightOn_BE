@@ -7,7 +7,11 @@ import com.prography.lighton.member.common.domain.entity.Member;
 import com.prography.lighton.performance.common.domain.entity.enums.PerformanceFilterType;
 import com.prography.lighton.performance.users.application.service.PerformanceService;
 import com.prography.lighton.performance.users.presentation.dto.response.GetPerformanceMapListResponseDTO;
+import com.prography.lighton.performance.users.presentation.dto.response.PerformanceSearchItemDTO;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -15,7 +19,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/api/users/performances")
+@RequestMapping("/api/members/performances")
 @RequiredArgsConstructor
 public class UserPerformanceController {
 
@@ -39,5 +43,15 @@ public class UserPerformanceController {
             @LoginMember Member member) {
         return ResponseEntity.ok(ApiUtils.success(
                 performanceService.findFilteredPerformances(type, latitude, longitude, radius, member)));
+    }
+
+    @GetMapping
+    public ResponseEntity<ApiUtils.ApiResult<?>> searchPerformances(
+            @RequestParam String keyword,
+            @PageableDefault(size = 10) Pageable pageable
+    ) {
+        Page<PerformanceSearchItemDTO> result = performanceService.searchByKeyword(keyword, pageable);
+
+        return ResponseEntity.ok(ApiUtils.success(result));
     }
 }

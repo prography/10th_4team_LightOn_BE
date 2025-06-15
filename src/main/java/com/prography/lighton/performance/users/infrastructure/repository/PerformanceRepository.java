@@ -5,6 +5,8 @@ import com.prography.lighton.performance.common.domain.exception.NoSuchPerforman
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -73,4 +75,13 @@ public interface PerformanceRepository extends JpaRepository<Performance, Long> 
             @Param("maxLng") double maxLng,
             @Param("targetDate") LocalDate targetDate
     );
+
+    @Query("""
+                SELECT p
+                FROM Performance p
+                WHERE p.approveStatus = com.prography.lighton.performance.common.domain.entity.enums.ApproveStatus.APPROVED
+                  AND p.canceled = false
+                  AND LOWER(p.info.title) LIKE LOWER(CONCAT('%', :keyword, '%'))
+            """)
+    Page<Performance> searchByKeyword(@Param("keyword") String keyword, Pageable pageable);
 }
