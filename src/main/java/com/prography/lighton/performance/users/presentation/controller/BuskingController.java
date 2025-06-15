@@ -3,7 +3,7 @@ package com.prography.lighton.performance.users.presentation.controller;
 import com.prography.lighton.common.annotation.LoginMember;
 import com.prography.lighton.common.utils.ApiUtils;
 import com.prography.lighton.common.utils.ApiUtils.ApiResult;
-import com.prography.lighton.member.domain.entity.Member;
+import com.prography.lighton.member.common.domain.entity.Member;
 import com.prography.lighton.performance.users.application.service.BuskingService;
 import com.prography.lighton.performance.users.presentation.dto.BuskingRegisterRequest;
 import com.prography.lighton.performance.users.presentation.dto.BuskingUpdateRequest;

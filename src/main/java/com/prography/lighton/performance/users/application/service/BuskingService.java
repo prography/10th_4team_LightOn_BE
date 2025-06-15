@@ -1,6 +1,6 @@
 package com.prography.lighton.performance.users.application.service;
 
-import com.prography.lighton.member.domain.entity.Member;
+import com.prography.lighton.member.common.domain.entity.Member;
 import com.prography.lighton.performance.common.domain.entity.Busking;
 import com.prography.lighton.performance.users.application.resolver.PerformanceResolver;
 import com.prography.lighton.performance.users.infrastructure.repository.PerformanceRepository;

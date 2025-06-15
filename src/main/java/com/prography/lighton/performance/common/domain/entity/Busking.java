@@ -3,11 +3,9 @@ package com.prography.lighton.performance.common.domain.entity;
 import static jakarta.persistence.FetchType.LAZY;
 import static lombok.AccessLevel.PROTECTED;
 
-import com.prography.lighton.artist.common.domain.entity.Artist;
 import com.prography.lighton.common.domain.DomainValidator;
 import com.prography.lighton.genre.domain.entity.Genre;
-import com.prography.lighton.member.domain.entity.Member;
-import com.prography.lighton.performance.common.domain.entity.enums.Seat;
+import com.prography.lighton.member.common.domain.entity.Member;
 import com.prography.lighton.performance.common.domain.entity.enums.Type;
 import com.prography.lighton.performance.common.domain.entity.vo.Info;
 import com.prography.lighton.performance.common.domain.entity.vo.Location;
@@ -88,6 +86,8 @@ public class Busking extends Performance {
     }
 
     private void validatePerformer(Member member) {
-        if (!performer.equals(member)) throw new NotAuthorizedPerformanceException();
+        if (!performer.equals(member)) {
+            throw new NotAuthorizedPerformanceException();
+        }
     }
 }
