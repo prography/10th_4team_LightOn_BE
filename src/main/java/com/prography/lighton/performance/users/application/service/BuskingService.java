@@ -1,8 +1,11 @@
 package com.prography.lighton.performance.users.application.service;
 
+import com.prography.lighton.member.domain.entity.Member;
 import com.prography.lighton.performance.common.domain.entity.Busking;
 import com.prography.lighton.performance.users.application.resolver.PerformanceResolver;
 import com.prography.lighton.performance.users.infrastructure.repository.PerformanceRepository;
+import com.prography.lighton.performance.users.presentation.dto.BuskingRegisterRequest;
+import com.prography.lighton.performance.users.presentation.dto.BuskingUpdateRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,4 +24,24 @@ public class BuskingService {
         return performance;
     }
 
+    @Transactional
+    public void registerBusking(Member member, BuskingRegisterRequest request) {
+        var data = performanceResolver.toBuskingData(member, request.info(), request.schedule());
+        Busking busking = Busking.create(member, data.info(), data.schedule(),
+                data.location(), data.genres(), request.proof());
+        performanceRepository.save(busking);
+    }
+
+    @Transactional
+    public void updateBusking(Member member, Long performanceId, BuskingUpdateRequest request) {
+        Busking busking = getApprovedBuskingById(performanceId);
+        var data = performanceResolver.toBuskingData(member, request.info(), request.schedule());
+        busking.update(member, data.info(), data.schedule(), data.location(), data.genres(), request.proof());
+    }
+
+    @Transactional
+    public void cancelPerformance(Member member, Long performanceId) {
+        Busking busking = getApprovedBuskingById(performanceId);
+        busking.cancel(member);
+    }
 }
