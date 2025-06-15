@@ -3,7 +3,7 @@ package com.prography.lighton.performance.users.presentation.exception;
 import com.prography.lighton.common.utils.ApiUtils;
 import com.prography.lighton.common.utils.ApiUtils.ApiResult;
 import com.prography.lighton.performance.common.domain.exception.MasterArtistCannotBeRemovedException;
-import com.prography.lighton.performance.common.domain.exception.NotAMasterArtistException;
+import com.prography.lighton.performance.common.domain.exception.NotAuthorizedPerformanceException;
 import com.prography.lighton.performance.common.domain.exception.PerformanceNotApprovedException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -24,9 +24,9 @@ public class PerformanceExceptionHandler {
         return new ResponseEntity<>(exception.body(), exception.status());
     }
 
-    @ExceptionHandler(NotAMasterArtistException.class)
+    @ExceptionHandler(NotAuthorizedPerformanceException.class)
     public ResponseEntity<ApiUtils.ApiResult<?>> notAMasterArtistException(
-            NotAMasterArtistException exception) {
+            NotAuthorizedPerformanceException exception) {
         return new ResponseEntity<>(exception.body(), exception.status());
     }
 }

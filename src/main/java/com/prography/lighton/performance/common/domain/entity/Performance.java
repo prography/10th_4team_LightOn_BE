@@ -3,7 +3,7 @@ package com.prography.lighton.performance.common.domain.entity;
 import com.prography.lighton.artist.admin.domain.exception.InvalidApproveStatusTransitionException;
 import com.prography.lighton.artist.admin.domain.exception.SameApproveStatusException;
 import com.prography.lighton.artist.common.domain.entity.Artist;
-import com.prography.lighton.performance.common.domain.exception.NotAMasterArtistException;
+import com.prography.lighton.performance.common.domain.exception.NotAuthorizedPerformanceException;
 import com.prography.lighton.common.domain.BaseEntity;
 import com.prography.lighton.genre.domain.entity.Genre;
 import com.prography.lighton.performance.common.domain.entity.association.PerformanceArtist;
@@ -202,7 +202,7 @@ public class Performance extends BaseEntity {
 
     private void validateMasterArtist(Artist artist) {
         if (!master.equals(artist)) {
-            throw new NotAMasterArtistException();
+            throw new NotAuthorizedPerformanceException();
         }
     }
 
