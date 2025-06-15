@@ -149,6 +149,28 @@ public class Performance extends BaseEntity {
         return perf;
     }
 
+    protected void initCommonFields(
+            Info info,
+            Schedule schedule,
+            Location location,
+            Payment payment,
+            Type type,
+            List<Seat> seats,
+            String proofUrl,
+            List<Genre> genres
+    ) {
+        this.info = info;
+        this.schedule = schedule;
+        this.location = location;
+        this.payment = payment;
+        this.type = type;
+        this.seats.clear();
+        this.seats.addAll(seats);
+        this.proofUrl = proofUrl;
+        updateGenres(genres);
+    }
+
+
     public void update(
             Artist artist,
             List<Artist> newArtists,
