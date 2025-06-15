@@ -1,6 +1,7 @@
 package com.prography.lighton.performance.common.domain.entity;
 
 import static jakarta.persistence.FetchType.LAZY;
+import static lombok.AccessLevel.PRIVATE;
 import static lombok.AccessLevel.PROTECTED;
 
 import com.prography.lighton.common.domain.BaseEntity;
@@ -10,6 +11,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import jakarta.persistence.UniqueConstraint;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.ColumnDefault;
@@ -25,6 +27,7 @@ import org.hibernate.annotations.SQLRestriction;
 )
 @Getter
 @NoArgsConstructor(access = PROTECTED)
+@AllArgsConstructor(access = PRIVATE)
 @SQLDelete(sql = "UPDATE performance_like SET status = false WHERE id = ?")
 @SQLRestriction("status = true")
 public class PerformanceLike extends BaseEntity {
@@ -39,13 +42,8 @@ public class PerformanceLike extends BaseEntity {
     @ColumnDefault("true")
     private boolean liked = true;
 
-    private PerformanceLike(Member member, Performance performance) {
-        this.member = member;
-        this.performance = performance;
-    }
-
-    public static PerformanceLike of(Member member, Performance p) {
-        return new PerformanceLike(member, p);
+    public static PerformanceLike of(Member member, Performance performance, boolean liked) {
+        return new PerformanceLike(member, performance, liked);
     }
 
     public void like() {

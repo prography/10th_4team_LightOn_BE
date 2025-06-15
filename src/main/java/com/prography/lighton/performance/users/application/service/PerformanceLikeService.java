@@ -23,7 +23,7 @@ public class PerformanceLikeService {
         Performance performance = performanceRepository.getById(performanceId);
 
         PerformanceLike like = performanceLikeRepository.findByMemberAndPerformance(member, performance)
-                .orElseGet(() -> PerformanceLike.of(member, performance));
+                .orElseGet(() -> PerformanceLike.of(member, performance, false));
 
         boolean isNowLiked;
 
@@ -36,7 +36,7 @@ public class PerformanceLikeService {
             performance.increaseLike();
             isNowLiked = true;
         }
-
+        performanceLikeRepository.save(like);
         return LikePerformanceResponse.of(isNowLiked);
     }
 }
