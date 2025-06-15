@@ -6,8 +6,8 @@ import com.prography.lighton.performance.admin.presentation.dto.response.GetPerf
 import com.prography.lighton.performance.admin.presentation.dto.response.GetPerformanceApplicationDetailResponseDTO.PerformanceArtistDTO;
 import com.prography.lighton.performance.admin.presentation.dto.response.GetPerformanceApplicationListResponseDTO.PerformanceApplicationDTO;
 import com.prography.lighton.performance.common.domain.entity.Performance;
-import com.prography.lighton.performance.common.domain.entity.PerformanceGenre;
 import com.prography.lighton.performance.common.domain.entity.association.PerformanceArtist;
+import com.prography.lighton.performance.common.domain.entity.association.PerformanceGenre;
 import com.prography.lighton.region.infrastructure.cache.RegionCache;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -19,6 +19,11 @@ public class PendingPerformanceMapper {
 
     private final GenreCache genreCache;
     private final RegionCache regionCache;
+
+    private static String toRegionName(Performance performance) {
+        return performance.getLocation().getRegion().getRegion().getName()
+                + " " + performance.getLocation().getRegion().getSubRegion().getName();
+    }
 
     public PerformanceApplicationDTO toPendingPerformanceDTO(Performance performance) {
         return PerformanceApplicationDTO.of(
@@ -55,11 +60,6 @@ public class PendingPerformanceMapper {
                 performance.getSeats(),
                 performance.getProofUrl()
         );
-    }
-
-    private static String toRegionName(Performance performance) {
-        return performance.getLocation().getRegion().getRegion().getName()
-                + " " + performance.getLocation().getRegion().getSubRegion().getName();
     }
 
     private List<String> toGenres(List<PerformanceGenre> performanceGenres) {
