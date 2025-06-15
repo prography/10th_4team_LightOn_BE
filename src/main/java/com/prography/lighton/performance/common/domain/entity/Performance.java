@@ -192,7 +192,7 @@ public class Performance extends BaseEntity {
         this.seats.clear();
         this.seats.addAll(seats);
 
-        if (!this.proofUrl.equals(proofUrl) && !StringUtils.isEmpty(proofUrl)) {
+        if (!StringUtils.isEmpty(proofUrl)) {
             this.proofUrl = proofUrl;
         }
 
