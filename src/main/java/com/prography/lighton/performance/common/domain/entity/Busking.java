@@ -15,15 +15,11 @@ import jakarta.persistence.Entity;
 import java.util.List;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.SQLDelete;
-import org.hibernate.annotations.SQLRestriction;
 
 @Entity
 @DiscriminatorValue("BUSKING")
 @Getter
 @NoArgsConstructor(access = PROTECTED)
-@SQLDelete(sql = "UPDATE busking SET status = false WHERE id = ?")
-@SQLRestriction("status = true")
 public class Busking extends Performance {
 
     private static final int UPDATE_DEADLINE_DAYS = 3;
