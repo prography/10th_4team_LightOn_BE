@@ -161,6 +161,7 @@ public class Performance extends BaseEntity {
             Location location,
             Payment payment,
             Type type,
+            Seat seat,
             String proofUrl,
             List<Genre> genres
     ) {
@@ -171,7 +172,7 @@ public class Performance extends BaseEntity {
         this.payment = payment;
         this.type = type;
         this.seats.clear();
-        this.seats.addAll(seats);
+        this.seats.add(seat);
         this.proofUrl = proofUrl;
         updateGenres(genres);
     }
