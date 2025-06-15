@@ -200,7 +200,7 @@ public class Performance extends BaseEntity {
         updateGenres(genres);
     }
 
-    public void validateMasterArtist(Artist artist) {
+    private void validateMasterArtist(Artist artist) {
         if (!master.equals(artist)) {
             throw new NotAMasterArtistException();
         }
