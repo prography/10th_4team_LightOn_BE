@@ -3,6 +3,7 @@ package com.prography.lighton.performance.common.domain.entity;
 import com.prography.lighton.artist.admin.domain.exception.InvalidApproveStatusTransitionException;
 import com.prography.lighton.artist.admin.domain.exception.SameApproveStatusException;
 import com.prography.lighton.artist.common.domain.entity.Artist;
+import com.prography.lighton.common.domain.DomainValidator;
 import com.prography.lighton.performance.common.domain.exception.NotAuthorizedPerformanceException;
 import com.prography.lighton.common.domain.BaseEntity;
 import com.prography.lighton.genre.domain.entity.Genre;
@@ -184,6 +185,7 @@ public class Performance extends BaseEntity {
     ) {
         validateMasterArtist(artist);
         validateWithinAllowedPeriod(UPDATE_DEADLINE_DAYS);
+        DomainValidator.requireNonBlank(proofUrl);
 
         this.info = info;
         this.schedule = schedule;
@@ -191,10 +193,7 @@ public class Performance extends BaseEntity {
         this.payment = payment;
         this.seats.clear();
         this.seats.addAll(seats);
-
-        if (!StringUtils.isEmpty(proofUrl)) {
-            this.proofUrl = proofUrl;
-        }
+        this.proofUrl = proofUrl;
 
         updateArtists(newArtists);
         updateGenres(genres);
