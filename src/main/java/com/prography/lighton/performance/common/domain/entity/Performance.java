@@ -156,7 +156,6 @@ public class Performance extends BaseEntity {
             Location location,
             Payment payment,
             Type type,
-            List<Seat> seats,
             String proofUrl,
             List<Genre> genres
     ) {

@@ -42,7 +42,6 @@ public class Busking extends Performance {
             Info info,
             Schedule schedule,
             Location location,
-            List<Seat> seats,
             List<Genre> genres,
             String proofUrl
     ) {
@@ -54,7 +53,6 @@ public class Busking extends Performance {
                 location,
                 Payment.free(),
                 Type.BUSKING,
-                seats,
                 proofUrl,
                 genres
         );
@@ -66,7 +64,6 @@ public class Busking extends Performance {
             Info info,
             Schedule schedule,
             Location location,
-            List<Seat> seats,
             List<Genre> genres,
             String proofUrl
     ) {
@@ -79,7 +76,6 @@ public class Busking extends Performance {
                 location,
                 Payment.free(),
                 Type.BUSKING,
-                seats,
                 proofUrl,
                 genres
         );
