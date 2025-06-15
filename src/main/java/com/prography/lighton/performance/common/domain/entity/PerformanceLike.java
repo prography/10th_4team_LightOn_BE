@@ -7,10 +7,18 @@ import com.prography.lighton.common.domain.BaseEntity;
 import com.prography.lighton.member.common.domain.entity.Member;
 import jakarta.persistence.Entity;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
+import jakarta.persistence.UniqueConstraint;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Entity
+@Table(
+        name = "performance_like",
+        uniqueConstraints = @UniqueConstraint(
+                name = "uk_member_performance", columnNames = {"member_id", "performance_id"}
+        )
+)
 @Getter
 @NoArgsConstructor(access = PROTECTED)
 public class PerformanceLike extends BaseEntity {
