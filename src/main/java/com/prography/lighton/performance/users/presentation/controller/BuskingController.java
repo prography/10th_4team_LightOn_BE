@@ -21,7 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/members/buskings")
+@RequestMapping("/api/members/performances/buskings")
 public class BuskingController {
 
     private final BuskingService buskingService;
