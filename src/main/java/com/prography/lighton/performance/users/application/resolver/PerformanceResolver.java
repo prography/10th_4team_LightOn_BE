@@ -116,7 +116,6 @@ public class PerformanceResolver {
     public record BuskingData(
             Member performer,
             Info info,
-
             Schedule schedule,
             Location location,
             List<Genre> genres
