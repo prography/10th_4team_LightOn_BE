@@ -155,6 +155,7 @@ public class Performance extends BaseEntity {
     }
 
     protected void initCommonFields(
+            Member performer,
             Info info,
             Schedule schedule,
             Location location,
@@ -163,6 +164,7 @@ public class Performance extends BaseEntity {
             String proofUrl,
             List<Genre> genres
     ) {
+        this.performer = performer;
         this.info = info;
         this.schedule = schedule;
         this.location = location;
@@ -186,7 +188,7 @@ public class Performance extends BaseEntity {
             List<Genre> genres,
             String proofUrl
     ) {
-        validateMasterArtist(performer);
+        validatePerformer(performer);
         validateWithinAllowedPeriod(UPDATE_DEADLINE_DAYS);
         DomainValidator.requireNonBlank(proofUrl);
 
@@ -202,7 +204,7 @@ public class Performance extends BaseEntity {
         updateGenres(genres);
     }
 
-    private void validateMasterArtist(Member member) {
+    private void validatePerformer(Member member) {
         if (!performer.equals(member)) {
             throw new NotAuthorizedPerformanceException();
         }
@@ -271,7 +273,7 @@ public class Performance extends BaseEntity {
     }
 
     public void cancel(Member member) {
-        validateMasterArtist(member);
+        validatePerformer(member);
         validateWithinAllowedPeriod(CANCEL_DEADLINE_DAYS);
         cancelInternal();
     }
