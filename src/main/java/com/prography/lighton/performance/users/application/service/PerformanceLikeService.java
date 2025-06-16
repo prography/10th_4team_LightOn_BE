@@ -25,19 +25,9 @@ public class PerformanceLikeService {
         PerformanceLike like = performanceLikeRepository.findByMemberAndPerformance(member, performance)
                 .orElseGet(() -> PerformanceLike.of(member, performance, false));
 
-        boolean isNowLiked;
-
-        if (like.isLiked()) {
-            like.unlike();
-            performance.decreaseLike();
-            isNowLiked = false;
-        } else {
-            like.like();
-            performance.increaseLike();
-            isNowLiked = true;
-        }
+        boolean nowLiked = like.toggleLike();
         performanceLikeRepository.save(like);
-        return LikePerformanceResponse.of(isNowLiked);
+        return LikePerformanceResponse.of(nowLiked);
     }
 }
 

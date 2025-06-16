@@ -46,12 +46,15 @@ public class PerformanceLike extends BaseEntity {
         return new PerformanceLike(member, performance, liked);
     }
 
-    public void like() {
-        this.liked = true;
-    }
-
-    public void unlike() {
-        this.liked = false;
+    public boolean toggleLike() {
+        if (liked) {
+            liked = false;
+            performance.decreaseLike();
+        } else {
+            liked = true;
+            performance.increaseLike();
+        }
+        return liked;
     }
 }
 
