@@ -5,7 +5,7 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import org.hibernate.validator.constraints.URL;
 
-public record BuskingRegisterRequest(
+public record ArtistBuskingRegisterRequest(
 
         @NotNull(message = "공연 기본 정보는 필수입니다.")
         @Valid
