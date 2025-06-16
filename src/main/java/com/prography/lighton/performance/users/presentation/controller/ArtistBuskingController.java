@@ -5,8 +5,8 @@ import com.prography.lighton.common.utils.ApiUtils;
 import com.prography.lighton.common.utils.ApiUtils.ApiResult;
 import com.prography.lighton.member.common.domain.entity.Member;
 import com.prography.lighton.performance.users.application.service.BuskingService;
-import com.prography.lighton.performance.users.presentation.dto.BuskingRegisterRequest;
-import com.prography.lighton.performance.users.presentation.dto.BuskingUpdateRequest;
+import com.prography.lighton.performance.users.presentation.dto.ArtistBuskingRegisterRequest;
+import com.prography.lighton.performance.users.presentation.dto.ArtistBuskingUpdateRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -21,16 +21,16 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/members/performances/buskings")
-public class BuskingController {
+@RequestMapping("/api/artists/performances/buskings")
+public class ArtistBuskingController {
 
     private final BuskingService buskingService;
 
     @PostMapping
     public ResponseEntity<ApiResult<String>> registerPerformance(
             @LoginMember Member member,
-            @Valid @RequestBody BuskingRegisterRequest request) {
-        buskingService.registerBusking(member, request);
+            @Valid @RequestBody ArtistBuskingRegisterRequest request) {
+        buskingService.registerBuskingByArtist(member, request);
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(ApiUtils.success());
     }
@@ -38,8 +38,8 @@ public class BuskingController {
     @PutMapping("/{id}")
     public ResponseEntity<ApiResult<String>> updatePerformance(@LoginMember Member member,
                                                                @PathVariable Long id,
-                                                               @Valid @RequestBody BuskingUpdateRequest request) {
-        buskingService.updateBusking(member, id, request);
+                                                               @Valid @RequestBody ArtistBuskingUpdateRequest request) {
+        buskingService.updateBuskingByArtist(member, id, request);
         return ResponseEntity.ok()
                 .body(ApiUtils.success());
     }
