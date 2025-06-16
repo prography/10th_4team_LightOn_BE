@@ -94,7 +94,7 @@ public class Busking extends Performance {
         return busking;
     }
 
-    public void update(
+    public void updateByArtist(
             Member performer,
             Info info,
             Schedule schedule,
@@ -107,6 +107,39 @@ public class Busking extends Performance {
         DomainValidator.requireNonBlank(proofUrl);
         initCommonFields(
                 performer,
+                info,
+                schedule,
+                location,
+                Payment.free(),
+                Type.BUSKING,
+                Seat.STANDING,
+                proofUrl,
+                genres
+        );
+    }
+
+
+    public void updateByUser(
+            Member performer,
+            Info info,
+            Schedule schedule,
+            Location location,
+            List<Genre> genres,
+            String proofUrl,
+            String artistName,
+            String artistDescription
+    ) {
+        validatePerformer(performer);
+        validateWithinAllowedPeriod(UPDATE_DEADLINE_DAYS);
+        DomainValidator.requireNonBlank(proofUrl);
+        DomainValidator.requireNonBlank(artistName);
+        DomainValidator.requireNonBlank(artistDescription);
+
+        this.artistName = artistName;
+        this.artistDescription = artistDescription;
+
+        initCommonFields(
+                this.getPerformer(),
                 info,
                 schedule,
                 location,
