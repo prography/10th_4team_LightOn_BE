@@ -65,7 +65,7 @@ public class Performance extends BaseEntity {
     @ManyToOne(fetch = LAZY, optional = false)
     private Member performer;
 
-    @OneToMany(mappedBy = "performance")
+    @OneToMany(mappedBy = "performance", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<PerformanceArtist> artists = new ArrayList<>();
 
     @Embedded
@@ -211,7 +211,7 @@ public class Performance extends BaseEntity {
         }
     }
 
-    private void updateArtists(List<Artist> newArtists) {
+    protected void updateArtists(List<Artist> newArtists) {
         validateNotRemovingMaster(newArtists);
 
         Set<Long> newArtistIds = newArtists.stream()

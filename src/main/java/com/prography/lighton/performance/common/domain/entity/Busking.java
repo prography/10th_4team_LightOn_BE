@@ -90,6 +90,7 @@ public class Busking extends Performance {
                 proofUrl,
                 genres
         );
+        busking.updateArtists(List.of(artist));
         busking.managePerformanceApplication(ApproveStatus.APPROVED);
         return busking;
     }
