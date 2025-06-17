@@ -1,5 +1,8 @@
 package com.prography.lighton.auth.presentation;
 
+import static org.springframework.web.bind.annotation.RequestMethod.GET;
+import static org.springframework.web.bind.annotation.RequestMethod.POST;
+
 import com.prography.lighton.auth.application.AuthService;
 import com.prography.lighton.auth.application.LoginMemberUseCase;
 import com.prography.lighton.auth.application.OAuthUseCase;
@@ -54,7 +57,7 @@ public class AuthController {
     }
 
 
-    @GetMapping(value = "/oauth/{socialLoginType}/callback")
+    @RequestMapping(value = "/oauth/{socialLoginType}/callback", method = {GET, POST})
     public ResponseEntity<ApiResult<SocialLoginResult>> socialLoginCallback(
             @PathVariable(name = "socialLoginType") String socialLoginPath,
             @RequestParam(name = "code") String code) throws RuntimeException {
