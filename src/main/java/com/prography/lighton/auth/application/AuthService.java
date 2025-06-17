@@ -2,7 +2,7 @@ package com.prography.lighton.auth.application;
 
 import com.prography.lighton.auth.presentation.dto.request.VerifyPhoneRequestDTO;
 import com.prography.lighton.auth.presentation.dto.response.ReissueTokenResponse;
-import com.prography.lighton.member.domain.entity.Member;
+import com.prography.lighton.member.common.domain.entity.Member;
 
 public interface AuthService {
 
