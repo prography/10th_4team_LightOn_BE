@@ -22,6 +22,11 @@ import org.springframework.stereotype.Component;
 @Component
 public class AppleOAuthTokenService {
 
+    private static final String APPLE_AUDIENCE = "https://appleid.apple.com";
+    private static final long EXPIRE_DURATION = 60 * 60 * 24 * 180; // 6개월
+    private static final int JWT_PARTS_LENGTH = 3;
+    private static final int PAYLOAD_INDEX = 1;
+
     @Value("${apple.oauth.team-id}")
     private String TEAM_ID;
     @Value("${apple.oauth.client-id}")
@@ -30,11 +35,6 @@ public class AppleOAuthTokenService {
     private String KEY_ID;
     @Value("${apple.oauth.private-key-path}")
     private String KEY_PATH;
-
-    private static final String APPLE_AUDIENCE = "https://appleid.apple.com";
-    private static final long EXPIRE_DURATION = 60 * 60 * 24 * 180; // 6개월
-    private static final int JWT_PARTS_LENGTH = 3;
-    private static final int PAYLOAD_INDEX = 1;
 
     public String createClientSecret() {
         Instant now = Instant.now();
