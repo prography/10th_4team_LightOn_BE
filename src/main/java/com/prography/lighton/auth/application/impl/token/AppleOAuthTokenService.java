@@ -7,6 +7,8 @@ import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.prography.lighton.auth.application.exception.IdTokenParseException;
+import com.prography.lighton.auth.application.exception.InvalidTokenException;
 import com.prography.lighton.auth.infrastructure.AppleKeyUtils;
 import com.prography.lighton.auth.presentation.dto.apple.AppleUser;
 import java.security.interfaces.ECPrivateKey;
@@ -54,7 +56,7 @@ public class AppleOAuthTokenService {
         try {
             String[] parts = idToken.split("\\.");
             if (parts.length != JWT_PARTS_LENGTH) {
-                throw new IllegalArgumentException("Invalid JWT format");
+                throw new InvalidTokenException("유효하지 않은 Apple ID Token 형식입니다.");
             }
 
             String payload = parts[PAYLOAD_INDEX];
@@ -69,7 +71,7 @@ public class AppleOAuthTokenService {
             return new AppleUser(email);
 
         } catch (Exception e) {
-            throw new RuntimeException("Apple ID Token 파싱 실패", e);
+            throw new IdTokenParseException();
         }
     }
 }

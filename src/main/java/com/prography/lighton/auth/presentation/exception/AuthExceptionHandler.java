@@ -1,5 +1,6 @@
 package com.prography.lighton.auth.presentation.exception;
 
+import com.prography.lighton.auth.application.exception.IdTokenParseException;
 import com.prography.lighton.auth.application.exception.MemberProfileIncompleteException;
 import com.prography.lighton.auth.application.exception.UnsupportedSocialLoginTypeException;
 import com.prography.lighton.auth.security.exception.ForbiddenException;
@@ -39,4 +40,8 @@ public class AuthExceptionHandler {
         return ResponseEntity.status(e.status()).body(ApiUtils.error(e.status(), e.getMessage()));
     }
 
+    @ExceptionHandler(IdTokenParseException.class)
+    public ResponseEntity<?> handleIdTokenParseException(IdTokenParseException e) {
+        return ResponseEntity.status(e.status()).body(ApiUtils.error(e.status(), e.getMessage()));
+    }
 }

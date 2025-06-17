@@ -1,5 +1,7 @@
 package com.prography.lighton.auth.infrastructure;
 
+import com.prography.lighton.auth.application.exception.ApplePrivateKeyLoadException;
+import com.prography.lighton.common.exception.base.NotFoundException;
 import java.io.InputStream;
 import java.security.KeyFactory;
 import java.security.interfaces.ECPrivateKey;
@@ -20,7 +22,7 @@ public class AppleKeyUtils {
                 .getResourceAsStream(classpathLocation)) {
 
             if (is == null) {
-                throw new IllegalArgumentException("리소스를 찾을 수 없습니다: " + classpathLocation);
+                throw new NotFoundException("리소스를 찾을 수 없습니다: " + classpathLocation);
             }
 
             String key = new String(is.readAllBytes())
@@ -34,7 +36,7 @@ public class AppleKeyUtils {
             return (ECPrivateKey) kf.generatePrivate(spec);
 
         } catch (Exception e) {
-            throw new RuntimeException("Apple private key 로딩 실패", e);
+            throw new ApplePrivateKeyLoadException();
         }
     }
 }
