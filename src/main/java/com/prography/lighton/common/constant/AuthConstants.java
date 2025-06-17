@@ -16,4 +16,6 @@ public class AuthConstants {
 
     public static final String HEADER_AUTHORIZATION = "Authorization";
     public static final String HEADER_CONTENT_TYPE = "Content-Type";
+
+    public static final String EMAIL = "email";
 }
