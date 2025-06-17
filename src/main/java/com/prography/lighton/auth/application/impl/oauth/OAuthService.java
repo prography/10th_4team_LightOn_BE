@@ -7,6 +7,8 @@ import com.prography.lighton.auth.application.exception.MemberProfileIncompleteE
 import com.prography.lighton.auth.application.exception.UnsupportedSocialLoginTypeException;
 import com.prography.lighton.auth.application.validator.DuplicateEmailValidator;
 import com.prography.lighton.auth.domain.enums.SocialLoginType;
+import com.prography.lighton.auth.presentation.dto.apple.AppleOAuthToken;
+import com.prography.lighton.auth.presentation.dto.apple.AppleUser;
 import com.prography.lighton.auth.presentation.dto.google.GoogleOAuthToken;
 import com.prography.lighton.auth.presentation.dto.google.GoogleUser;
 import com.prography.lighton.auth.presentation.dto.kakao.KaKaoOAuthTokenDTO;
@@ -30,6 +32,8 @@ public class OAuthService implements OAuthUseCase {
 
     private final KaKaoOauth kaKaoOauth;
     private final GoogleOauth googleOauth;
+    private final AppleOauth appleOauth;
+
     private final TokenProvider tokenProvider;
     private final DuplicateEmailValidator duplicateEmailValidator;
     private final RefreshTokenService refreshTokenService;
@@ -42,7 +46,7 @@ public class OAuthService implements OAuthUseCase {
         return switch (socialLoginType) {
             case GOOGLE -> googleOauth.getOauthRedirectURL();
             case KAKAO -> kaKaoOauth.getOauthRedirectURL();
-            case APPLE -> throw new UnsupportedOperationException("Apple 로그인은 아직 지원되지 않습니다.");
+            case APPLE -> appleOauth.getOauthRedirectURL();
             default -> throw new UnsupportedSocialLoginTypeException("지원하지 않는 로그인 타입입니다.");
         };
     }
@@ -65,7 +69,11 @@ public class OAuthService implements OAuthUseCase {
                 GoogleUser user = googleOauth.requestUserInfo(token);
                 yield user.email();
             }
-            case APPLE -> throw new UnsupportedOperationException("Apple 로그인은 아직 지원되지 않습니다.");
+            case APPLE -> {
+                AppleOAuthToken tokens = appleOauth.requestAccessToken(code);
+                AppleUser user = appleOauth.parseUserFromIdToken(tokens);
+                yield user.email();
+            }
             default -> throw new UnsupportedSocialLoginTypeException("지원하지 않는 로그인 타입입니다.");
         };
     }
