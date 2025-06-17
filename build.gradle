@@ -78,6 +78,9 @@ dependencies {
 
     // Redis
     implementation 'org.springframework.boot:spring-boot-starter-data-redis'
+
+    // JWT for apple login
+    implementation 'com.auth0:java-jwt:4.4.0'
 }
 
 tasks.named('test') {
