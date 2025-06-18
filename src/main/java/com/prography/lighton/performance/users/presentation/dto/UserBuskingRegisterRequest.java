@@ -19,7 +19,7 @@ public record UserBuskingRegisterRequest(
         @URL(message = "공연 증빙 자료는 올바른 URL 형식이어야 합니다.")
         String proof,
 
-        @NotBlank(message = "야티스트 이름은 필수입니다.")
+        @NotBlank(message = "아티스트 이름은 필수입니다.")
         String artistName,
 
         @NotBlank(message = "아티스트 설명은 필수입니다.")
