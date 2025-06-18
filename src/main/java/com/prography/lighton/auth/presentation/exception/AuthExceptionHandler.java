@@ -2,7 +2,10 @@ package com.prography.lighton.auth.presentation.exception;
 
 import com.prography.lighton.auth.application.exception.IdTokenParseException;
 import com.prography.lighton.auth.application.exception.MemberProfileIncompleteException;
+import com.prography.lighton.auth.application.exception.PhoneNotVerifiedException;
+import com.prography.lighton.auth.application.exception.PhoneVerificationFailedException;
 import com.prography.lighton.auth.application.exception.UnsupportedSocialLoginTypeException;
+import com.prography.lighton.auth.infrastructure.sms.exception.SmsSendFailedException;
 import com.prography.lighton.auth.security.exception.ForbiddenException;
 import com.prography.lighton.auth.security.exception.UnauthorizedException;
 import com.prography.lighton.common.utils.ApiUtils;
@@ -44,4 +47,22 @@ public class AuthExceptionHandler {
     public ResponseEntity<?> handleIdTokenParseException(IdTokenParseException e) {
         return ResponseEntity.status(e.status()).body(ApiUtils.error(e.status(), e.getMessage()));
     }
+
+    @ExceptionHandler(SmsSendFailedException.class)
+    public ResponseEntity<ApiUtils.ApiResult<?>> smsSendFailedException(SmsSendFailedException exception) {
+        return new ResponseEntity<>(exception.body(), exception.status());
+    }
+
+    @ExceptionHandler(PhoneVerificationFailedException.class)
+    public ResponseEntity<ApiUtils.ApiResult<?>> phoneVerificationFailedException(
+            PhoneVerificationFailedException exception) {
+        return new ResponseEntity<>(exception.body(), exception.status());
+    }
+
+    @ExceptionHandler(PhoneNotVerifiedException.class)
+    public ResponseEntity<ApiUtils.ApiResult<?>> phoneNotVerifiedException(
+            PhoneNotVerifiedException exception) {
+        return new ResponseEntity<>(exception.body(), exception.status());
+    }
+
 }

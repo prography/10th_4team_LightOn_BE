@@ -7,6 +7,8 @@ import com.prography.lighton.auth.application.AuthService;
 import com.prography.lighton.auth.application.LoginMemberUseCase;
 import com.prography.lighton.auth.application.OAuthUseCase;
 import com.prography.lighton.auth.domain.enums.SocialLoginType;
+import com.prography.lighton.auth.presentation.dto.request.SendAuthCodeRequestDTO;
+import com.prography.lighton.auth.presentation.dto.request.VerifyPhoneRequestDTO;
 import com.prography.lighton.auth.presentation.dto.response.ReissueTokenResponse;
 import com.prography.lighton.auth.presentation.dto.response.login.SocialLoginResult;
 import com.prography.lighton.common.annotation.LoginMember;
@@ -80,4 +82,19 @@ public class AuthController {
         return ResponseEntity.status(HttpStatus.OK)
                 .body(ApiUtils.success());
     }
+
+    @PostMapping("/auth/phones/code")
+    public ResponseEntity<ApiResult<String>> sendAuthCode(@Valid @RequestBody SendAuthCodeRequestDTO request) {
+        authService.sendAuthCode(request.phoneNumber());
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(ApiUtils.success());
+    }
+
+    @PostMapping("/auth/phones/code/verify")
+    public ResponseEntity<ApiResult<String>> verifyPhone(@Valid @RequestBody VerifyPhoneRequestDTO request) {
+        authService.verifyPhone(request);
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(ApiUtils.success());
+    }
+
 }

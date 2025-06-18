@@ -21,8 +21,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/artists/performances")
-public class ArtistPerformanceController {
+@RequestMapping("/api/artists/performances/concerts")
+public class PerformanceController {
 
     private final PerformanceService performanceService;
 

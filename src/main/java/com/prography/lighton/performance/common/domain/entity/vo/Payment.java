@@ -40,5 +40,9 @@ public class Payment {
                 || StringUtils.isBlank(holder)
                 || fee == null || fee <= 0;
     }
+
+    public static Payment free() {
+        return new Payment(false, null, null, null, 0);
+    }
 }
 
