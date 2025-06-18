@@ -16,7 +16,20 @@ public class AppleKeyUtils {
     private static final String WHITESPACE_REGEX = "\\s+";
     private static final String KEY_ALGORITHM = "EC";
 
+    private static volatile ECPrivateKey cachedKey;
+
     public static ECPrivateKey loadPrivateKey(String classpathLocation) {
+        if (cachedKey == null) {
+            synchronized (AppleKeyUtils.class) {
+                if (cachedKey == null) {
+                    cachedKey = readPrivateKeyFromFile(classpathLocation);
+                }
+            }
+        }
+        return cachedKey;
+    }
+
+    private static ECPrivateKey readPrivateKeyFromFile(String classpathLocation) {
         try (InputStream is = Thread.currentThread()
                 .getContextClassLoader()
                 .getResourceAsStream(classpathLocation)) {
@@ -36,7 +49,7 @@ public class AppleKeyUtils {
             return (ECPrivateKey) kf.generatePrivate(spec);
 
         } catch (Exception e) {
-            throw new ApplePrivateKeyLoadException();
+            throw new ApplePrivateKeyLoadException("Apple .p8 비밀키 로딩 중 오류 발생");
         }
     }
 }
