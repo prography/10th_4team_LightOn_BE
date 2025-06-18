@@ -10,6 +10,8 @@ public final class SecurityWhitelist {
             "/api/members/duplicate-check",
             "/swagger-ui.html",
             "/api/auth/token/refresh",
+            "/api/auth/phones/code",
+            "/api/auth/phones/code/verify",
     };
 
     // 접두사로 매칭되는 경로들
