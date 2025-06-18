@@ -1,25 +1,24 @@
 package com.prography.lighton.auth.application.impl.token;
 
 
-import static com.prography.lighton.common.constant.AuthConstants.EMAIL;
-
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
-import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.prography.lighton.auth.application.exception.IdTokenParseException;
 import com.prography.lighton.auth.application.exception.InvalidTokenException;
 import com.prography.lighton.auth.infrastructure.AppleKeyUtils;
 import com.prography.lighton.auth.infrastructure.config.AppleOAuthProperties;
+import com.prography.lighton.auth.presentation.dto.apple.AppleIdTokenPayload;
 import com.prography.lighton.auth.presentation.dto.apple.AppleUser;
 import java.security.interfaces.ECPrivateKey;
 import java.time.Instant;
 import java.util.Base64;
 import java.util.Date;
-import java.util.Map;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
+@Slf4j
 @Component
 @RequiredArgsConstructor
 public class AppleOAuthTokenService {
@@ -59,10 +58,9 @@ public class AppleOAuthTokenService {
             String json = new String(decoded);
 
             ObjectMapper objectMapper = new ObjectMapper();
-            Map<String, Object> payloadMap = objectMapper.readValue(json, new TypeReference<>() {
-            });
+            AppleIdTokenPayload payloadDto = objectMapper.readValue(json, AppleIdTokenPayload.class);
 
-            String email = (String) payloadMap.get(EMAIL);
+            String email = payloadDto.email();
             return new AppleUser(email);
 
         } catch (Exception e) {
