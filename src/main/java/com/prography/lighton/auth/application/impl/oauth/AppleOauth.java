@@ -8,10 +8,10 @@ import static com.prography.lighton.common.constant.AuthConstants.SCOPE;
 
 import com.prography.lighton.auth.application.impl.token.AppleOAuthTokenService;
 import com.prography.lighton.auth.infrastructure.client.apple.AppleOAuthClient;
+import com.prography.lighton.auth.infrastructure.config.AppleOAuthProperties;
 import com.prography.lighton.auth.presentation.dto.apple.AppleOAuthToken;
 import com.prography.lighton.auth.presentation.dto.apple.AppleUser;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.web.util.UriComponentsBuilder;
 
@@ -25,20 +25,15 @@ public class AppleOauth {
     private static final String RESPONSE_MODE = "response_mode";
     private static final String RESPONSE_MODE_VALUE = "form_post";
 
-    @Value("${apple.oauth.client-id}")
-    private String clientId;
-
-    @Value("${apple.oauth.redirect-uri}")
-    private String redirectUri;
-
     private final AppleOAuthClient appleOAuthClient;
     private final AppleOAuthTokenService appleOAuthTokenService;
+    private final AppleOAuthProperties appleOAuthProperties;
 
     public String getOauthRedirectURL() {
         return UriComponentsBuilder
                 .fromHttpUrl(APPLE_AUTH_URL)
-                .queryParam(CLIENT_ID, clientId)
-                .queryParam(REDIRECT_URI, redirectUri)
+                .queryParam(CLIENT_ID, appleOAuthProperties.getClientId())
+                .queryParam(REDIRECT_URI, appleOAuthProperties.getRedirectUri())
                 .queryParam(RESPONSE_TYPE, RESPONSE_TYPE_VALUE)
                 .queryParam(SCOPE, SCOPE_VALUE)
                 .queryParam(RESPONSE_MODE, RESPONSE_MODE_VALUE)
@@ -48,11 +43,11 @@ public class AppleOauth {
 
     public AppleOAuthToken requestAccessToken(String code) {
         return appleOAuthClient.getToken(
-                clientId,
+                appleOAuthProperties.getClientId(),
                 appleOAuthTokenService.createClientSecret(),
                 code,
                 GRANT_TYPE,
-                redirectUri
+                appleOAuthProperties.getRedirectUri()
         );
     }
 

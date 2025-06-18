@@ -10,16 +10,18 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.prography.lighton.auth.application.exception.IdTokenParseException;
 import com.prography.lighton.auth.application.exception.InvalidTokenException;
 import com.prography.lighton.auth.infrastructure.AppleKeyUtils;
+import com.prography.lighton.auth.infrastructure.config.AppleOAuthProperties;
 import com.prography.lighton.auth.presentation.dto.apple.AppleUser;
 import java.security.interfaces.ECPrivateKey;
 import java.time.Instant;
 import java.util.Base64;
 import java.util.Date;
 import java.util.Map;
-import org.springframework.beans.factory.annotation.Value;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 @Component
+@RequiredArgsConstructor
 public class AppleOAuthTokenService {
 
     private static final String APPLE_AUDIENCE = "https://appleid.apple.com";
@@ -27,28 +29,21 @@ public class AppleOAuthTokenService {
     private static final int JWT_PARTS_LENGTH = 3;
     private static final int PAYLOAD_INDEX = 1;
 
-    @Value("${apple.oauth.team-id}")
-    private String TEAM_ID;
-    @Value("${apple.oauth.client-id}")
-    private String CLIENT_ID;
-    @Value("${apple.oauth.key-id}")
-    private String KEY_ID;
-    @Value("${apple.oauth.private-key-path}")
-    private String KEY_PATH;
+    private final AppleOAuthProperties appleOAuthProperties;
 
     public String createClientSecret() {
         Instant now = Instant.now();
         Instant exp = now.plusSeconds(EXPIRE_DURATION);
 
-        ECPrivateKey privateKey = AppleKeyUtils.loadPrivateKey(KEY_PATH);
+        ECPrivateKey privateKey = AppleKeyUtils.loadPrivateKey(appleOAuthProperties.getPrivateKeyPath());
 
         return JWT.create()
-                .withKeyId(KEY_ID)
-                .withIssuer(TEAM_ID)
+                .withKeyId(appleOAuthProperties.getKeyId())
+                .withIssuer(appleOAuthProperties.getTeamId())
                 .withIssuedAt(Date.from(now))
                 .withExpiresAt(Date.from(exp))
                 .withAudience(APPLE_AUDIENCE)
-                .withSubject(CLIENT_ID)
+                .withSubject(appleOAuthProperties.getClientId())
                 .sign(Algorithm.ECDSA256(null, privateKey));
     }
 
