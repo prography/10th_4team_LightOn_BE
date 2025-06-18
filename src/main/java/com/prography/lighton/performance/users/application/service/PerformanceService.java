@@ -1,6 +1,5 @@
 package com.prography.lighton.performance.users.application.service;
 
-import com.prography.lighton.artist.common.domain.entity.Artist;
 import com.prography.lighton.artist.users.application.service.ArtistService;
 import com.prography.lighton.common.geo.BoundingBox;
 import com.prography.lighton.common.geo.GeoUtils;
@@ -51,10 +50,10 @@ public class PerformanceService {
         var data = performanceResolver.toDomainData(member, request.artists(), request.info(), request.schedule(),
                 request.payment(),
                 request.seat());
-        Performance performance = Performance.create(data.master(), data.artists(), data.info(), data.schedule(),
+        Performance performance = Performance.create(member, data.artists(), data.info(), data.schedule(),
                 data.location(),
                 data.payment(),
-                Type.NORMAL, data.seats(), data.genres(), request.proof());
+                Type.CONCERT, data.seats(), data.genres(), request.proof());
         performanceRepository.save(performance);
     }
 
@@ -64,17 +63,15 @@ public class PerformanceService {
         var data = performanceResolver.toDomainData(member, request.artists(), request.info(), request.schedule(),
                 request.payment(),
                 request.seat());
-        performance.update(data.master(), data.artists(), data.info(), data.schedule(), data.location(), data.payment(),
+        performance.update(member, data.artists(), data.info(), data.schedule(), data.location(), data.payment(),
                 data.seats(),
                 data.genres(), request.proof());
     }
 
     @Transactional
     public void cancelPerformance(Member member, Long performanceId) {
-        // 여기 나중에 책임분리 하기
-        Artist requestArtist = artistService.getApprovedArtistByMember(member);
         Performance performance = getApprovedPerformanceById(performanceId);
-        performance.cancel(requestArtist);
+        performance.cancel(member);
     }
 
     public GetPerformanceMapListResponseDTO findNearbyPerformances(double latitude, double longitude, int radius) {

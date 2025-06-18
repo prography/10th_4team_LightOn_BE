@@ -1,5 +1,8 @@
 package com.prography.lighton.performance.common.domain.entity.vo;
 
+import static com.prography.lighton.common.domain.DomainValidator.requireNonBlank;
+
+import com.prography.lighton.common.domain.DomainValidator;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
 import lombok.AccessLevel;
@@ -27,6 +30,9 @@ public class Info {
     private String posterUrl;
 
     public static Info of(String title, String description, String place, String notice, String posterUrl) {
+        requireNonBlank(title);
+        requireNonBlank(description);
+        requireNonBlank(place);
         return new Info(title, description, place, notice, posterUrl);
     }
 }

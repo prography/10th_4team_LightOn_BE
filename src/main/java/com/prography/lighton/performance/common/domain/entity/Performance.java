@@ -1,11 +1,14 @@
 package com.prography.lighton.performance.common.domain.entity;
 
+import static jakarta.persistence.FetchType.LAZY;
+
 import com.prography.lighton.artist.admin.domain.exception.InvalidApproveStatusTransitionException;
 import com.prography.lighton.artist.admin.domain.exception.SameApproveStatusException;
 import com.prography.lighton.artist.common.domain.entity.Artist;
-import com.prography.lighton.artist.common.domain.entity.exception.NotAMasterArtistException;
 import com.prography.lighton.common.domain.BaseEntity;
+import com.prography.lighton.common.domain.DomainValidator;
 import com.prography.lighton.genre.domain.entity.Genre;
+import com.prography.lighton.member.common.domain.entity.Member;
 import com.prography.lighton.performance.common.domain.entity.association.PerformanceArtist;
 import com.prography.lighton.performance.common.domain.entity.enums.ApproveStatus;
 import com.prography.lighton.performance.common.domain.entity.enums.Seat;
@@ -15,17 +18,21 @@ import com.prography.lighton.performance.common.domain.entity.vo.Location;
 import com.prography.lighton.performance.common.domain.entity.vo.Payment;
 import com.prography.lighton.performance.common.domain.entity.vo.Schedule;
 import com.prography.lighton.performance.common.domain.exception.MasterArtistCannotBeRemovedException;
+import com.prography.lighton.performance.common.domain.exception.NotAuthorizedPerformanceException;
 import com.prography.lighton.performance.common.domain.exception.PerformanceNotApprovedException;
 import com.prography.lighton.performance.common.domain.exception.PerformanceUpdateNotAllowedException;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.CollectionTable;
 import jakarta.persistence.Column;
+import jakarta.persistence.DiscriminatorColumn;
+import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
-import jakarta.persistence.FetchType;
+import jakarta.persistence.Inheritance;
+import jakarta.persistence.InheritanceType;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
@@ -38,7 +45,6 @@ import java.util.stream.Collectors;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.apache.commons.lang3.StringUtils;
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.SQLRestriction;
@@ -46,6 +52,9 @@ import org.hibernate.annotations.SQLRestriction;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@DiscriminatorColumn(name = "performance_type")
+@DiscriminatorValue("CONCERT")
 @SQLDelete(sql = "UPDATE performance SET status = false WHERE id = ?")
 @SQLRestriction("status = true")
 public class Performance extends BaseEntity {
@@ -53,10 +62,10 @@ public class Performance extends BaseEntity {
     private static final int UPDATE_DEADLINE_DAYS = 3;
     private static final int CANCEL_DEADLINE_DAYS = 3;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    private Artist master;
+    @ManyToOne(fetch = LAZY, optional = false)
+    private Member performer;
 
-    @OneToMany(mappedBy = "performance")
+    @OneToMany(mappedBy = "performance", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<PerformanceArtist> artists = new ArrayList<>();
 
     @Embedded
@@ -108,7 +117,7 @@ public class Performance extends BaseEntity {
     private LocalDateTime approvedAt;
 
     private Performance(
-            Artist master,
+            Member performer,
             Info info,
             Schedule schedule,
             Location location,
@@ -117,7 +126,7 @@ public class Performance extends BaseEntity {
             List<Seat> seats,
             String proofUrl
     ) {
-        this.master = master;
+        this.performer = performer;
         this.info = info;
         this.schedule = schedule;
         this.location = location;
@@ -128,7 +137,7 @@ public class Performance extends BaseEntity {
     }
 
     public static Performance create(
-            Artist initialArtist,
+            Member performer,
             List<Artist> artists,
             Info info,
             Schedule schedule,
@@ -139,14 +148,38 @@ public class Performance extends BaseEntity {
             List<Genre> genres,
             String proofUrl
     ) {
-        Performance perf = new Performance(initialArtist, info, schedule, location, payment, type, seats, proofUrl);
+        Performance perf = new Performance(performer, info, schedule, location, payment, type, seats, proofUrl);
         perf.updateArtists(artists);
         perf.updateGenres(genres);
         return perf;
     }
 
+    protected void initCommonFields(
+            Member performer,
+            Info info,
+            Schedule schedule,
+            Location location,
+            Payment payment,
+            Type type,
+            Seat seat,
+            String proofUrl,
+            List<Genre> genres
+    ) {
+        this.performer = performer;
+        this.info = info;
+        this.schedule = schedule;
+        this.location = location;
+        this.payment = payment;
+        this.type = type;
+        this.seats.clear();
+        this.seats.add(seat);
+        this.proofUrl = proofUrl;
+        updateGenres(genres);
+    }
+
+
     public void update(
-            Artist artist,
+            Member performer,
             List<Artist> newArtists,
             Info info,
             Schedule schedule,
@@ -156,8 +189,9 @@ public class Performance extends BaseEntity {
             List<Genre> genres,
             String proofUrl
     ) {
-        validateMasterArtist(artist);
+        validatePerformer(performer);
         validateWithinAllowedPeriod(UPDATE_DEADLINE_DAYS);
+        DomainValidator.requireNonBlank(proofUrl);
 
         this.info = info;
         this.schedule = schedule;
@@ -165,22 +199,19 @@ public class Performance extends BaseEntity {
         this.payment = payment;
         this.seats.clear();
         this.seats.addAll(seats);
-
-        if (!this.proofUrl.equals(proofUrl) && !StringUtils.isEmpty(proofUrl)) {
-            this.proofUrl = proofUrl;
-        }
+        this.proofUrl = proofUrl;
 
         updateArtists(newArtists);
         updateGenres(genres);
     }
 
-    public void validateMasterArtist(Artist artist) {
-        if (!master.equals(artist)) {
-            throw new NotAMasterArtistException();
+    protected void validatePerformer(Member member) {
+        if (!performer.equals(member)) {
+            throw new NotAuthorizedPerformanceException();
         }
     }
 
-    private void updateArtists(List<Artist> newArtists) {
+    protected void updateArtists(List<Artist> newArtists) {
         validateNotRemovingMaster(newArtists);
 
         Set<Long> newArtistIds = newArtists.stream()
@@ -202,7 +233,7 @@ public class Performance extends BaseEntity {
 
     private void validateNotRemovingMaster(List<Artist> newArtists) {
         boolean isMasterPresent = newArtists.stream()
-                .anyMatch(artist -> artist.getId().equals(this.master.getId()));
+                .anyMatch(artist -> artist.getMember().getId().equals(this.performer.getId()));
 
         if (!isMasterPresent) {
             throw new MasterArtistCannotBeRemovedException();
@@ -227,7 +258,7 @@ public class Performance extends BaseEntity {
         this.genres.addAll(PerformanceGenre.createListFor(this, genresToAdd));
     }
 
-    private void validateWithinAllowedPeriod(int daysBeforePerformance) {
+    protected void validateWithinAllowedPeriod(int daysBeforePerformance) {
         LocalDate today = LocalDate.now();
         LocalDate updateDeadline = this.schedule.getStartDate().minusDays(daysBeforePerformance);
 
@@ -242,8 +273,8 @@ public class Performance extends BaseEntity {
         }
     }
 
-    public void cancel(Artist artist) {
-        validateMasterArtist(artist);
+    public void cancel(Member member) {
+        validatePerformer(member);
         validateWithinAllowedPeriod(CANCEL_DEADLINE_DAYS);
         if (this.canceled) {
             throw new IllegalStateException("이미 취소된 공연입니다.");
