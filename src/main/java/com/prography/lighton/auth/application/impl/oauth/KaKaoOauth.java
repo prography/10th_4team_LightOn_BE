@@ -55,8 +55,7 @@ public class KaKaoOauth {
     public KaKaoOAuthTokenDTO requestAccessToken(String code) {
         return SafeFeignExecutor.run(
                 () -> kaKaoAuthClient.getKaKaoAccessToken(
-                        KAKAO_SNS_CLIENT_ID, code, KAKAO_SNS_CALLBACK_LOGIN_URL,
-                        GRANT_TYPE, CONTENT_TYPE));
+                        CONTENT_TYPE, GRANT_TYPE, KAKAO_SNS_CALLBACK_LOGIN_URL, KAKAO_SNS_CLIENT_ID, code));
     }
 
 

@@ -82,6 +82,9 @@ dependencies {
 
     // configuration
     annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
+
+    // JWT for apple login
+    implementation 'com.auth0:java-jwt:4.4.0'
 }
 
 tasks.named('test') {
