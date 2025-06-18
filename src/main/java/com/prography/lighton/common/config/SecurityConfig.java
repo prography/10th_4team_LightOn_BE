@@ -34,6 +34,8 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.GET, "/health").permitAll()
                         .requestMatchers(HttpMethod.POST, "/api/members").permitAll()
                         .requestMatchers(HttpMethod.POST, "/api/auth/token/refresh").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/api/auth/phones/code").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/api/auth/phones/code/verify").permitAll()
                         .requestMatchers(HttpMethod.POST, "/api/auth/login").permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/members/duplicate-check").permitAll()
                         .requestMatchers(HttpMethod.POST, "/api/members/{temporaryMemberId}/info").permitAll()
