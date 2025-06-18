@@ -10,6 +10,7 @@ import com.prography.lighton.common.domain.DomainValidator;
 import com.prography.lighton.genre.domain.entity.Genre;
 import com.prography.lighton.member.common.domain.entity.Member;
 import com.prography.lighton.performance.common.domain.entity.association.PerformanceArtist;
+import com.prography.lighton.performance.common.domain.entity.association.PerformanceGenre;
 import com.prography.lighton.performance.common.domain.entity.enums.ApproveStatus;
 import com.prography.lighton.performance.common.domain.entity.enums.Seat;
 import com.prography.lighton.performance.common.domain.entity.enums.Type;
@@ -329,5 +330,15 @@ public class Performance extends BaseEntity {
 
     private void rejectPerformance() {
         this.approveStatus = ApproveStatus.REJECTED;
+    }
+
+    public void increaseLike() {
+        this.likeCount++;
+    }
+
+    public void decreaseLike() {
+        if (this.likeCount > 0) {
+            this.likeCount--;
+        }
     }
 }
