@@ -1,10 +1,14 @@
 package com.prography.lighton.performance.users.infrastructure.repository;
 
+import com.prography.lighton.performance.common.domain.entity.Busking;
 import com.prography.lighton.performance.common.domain.entity.Performance;
 import com.prography.lighton.performance.common.domain.exception.NoSuchPerformanceException;
+import java.util.Optional;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -13,6 +17,14 @@ public interface PerformanceRepository extends JpaRepository<Performance, Long> 
 
     default Performance getById(Long id) {
         return findById(id)
+                .orElseThrow(NoSuchPerformanceException::new);
+    }
+
+    @Query("SELECT p FROM Busking p WHERE p.id = :id")
+    Optional<Busking> findBuskingById(@Param("id") Long id);
+
+    default Busking getByBuskingId(Long id) {
+        return findBuskingById(id)
                 .orElseThrow(NoSuchPerformanceException::new);
     }
 
@@ -73,4 +85,13 @@ public interface PerformanceRepository extends JpaRepository<Performance, Long> 
             @Param("maxLng") double maxLng,
             @Param("targetDate") LocalDate targetDate
     );
+
+    @Query("""
+                SELECT p
+                FROM Performance p
+                WHERE p.approveStatus = com.prography.lighton.performance.common.domain.entity.enums.ApproveStatus.APPROVED
+                  AND p.canceled = false
+                  AND LOWER(p.info.title) LIKE LOWER(CONCAT('%', :keyword, '%'))
+            """)
+    Page<Performance> searchByKeyword(@Param("keyword") String keyword, Pageable pageable);
 }

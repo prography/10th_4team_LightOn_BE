@@ -1,6 +1,7 @@
 package com.prography.lighton.common.presentation;
 
 import com.prography.lighton.auth.application.AuthService;
+import com.prography.lighton.auth.application.AuthVerificationService;
 import com.prography.lighton.auth.application.LoginMemberUseCase;
 import com.prography.lighton.auth.application.OAuthUseCase;
 import com.prography.lighton.auth.application.TokenProvider;
@@ -58,5 +59,8 @@ public abstract class ControllerTest {
 
     @MockBean
     protected RegionCache regionCache;
+
+    @MockBean
+    protected AuthVerificationService authVerificationService;
 
 }

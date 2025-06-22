@@ -27,6 +27,10 @@ jobs:
           mkdir -p src/main/resources
           echo "${{ secrets.PROPERTIES }}" > src/main/resources/application.yml
 
+      - name: Create Apple Private Key File
+        run: |
+          echo "${{ secrets.APPLE_PRIVATE_KEY }}" > src/main/resources/AuthKey.p8
+
       - name: First build for Generate API docs
         run: |
           chmod +x ./gradlew
