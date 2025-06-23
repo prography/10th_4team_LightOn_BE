@@ -341,4 +341,9 @@ public class Performance extends BaseEntity {
             this.likeCount--;
         }
     }
+
+    public boolean isVisibleOnAdminPage() {
+        return this.approveStatus == ApproveStatus.PENDING || this.approveStatus == ApproveStatus.REJECTED;
+    }
+
 }

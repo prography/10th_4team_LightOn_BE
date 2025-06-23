@@ -4,13 +4,13 @@ import static com.prography.lighton.performance.common.domain.entity.enums.Appro
 import static com.prography.lighton.performance.common.domain.entity.enums.ApproveStatus.REJECTED;
 
 import com.prography.lighton.performance.admin.application.PerformanceApplicationQueryUseCase;
+import com.prography.lighton.performance.admin.application.exception.PerformanceAlreadyProcessedException;
 import com.prography.lighton.performance.admin.application.mapper.PendingPerformanceMapper;
 import com.prography.lighton.performance.admin.infrastructure.repository.AdminPerformanceRepository;
 import com.prography.lighton.performance.admin.presentation.dto.response.GetPerformanceApplicationDetailResponseDTO;
 import com.prography.lighton.performance.admin.presentation.dto.response.GetPerformanceApplicationListResponseDTO;
 import com.prography.lighton.performance.common.domain.entity.Performance;
 import com.prography.lighton.performance.common.domain.entity.enums.ApproveStatus;
-import com.prography.lighton.performance.common.domain.exception.NoSuchPerformanceException;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -47,9 +47,15 @@ public class PerformanceApplicationQueryUseCaseImpl implements PerformanceApplic
 
     @Override
     public GetPerformanceApplicationDetailResponseDTO getPendingPerformanceDetail(Long performanceId) {
-        Performance performance = adminPerformanceRepository.findByIdAndApproveStatus(performanceId, PENDING)
-                .orElseThrow(() -> new NoSuchPerformanceException("해당 공연은 이미 처리 되었거나 존재하지 않습니다."));
+        Performance performance = adminPerformanceRepository.getById(performanceId);
+        validateIsVisibleOnAdminPage(performance);
 
         return pendingPerformanceMapper.toPendingPerformanceDetailResponseDTO(performance);
+    }
+
+    private void validateIsVisibleOnAdminPage(Performance performance) {
+        if (!performance.isVisibleOnAdminPage()) {
+            throw new PerformanceAlreadyProcessedException();
+        }
     }
 }

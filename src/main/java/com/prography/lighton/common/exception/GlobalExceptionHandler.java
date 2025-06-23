@@ -8,6 +8,7 @@ import com.prography.lighton.common.exception.base.NotFoundException;
 import com.prography.lighton.common.exception.base.UnsupportedTypeException;
 import com.prography.lighton.common.utils.ApiUtils;
 import com.prography.lighton.common.utils.ApiUtils.ApiResult;
+import com.prography.lighton.performance.admin.application.exception.PerformanceAlreadyProcessedException;
 import com.prography.lighton.performance.common.domain.exception.MasterArtistCannotBeRemovedException;
 import com.prography.lighton.performance.common.domain.exception.PerformanceNotApprovedException;
 import com.prography.lighton.performance.common.domain.exception.PerformanceUpdateNotAllowedException;
@@ -107,5 +108,9 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(exception.body(), exception.status());
     }
 
-
+    @ExceptionHandler(PerformanceAlreadyProcessedException.class)
+    public ResponseEntity<ApiResult<?>> performanceAlreadyProcessedException(
+            PerformanceAlreadyProcessedException exception) {
+        return new ResponseEntity<>(exception.body(), exception.status());
+    }
 }
