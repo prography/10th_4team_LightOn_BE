@@ -22,6 +22,7 @@ import com.prography.lighton.performance.common.domain.exception.MasterArtistCan
 import com.prography.lighton.performance.common.domain.exception.NotAuthorizedPerformanceException;
 import com.prography.lighton.performance.common.domain.exception.PerformanceNotApprovedException;
 import com.prography.lighton.performance.common.domain.exception.PerformanceUpdateNotAllowedException;
+import com.prography.lighton.performance.users.application.exception.NotEnoughSeatsException;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.CollectionTable;
 import jakarta.persistence.Column;
@@ -187,6 +188,7 @@ public class Performance extends BaseEntity {
         this.seats.clear();
         this.seats.add(seat);
         this.proofUrl = proofUrl;
+        this.totalSeatsCount = -1L;
         updateGenres(genres);
     }
 
@@ -351,6 +353,23 @@ public class Performance extends BaseEntity {
     public void decreaseLike() {
         if (this.likeCount > 0) {
             this.likeCount--;
+        }
+    }
+
+    /* ---------------------------- 공연 신청 관련 메서드 ---------------------------- */
+
+    public PerformanceRequest createRequest(
+            Long requestedSeats,
+            Member member
+    ) {
+        validateAvailableSeats(requestedSeats);
+        this.bookedSeatCount += requestedSeats;
+        return PerformanceRequest.of(member, this, requestedSeats);
+    }
+
+    private void validateAvailableSeats(Long requestedSeats) {
+        if (this.totalSeatsCount - this.bookedSeatCount < requestedSeats) {
+            throw new NotEnoughSeatsException();
         }
     }
 }
