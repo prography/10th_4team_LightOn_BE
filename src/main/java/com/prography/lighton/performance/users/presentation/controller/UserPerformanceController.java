@@ -24,7 +24,7 @@ public class UserPerformanceController {
     @PostMapping("/{performanceId}")
     public ResponseEntity<ApiResult<RequestPerformanceResponseDTO>> requestForPerformance(
             @PathVariable Long performanceId,
-            @RequestParam Long applyCount,
+            @RequestParam Integer applyCount,
             @LoginMember Member member) {
         return ResponseEntity.ok(ApiUtils.success(userPerformanceService.requestForPerformance(
                 performanceId, applyCount, member

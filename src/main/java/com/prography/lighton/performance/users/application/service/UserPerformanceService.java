@@ -19,11 +19,12 @@ public class UserPerformanceService {
     private final PerformanceRequestRepository performanceRequestRepository;
 
     @Transactional
-    public RequestPerformanceResponseDTO requestForPerformance(Long performanceId, Long requestedSeats, Member member) {
+    public RequestPerformanceResponseDTO requestForPerformance(Long performanceId, Integer requestedSeats,
+                                                               Member member) {
         Performance performance = performanceRepository.getByIdWithPessimisticLock(performanceId);
         PerformanceRequest performanceRequest = performance.createRequest(requestedSeats, member);
         performanceRequestRepository.save(performanceRequest);
 
-        return RequestPerformanceResponseDTO.of(performance);
+        return RequestPerformanceResponseDTO.of(performance, requestedSeats);
     }
 }

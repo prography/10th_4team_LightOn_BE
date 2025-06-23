@@ -8,12 +8,12 @@ public record RequestPerformanceResponseDTO(
         String accountHolder,
         Integer fee
 ) {
-    public static RequestPerformanceResponseDTO of(Performance performance) {
+    public static RequestPerformanceResponseDTO of(Performance performance, Integer requestedSeats) {
         return new RequestPerformanceResponseDTO(
                 performance.getPayment().getAccount(),
                 performance.getPayment().getBank(),
                 performance.getPayment().getAccountHolder(),
-                performance.getPayment().getFee()
+                performance.getPayment().getFee() * requestedSeats
         );
     }
 }

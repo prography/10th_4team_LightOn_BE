@@ -111,11 +111,11 @@ public class Performance extends BaseEntity {
 
     @Column
     @ColumnDefault("0")
-    private Long totalSeatsCount = 0L;
+    private Integer totalSeatsCount = 0;
 
     @Column
     @ColumnDefault("0")
-    private Long bookedSeatCount = 0L;
+    private Integer bookedSeatCount = 0;
 
     @OneToMany(mappedBy = "performance", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<PerformanceGenre> genres = new ArrayList<>();
@@ -138,7 +138,7 @@ public class Performance extends BaseEntity {
             Type type,
             List<Seat> seats,
             String proofUrl,
-            Long totalSeatsCount
+            Integer totalSeatsCount
     ) {
         this.performer = performer;
         this.info = info;
@@ -162,7 +162,7 @@ public class Performance extends BaseEntity {
             List<Seat> seats,
             List<Genre> genres,
             String proofUrl,
-            Long seatsCapacity
+            Integer seatsCapacity
     ) {
         Performance perf = new Performance(performer, info, schedule, location, payment, type, seats, proofUrl,
                 seatsCapacity);
@@ -191,7 +191,7 @@ public class Performance extends BaseEntity {
         this.seats.clear();
         this.seats.add(seat);
         this.proofUrl = proofUrl;
-        this.totalSeatsCount = -1L;
+        this.totalSeatsCount = -1;
         updateGenres(genres);
     }
 
@@ -361,7 +361,7 @@ public class Performance extends BaseEntity {
 
     /* ---------------------------- 공연 신청 관련 메서드 ---------------------------- */
 
-    public PerformanceRequest createRequest(Long requestedSeats, Member member) {
+    public PerformanceRequest createRequest(Integer requestedSeats, Member member) {
         validateApproved();
         validateRequest(requestedSeats);
 
@@ -369,7 +369,7 @@ public class Performance extends BaseEntity {
         return PerformanceRequest.of(member, this, requestedSeats);
     }
 
-    private void validateRequest(Long requestedSeats) {
+    private void validateRequest(Integer requestedSeats) {
         if (requestedSeats == null || requestedSeats < MIN_REQUESTED_SEATS || requestedSeats > MAX_REQUESTED_SEATS) {
             throw new BadPerformanceRequestException();
         }

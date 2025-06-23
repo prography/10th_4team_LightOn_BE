@@ -42,9 +42,9 @@ public class PerformanceRequest extends BaseEntity {
 
     private LocalDateTime requestedAt;
 
-    private Long requestedSeats;
+    private Integer requestedSeats;
 
-    public static PerformanceRequest of(Member member, Performance performance, Long requestedSeats) {
+    public static PerformanceRequest of(Member member, Performance performance, Integer requestedSeats) {
         return new PerformanceRequest(member, performance, RequestStatus.PENDING, LocalDateTime.now(), requestedSeats);
     }
 

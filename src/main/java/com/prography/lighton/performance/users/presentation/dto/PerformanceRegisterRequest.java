@@ -32,7 +32,7 @@ public record PerformanceRegisterRequest(
         @URL(message = "공연 증빙 자료는 올바른 URL 형식이어야 합니다.")
         String proof,
 
-        Long totalSeatsCount
+        Integer totalSeatsCount
 
 ) {
 }
