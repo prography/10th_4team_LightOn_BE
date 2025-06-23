@@ -3,13 +3,15 @@ package com.prography.lighton.performance.users.infrastructure.repository;
 import com.prography.lighton.performance.common.domain.entity.Busking;
 import com.prography.lighton.performance.common.domain.entity.Performance;
 import com.prography.lighton.performance.common.domain.exception.NoSuchPerformanceException;
-import java.util.Optional;
+import jakarta.persistence.LockModeType;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Lock;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
@@ -19,6 +21,15 @@ public interface PerformanceRepository extends JpaRepository<Performance, Long> 
         return findById(id)
                 .orElseThrow(NoSuchPerformanceException::new);
     }
+
+    default Performance getByIdWithPessimisticLock(Long id) {
+        return findByIdWithPessimisticLock(id)
+                .orElseThrow(NoSuchPerformanceException::new);
+    }
+
+    @Lock(LockModeType.PESSIMISTIC_WRITE)
+    @Query("SELECT p FROM Performance p WHERE p.id = :id")
+    Optional<Performance> findByIdWithPessimisticLock(@Param("id") Long id);
 
     @Query("SELECT p FROM Busking p WHERE p.id = :id")
     Optional<Busking> findBuskingById(@Param("id") Long id);

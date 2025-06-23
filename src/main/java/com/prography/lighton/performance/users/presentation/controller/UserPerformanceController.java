@@ -1,8 +1,11 @@
 package com.prography.lighton.performance.users.presentation.controller;
 
 import com.prography.lighton.common.annotation.LoginMember;
+import com.prography.lighton.common.utils.ApiUtils;
 import com.prography.lighton.common.utils.ApiUtils.ApiResult;
 import com.prography.lighton.member.common.domain.entity.Member;
+import com.prography.lighton.performance.users.application.service.UserPerformanceService;
+import com.prography.lighton.performance.users.presentation.dto.response.RequestPerformanceResponseDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -16,12 +19,16 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class UserPerformanceController {
 
-    @PostMapping("/{performanceId}")
-    public ResponseEntity<ApiResult<?>> requestForPerformance(@PathVariable Long performanceId,
-                                                              @RequestParam Long applyCount,
-                                                              @LoginMember Member member) {
+    private final UserPerformanceService userPerformanceService;
 
-        return null;
+    @PostMapping("/{performanceId}")
+    public ResponseEntity<ApiResult<RequestPerformanceResponseDTO>> requestForPerformance(
+            @PathVariable Long performanceId,
+            @RequestParam Long applyCount,
+            @LoginMember Member member) {
+        return ResponseEntity.ok(ApiUtils.success(userPerformanceService.requestForPerformance(
+                performanceId, applyCount, member
+        )));
     }
 
 }
