@@ -105,6 +105,14 @@ public class Performance extends BaseEntity {
     @ColumnDefault("0")
     private Long likeCount = 0L;
 
+    @Column
+    @ColumnDefault("0")
+    private Long totalSeatsCount = 0L;
+
+    @Column
+    @ColumnDefault("0")
+    private Long bookedSeatCount = 0L;
+
     @OneToMany(mappedBy = "performance", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<PerformanceGenre> genres = new ArrayList<>();
 
@@ -125,7 +133,8 @@ public class Performance extends BaseEntity {
             Payment payment,
             Type type,
             List<Seat> seats,
-            String proofUrl
+            String proofUrl,
+            Long totalSeatsCount
     ) {
         this.performer = performer;
         this.info = info;
@@ -135,6 +144,7 @@ public class Performance extends BaseEntity {
         this.type = type;
         this.proofUrl = proofUrl;
         this.seats.addAll(seats);
+        this.totalSeatsCount = totalSeatsCount;
     }
 
     public static Performance create(
@@ -147,9 +157,11 @@ public class Performance extends BaseEntity {
             Type type,
             List<Seat> seats,
             List<Genre> genres,
-            String proofUrl
+            String proofUrl,
+            Long seatsCapacity
     ) {
-        Performance perf = new Performance(performer, info, schedule, location, payment, type, seats, proofUrl);
+        Performance perf = new Performance(performer, info, schedule, location, payment, type, seats, proofUrl,
+                seatsCapacity);
         perf.updateArtists(artists);
         perf.updateGenres(genres);
         return perf;
