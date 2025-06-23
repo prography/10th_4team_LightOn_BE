@@ -22,6 +22,7 @@ import com.prography.lighton.performance.common.domain.exception.MasterArtistCan
 import com.prography.lighton.performance.common.domain.exception.NotAuthorizedPerformanceException;
 import com.prography.lighton.performance.common.domain.exception.PerformanceNotApprovedException;
 import com.prography.lighton.performance.common.domain.exception.PerformanceUpdateNotAllowedException;
+import com.prography.lighton.performance.users.application.exception.BadPerformanceRequestException;
 import com.prography.lighton.performance.users.application.exception.NotEnoughSeatsException;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.CollectionTable;
@@ -63,6 +64,8 @@ public class Performance extends BaseEntity {
 
     private static final int UPDATE_DEADLINE_DAYS = 3;
     private static final int CANCEL_DEADLINE_DAYS = 3;
+    private static final int MAX_REQUESTED_SEATS = 10;
+    private static final int MIN_REQUESTED_SEATS = 1;
 
     @ManyToOne(fetch = LAZY, optional = false)
     private Member performer;
@@ -358,17 +361,20 @@ public class Performance extends BaseEntity {
 
     /* ---------------------------- 공연 신청 관련 메서드 ---------------------------- */
 
-    public PerformanceRequest createRequest(
-            Long requestedSeats,
-            Member member
-    ) {
-        validateAvailableSeats(requestedSeats);
+    public PerformanceRequest createRequest(Long requestedSeats, Member member) {
+        validateApproved();
+        validateRequest(requestedSeats);
+
         this.bookedSeatCount += requestedSeats;
         return PerformanceRequest.of(member, this, requestedSeats);
     }
 
-    private void validateAvailableSeats(Long requestedSeats) {
-        if (this.totalSeatsCount - this.bookedSeatCount < requestedSeats) {
+    private void validateRequest(Long requestedSeats) {
+        if (requestedSeats == null || requestedSeats < MIN_REQUESTED_SEATS || requestedSeats > MAX_REQUESTED_SEATS) {
+            throw new BadPerformanceRequestException();
+        }
+
+        if (this.type.equals(Type.CONCERT) && (this.totalSeatsCount - this.bookedSeatCount < requestedSeats)) {
             throw new NotEnoughSeatsException();
         }
     }
