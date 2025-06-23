@@ -66,6 +66,7 @@ public class Performance extends BaseEntity {
     private static final int CANCEL_DEADLINE_DAYS = 3;
     private static final int MAX_REQUESTED_SEATS = 10;
     private static final int MIN_REQUESTED_SEATS = 1;
+
     private static final int ZERO = 0;
 
     @ManyToOne(fetch = LAZY, optional = false)
@@ -181,7 +182,8 @@ public class Performance extends BaseEntity {
             Type type,
             Seat seat,
             String proofUrl,
-            List<Genre> genres
+            List<Genre> genres,
+            Integer totalSeatsCount
     ) {
         this.performer = performer;
         this.info = info;
@@ -192,7 +194,7 @@ public class Performance extends BaseEntity {
         this.seats.clear();
         this.seats.add(seat);
         this.proofUrl = proofUrl;
-        this.totalSeatsCount = -1;
+        this.totalSeatsCount = totalSeatsCount;
         updateGenres(genres);
     }
 
