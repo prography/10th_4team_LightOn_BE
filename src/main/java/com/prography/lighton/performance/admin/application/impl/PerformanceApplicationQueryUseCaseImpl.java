@@ -4,7 +4,6 @@ import static com.prography.lighton.performance.common.domain.entity.enums.Appro
 import static com.prography.lighton.performance.common.domain.entity.enums.ApproveStatus.REJECTED;
 
 import com.prography.lighton.performance.admin.application.PerformanceApplicationQueryUseCase;
-import com.prography.lighton.performance.admin.application.exception.PerformanceAlreadyProcessedException;
 import com.prography.lighton.performance.admin.application.mapper.PendingPerformanceMapper;
 import com.prography.lighton.performance.admin.infrastructure.repository.AdminPerformanceRepository;
 import com.prography.lighton.performance.admin.presentation.dto.response.GetPerformanceApplicationDetailResponseDTO;
@@ -48,14 +47,10 @@ public class PerformanceApplicationQueryUseCaseImpl implements PerformanceApplic
     @Override
     public GetPerformanceApplicationDetailResponseDTO getPendingPerformanceDetail(Long performanceId) {
         Performance performance = adminPerformanceRepository.getById(performanceId);
-        validateIsVisibleOnAdminPage(performance);
+        performance.validateIsVisibleOnAdminPage();
 
         return pendingPerformanceMapper.toPendingPerformanceDetailResponseDTO(performance);
     }
 
-    private void validateIsVisibleOnAdminPage(Performance performance) {
-        if (!performance.isVisibleOnAdminPage()) {
-            throw new PerformanceAlreadyProcessedException();
-        }
-    }
+
 }
