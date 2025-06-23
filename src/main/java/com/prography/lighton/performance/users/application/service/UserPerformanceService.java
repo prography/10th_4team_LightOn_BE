@@ -20,17 +20,17 @@ public class UserPerformanceService {
     private final PerformanceRequestRepository performanceRequestRepository;
 
     @Transactional
-    public RequestPerformanceResponseDTO requestForPerformance(Long performanceId, Integer requestedSeats,
+    public RequestPerformanceResponseDTO requestForPerformance(Long performanceId, Integer applySeats,
                                                                Member member) {
         Performance performance = performanceRepository.getByIdWithPessimisticLock(performanceId);
         if (performanceRequestRepository.existsByMemberAndPerformance(member, performance)) {
             throw new DuplicatePerformanceRequestException();
         }
 
-        PerformanceRequest performanceRequest = performance.createRequest(requestedSeats, member);
+        PerformanceRequest performanceRequest = performance.createRequest(applySeats, member);
         performanceRequestRepository.save(performanceRequest);
 
-        return RequestPerformanceResponseDTO.of(performance, requestedSeats);
+        return RequestPerformanceResponseDTO.of(performance, applySeats);
     }
 
     @Transactional

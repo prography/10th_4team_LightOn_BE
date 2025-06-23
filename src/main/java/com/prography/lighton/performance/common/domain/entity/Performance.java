@@ -164,10 +164,10 @@ public class Performance extends BaseEntity {
             List<Seat> seats,
             List<Genre> genres,
             String proofUrl,
-            Integer seatsCapacity
+            Integer totalSeatsCount
     ) {
         Performance perf = new Performance(performer, info, schedule, location, payment, type, seats, proofUrl,
-                seatsCapacity);
+                totalSeatsCount);
         perf.updateArtists(artists);
         perf.updateGenres(genres);
         return perf;
@@ -364,12 +364,12 @@ public class Performance extends BaseEntity {
 
     /* ---------------------------- 공연 신청 관련 메서드 ---------------------------- */
 
-    public PerformanceRequest createRequest(Integer requestedSeats, Member member) {
+    public PerformanceRequest createRequest(Integer applySeats, Member member) {
         validateApproved();
-        validateRequest(requestedSeats);
+        validateRequest(applySeats);
 
-        this.bookedSeatCount += requestedSeats;
-        return PerformanceRequest.of(member, this, requestedSeats);
+        this.bookedSeatCount += applySeats;
+        return PerformanceRequest.of(member, this, applySeats);
     }
 
     public void cancelRequest(PerformanceRequest performanceRequest) {
@@ -379,12 +379,12 @@ public class Performance extends BaseEntity {
         }
     }
 
-    private void validateRequest(Integer requestedSeats) {
-        if (requestedSeats == null || requestedSeats < MIN_REQUESTED_SEATS || requestedSeats > MAX_REQUESTED_SEATS) {
+    private void validateRequest(Integer applySeats) {
+        if (applySeats == null || applySeats < MIN_REQUESTED_SEATS || applySeats > MAX_REQUESTED_SEATS) {
             throw new BadPerformanceRequestException();
         }
 
-        if (this.type.equals(Type.CONCERT) && (this.totalSeatsCount - this.bookedSeatCount < requestedSeats)) {
+        if (this.type.equals(Type.CONCERT) && (this.totalSeatsCount - this.bookedSeatCount < applySeats)) {
             throw new NotEnoughSeatsException();
         }
     }
