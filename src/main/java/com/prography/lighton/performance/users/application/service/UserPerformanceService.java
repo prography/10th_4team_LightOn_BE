@@ -3,6 +3,7 @@ package com.prography.lighton.performance.users.application.service;
 import com.prography.lighton.member.common.domain.entity.Member;
 import com.prography.lighton.performance.common.domain.entity.Performance;
 import com.prography.lighton.performance.common.domain.entity.PerformanceRequest;
+import com.prography.lighton.performance.common.domain.exception.DuplicatePerformanceRequestException;
 import com.prography.lighton.performance.users.infrastructure.repository.PerformanceRepository;
 import com.prography.lighton.performance.users.infrastructure.repository.PerformanceRequestRepository;
 import com.prography.lighton.performance.users.presentation.dto.response.RequestPerformanceResponseDTO;
@@ -22,6 +23,10 @@ public class UserPerformanceService {
     public RequestPerformanceResponseDTO requestForPerformance(Long performanceId, Integer requestedSeats,
                                                                Member member) {
         Performance performance = performanceRepository.getByIdWithPessimisticLock(performanceId);
+        if (performanceRequestRepository.existsByMemberAndPerformance(member, performance)) {
+            throw new DuplicatePerformanceRequestException();
+        }
+
         PerformanceRequest performanceRequest = performance.createRequest(requestedSeats, member);
         performanceRequestRepository.save(performanceRequest);
 
