@@ -31,4 +31,12 @@ public class UserPerformanceController {
         )));
     }
 
+    @PostMapping("/{performanceId}/cancel")
+    public ResponseEntity<ApiResult<String>> cancelPerformanceRequest(
+            @PathVariable Long performanceId,
+            @LoginMember Member member) {
+        userPerformanceService.cancelPerformanceRequest(performanceId, member);
+        return ResponseEntity.ok(ApiUtils.success());
+    }
+
 }

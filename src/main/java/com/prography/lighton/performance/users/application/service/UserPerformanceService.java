@@ -32,4 +32,14 @@ public class UserPerformanceService {
 
         return RequestPerformanceResponseDTO.of(performance, requestedSeats);
     }
+
+    @Transactional
+    public void cancelPerformanceRequest(Long performanceId, Member member) {
+        Performance performance = performanceRepository.getByIdWithPessimisticLock(performanceId);
+        PerformanceRequest performanceRequest = performanceRequestRepository.getByMemberAndPerformance(member,
+                performance);
+
+        performance.cancelRequest(performanceRequest);
+        performanceRequestRepository.delete(performanceRequest);
+    }
 }

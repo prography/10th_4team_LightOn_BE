@@ -66,6 +66,7 @@ public class Performance extends BaseEntity {
     private static final int CANCEL_DEADLINE_DAYS = 3;
     private static final int MAX_REQUESTED_SEATS = 10;
     private static final int MIN_REQUESTED_SEATS = 1;
+    private static final int ZERO = 0;
 
     @ManyToOne(fetch = LAZY, optional = false)
     private Member performer;
@@ -367,6 +368,13 @@ public class Performance extends BaseEntity {
 
         this.bookedSeatCount += requestedSeats;
         return PerformanceRequest.of(member, this, requestedSeats);
+    }
+
+    public void cancelRequest(PerformanceRequest performanceRequest) {
+        this.bookedSeatCount -= performanceRequest.getRequestedSeats();
+        if (this.bookedSeatCount < ZERO) {
+            this.bookedSeatCount = ZERO;
+        }
     }
 
     private void validateRequest(Integer requestedSeats) {
