@@ -10,7 +10,6 @@ import com.prography.lighton.performance.common.domain.entity.enums.RequestStatu
 import jakarta.persistence.Entity;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
-import jakarta.persistence.UniqueConstraint;
 import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -19,12 +18,7 @@ import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.SQLRestriction;
 
 @Entity
-@Table(
-        name = "performance_request",
-        uniqueConstraints = @UniqueConstraint(
-                name = "uk_member_performance", columnNames = {"member_id", "performance_id"}
-        )
-)
+@Table
 @Getter
 @NoArgsConstructor(access = PROTECTED)
 @AllArgsConstructor(access = PRIVATE)
