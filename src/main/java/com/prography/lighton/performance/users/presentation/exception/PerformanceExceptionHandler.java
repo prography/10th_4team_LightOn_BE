@@ -5,10 +5,13 @@ import com.prography.lighton.common.utils.ApiUtils.ApiResult;
 import com.prography.lighton.performance.common.domain.exception.MasterArtistCannotBeRemovedException;
 import com.prography.lighton.performance.common.domain.exception.NotAuthorizedPerformanceException;
 import com.prography.lighton.performance.common.domain.exception.PerformanceNotApprovedException;
+import com.prography.lighton.performance.users.application.exception.NotEnoughSeatsException;
+import org.springframework.core.annotation.Order;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+@Order(1)
 @RestControllerAdvice
 public class PerformanceExceptionHandler {
 
@@ -27,6 +30,12 @@ public class PerformanceExceptionHandler {
     @ExceptionHandler(NotAuthorizedPerformanceException.class)
     public ResponseEntity<ApiUtils.ApiResult<?>> notAMasterArtistException(
             NotAuthorizedPerformanceException exception) {
+        return new ResponseEntity<>(exception.body(), exception.status());
+    }
+
+    @ExceptionHandler(NotEnoughSeatsException.class)
+    public ResponseEntity<ApiResult<?>> notEnoughSeatsException(
+            NotEnoughSeatsException exception) {
         return new ResponseEntity<>(exception.body(), exception.status());
     }
 }
