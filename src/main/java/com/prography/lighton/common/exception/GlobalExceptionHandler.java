@@ -8,12 +8,12 @@ import com.prography.lighton.common.exception.base.NotFoundException;
 import com.prography.lighton.common.exception.base.UnsupportedTypeException;
 import com.prography.lighton.common.utils.ApiUtils;
 import com.prography.lighton.common.utils.ApiUtils.ApiResult;
-import com.prography.lighton.performance.admin.application.exception.PerformanceAlreadyProcessedException;
 import com.prography.lighton.performance.common.domain.exception.MasterArtistCannotBeRemovedException;
 import com.prography.lighton.performance.common.domain.exception.PerformanceNotApprovedException;
 import com.prography.lighton.performance.common.domain.exception.PerformanceUpdateNotAllowedException;
 import java.util.stream.Collectors;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 @Slf4j
+@Order(10)
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
@@ -108,9 +109,4 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(exception.body(), exception.status());
     }
 
-    @ExceptionHandler(PerformanceAlreadyProcessedException.class)
-    public ResponseEntity<ApiResult<?>> performanceAlreadyProcessedException(
-            PerformanceAlreadyProcessedException exception) {
-        return new ResponseEntity<>(exception.body(), exception.status());
-    }
 }
