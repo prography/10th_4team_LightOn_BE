@@ -372,8 +372,8 @@ public class Performance extends BaseEntity {
         return PerformanceRequest.of(member, this, applySeats);
     }
 
-    public void cancelRequest(PerformanceRequest performanceRequest) {
-        this.bookedSeatCount -= performanceRequest.getRequestedSeats();
+    public void cancelRequest(Integer requestedSeats) {
+        this.bookedSeatCount -= requestedSeats;
         if (this.bookedSeatCount < ZERO) {
             this.bookedSeatCount = ZERO;
         }
