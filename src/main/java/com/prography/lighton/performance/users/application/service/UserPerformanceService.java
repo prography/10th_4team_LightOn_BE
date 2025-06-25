@@ -23,6 +23,8 @@ public class UserPerformanceService {
     public RequestPerformanceResponseDTO requestForPerformance(Long performanceId, Integer applySeats,
                                                                Member member) {
         Performance performance = performanceRepository.getByIdWithPessimisticLock(performanceId);
+        performance.validateApproved();
+
         if (performanceRequestRepository.existsByMemberAndPerformance(member, performance)) {
             throw new DuplicatePerformanceRequestException();
         }
@@ -36,10 +38,12 @@ public class UserPerformanceService {
     @Transactional
     public void cancelPerformanceRequest(Long performanceId, Member member) {
         Performance performance = performanceRepository.getByIdWithPessimisticLock(performanceId);
+        performance.validateApproved();
+
         PerformanceRequest performanceRequest = performanceRequestRepository.getByMemberAndPerformance(member,
                 performance);
 
-        performance.cancelRequest(performanceRequest);
+        performance.cancelRequest(performanceRequest.getRequestedSeats());
         performanceRequestRepository.delete(performanceRequest);
     }
 }
