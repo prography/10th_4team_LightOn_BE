@@ -38,7 +38,7 @@ public class PendingPerformanceMapper {
         );
     }
 
-    public GetPerformanceApplicationDetailResponseDTO toPendingPerformanceDetailResponseDTO(
+    public GetPerformanceApplicationDetailResponseDTO toPerformanceDetailResponseDTO(
             Performance performance) {
         List<PerformanceArtistDTO> artistDTOs = performance.getArtists().stream()
                 .map(PerformanceArtist::getArtist)

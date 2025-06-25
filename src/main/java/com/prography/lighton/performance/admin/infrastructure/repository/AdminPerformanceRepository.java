@@ -2,6 +2,7 @@ package com.prography.lighton.performance.admin.infrastructure.repository;
 
 import com.prography.lighton.performance.common.domain.entity.Performance;
 import com.prography.lighton.performance.common.domain.entity.enums.ApproveStatus;
+import com.prography.lighton.performance.common.domain.exception.NoSuchPerformanceException;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.data.domain.Page;
@@ -50,4 +51,8 @@ public interface AdminPerformanceRepository extends JpaRepository<Performance, L
     Long countEndedByApproveStatus(
             @Param("approveStatus") ApproveStatus approveStatus
     );
+
+    default Performance getById(Long performanceId) {
+        return findById(performanceId).orElseThrow(NoSuchPerformanceException::new);
+    }
 }
