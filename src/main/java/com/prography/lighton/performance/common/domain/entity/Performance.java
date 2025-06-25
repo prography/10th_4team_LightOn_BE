@@ -341,11 +341,4 @@ public class Performance extends BaseEntity {
             this.likeCount--;
         }
     }
-
-    public void validateIsVisibleOnAdminPage() {
-        if (!(this.approveStatus == ApproveStatus.PENDING || this.approveStatus == ApproveStatus.REJECTED)) {
-            throw new InvalidApproveStatusTransitionException();
-        }
-    }
-
 }

@@ -47,9 +47,8 @@ public class PerformanceApplicationQueryUseCaseImpl implements PerformanceApplic
     @Override
     public GetPerformanceApplicationDetailResponseDTO getPendingPerformanceDetail(Long performanceId) {
         Performance performance = adminPerformanceRepository.getById(performanceId);
-        performance.validateIsVisibleOnAdminPage();
 
-        return pendingPerformanceMapper.toPendingPerformanceDetailResponseDTO(performance);
+        return pendingPerformanceMapper.toPerformanceDetailResponseDTO(performance);
     }
 
 
