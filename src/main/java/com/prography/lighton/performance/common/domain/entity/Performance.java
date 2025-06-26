@@ -364,7 +364,7 @@ public class Performance extends BaseEntity {
 
     /* ---------------------------- 공연 신청 관련 메서드 ---------------------------- */
 
-    public PerformanceRequest createRequest(Integer applySeats, Member member) {
+    public PerformanceRequest createRequest(int applySeats, Member member) {
         validateApproved();
         validateRequest(applySeats);
 
@@ -372,7 +372,7 @@ public class Performance extends BaseEntity {
         return PerformanceRequest.of(member, this, applySeats, payment.getFee() * applySeats);
     }
 
-    public void cancelRequest(Integer requestedSeats) {
+    public void cancelRequest(int requestedSeats) {
         this.bookedSeatCount -= requestedSeats;
         if (this.bookedSeatCount < ZERO) {
             this.bookedSeatCount = ZERO;
