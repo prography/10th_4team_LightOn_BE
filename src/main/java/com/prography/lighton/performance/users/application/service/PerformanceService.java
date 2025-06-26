@@ -53,7 +53,7 @@ public class PerformanceService {
         Performance performance = Performance.create(member, data.artists(), data.info(), data.schedule(),
                 data.location(),
                 data.payment(),
-                Type.CONCERT, data.seats(), data.genres(), request.proof());
+                Type.CONCERT, data.seats(), data.genres(), request.proof(), request.totalSeatsCount());
         performanceRepository.save(performance);
     }
 

@@ -22,6 +22,8 @@ import com.prography.lighton.performance.common.domain.exception.MasterArtistCan
 import com.prography.lighton.performance.common.domain.exception.NotAuthorizedPerformanceException;
 import com.prography.lighton.performance.common.domain.exception.PerformanceNotApprovedException;
 import com.prography.lighton.performance.common.domain.exception.PerformanceUpdateNotAllowedException;
+import com.prography.lighton.performance.users.application.exception.BadPerformanceRequestException;
+import com.prography.lighton.performance.users.application.exception.NotEnoughSeatsException;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.CollectionTable;
 import jakarta.persistence.Column;
@@ -62,6 +64,10 @@ public class Performance extends BaseEntity {
 
     private static final int UPDATE_DEADLINE_DAYS = 3;
     private static final int CANCEL_DEADLINE_DAYS = 3;
+    private static final int MAX_REQUESTED_SEATS = 10;
+    private static final int MIN_REQUESTED_SEATS = 1;
+
+    private static final int ZERO = 0;
 
     @ManyToOne(fetch = LAZY, optional = false)
     private Member performer;
@@ -105,6 +111,14 @@ public class Performance extends BaseEntity {
     @ColumnDefault("0")
     private Long likeCount = 0L;
 
+    @Column
+    @ColumnDefault("0")
+    private Integer totalSeatsCount = 0;
+
+    @Column
+    @ColumnDefault("0")
+    private Integer bookedSeatCount = 0;
+
     @OneToMany(mappedBy = "performance", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<PerformanceGenre> genres = new ArrayList<>();
 
@@ -125,7 +139,8 @@ public class Performance extends BaseEntity {
             Payment payment,
             Type type,
             List<Seat> seats,
-            String proofUrl
+            String proofUrl,
+            Integer totalSeatsCount
     ) {
         this.performer = performer;
         this.info = info;
@@ -135,6 +150,7 @@ public class Performance extends BaseEntity {
         this.type = type;
         this.proofUrl = proofUrl;
         this.seats.addAll(seats);
+        this.totalSeatsCount = totalSeatsCount;
     }
 
     public static Performance create(
@@ -147,9 +163,11 @@ public class Performance extends BaseEntity {
             Type type,
             List<Seat> seats,
             List<Genre> genres,
-            String proofUrl
+            String proofUrl,
+            Integer totalSeatsCount
     ) {
-        Performance perf = new Performance(performer, info, schedule, location, payment, type, seats, proofUrl);
+        Performance perf = new Performance(performer, info, schedule, location, payment, type, seats, proofUrl,
+                totalSeatsCount);
         perf.updateArtists(artists);
         perf.updateGenres(genres);
         return perf;
@@ -164,7 +182,8 @@ public class Performance extends BaseEntity {
             Type type,
             Seat seat,
             String proofUrl,
-            List<Genre> genres
+            List<Genre> genres,
+            Integer totalSeatsCount
     ) {
         this.performer = performer;
         this.info = info;
@@ -175,6 +194,7 @@ public class Performance extends BaseEntity {
         this.seats.clear();
         this.seats.add(seat);
         this.proofUrl = proofUrl;
+        this.totalSeatsCount = totalSeatsCount;
         updateGenres(genres);
     }
 
@@ -339,6 +359,33 @@ public class Performance extends BaseEntity {
     public void decreaseLike() {
         if (this.likeCount > 0) {
             this.likeCount--;
+        }
+    }
+
+    /* ---------------------------- 공연 신청 관련 메서드 ---------------------------- */
+
+    public PerformanceRequest createRequest(int applySeats, Member member) {
+        validateApproved();
+        validateRequest(applySeats);
+
+        this.bookedSeatCount += applySeats;
+        return PerformanceRequest.of(member, this, applySeats, payment.getFee() * applySeats);
+    }
+
+    public void cancelRequest(int requestedSeats) {
+        this.bookedSeatCount -= requestedSeats;
+        if (this.bookedSeatCount < ZERO) {
+            this.bookedSeatCount = ZERO;
+        }
+    }
+
+    private void validateRequest(Integer applySeats) {
+        if (applySeats == null || applySeats < MIN_REQUESTED_SEATS || applySeats > MAX_REQUESTED_SEATS) {
+            throw new BadPerformanceRequestException();
+        }
+
+        if (this.type.equals(Type.CONCERT) && (this.totalSeatsCount - this.bookedSeatCount < applySeats)) {
+            throw new NotEnoughSeatsException();
         }
     }
 }

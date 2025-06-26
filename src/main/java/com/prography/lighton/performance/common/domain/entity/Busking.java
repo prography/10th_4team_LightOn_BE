@@ -30,6 +30,7 @@ import lombok.NoArgsConstructor;
 public class Busking extends Performance {
 
     private static final int UPDATE_DEADLINE_DAYS = 3;
+    private static final int BUSKING_SEAT_COUNT = -1;
 
     @Column(length = 100)
     private String artistName;
@@ -62,7 +63,8 @@ public class Busking extends Performance {
                 Type.BUSKING,
                 Seat.STANDING,
                 proofUrl,
-                genres
+                genres,
+                BUSKING_SEAT_COUNT
         );
         return busking;
     }
@@ -88,7 +90,8 @@ public class Busking extends Performance {
                 Type.BUSKING,
                 Seat.STANDING,
                 proofUrl,
-                genres
+                genres,
+                BUSKING_SEAT_COUNT
         );
         busking.updateArtists(List.of(artist));
         busking.managePerformanceApplication(ApproveStatus.APPROVED);
@@ -115,7 +118,8 @@ public class Busking extends Performance {
                 Type.BUSKING,
                 Seat.STANDING,
                 proofUrl,
-                genres
+                genres,
+                BUSKING_SEAT_COUNT
         );
     }
 
@@ -148,7 +152,8 @@ public class Busking extends Performance {
                 Type.BUSKING,
                 Seat.STANDING,
                 proofUrl,
-                genres
+                genres,
+                BUSKING_SEAT_COUNT
         );
     }
 }
