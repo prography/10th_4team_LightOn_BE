@@ -26,7 +26,7 @@ public class UserPerformanceController {
     @GetMapping("/{performanceId}")
     public ResponseEntity<ApiResult<GetPerformanceDetailResponseDTO>> getPerformanceDetail(
             @PathVariable Long performanceId) {
-        return ResponseEntity.ok(ApiUtils.success(null));
+        return ResponseEntity.ok(ApiUtils.success(userPerformanceService.getPerformanceDetail(performanceId)));
     }
 
     @PostMapping("/{performanceId}")

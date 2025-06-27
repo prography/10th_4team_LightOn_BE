@@ -4,8 +4,10 @@ import com.prography.lighton.member.common.domain.entity.Member;
 import com.prography.lighton.performance.common.domain.entity.Performance;
 import com.prography.lighton.performance.common.domain.entity.PerformanceRequest;
 import com.prography.lighton.performance.common.domain.exception.DuplicatePerformanceRequestException;
+import com.prography.lighton.performance.users.application.mapper.PerformanceDetailMapper;
 import com.prography.lighton.performance.users.infrastructure.repository.PerformanceRepository;
 import com.prography.lighton.performance.users.infrastructure.repository.PerformanceRequestRepository;
+import com.prography.lighton.performance.users.presentation.dto.response.GetPerformanceDetailResponseDTO;
 import com.prography.lighton.performance.users.presentation.dto.response.RequestPerformanceResponseDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -18,6 +20,14 @@ public class UserPerformanceService {
 
     private final PerformanceRepository performanceRepository;
     private final PerformanceRequestRepository performanceRequestRepository;
+
+    private final PerformanceDetailMapper performanceDetailMapper;
+
+    public GetPerformanceDetailResponseDTO getPerformanceDetail(Long performanceId) {
+        Performance performance = performanceRepository.getById(performanceId);
+
+        return performanceDetailMapper.toPerformanceDetailResponseDTO(performance);
+    }
 
     @Transactional
     public RequestPerformanceResponseDTO requestForPerformance(Long performanceId, Integer applySeats,
