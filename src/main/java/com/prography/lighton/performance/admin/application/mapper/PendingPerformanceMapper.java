@@ -58,6 +58,8 @@ public class PendingPerformanceMapper {
                 toRegionName(performance),
                 performance.getType(),
                 performance.getSeats(),
+                performance.getTotalSeatsCount(),
+                performance.getBookedSeatCount(),
                 performance.getProofUrl()
         );
     }

@@ -16,6 +16,8 @@ public record GetPerformanceApplicationDetailResponseDTO(
         String regionName,
         Type type,
         List<Seat> seats,
+        Integer totalSeatsCount,
+        Integer bookedSeatCount,
         String proofUrl
 
 ) {
@@ -29,11 +31,15 @@ public record GetPerformanceApplicationDetailResponseDTO(
             String regionName,
             Type type,
             List<Seat> seats,
+            Integer totalSeatsCount,
+            Integer bookedSeatCount,
             String proofUrl
     ) {
         return new GetPerformanceApplicationDetailResponseDTO(id, info, artists, genres, schedule, regionCode,
                 regionName, type,
                 seats,
+                totalSeatsCount,
+                bookedSeatCount,
                 proofUrl);
     }
 
