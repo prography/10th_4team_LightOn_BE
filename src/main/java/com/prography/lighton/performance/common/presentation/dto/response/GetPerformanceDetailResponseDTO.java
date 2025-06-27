@@ -1,4 +1,4 @@
-package com.prography.lighton.performance.users.presentation.dto.response;
+package com.prography.lighton.performance.common.presentation.dto.response;
 
 import com.prography.lighton.performance.common.domain.entity.enums.Seat;
 import com.prography.lighton.performance.common.domain.entity.enums.Type;

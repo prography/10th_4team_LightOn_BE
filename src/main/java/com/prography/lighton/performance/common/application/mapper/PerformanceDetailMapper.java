@@ -6,8 +6,8 @@ import com.prography.lighton.performance.admin.presentation.dto.response.GetPerf
 import com.prography.lighton.performance.common.domain.entity.Performance;
 import com.prography.lighton.performance.common.domain.entity.association.PerformanceArtist;
 import com.prography.lighton.performance.common.domain.entity.association.PerformanceGenre;
-import com.prography.lighton.performance.users.presentation.dto.response.GetPerformanceDetailResponseDTO;
-import com.prography.lighton.performance.users.presentation.dto.response.GetPerformanceDetailResponseDTO.PerformanceArtistDTO;
+import com.prography.lighton.performance.common.presentation.dto.response.GetPerformanceDetailResponseDTO;
+import com.prography.lighton.performance.common.presentation.dto.response.GetPerformanceDetailResponseDTO.PerformanceArtistDTO;
 import com.prography.lighton.region.infrastructure.cache.RegionCache;
 import java.util.List;
 import lombok.RequiredArgsConstructor;

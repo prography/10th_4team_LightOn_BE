@@ -10,7 +10,7 @@ import com.prography.lighton.performance.admin.presentation.dto.request.ManagePe
 import com.prography.lighton.performance.admin.presentation.dto.response.GetPerformanceApplicationListResponseDTO;
 import com.prography.lighton.performance.admin.presentation.dto.response.GetPerformanceStatsResponseDTO;
 import com.prography.lighton.performance.common.domain.entity.enums.ApproveStatus;
-import com.prography.lighton.performance.users.presentation.dto.response.GetPerformanceDetailResponseDTO;
+import com.prography.lighton.performance.common.presentation.dto.response.GetPerformanceDetailResponseDTO;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;

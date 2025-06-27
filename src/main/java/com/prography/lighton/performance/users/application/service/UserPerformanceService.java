@@ -5,9 +5,9 @@ import com.prography.lighton.performance.common.application.mapper.PerformanceDe
 import com.prography.lighton.performance.common.domain.entity.Performance;
 import com.prography.lighton.performance.common.domain.entity.PerformanceRequest;
 import com.prography.lighton.performance.common.domain.exception.DuplicatePerformanceRequestException;
+import com.prography.lighton.performance.common.presentation.dto.response.GetPerformanceDetailResponseDTO;
 import com.prography.lighton.performance.users.infrastructure.repository.PerformanceRepository;
 import com.prography.lighton.performance.users.infrastructure.repository.PerformanceRequestRepository;
-import com.prography.lighton.performance.users.presentation.dto.response.GetPerformanceDetailResponseDTO;
 import com.prography.lighton.performance.users.presentation.dto.response.RequestPerformanceResponseDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
