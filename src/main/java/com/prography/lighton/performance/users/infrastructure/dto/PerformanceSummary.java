@@ -12,7 +12,7 @@ public record PerformanceSummary(
         LocalDate startDate,
         LocalTime startTime,
         Boolean isPaid,
-        Long regionCode,
+        String regionName,
         List<String> genreNames
 ) {
 }
