@@ -8,14 +8,14 @@ import com.prography.lighton.performance.common.domain.entity.vo.Schedule;
 import java.util.List;
 
 public record GetPerformanceRequestsResponseDTO(
-        Long performanceId,
+        Long id,
         Info info,
-        List<Genre> genres,
+        List<String> genres,
         Schedule schedule,
         List<PerformanceRequestDTO> performanceApplications
 ) {
 
-    public static GetPerformanceRequestsResponseDTO of(Long performanceId, Info info, List<Genre> genres,
+    public static GetPerformanceRequestsResponseDTO of(Long id, Info info, List<String> genres,
                                                        Schedule schedule,
                                                        List<PerformanceRequest> performanceRequests) {
         List<PerformanceRequestDTO> performanceRequestDTOS = performanceRequests.stream()
@@ -27,7 +27,7 @@ public record GetPerformanceRequestsResponseDTO(
                         request.getRequestStatus()
                 ))
                 .toList();
-        return new GetPerformanceRequestsResponseDTO(performanceId, info, genres, schedule, performanceRequestDTOS);
+        return new GetPerformanceRequestsResponseDTO(id, info, genres, schedule, performanceRequestDTOS);
     }
 
     private record PerformanceRequestDTO(

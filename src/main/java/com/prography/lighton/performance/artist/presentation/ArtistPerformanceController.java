@@ -25,9 +25,11 @@ public class ArtistPerformanceController {
 
     @GetMapping("/{performanceId}/requests")
     public ResponseEntity<ApiResult<GetPerformanceRequestsResponseDTO>> getPerformanceRequests(
-            @PathVariable Long performanceId
+            @PathVariable Long performanceId,
+            @LoginMember Member member
     ) {
-        return ResponseEntity.ok(ApiUtils.success(artistPerformanceService.getPerformanceRequests(performanceId)));
+        return ResponseEntity.ok(
+                ApiUtils.success(artistPerformanceService.getPerformanceRequests(performanceId, member)));
     }
 
     @PostMapping("/{performanceId}/requests")
@@ -35,7 +37,7 @@ public class ArtistPerformanceController {
             @PathVariable Long performanceId,
             @LoginMember Member member,
             @RequestParam RequestStatus requestStatus
-            ) {
+    ) {
         artistPerformanceService.managePerformanceRequest(performanceId, member, requestStatus);
         return ResponseEntity.ok(ApiUtils.success());
     }
