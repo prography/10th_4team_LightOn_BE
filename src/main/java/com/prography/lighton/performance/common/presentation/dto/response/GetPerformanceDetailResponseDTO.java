@@ -1,4 +1,4 @@
-package com.prography.lighton.performance.admin.presentation.dto.response;
+package com.prography.lighton.performance.common.presentation.dto.response;
 
 import com.prography.lighton.performance.common.domain.entity.enums.Seat;
 import com.prography.lighton.performance.common.domain.entity.enums.Type;
@@ -8,7 +8,7 @@ import java.util.List;
 import lombok.Builder;
 
 @Builder
-public record GetPerformanceApplicationDetailResponseDTO(
+public record GetPerformanceDetailResponseDTO(
         Long id,
         Info info,
         List<ArtistDTO> artists,

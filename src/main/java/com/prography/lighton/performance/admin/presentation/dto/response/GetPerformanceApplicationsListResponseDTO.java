@@ -5,13 +5,13 @@ import com.prography.lighton.performance.common.domain.entity.vo.Schedule;
 import java.util.List;
 import org.springframework.data.domain.Page;
 
-public record GetPerformanceRequestsListResponseDTO(Page<PerformanceRequestDTO> performanceApplications) {
+public record GetPerformanceApplicationsListResponseDTO(Page<PerformanceApplicationDTO> performanceApplications) {
 
-    public static GetPerformanceRequestsListResponseDTO of(Page<PerformanceRequestDTO> performanceApplications) {
-        return new GetPerformanceRequestsListResponseDTO(performanceApplications);
+    public static GetPerformanceApplicationsListResponseDTO of(Page<PerformanceApplicationDTO> performanceApplications) {
+        return new GetPerformanceApplicationsListResponseDTO(performanceApplications);
     }
 
-    public record PerformanceRequestDTO(
+    public record PerformanceApplicationDTO(
             Long id,
             String imageUrl,
             String title,
@@ -22,11 +22,11 @@ public record GetPerformanceRequestsListResponseDTO(Page<PerformanceRequestDTO> 
             ApproveStatus status
     ) {
 
-        public static PerformanceRequestDTO of(Long id, String imageUrl, String title,
+        public static PerformanceApplicationDTO of(Long id, String imageUrl, String title,
                                                    List<String> genres, Schedule schedule, Integer regionCode,
                                                    String regionName,
                                                    ApproveStatus status) {
-            return new PerformanceRequestDTO(id, imageUrl, title, genres, schedule, regionCode, regionName, status);
+            return new PerformanceApplicationDTO(id, imageUrl, title, genres, schedule, regionCode, regionName, status);
         }
     }
 }

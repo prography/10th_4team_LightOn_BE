@@ -6,7 +6,7 @@ import com.prography.lighton.performance.common.domain.entity.vo.Info;
 import com.prography.lighton.performance.common.domain.entity.vo.Schedule;
 import java.util.List;
 
-public record GetPerformanceApplicationsResponseDTO(
+public record GetPerformanceRequestsResponseDTO(
         Long performanceId,
         Info info,
         List<String> genres,
@@ -14,9 +14,9 @@ public record GetPerformanceApplicationsResponseDTO(
         List<PerformanceRequestDTO> performanceApplications
 ) {
 
-    public static GetPerformanceApplicationsResponseDTO of(Long performanceId, Info info, List<String> genres,
-                                                            Schedule schedule,
-                                                            List<PerformanceRequest> performanceRequests) {
+    public static GetPerformanceRequestsResponseDTO of(Long performanceId, Info info, List<String> genres,
+                                                       Schedule schedule,
+                                                       List<PerformanceRequest> performanceRequests) {
         List<PerformanceRequestDTO> performanceRequestDTOS = performanceRequests.stream()
                 .map(request -> PerformanceRequestDTO.of(
                         request.getId(),
@@ -26,7 +26,7 @@ public record GetPerformanceApplicationsResponseDTO(
                         request.getRequestStatus()
                 ))
                 .toList();
-        return new GetPerformanceApplicationsResponseDTO(performanceId, info, genres, schedule, performanceRequestDTOS);
+        return new GetPerformanceRequestsResponseDTO(performanceId, info, genres, schedule, performanceRequestDTOS);
     }
 
     private record PerformanceRequestDTO(

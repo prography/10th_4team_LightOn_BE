@@ -2,7 +2,8 @@ package com.prography.lighton.performance.artist.presentation;
 
 import com.prography.lighton.common.utils.ApiUtils;
 import com.prography.lighton.common.utils.ApiUtils.ApiResult;
-import com.prography.lighton.performance.admin.presentation.dto.response.GetPerformanceRequestsListResponseDTO;
+import com.prography.lighton.performance.admin.presentation.dto.response.GetPerformanceApplicationsListResponseDTO;
+import com.prography.lighton.performance.artist.presentation.dto.response.GetPerformanceRequestsResponseDTO;
 import com.prography.lighton.performance.common.domain.entity.enums.RequestStatus;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -19,7 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class ArtistPerformanceController {
 
     @GetMapping("/{performanceId}/requests")
-    public ResponseEntity<ApiResult<GetPerformanceRequestsListResponseDTO>> getPerformanceRequests(
+    public ResponseEntity<ApiResult<GetPerformanceRequestsResponseDTO>> getPerformanceRequests(
             @PathVariable Long performanceId
     ) {
         return ResponseEntity.ok(ApiUtils.success(null));
