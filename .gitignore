@@ -36,6 +36,4 @@ out/
 ### VS Code ###
 .vscode/
 
-application.yml
-src/main/resources/apple/*.p8
-src/main/resources/static/docs/openapi3.json
+src/main/resources/*
