@@ -3,7 +3,7 @@ package com.prography.lighton.performance.users.application.service;
 import com.prography.lighton.member.common.domain.entity.Member;
 import com.prography.lighton.performance.users.infrastructure.dto.PerformanceSummary;
 import com.prography.lighton.performance.users.infrastructure.repository.PerformanceRecommendationRepository;
-import com.prography.lighton.performance.users.presentation.dto.response.GetRecommendationResponse;
+import com.prography.lighton.performance.users.presentation.dto.response.GetPerformanceBrowseResponse;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
@@ -23,11 +23,11 @@ public class UserRecommendationService {
     private final UserRecommendationRedisService redisService;
     private final PerformanceRecommendationRepository recommendationRepository;
 
-    public GetRecommendationResponse getRecommendations(Member member) {
+    public GetPerformanceBrowseResponse getRecommendations(Member member) {
         List<Long> performanceIds = getRecommendedIds(member.getId());
         List<PerformanceSummary> summaries = recommendationRepository.findSummaries(performanceIds);
         sortByGivenOrder(summaries, performanceIds);
-        return GetRecommendationResponse.of(summaries);
+        return GetPerformanceBrowseResponse.of(summaries);
     }
 
     private List<Long> getRecommendedIds(Long memberId) {

@@ -5,7 +5,7 @@ import com.prography.lighton.common.utils.ApiUtils;
 import com.prography.lighton.common.utils.ApiUtils.ApiResult;
 import com.prography.lighton.member.common.domain.entity.Member;
 import com.prography.lighton.performance.users.application.service.UserRecommendationService;
-import com.prography.lighton.performance.users.presentation.dto.response.GetRecommendationResponse;
+import com.prography.lighton.performance.users.presentation.dto.response.GetPerformanceBrowseResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -20,9 +20,9 @@ public class UserPerformanceBrowseController {
     private final UserRecommendationService recommendationService;
 
     @GetMapping("/recommend")
-    public ResponseEntity<ApiResult<GetRecommendationResponse>> GetUserRecommendService(
+    public ResponseEntity<ApiResult<GetPerformanceBrowseResponse>> GetUserRecommendService(
             @LoginMember Member member) {
-        GetRecommendationResponse dto = recommendationService.getRecommendations(member);
+        GetPerformanceBrowseResponse dto = recommendationService.getRecommendations(member);
         return ResponseEntity.ok(ApiUtils.success(dto));
     }
 }

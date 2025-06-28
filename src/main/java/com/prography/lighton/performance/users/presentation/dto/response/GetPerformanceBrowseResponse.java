@@ -5,9 +5,9 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
 
-public record GetRecommendationResponse(List<PerformanceSummaryDTO> performances) {
+public record GetPerformanceBrowseResponse(List<PerformanceSummaryDTO> performances) {
 
-    public static GetRecommendationResponse of(List<PerformanceSummary> summaries) {
+    public static GetPerformanceBrowseResponse of(List<PerformanceSummary> summaries) {
         List<PerformanceSummaryDTO> dtos = summaries.stream()
                 .map(summary -> PerformanceSummaryDTO.of(
                         summary.id(),
@@ -22,7 +22,7 @@ public record GetRecommendationResponse(List<PerformanceSummaryDTO> performances
                 ))
                 .toList();
 
-        return new GetRecommendationResponse(dtos);
+        return new GetPerformanceBrowseResponse(dtos);
     }
 
     public record PerformanceSummaryDTO(
