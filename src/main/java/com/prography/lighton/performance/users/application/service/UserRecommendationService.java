@@ -1,5 +1,6 @@
 package com.prography.lighton.performance.users.application.service;
 
+import com.prography.lighton.member.common.domain.entity.Member;
 import com.prography.lighton.performance.users.infrastructure.dto.PerformanceSummary;
 import com.prography.lighton.performance.users.infrastructure.repository.PerformanceRecommendationRepository;
 import com.prography.lighton.performance.users.presentation.dto.response.GetRecommendationResponse;
@@ -22,8 +23,14 @@ public class UserRecommendationService {
     private final UserRecommendationRedisService redisService;
     private final PerformanceRecommendationRepository recommendationRepository;
 
-    public GetRecommendationResponse getRecommendations(Long memberId) {
+    public GetRecommendationResponse getRecommendations(Member member) {
+        List<Long> performanceIds = getRecommendedIds(member.getId());
+        List<PerformanceSummary> summaries = recommendationRepository.findSummaries(performanceIds);
+        sortByGivenOrder(summaries, performanceIds);
+        return GetRecommendationResponse.of(summaries);
+    }
 
+    private List<Long> getRecommendedIds(Long memberId) {
         List<Long> ids = redisService.getRecommendPerformanceIds(memberId);
 
         if (ids == null) {
@@ -31,13 +38,13 @@ public class UserRecommendationService {
             redisService.putRecommendPerformanceIds(memberId, ids);
         }
 
-        List<PerformanceSummary> summaries = recommendationRepository.findSummaries(ids);
+        return ids;
+    }
 
+    private void sortByGivenOrder(List<PerformanceSummary> summaries, List<Long> ids) {
         Map<Long, Integer> order = IntStream.range(0, ids.size())
                 .boxed()
                 .collect(Collectors.toMap(ids::get, i -> i));
         summaries.sort(Comparator.comparingInt(s -> order.get(s.id())));
-
-        return GetRecommendationResponse.of(summaries);
     }
 }
