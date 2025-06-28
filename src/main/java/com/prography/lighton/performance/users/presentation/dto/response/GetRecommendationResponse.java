@@ -1,0 +1,54 @@
+package com.prography.lighton.performance.users.presentation.dto.response;
+
+import com.prography.lighton.performance.users.infrastructure.dto.PerformanceSummary;
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.util.List;
+
+public record GetRecommendationResponse(List<PerformanceSummaryDTO> performances) {
+
+    public static GetRecommendationResponse of(List<PerformanceSummary> summaries) {
+        List<PerformanceSummaryDTO> dtos = summaries.stream()
+                .map(summary -> PerformanceSummaryDTO.of(
+                        summary.id(),
+                        summary.title(),
+                        summary.description(),
+                        summary.posterUrl(),
+                        summary.genreNames(),
+                        summary.startDate(),
+                        summary.startTime(),
+                        summary.isPaid(),
+                        summary.regionName()
+                ))
+                .toList();
+
+        return new GetRecommendationResponse(dtos);
+    }
+
+    public record PerformanceSummaryDTO(
+            Long id,
+            String title,
+            String description,
+            String thumbnailImageUrl,
+            List<String> genres,
+            LocalDate startDate,
+            LocalTime startTime,
+            Boolean isPaid,
+            String regionName
+    ) {
+        public static PerformanceSummaryDTO of(
+                Long id,
+                String title,
+                String description,
+                String thumbnailImageUrl,
+                List<String> genres,
+                LocalDate startDate,
+                LocalTime startTime,
+                Boolean isPaid,
+                String regionName
+        ) {
+            return new PerformanceSummaryDTO(id, title, description, thumbnailImageUrl,
+                    genres, startDate, startTime, isPaid, regionName);
+        }
+    }
+}
