@@ -1,5 +1,6 @@
 package com.prography.lighton.performance.artist.presentation.dto.response;
 
+import com.prography.lighton.genre.domain.entity.Genre;
 import com.prography.lighton.performance.common.domain.entity.PerformanceRequest;
 import com.prography.lighton.performance.common.domain.entity.enums.RequestStatus;
 import com.prography.lighton.performance.common.domain.entity.vo.Info;
@@ -9,12 +10,12 @@ import java.util.List;
 public record GetPerformanceRequestsResponseDTO(
         Long performanceId,
         Info info,
-        List<String> genres,
+        List<Genre> genres,
         Schedule schedule,
         List<PerformanceRequestDTO> performanceApplications
 ) {
 
-    public static GetPerformanceRequestsResponseDTO of(Long performanceId, Info info, List<String> genres,
+    public static GetPerformanceRequestsResponseDTO of(Long performanceId, Info info, List<Genre> genres,
                                                        Schedule schedule,
                                                        List<PerformanceRequest> performanceRequests) {
         List<PerformanceRequestDTO> performanceRequestDTOS = performanceRequests.stream()

@@ -1,8 +1,10 @@
 package com.prography.lighton.performance.artist.presentation;
 
+import com.prography.lighton.common.annotation.LoginMember;
 import com.prography.lighton.common.utils.ApiUtils;
 import com.prography.lighton.common.utils.ApiUtils.ApiResult;
-import com.prography.lighton.performance.admin.presentation.dto.response.GetPerformanceApplicationsListResponseDTO;
+import com.prography.lighton.member.common.domain.entity.Member;
+import com.prography.lighton.performance.artist.application.ArtistPerformanceService;
 import com.prography.lighton.performance.artist.presentation.dto.response.GetPerformanceRequestsResponseDTO;
 import com.prography.lighton.performance.common.domain.entity.enums.RequestStatus;
 import lombok.RequiredArgsConstructor;
@@ -19,19 +21,22 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class ArtistPerformanceController {
 
+    private final ArtistPerformanceService artistPerformanceService;
+
     @GetMapping("/{performanceId}/requests")
     public ResponseEntity<ApiResult<GetPerformanceRequestsResponseDTO>> getPerformanceRequests(
             @PathVariable Long performanceId
     ) {
-        return ResponseEntity.ok(ApiUtils.success(null));
+        return ResponseEntity.ok(ApiUtils.success(artistPerformanceService.getPerformanceRequests(performanceId)));
     }
 
-    @PostMapping("/{performanceId}/requests/{requestId}")
-    public ResponseEntity<ApiResult<Void>> managePerformanceRequest(
+    @PostMapping("/{performanceId}/requests")
+    public ResponseEntity<ApiResult<?>> managePerformanceRequest(
             @PathVariable Long performanceId,
-            @PathVariable Long requestId,
+            @LoginMember Member member,
             @RequestParam RequestStatus requestStatus
             ) {
-        return ResponseEntity.ok(ApiUtils.success(null));
+        artistPerformanceService.managePerformanceRequest(performanceId, member, requestStatus);
+        return ResponseEntity.ok(ApiUtils.success());
     }
 }
