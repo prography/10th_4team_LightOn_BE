@@ -21,5 +21,8 @@ public record GetPerformanceApplicationDetailResponseDTO(
         String proofUrl
 ) {
     public record ArtistDTO(Long id, String name, String description) {
+        public static ArtistDTO of(Long id, String name, String description) {
+            return new ArtistDTO(id, name, description);
+        }
     }
 }
