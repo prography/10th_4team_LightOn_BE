@@ -13,6 +13,7 @@ import com.prography.lighton.performance.common.domain.exception.PerformanceNotA
 import com.prography.lighton.performance.common.domain.exception.PerformanceUpdateNotAllowedException;
 import java.util.stream.Collectors;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
@@ -22,6 +23,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 @Slf4j
+@Order(2)
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
@@ -106,6 +108,5 @@ public class GlobalExceptionHandler {
             PerformanceUpdateNotAllowedException exception) {
         return new ResponseEntity<>(exception.body(), exception.status());
     }
-
 
 }

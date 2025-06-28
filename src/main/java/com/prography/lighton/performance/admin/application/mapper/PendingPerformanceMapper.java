@@ -3,10 +3,10 @@ package com.prography.lighton.performance.admin.application.mapper;
 import com.prography.lighton.genre.domain.entity.Genre;
 import com.prography.lighton.genre.infrastructure.cache.GenreCache;
 import com.prography.lighton.performance.admin.presentation.dto.response.GetPerformanceApplicationDetailResponseDTO;
-import com.prography.lighton.performance.admin.presentation.dto.response.GetPerformanceApplicationDetailResponseDTO.PerformanceArtistDTO;
+import com.prography.lighton.performance.admin.presentation.dto.response.GetPerformanceApplicationDetailResponseDTO.ArtistDTO;
 import com.prography.lighton.performance.admin.presentation.dto.response.GetPerformanceApplicationListResponseDTO.PerformanceApplicationDTO;
+import com.prography.lighton.performance.common.domain.entity.Busking;
 import com.prography.lighton.performance.common.domain.entity.Performance;
-import com.prography.lighton.performance.common.domain.entity.association.PerformanceArtist;
 import com.prography.lighton.performance.common.domain.entity.association.PerformanceGenre;
 import com.prography.lighton.region.infrastructure.cache.RegionCache;
 import java.util.List;
@@ -38,28 +38,55 @@ public class PendingPerformanceMapper {
         );
     }
 
-    public GetPerformanceApplicationDetailResponseDTO toPendingPerformanceDetailResponseDTO(
-            Performance performance) {
-        List<PerformanceArtistDTO> artistDTOs = performance.getArtists().stream()
-                .map(PerformanceArtist::getArtist)
-                .map(artist -> PerformanceArtistDTO.of(
-                        artist.getId(),
-                        artist.getStageName(),
-                        artist.getDescription()))
-                .toList();
+    public GetPerformanceApplicationDetailResponseDTO toDetailDTO(Performance performance) {
+        if (performance instanceof Busking busking) {
+            return toBuskingDTO(busking);
+        }
+        return toConcertDTO(performance);
+    }
 
-        return GetPerformanceApplicationDetailResponseDTO.of(
-                performance.getId(),
-                performance.getInfo(),
-                artistDTOs,
-                toGenres(performance.getGenres()),
-                performance.getSchedule(),
-                regionCache.getRegionCodeByInfo(performance.getLocation().getRegion()),
-                toRegionName(performance),
-                performance.getType(),
-                performance.getSeats(),
-                performance.getProofUrl()
-        );
+    private GetPerformanceApplicationDetailResponseDTO toConcertDTO(Performance p) {
+        return GetPerformanceApplicationDetailResponseDTO.builder()
+                .id(p.getId())
+                .info(p.getInfo())
+                .artists(
+                        p.getArtists().stream()
+                                .map(pa -> ArtistDTO.of(pa.getArtist().getId(),
+                                        pa.getArtist().getStageName(),
+                                        pa.getArtist().getDescription()))
+                                .toList())
+                .genres(toGenres(p.getGenres()))
+                .schedule(p.getSchedule())
+                .regionCode(regionCache.getRegionCodeByInfo(p.getLocation().getRegion()))
+                .regionName(toRegionName(p))
+                .type(p.getType())
+                .seats(p.getSeats())
+                .proofUrl(p.getProofUrl())
+                .build();
+    }
+
+    private GetPerformanceApplicationDetailResponseDTO toBuskingDTO(Busking b) {
+        GetPerformanceApplicationDetailResponseDTO.ArtistDTO artistDto;
+
+        if (b.getArtists().isEmpty()) {
+            artistDto = ArtistDTO.of(null, b.getArtistName(), b.getArtistDescription());
+        } else {
+            var a = b.getArtists().get(0).getArtist();
+            artistDto = ArtistDTO.of(a.getId(), a.getStageName(), a.getDescription());
+        }
+
+        return GetPerformanceApplicationDetailResponseDTO.builder()
+                .id(b.getId())
+                .info(b.getInfo())
+                .artists(List.of(artistDto))
+                .genres(toGenres(b.getGenres()))
+                .schedule(b.getSchedule())
+                .regionCode(regionCache.getRegionCodeByInfo(b.getLocation().getRegion()))
+                .regionName(toRegionName(b))
+                .type(b.getType())
+                .seats(b.getSeats())
+                .proofUrl(b.getProofUrl())
+                .build();
     }
 
     private List<String> toGenres(List<PerformanceGenre> performanceGenres) {

@@ -3,6 +3,7 @@ package com.prography.lighton.common.constant;
 public class AuthConstants {
 
     public static final String CONTENT_TYPE = "application/x-www-form-urlencoded;charset=utf-8";
+    public static final String APPLICATION_JSON = "application/json";
     public static final String GRANT_TYPE = "authorization_code";
 
     public static final String CLIENT_ID = "client_id";
@@ -15,6 +16,7 @@ public class AuthConstants {
     public static final String SCOPE = "scope";
 
     public static final String HEADER_AUTHORIZATION = "Authorization";
+    public static final String KAKAO_AUTHORIZATION = "KakaoAK ";
     public static final String HEADER_CONTENT_TYPE = "Content-Type";
 
     public static final String EMAIL = "email";

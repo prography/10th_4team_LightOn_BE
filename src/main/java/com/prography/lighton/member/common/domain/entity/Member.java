@@ -11,6 +11,7 @@ import com.prography.lighton.member.common.domain.entity.vo.MarketingAgreement;
 import com.prography.lighton.member.common.domain.entity.vo.Password;
 import com.prography.lighton.member.common.domain.entity.vo.Phone;
 import com.prography.lighton.member.common.domain.exception.InvalidMemberException;
+import jakarta.persistence.AttributeOverride;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
@@ -36,6 +37,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 public class Member extends BaseEntity {
 
     @Embedded
+    @AttributeOverride(name = "value",
+            column = @Column(name = "email", nullable = false, unique = true))
     private Email email;
 
     @Column(nullable = false)
