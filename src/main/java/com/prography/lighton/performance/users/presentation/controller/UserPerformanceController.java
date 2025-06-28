@@ -6,6 +6,9 @@ import com.prography.lighton.common.utils.ApiUtils.ApiResult;
 import com.prography.lighton.member.common.domain.entity.Member;
 import com.prography.lighton.performance.common.presentation.dto.response.GetPerformanceDetailResponseDTO;
 import com.prography.lighton.performance.users.application.service.UserPerformanceService;
+import com.prography.lighton.performance.users.presentation.dto.response.GetMyPerformanceStatsResponseDTO;
+import com.prography.lighton.performance.users.presentation.dto.response.GetMyRegisteredPerformanceListResponseDTO;
+import com.prography.lighton.performance.users.presentation.dto.response.GetMyRequestedPerformanceListResponseDTO;
 import com.prography.lighton.performance.users.presentation.dto.response.RequestPerformanceResponseDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -45,6 +48,29 @@ public class UserPerformanceController {
             @LoginMember Member member) {
         userPerformanceService.cancelPerformanceRequest(performanceId, member);
         return ResponseEntity.ok(ApiUtils.success());
+    }
+
+    // 내가 등록한 공연
+    @GetMapping("/my-page/registered")
+    public ResponseEntity<ApiResult<GetMyRegisteredPerformanceListResponseDTO>> getMyRegisteredPerformanceList(
+            @LoginMember Member member) {
+        return ResponseEntity.ok(ApiUtils.success(
+                userPerformanceService.getMyRegisteredPerformanceList(member)));
+    }
+
+    // 내가 신청한 공연
+    @GetMapping("/my-page/requested")
+    public ResponseEntity<ApiResult<GetMyRequestedPerformanceListResponseDTO>> getMyRequestedPerformanceList(
+            @LoginMember Member member) {
+        return ResponseEntity.ok(ApiUtils.success(
+                userPerformanceService.getMyRequestedPerformanceList(member)));
+    }
+
+    @GetMapping("/my-page/stats")
+    public ResponseEntity<ApiResult<GetMyPerformanceStatsResponseDTO>> getMyPerformanceStats(
+            @LoginMember Member member) {
+        return ResponseEntity.ok(ApiUtils.success(
+                userPerformanceService.getMyPerformanceStats(member)));
     }
 
 }
