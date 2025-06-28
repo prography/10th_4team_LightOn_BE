@@ -6,6 +6,7 @@ import com.prography.lighton.common.utils.ApiUtils.ApiResult;
 import com.prography.lighton.member.common.domain.entity.Member;
 import com.prography.lighton.performance.common.presentation.dto.response.GetPerformanceDetailResponseDTO;
 import com.prography.lighton.performance.users.application.service.UserPerformanceService;
+import com.prography.lighton.performance.users.presentation.dto.response.GetMyPerformanceStatsResponseDTO;
 import com.prography.lighton.performance.users.presentation.dto.response.GetMyRegisteredPerformanceListResponseDTO;
 import com.prography.lighton.performance.users.presentation.dto.response.GetMyRequestedPerformanceListResponseDTO;
 import com.prography.lighton.performance.users.presentation.dto.response.RequestPerformanceResponseDTO;
@@ -65,5 +66,11 @@ public class UserPerformanceController {
                 userPerformanceService.getMyRequestedPerformanceList(member)));
     }
 
+    @GetMapping("/my-page/stats")
+    public ResponseEntity<ApiResult<GetMyPerformanceStatsResponseDTO>> getMyPerformanceStats(
+            @LoginMember Member member) {
+        return ResponseEntity.ok(ApiUtils.success(
+                userPerformanceService.getMyPerformanceStats(member)));
+    }
 
 }
