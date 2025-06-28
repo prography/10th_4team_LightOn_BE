@@ -19,7 +19,7 @@ public class Email {
 
     private static final Pattern EMAIL_PATTERN = Pattern.compile("^[\\w-.]+@([\\w-]+\\.)+[\\w-]{2,4}$");
 
-    @Column(nullable = false, unique = true, name = "email")
+    @Column(nullable = false, name = "email")
     private String value;
 
     public static Email of(String value) {
