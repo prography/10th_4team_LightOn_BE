@@ -8,7 +8,7 @@ import com.prography.lighton.performance.admin.application.ManagePerformanceAppl
 import com.prography.lighton.performance.admin.application.PerformanceApplicationQueryUseCase;
 import com.prography.lighton.performance.admin.presentation.dto.request.ManagePerformanceApplicationRequestDTO;
 import com.prography.lighton.performance.admin.presentation.dto.response.GetPerformanceApplicationDetailResponseDTO;
-import com.prography.lighton.performance.admin.presentation.dto.response.GetPerformanceApplicationListResponseDTO;
+import com.prography.lighton.performance.admin.presentation.dto.response.GetPerformanceRequestsListResponseDTO;
 import com.prography.lighton.performance.admin.presentation.dto.response.GetPerformanceStatsResponseDTO;
 import com.prography.lighton.performance.common.domain.entity.enums.ApproveStatus;
 import com.prography.lighton.performance.common.domain.entity.enums.Type;
@@ -34,13 +34,13 @@ public class AdminPerformanceController {
     private final GetPerformanceStatsUseCase getPerformanceStatsUseCase;
 
     @GetMapping("/applications/performances")
-    public ResponseEntity<ApiResult<GetPerformanceApplicationListResponseDTO>> getPerformanceApplicationList(
+    public ResponseEntity<ApiResult<GetPerformanceRequestsListResponseDTO>> getPerformanceApplicationList(
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size,
             @RequestParam Type type,
             @RequestParam(required = false) List<ApproveStatus> statuses
     ) {
-        GetPerformanceApplicationListResponseDTO result =
+        GetPerformanceRequestsListResponseDTO result =
                 performanceApplicationQueryUseCase.getAllPerformanceApplications(page, size, type, statuses);
 
         return ResponseEntity.ok(ApiUtils.success(result));

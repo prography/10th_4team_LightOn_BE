@@ -4,7 +4,7 @@ import com.prography.lighton.genre.domain.entity.Genre;
 import com.prography.lighton.genre.infrastructure.cache.GenreCache;
 import com.prography.lighton.performance.admin.presentation.dto.response.GetPerformanceApplicationDetailResponseDTO;
 import com.prography.lighton.performance.admin.presentation.dto.response.GetPerformanceApplicationDetailResponseDTO.ArtistDTO;
-import com.prography.lighton.performance.admin.presentation.dto.response.GetPerformanceApplicationListResponseDTO.PerformanceApplicationDTO;
+import com.prography.lighton.performance.admin.presentation.dto.response.GetPerformanceRequestsListResponseDTO.PerformanceRequestDTO;
 import com.prography.lighton.performance.common.domain.entity.Busking;
 import com.prography.lighton.performance.common.domain.entity.Performance;
 import com.prography.lighton.performance.common.domain.entity.association.PerformanceGenre;
@@ -25,8 +25,8 @@ public class PendingPerformanceMapper {
                 + " " + performance.getLocation().getRegion().getSubRegion().getName();
     }
 
-    public PerformanceApplicationDTO toPendingPerformanceDTO(Performance performance) {
-        return PerformanceApplicationDTO.of(
+    public PerformanceRequestDTO toPendingPerformanceDTO(Performance performance) {
+        return PerformanceRequestDTO.of(
                 performance.getId(),
                 performance.getInfo().getPosterUrl(),
                 performance.getInfo().getTitle(),

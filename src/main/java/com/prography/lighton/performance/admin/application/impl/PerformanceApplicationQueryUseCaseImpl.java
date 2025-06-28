@@ -7,7 +7,7 @@ import com.prography.lighton.performance.admin.application.PerformanceApplicatio
 import com.prography.lighton.performance.admin.application.mapper.PendingPerformanceMapper;
 import com.prography.lighton.performance.admin.infrastructure.repository.AdminPerformanceRepository;
 import com.prography.lighton.performance.admin.presentation.dto.response.GetPerformanceApplicationDetailResponseDTO;
-import com.prography.lighton.performance.admin.presentation.dto.response.GetPerformanceApplicationListResponseDTO;
+import com.prography.lighton.performance.admin.presentation.dto.response.GetPerformanceRequestsListResponseDTO;
 import com.prography.lighton.performance.common.domain.entity.Performance;
 import com.prography.lighton.performance.common.domain.entity.enums.ApproveStatus;
 import com.prography.lighton.performance.common.domain.entity.enums.Type;
@@ -30,8 +30,8 @@ public class PerformanceApplicationQueryUseCaseImpl implements PerformanceApplic
     private final PendingPerformanceMapper pendingPerformanceMapper;
 
     @Override
-    public GetPerformanceApplicationListResponseDTO getAllPerformanceApplications(int page, int size, Type type,
-                                                                                  List<ApproveStatus> approveStatuses) {
+    public GetPerformanceRequestsListResponseDTO getAllPerformanceApplications(int page, int size, Type type,
+                                                                               List<ApproveStatus> approveStatuses) {
         Pageable pageable = PageRequest.of(page, size);
 
         List<ApproveStatus> effectiveStatuses;
@@ -43,7 +43,7 @@ public class PerformanceApplicationQueryUseCaseImpl implements PerformanceApplic
         Page<Performance> performances = adminPerformanceRepository.findByApproveStatusesAndType(type,
                 effectiveStatuses, pageable);
         var dtoPage = performances.map(pendingPerformanceMapper::toPendingPerformanceDTO);
-        return GetPerformanceApplicationListResponseDTO.of(dtoPage);
+        return GetPerformanceRequestsListResponseDTO.of(dtoPage);
     }
 
     @Override
