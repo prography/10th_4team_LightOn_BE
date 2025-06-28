@@ -4,7 +4,6 @@ import static com.prography.lighton.member.common.domain.entity.vo.Email.of;
 import static com.prography.lighton.member.common.domain.entity.vo.Password.encodeAndCreate;
 
 import com.prography.lighton.member.common.domain.entity.TemporaryMember;
-import com.prography.lighton.member.common.domain.exception.DuplicateMemberException;
 import com.prography.lighton.member.users.infrastructure.repository.MemberRepository;
 import com.prography.lighton.member.users.infrastructure.repository.TemporaryMemberRepository;
 import com.prography.lighton.member.users.presentation.dto.request.RegisterMemberRequestDTO;
@@ -26,10 +25,6 @@ public class RegisterMemberService implements RegisterMemberUseCase {
 
     @Override
     public RegisterMemberResponseDTO registerMember(final RegisterMemberRequestDTO request) {
-        if (temporaryMemberRepository.existsByEmail(request.email())) {
-            throw new DuplicateMemberException("이미 존재하는 이메일입니다.");
-        }
-
         TemporaryMember temporaryMember = TemporaryMember.of(
                 of(request.email()),
                 encodeAndCreate(request.password(), passwordEncoder));
@@ -40,9 +35,6 @@ public class RegisterMemberService implements RegisterMemberUseCase {
 
     @Override
     public CheckDuplicateEmailResponseDTO checkEmailExists(String email) {
-        boolean isDuplicate = temporaryMemberRepository.existsByEmail(email)
-                || memberRepository.existsByEmail(email);
-
-        return CheckDuplicateEmailResponseDTO.of(isDuplicate);
+        return CheckDuplicateEmailResponseDTO.of(memberRepository.existsByEmail(email));
     }
 }

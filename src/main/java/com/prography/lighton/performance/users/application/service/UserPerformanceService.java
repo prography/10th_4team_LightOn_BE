@@ -20,13 +20,11 @@ public class UserPerformanceService {
 
     private final PerformanceRepository performanceRepository;
     private final PerformanceRequestRepository performanceRequestRepository;
-
     private final PerformanceDetailMapper performanceDetailMapper;
 
     public GetPerformanceDetailResponseDTO getPerformanceDetail(Long performanceId) {
         Performance performance = performanceRepository.getById(performanceId);
-
-        return performanceDetailMapper.toPerformanceDetailResponseDTO(performance);
+        return performanceDetailMapper.toDetailDTO(performance);
     }
 
     @Transactional

@@ -10,6 +10,7 @@ import com.prography.lighton.performance.admin.presentation.dto.request.ManagePe
 import com.prography.lighton.performance.admin.presentation.dto.response.GetPerformanceApplicationListResponseDTO;
 import com.prography.lighton.performance.admin.presentation.dto.response.GetPerformanceStatsResponseDTO;
 import com.prography.lighton.performance.common.domain.entity.enums.ApproveStatus;
+import com.prography.lighton.performance.common.domain.entity.enums.Type;
 import com.prography.lighton.performance.common.presentation.dto.response.GetPerformanceDetailResponseDTO;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -36,10 +37,11 @@ public class AdminPerformanceController {
     public ResponseEntity<ApiResult<GetPerformanceApplicationListResponseDTO>> getPerformanceApplicationList(
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size,
+            @RequestParam Type type,
             @RequestParam(required = false) List<ApproveStatus> statuses
     ) {
         GetPerformanceApplicationListResponseDTO result =
-                performanceApplicationQueryUseCase.getAllPerformanceApplications(page, size, statuses);
+                performanceApplicationQueryUseCase.getAllPerformanceApplications(page, size, type, statuses);
 
         return ResponseEntity.ok(ApiUtils.success(result));
     }

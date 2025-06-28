@@ -9,6 +9,7 @@ import com.prography.lighton.performance.admin.presentation.dto.response.GetPerf
 import com.prography.lighton.performance.common.application.mapper.PerformanceDetailMapper;
 import com.prography.lighton.performance.common.domain.entity.Performance;
 import com.prography.lighton.performance.common.domain.entity.enums.ApproveStatus;
+import com.prography.lighton.performance.common.domain.entity.enums.Type;
 import com.prography.lighton.performance.common.presentation.dto.response.GetPerformanceDetailResponseDTO;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -29,7 +30,7 @@ public class PerformanceApplicationQueryUseCaseImpl implements PerformanceApplic
     private final PerformanceDetailMapper performanceDetailMapper;
 
     @Override
-    public GetPerformanceApplicationListResponseDTO getAllPerformanceApplications(int page, int size,
+    public GetPerformanceApplicationListResponseDTO getAllPerformanceApplications(int page, int size, Type type,
                                                                                   List<ApproveStatus> approveStatuses) {
         Pageable pageable = PageRequest.of(page, size);
 
@@ -39,7 +40,8 @@ public class PerformanceApplicationQueryUseCaseImpl implements PerformanceApplic
         } else {
             effectiveStatuses = approveStatuses;
         }
-        Page<Performance> performances = adminPerformanceRepository.findByApproveStatuses(effectiveStatuses, pageable);
+        Page<Performance> performances = adminPerformanceRepository.findByApproveStatusesAndType(type,
+                effectiveStatuses, pageable);
         var dtoPage = performances.map(performanceDetailMapper::toPendingPerformanceDTO);
         return GetPerformanceApplicationListResponseDTO.of(dtoPage);
     }
@@ -48,7 +50,7 @@ public class PerformanceApplicationQueryUseCaseImpl implements PerformanceApplic
     public GetPerformanceDetailResponseDTO getPendingPerformanceDetail(Long performanceId) {
         Performance performance = adminPerformanceRepository.getById(performanceId);
 
-        return performanceDetailMapper.toPerformanceDetailResponseDTO(performance);
+        return performanceDetailMapper.toDetailDTO(performance);
     }
 
 

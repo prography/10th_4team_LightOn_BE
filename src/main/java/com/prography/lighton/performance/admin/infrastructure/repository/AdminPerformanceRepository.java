@@ -2,6 +2,7 @@ package com.prography.lighton.performance.admin.infrastructure.repository;
 
 import com.prography.lighton.performance.common.domain.entity.Performance;
 import com.prography.lighton.performance.common.domain.entity.enums.ApproveStatus;
+import com.prography.lighton.performance.common.domain.entity.enums.Type;
 import com.prography.lighton.performance.common.domain.exception.NoSuchPerformanceException;
 import java.util.List;
 import java.util.Optional;
@@ -28,6 +29,7 @@ public interface AdminPerformanceRepository extends JpaRepository<Performance, L
             join fetch p.genres pg
             join fetch pg.genre g
             where p.approveStatus in :statuses
+            and p.type = :type
             and p.status = true
             """,
             countQuery = """
@@ -35,7 +37,9 @@ public interface AdminPerformanceRepository extends JpaRepository<Performance, L
                     where p.approveStatus in :statuses
                     and p.status = true
                     """)
-    Page<Performance> findByApproveStatuses(@Param("statuses") List<ApproveStatus> approveStatus, Pageable pageable);
+    Page<Performance> findByApproveStatusesAndType(@Param("type") Type type,
+                                                   @Param("statuses") List<ApproveStatus> approveStatus,
+                                                   Pageable pageable);
 
     Long countByApproveStatus(ApproveStatus approveStatus);
 
