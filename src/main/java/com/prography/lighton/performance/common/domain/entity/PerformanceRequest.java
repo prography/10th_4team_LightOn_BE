@@ -48,4 +48,8 @@ public class PerformanceRequest extends BaseEntity {
                 fee);
     }
 
+    public void updateRequestStatus(RequestStatus requestStatus) {
+        this.requestStatus = requestStatus;
+    }
+
 }
