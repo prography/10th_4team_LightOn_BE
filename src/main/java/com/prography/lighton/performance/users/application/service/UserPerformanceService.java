@@ -8,6 +8,8 @@ import com.prography.lighton.performance.common.domain.exception.DuplicatePerfor
 import com.prography.lighton.performance.common.presentation.dto.response.GetPerformanceDetailResponseDTO;
 import com.prography.lighton.performance.users.infrastructure.repository.PerformanceRepository;
 import com.prography.lighton.performance.users.infrastructure.repository.PerformanceRequestRepository;
+import com.prography.lighton.performance.users.presentation.dto.response.GetMyRegisteredPerformanceListResponseDTO;
+import com.prography.lighton.performance.users.presentation.dto.response.GetMyRequestedPerformanceListResponseDTO;
 import com.prography.lighton.performance.users.presentation.dto.response.RequestPerformanceResponseDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -53,5 +55,16 @@ public class UserPerformanceService {
 
         performance.cancelRequest(performanceRequest.getRequestedSeats());
         performanceRequestRepository.delete(performanceRequest);
+    }
+
+    public GetMyRegisteredPerformanceListResponseDTO getMyRegisteredPerformanceList(Member member) {
+        return GetMyRegisteredPerformanceListResponseDTO.from(
+                performanceRepository.getMyRegisteredPerformanceList(member));
+    }
+
+    public GetMyRequestedPerformanceListResponseDTO getMyRequestedPerformanceList(Member member) {
+        return GetMyRequestedPerformanceListResponseDTO.from(
+                performanceRequestRepository.getMyRequestedPerformanceList(member)
+        );
     }
 }

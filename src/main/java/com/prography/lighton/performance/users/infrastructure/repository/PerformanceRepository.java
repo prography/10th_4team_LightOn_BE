@@ -1,5 +1,6 @@
 package com.prography.lighton.performance.users.infrastructure.repository;
 
+import com.prography.lighton.member.common.domain.entity.Member;
 import com.prography.lighton.performance.common.domain.entity.Busking;
 import com.prography.lighton.performance.common.domain.entity.Performance;
 import com.prography.lighton.performance.common.domain.exception.NoSuchPerformanceException;
@@ -105,4 +106,13 @@ public interface PerformanceRepository extends JpaRepository<Performance, Long> 
                   AND LOWER(p.info.title) LIKE LOWER(CONCAT('%', :keyword, '%'))
             """)
     Page<Performance> searchByKeyword(@Param("keyword") String keyword, Pageable pageable);
+
+    @Query("""
+            SELECT p
+            FROM Performance p
+            WHERE p.performer = :member
+            AND p.status = true 
+            ORDER BY p.createdAt DESC
+            """)
+    List<Performance> getMyRegisteredPerformanceList(@Param("member") Member member);
 }
