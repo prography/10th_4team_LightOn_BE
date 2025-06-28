@@ -10,8 +10,7 @@ import org.hibernate.validator.constraints.URL;
 
 public record PerformanceRegisterRequest(
 
-        @NotEmpty(message = "아티스트는 하나 이상 선택해야 합니다.")
-        List<@NotNull(message = "아티스트 ID는 필수입니다.") Long> artists,
+        List<@NotNull(message = "아티스트 ID에는 빈 값이 들어갈 수 없습니다.") Long> artists,
 
         @NotNull(message = "공연 기본 정보는 필수입니다.")
         @Valid
