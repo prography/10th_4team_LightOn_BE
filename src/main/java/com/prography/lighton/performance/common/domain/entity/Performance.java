@@ -63,7 +63,7 @@ import org.hibernate.annotations.SQLRestriction;
 public class Performance extends BaseEntity {
 
     private static final int UPDATE_DEADLINE_DAYS = 3;
-    private static final int CANCEL_DEADLINE_DAYS = 3;
+    private static final int CANCEL_DEADLINE_DAYS = 1;
     private static final int MAX_REQUESTED_SEATS = 10;
     private static final int MIN_REQUESTED_SEATS = 1;
 

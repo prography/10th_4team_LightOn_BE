@@ -4,7 +4,7 @@ import com.prography.lighton.common.annotation.LoginMember;
 import com.prography.lighton.common.utils.ApiUtils;
 import com.prography.lighton.common.utils.ApiUtils.ApiResult;
 import com.prography.lighton.member.common.domain.entity.Member;
-import com.prography.lighton.performance.users.application.service.PerformanceService;
+import com.prography.lighton.performance.users.application.service.ArtistPerformanceService;
 import com.prography.lighton.performance.users.presentation.dto.PerformanceRegisterRequest;
 import com.prography.lighton.performance.users.presentation.dto.PerformanceUpdateRequest;
 import jakarta.validation.Valid;
@@ -24,13 +24,13 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/artists/performances/concerts")
 public class PerformanceController {
 
-    private final PerformanceService performanceService;
+    private final ArtistPerformanceService artistPerformanceService;
 
     @PostMapping
     public ResponseEntity<ApiResult<String>> registerPerformance(
             @LoginMember Member member,
             @Valid @RequestBody PerformanceRegisterRequest request) {
-        performanceService.registerPerformance(member, request);
+        artistPerformanceService.registerPerformance(member, request);
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(ApiUtils.success());
     }
@@ -39,14 +39,14 @@ public class PerformanceController {
     public ResponseEntity<ApiResult<String>> updatePerformance(@LoginMember Member member,
                                                                @PathVariable Long id,
                                                                @Valid @RequestBody PerformanceUpdateRequest request) {
-        performanceService.updatePerformance(member, id, request);
+        artistPerformanceService.updatePerformance(member, id, request);
         return ResponseEntity.ok()
                 .body(ApiUtils.success());
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<ApiResult<String>> cancelPerformance(@LoginMember Member member, @PathVariable Long id) {
-        performanceService.cancelPerformance(member, id);
+        artistPerformanceService.cancelPerformance(member, id);
         return ResponseEntity.ok()
                 .body(ApiUtils.success());
     }
