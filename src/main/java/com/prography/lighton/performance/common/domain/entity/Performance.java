@@ -392,11 +392,7 @@ public class Performance extends BaseEntity {
     public void validateIsManagedBy(Member member) {
         validateApproved();
 
-        boolean isManagedBy = this.performer.equals(member) ||
-                this.artists.stream()
-                        .anyMatch(pa -> pa.getArtist().getMember().equals(member));
-
-        if (!isManagedBy) {
+        if (!this.performer.equals(member)) {
             throw new NotAuthorizedPerformanceException();
         }
     }
