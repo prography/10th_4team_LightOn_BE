@@ -6,7 +6,7 @@ import com.prography.lighton.performance.common.domain.entity.enums.RequestStatu
 
 public interface ArtistPerformanceService {
 
-    GetPerformanceRequestsResponseDTO getPerformanceRequests(Long performanceId);
+    GetPerformanceRequestsResponseDTO getPerformanceRequests(Long performanceId, Member member);
 
     void managePerformanceRequest(Long performanceId, Member member, RequestStatus requestStatus);
 }
