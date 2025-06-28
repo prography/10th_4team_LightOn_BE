@@ -48,7 +48,7 @@ public class PerformanceApplicationQueryUseCaseImpl implements PerformanceApplic
     public GetPerformanceApplicationDetailResponseDTO getPendingPerformanceDetail(Long performanceId) {
         Performance performance = adminPerformanceRepository.getById(performanceId);
 
-        return pendingPerformanceMapper.toPerformanceDetailResponseDTO(performance);
+        return pendingPerformanceMapper.toDetailDTO(performance);
     }
 
 
