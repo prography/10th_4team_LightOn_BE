@@ -1,13 +1,13 @@
-package com.prography.lighton.performance.admin.application.mapper;
+package com.prography.lighton.performance.common.application.mapper;
 
 import com.prography.lighton.genre.domain.entity.Genre;
 import com.prography.lighton.genre.infrastructure.cache.GenreCache;
-import com.prography.lighton.performance.admin.presentation.dto.response.GetPerformanceApplicationDetailResponseDTO;
-import com.prography.lighton.performance.admin.presentation.dto.response.GetPerformanceApplicationDetailResponseDTO.ArtistDTO;
 import com.prography.lighton.performance.admin.presentation.dto.response.GetPerformanceApplicationListResponseDTO.PerformanceApplicationDTO;
 import com.prography.lighton.performance.common.domain.entity.Busking;
 import com.prography.lighton.performance.common.domain.entity.Performance;
 import com.prography.lighton.performance.common.domain.entity.association.PerformanceGenre;
+import com.prography.lighton.performance.common.presentation.dto.response.GetPerformanceDetailResponseDTO;
+import com.prography.lighton.performance.common.presentation.dto.response.GetPerformanceDetailResponseDTO.ArtistDTO;
 import com.prography.lighton.region.infrastructure.cache.RegionCache;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -15,7 +15,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
-public class PendingPerformanceMapper {
+public class PerformanceDetailMapper {
 
     private final GenreCache genreCache;
     private final RegionCache regionCache;
@@ -38,15 +38,15 @@ public class PendingPerformanceMapper {
         );
     }
 
-    public GetPerformanceApplicationDetailResponseDTO toDetailDTO(Performance performance) {
+    public GetPerformanceDetailResponseDTO toDetailDTO(Performance performance) {
         if (performance instanceof Busking busking) {
             return toBuskingDTO(busking);
         }
         return toConcertDTO(performance);
     }
 
-    private GetPerformanceApplicationDetailResponseDTO toConcertDTO(Performance p) {
-        return GetPerformanceApplicationDetailResponseDTO.builder()
+    private GetPerformanceDetailResponseDTO toConcertDTO(Performance p) {
+        return GetPerformanceDetailResponseDTO.builder()
                 .id(p.getId())
                 .info(p.getInfo())
                 .artists(
@@ -65,8 +65,8 @@ public class PendingPerformanceMapper {
                 .build();
     }
 
-    private GetPerformanceApplicationDetailResponseDTO toBuskingDTO(Busking b) {
-        GetPerformanceApplicationDetailResponseDTO.ArtistDTO artistDto;
+    private GetPerformanceDetailResponseDTO toBuskingDTO(Busking b) {
+        ArtistDTO artistDto;
 
         if (b.getArtists().isEmpty()) {
             artistDto = ArtistDTO.of(null, b.getArtistName(), b.getArtistDescription());
@@ -75,7 +75,7 @@ public class PendingPerformanceMapper {
             artistDto = ArtistDTO.of(a.getId(), a.getStageName(), a.getDescription());
         }
 
-        return GetPerformanceApplicationDetailResponseDTO.builder()
+        return GetPerformanceDetailResponseDTO.builder()
                 .id(b.getId())
                 .info(b.getInfo())
                 .artists(List.of(artistDto))

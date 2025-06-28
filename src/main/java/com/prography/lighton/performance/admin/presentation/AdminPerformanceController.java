@@ -7,11 +7,11 @@ import com.prography.lighton.performance.admin.application.GetPerformanceStatsUs
 import com.prography.lighton.performance.admin.application.ManagePerformanceApplicationUseCase;
 import com.prography.lighton.performance.admin.application.PerformanceApplicationQueryUseCase;
 import com.prography.lighton.performance.admin.presentation.dto.request.ManagePerformanceApplicationRequestDTO;
-import com.prography.lighton.performance.admin.presentation.dto.response.GetPerformanceApplicationDetailResponseDTO;
 import com.prography.lighton.performance.admin.presentation.dto.response.GetPerformanceApplicationListResponseDTO;
 import com.prography.lighton.performance.admin.presentation.dto.response.GetPerformanceStatsResponseDTO;
 import com.prography.lighton.performance.common.domain.entity.enums.ApproveStatus;
 import com.prography.lighton.performance.common.domain.entity.enums.Type;
+import com.prography.lighton.performance.common.presentation.dto.response.GetPerformanceDetailResponseDTO;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -48,7 +48,7 @@ public class AdminPerformanceController {
 
 
     @GetMapping("/applications/performances/{performanceId}")
-    public ResponseEntity<ApiUtils.ApiResult<GetPerformanceApplicationDetailResponseDTO>> getPerformanceApplicationList(
+    public ResponseEntity<ApiUtils.ApiResult<GetPerformanceDetailResponseDTO>> getPerformanceApplicationList(
             @PathVariable Long performanceId) {
         return ResponseEntity.ok(ApiUtils.success(
                 performanceApplicationQueryUseCase.getPendingPerformanceDetail(performanceId)));
