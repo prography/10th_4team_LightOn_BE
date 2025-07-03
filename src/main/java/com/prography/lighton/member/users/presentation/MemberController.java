@@ -1,8 +1,10 @@
 package com.prography.lighton.member.users.presentation;
 
 import com.prography.lighton.auth.security.util.SecurityUtils;
+import com.prography.lighton.common.annotation.LoginMember;
 import com.prography.lighton.common.utils.ApiUtils;
 import com.prography.lighton.common.utils.ApiUtils.ApiResult;
+import com.prography.lighton.member.common.domain.entity.Member;
 import com.prography.lighton.member.users.application.CompleteMemberProfileUseCase;
 import com.prography.lighton.member.users.application.ManagePreferredGenreUseCase;
 import com.prography.lighton.member.users.application.RegisterMemberUseCase;
@@ -57,10 +59,10 @@ public class MemberController {
         return ResponseEntity.status(HttpStatus.CREATED).body(ApiUtils.success());
     }
 
-    @GetMapping("/{memberId}/genres")
-    public ResponseEntity<ApiResult<GetPreferredGenreResponseDTO>> getMemberGenres(@PathVariable Long memberId) {
+    @GetMapping("/genres")
+    public ResponseEntity<ApiResult<GetPreferredGenreResponseDTO>> getMemberGenres(@LoginMember Member member) {
         return ResponseEntity.status(HttpStatus.OK)
-                .body(ApiUtils.success(managePreferredGenreUseCase.getPreferredGenre(memberId)));
+                .body(ApiUtils.success(managePreferredGenreUseCase.getPreferredGenre(member)));
     }
 
     @GetMapping("/duplicate-check")

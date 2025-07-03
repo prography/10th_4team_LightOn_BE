@@ -38,8 +38,8 @@ public class ManagePreferredGenreUseCaseImpl implements ManagePreferredGenreUseC
     }
 
     @Override
-    public GetPreferredGenreResponseDTO getPreferredGenre(Long memberId) {
-        List<Genre> genres = preferredGenreRepository.findAllByMemberId(memberId).stream()
+    public GetPreferredGenreResponseDTO getPreferredGenre(Member member) {
+        List<Genre> genres = preferredGenreRepository.findAllByMember(member).stream()
                 .map(PreferredGenre::getGenre)
                 .toList();
 
