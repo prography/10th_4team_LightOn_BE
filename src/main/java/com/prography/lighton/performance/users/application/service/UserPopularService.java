@@ -14,13 +14,21 @@ import org.springframework.transaction.annotation.Transactional;
 public class UserPopularService {
 
     private static final int LIMIT = 30;
+    private static final String POPULAR_CACHE_KEY_PREFIX = "popular:";
+    private static final String ALL_GENRE_KEY = "all";
+
     private final PerformanceListHelper helper;
     private final PerformancePopularRepository popularRepository;
 
     public GetPerformanceBrowseResponse getPopular(String genre) {
-        String key = "popular:" + (StringUtils.isBlank(genre) ? "all" : genre.toLowerCase());
+        String key = buildKey(genre);
         return helper.fetchWithCache(
                 key,
                 () -> popularRepository.findTopPopularIds(genre, LIMIT));
+    }
+
+    private String buildKey(String genre) {
+        String normalizeGenre = StringUtils.isBlank(genre) ? ALL_GENRE_KEY : genre.toLowerCase();
+        return POPULAR_CACHE_KEY_PREFIX + normalizeGenre;
     }
 }
