@@ -48,7 +48,10 @@ public class PerformanceSummaryRepositoryImpl implements PerformanceSummaryRepos
                 .leftJoin(p.genres, pg)
                 .leftJoin(sr)
                 .on(sr.id.eq(subRegionIdPath))
-                .where(perf.getNumber("id", Long.class).in(ids))
+                .where(
+                        perf.getNumber("id", Long.class).in(ids),
+                        perf.getBoolean("status").eq(true)
+                )
                 .transform(
                         groupBy(perf.getNumber("id", Long.class)).list(
                                 constructor(PerformanceSummary.class,

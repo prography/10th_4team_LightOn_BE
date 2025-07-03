@@ -32,7 +32,8 @@ public class PerformanceRecommendationRepositoryImpl implements PerformanceRecom
                 .where(
                         mpg.member.id.eq(memberId),
                         p.approveStatus.eq(ApproveStatus.APPROVED),
-                        p.schedule.endDate.goe(LocalDate.now())
+                        p.schedule.endDate.goe(LocalDate.now()),
+                        p.status.eq(true)
                 )
                 .groupBy(p.id)
                 .orderBy(
