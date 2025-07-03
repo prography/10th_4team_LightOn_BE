@@ -11,5 +11,5 @@ public interface PreferredGenreRepository extends JpaRepository<PreferredGenre, 
 
     List<PreferredGenre> findAllByMember(Member member);
 
-    void deleteAllByMemberId(Long memberId);
+    void deleteAllByMember(Member member);
 }

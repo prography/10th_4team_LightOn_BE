@@ -6,7 +6,7 @@ import com.prography.lighton.member.users.presentation.dto.response.GetPreferred
 
 public interface ManagePreferredGenreUseCase {
 
-    void editMemberGenre(final Long memberId, final EditMemberGenreRequestDTO request);
+    void editMemberGenre(final Member member, final EditMemberGenreRequestDTO request);
 
     GetPreferredGenreResponseDTO getPreferredGenre(final Member member);
 }
