@@ -1,7 +1,7 @@
 package com.prography.lighton.performance.users.infrastructure.repository;
 
 import java.util.List;
-import org.apache.commons.lang3.StringUtils;
+import org.springframework.util.StringUtils;
 
 public interface PerformancePopularRepository {
 
@@ -10,9 +10,9 @@ public interface PerformancePopularRepository {
     List<Long> findTopPopularByGenre(String genre, int limit);
 
     default List<Long> findTopPopularIds(String genre, int limit) {
-        if (StringUtils.isBlank(genre)) {
-            return findTopPopularAll(limit);
+        if (StringUtils.hasText(genre)) {
+            return findTopPopularByGenre(genre.trim().toLowerCase(), limit);
         }
-        return findTopPopularByGenre(genre.trim().toLowerCase(), limit);
+        return findTopPopularAll(limit);
     }
 }
