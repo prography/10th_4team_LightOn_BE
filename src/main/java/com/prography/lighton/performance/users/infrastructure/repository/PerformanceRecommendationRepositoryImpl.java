@@ -1,6 +1,11 @@
 package com.prography.lighton.performance.users.infrastructure.repository;
 
-import jakarta.persistence.EntityManager;
+import com.prography.lighton.member.common.domain.entity.association.QPreferredGenre;
+import com.prography.lighton.performance.common.domain.entity.QPerformance;
+import com.prography.lighton.performance.common.domain.entity.association.QPerformanceGenre;
+import com.prography.lighton.performance.common.domain.entity.enums.ApproveStatus;
+import com.querydsl.jpa.impl.JPAQueryFactory;
+import java.time.LocalDate;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
@@ -10,32 +15,31 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class PerformanceRecommendationRepositoryImpl implements PerformanceRecommendationRepository {
 
-    private static final String RECOMMENDED_SQL = """
-            SELECT p.id
-            FROM performance p
-            LEFT JOIN performance_genre pg ON pg.performance_id = p.id
-            LEFT JOIN preferred_genre mpg
-                   ON mpg.genre_id = pg.genre_id
-                  AND mpg.member_id = :memberId
-            WHERE p.approve_status = 'APPROVED'
-              AND p.end_date >= CURRENT_DATE
-            GROUP BY p.id
-            ORDER BY COUNT(mpg.genre_id) DESC,  -- 매칭 수로 정렬
-                     p.created_at DESC
-            
-            """;
-
-    private final EntityManager em;
+    private final JPAQueryFactory query;
 
     @Override
     @Transactional(readOnly = true)
     public List<Long> findTopRecommendedIds(Long memberId, int limit) {
-        @SuppressWarnings("unchecked")
-        List<Number> rows = em.createNativeQuery(RECOMMENDED_SQL)
-                .setParameter("memberId", memberId)
-                .setMaxResults(limit)
-                .getResultList();
+        QPerformance p = QPerformance.performance;
+        QPerformanceGenre pg = QPerformanceGenre.performanceGenre;
+        QPreferredGenre mpg = QPreferredGenre.preferredGenre;
 
-        return rows.stream().map(Number::longValue).toList();
+        return query
+                .select(p.id)
+                .from(p)
+                .join(p.genres, pg)
+                .join(mpg).on(pg.genre.id.eq(mpg.genre.id))
+                .where(
+                        mpg.member.id.eq(memberId),
+                        p.approveStatus.eq(ApproveStatus.APPROVED),
+                        p.schedule.endDate.goe(LocalDate.now())
+                )
+                .groupBy(p.id)
+                .orderBy(
+                        pg.genre.id.count().desc(),
+                        p.createdAt.desc()
+                )
+                .limit(limit)
+                .fetch();
     }
 }
