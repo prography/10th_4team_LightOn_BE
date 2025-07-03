@@ -1,57 +1,60 @@
 package com.prography.lighton.performance.users.infrastructure.repository;
 
-import io.micrometer.common.util.StringUtils;
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.Query;
+import com.prography.lighton.genre.domain.entity.QGenre;
+import com.prography.lighton.performance.common.domain.entity.QPerformance;
+import com.prography.lighton.performance.common.domain.entity.association.QPerformanceGenre;
+import com.prography.lighton.performance.common.domain.entity.enums.ApproveStatus;
+import com.querydsl.jpa.impl.JPAQueryFactory;
+import java.time.LocalDate;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
 
 @Repository
 @RequiredArgsConstructor
 public class PerformancePopularRepositoryImpl implements PerformancePopularRepository {
 
-    private static final String POPULAR_ALL_SQL = """
-            SELECT p.id
-            FROM performance p
-            WHERE p.approve_status = 'APPROVED'
-              AND p.end_date       >= CURRENT_DATE
-            ORDER BY p.like_count DESC,
-                     p.view_count DESC
-            LIMIT :limit
-            """;
-
-    private static final String POPULAR_BY_GENRE_SQL = """
-            SELECT p.id
-            FROM performance p
-            JOIN performance_genre pg ON pg.performance_id = p.id
-            JOIN genre g              ON g.id = pg.genre_id
-            WHERE p.approve_status = 'APPROVED'
-              AND p.end_date       >= CURRENT_DATE
-              AND g.name = :genre
-            GROUP BY p.id
-            ORDER BY p.like_count DESC,
-                     p.view_count DESC
-            LIMIT :limit
-            """;
-
-    private final EntityManager em;
+    private final JPAQueryFactory query;
 
     @Override
-    @Transactional(readOnly = true)
-    public List<Long> findTopPopularIds(String genre, int limit) {
-        Query q;
-        if (StringUtils.isBlank(genre)) {
-            q = em.createNativeQuery(POPULAR_ALL_SQL);
-        } else {
-            q = em.createNativeQuery(POPULAR_BY_GENRE_SQL)
-                    .setParameter("genre", genre.trim().toLowerCase());
-        }
-        q.setParameter("limit", limit);
+    public List<Long> findTopPopularAll(int limit) {
+        QPerformance p = QPerformance.performance;
+        LocalDate today = LocalDate.now();
 
-        @SuppressWarnings("unchecked")
-        List<Number> rows = q.getResultList();
-        return rows.stream().map(Number::longValue).toList();
+        return query
+                .select(p.id)
+                .from(p)
+                .where(
+                        p.approveStatus.eq(ApproveStatus.APPROVED),
+                        p.schedule.endDate.goe(today),
+                        p.status.isTrue()
+                )
+                .orderBy(p.likeCount.desc(), p.viewCount.desc())
+                .limit(limit)
+                .fetch();
+    }
+
+    @Override
+    public List<Long> findTopPopularByGenre(String genre, int limit) {
+        QPerformance p = QPerformance.performance;
+        QPerformanceGenre pg = QPerformanceGenre.performanceGenre;
+        QGenre g = QGenre.genre;
+        LocalDate today = LocalDate.now();
+
+        return query
+                .select(p.id)
+                .distinct()
+                .from(p)
+                .join(p.genres, pg)
+                .join(pg.genre, g)
+                .where(
+                        p.approveStatus.eq(ApproveStatus.APPROVED),
+                        p.schedule.endDate.goe(today),
+                        p.status.isTrue(),
+                        g.name.eq(genre)
+                )
+                .orderBy(p.likeCount.desc(), p.viewCount.desc())
+                .limit(limit)
+                .fetch();
     }
 }
