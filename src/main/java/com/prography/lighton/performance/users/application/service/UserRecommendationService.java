@@ -14,13 +14,19 @@ import org.springframework.transaction.annotation.Transactional;
 public class UserRecommendationService {
 
     private static final int LIMIT = 50;
+    private static final String RECOMMENDATION_CACHE_KEY_PREFIX = "recommend:";
+
     private final PerformanceListHelper helper;
     private final PerformanceRecommendationRepository recommendationRepository;
 
     public GetPerformanceBrowseResponse getRecommendations(Member member) {
-        String key = "recommend:" + member.getId();
+        String key = buildKey(member);
         return helper.fetchWithCache(
                 key,
                 () -> recommendationRepository.findTopRecommendedIds(member.getId(), LIMIT));
+    }
+
+    private String buildKey(Member member) {
+        return RECOMMENDATION_CACHE_KEY_PREFIX + member.getId();
     }
 }
