@@ -45,6 +45,7 @@ public interface PerformanceRequestRepository extends JpaRepository<PerformanceR
                 FROM PerformanceRequest pr
                 JOIN FETCH pr.member m
                 WHERE pr.performance = :performance
+                AND pr.status = true
             """)
     List<PerformanceRequest> findAllByPerformance(Performance performance);
 
