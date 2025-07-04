@@ -5,7 +5,7 @@ import com.prography.lighton.common.utils.ApiUtils;
 import com.prography.lighton.common.utils.ApiUtils.ApiResult;
 import com.prography.lighton.member.common.domain.entity.Member;
 import com.prography.lighton.performance.common.domain.entity.enums.PerformanceFilterType;
-import com.prography.lighton.performance.users.application.service.PerformanceService;
+import com.prography.lighton.performance.users.application.service.ArtistPerformanceService;
 import com.prography.lighton.performance.users.presentation.dto.response.GetPerformanceMapListResponseDTO;
 import com.prography.lighton.performance.users.presentation.dto.response.PerformanceSearchItemDTO;
 import lombok.RequiredArgsConstructor;
@@ -23,7 +23,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class PerformanceMapController {
 
-    private final PerformanceService performanceService;
+    private final ArtistPerformanceService artistPerformanceService;
 
     @GetMapping("/nearby")
     public ResponseEntity<ApiResult<GetPerformanceMapListResponseDTO>> getNearbyPerformances(
@@ -31,7 +31,7 @@ public class PerformanceMapController {
             @RequestParam double longitude,
             @RequestParam(defaultValue = "50") int radius) {
         return ResponseEntity.ok(
-                ApiUtils.success(performanceService.findNearbyPerformances(latitude, longitude, radius)));
+                ApiUtils.success(artistPerformanceService.findNearbyPerformances(latitude, longitude, radius)));
     }
 
     @GetMapping("/highlight")
@@ -42,7 +42,7 @@ public class PerformanceMapController {
             @RequestParam(defaultValue = "50") int radius,
             @LoginMember Member member) {
         return ResponseEntity.ok(ApiUtils.success(
-                performanceService.findFilteredPerformances(type, latitude, longitude, radius, member)));
+                artistPerformanceService.findFilteredPerformances(type, latitude, longitude, radius, member)));
     }
 
     @GetMapping
@@ -50,7 +50,7 @@ public class PerformanceMapController {
             @RequestParam String keyword,
             @PageableDefault(size = 10) Pageable pageable
     ) {
-        Page<PerformanceSearchItemDTO> result = performanceService.searchByKeyword(keyword, pageable);
+        Page<PerformanceSearchItemDTO> result = artistPerformanceService.searchByKeyword(keyword, pageable);
 
         return ResponseEntity.ok(ApiUtils.success(result));
     }

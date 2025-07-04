@@ -13,7 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
-public class PerformanceLikeService {
+public class UserPerformanceLikeService {
 
     private final PerformanceRepository performanceRepository;
     private final PerformanceLikeRepository performanceLikeRepository;
