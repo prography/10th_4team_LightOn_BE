@@ -23,14 +23,14 @@ public class UserPerformanceBrowseController {
     private final UserPopularService popularService;
 
     @GetMapping("/recommend")
-    public ResponseEntity<ApiResult<GetPerformanceBrowseResponse>> GetUserRecommendService(
+    public ResponseEntity<ApiResult<GetPerformanceBrowseResponse>> getRecommendations(
             @LoginMember Member member) {
         GetPerformanceBrowseResponse dto = recommendationService.getRecommendations(member);
         return ResponseEntity.ok(ApiUtils.success(dto));
     }
 
     @GetMapping("/popular")
-    public ResponseEntity<ApiUtils.ApiResult<GetPerformanceBrowseResponse>> popular(
+    public ResponseEntity<ApiUtils.ApiResult<GetPerformanceBrowseResponse>> getPopulars(
             @RequestParam(required = false) String genre) {
         GetPerformanceBrowseResponse dto = popularService.getPopular(genre);
         return ResponseEntity.ok(ApiUtils.success(dto));
