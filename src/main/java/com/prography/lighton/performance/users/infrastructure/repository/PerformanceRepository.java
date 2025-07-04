@@ -108,11 +108,12 @@ public interface PerformanceRepository extends JpaRepository<Performance, Long> 
     Page<Performance> searchByKeyword(@Param("keyword") String keyword, Pageable pageable);
 
     @Query("""
-            SELECT p
-            FROM Performance p
-            WHERE p.performer = :member
-            AND p.status = true 
-            ORDER BY p.createdAt DESC
+                SELECT DISTINCT p
+                FROM Performance p
+                LEFT JOIN PerformanceArtist pa ON pa.performance = p
+                WHERE (p.performer = :member OR pa.artist.member = :member)
+                  AND p.status = true
+                ORDER BY p.createdAt DESC
             """)
-    List<Performance> getMyRegisteredPerformanceList(@Param("member") Member member);
+    List<Performance> getMyRegisteredOrParticipatedPerformanceList(@Param("member") Member member);
 }

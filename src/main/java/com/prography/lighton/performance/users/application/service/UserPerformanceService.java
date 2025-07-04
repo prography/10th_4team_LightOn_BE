@@ -65,7 +65,7 @@ public class UserPerformanceService {
 
     public GetMyRegisteredPerformanceListResponseDTO getMyRegisteredPerformanceList(Member member) {
         return GetMyRegisteredPerformanceListResponseDTO.from(
-                performanceRepository.getMyRegisteredPerformanceList(member));
+                performanceRepository.getMyRegisteredOrParticipatedPerformanceList(member));
     }
 
     public GetMyRequestedPerformanceListResponseDTO getMyRequestedPerformanceList(Member member) {
