@@ -10,7 +10,6 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.List;
 import java.util.Optional;
-import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -64,13 +63,14 @@ public interface PerformanceRequestRepository extends JpaRepository<PerformanceR
                                     @Param("currentTime") LocalTime currentTime);
 
 
-    @Query("""
-                SELECT pr.performance.location.region.subRegion
-                FROM PerformanceRequest pr
-                WHERE pr.member = :member
-                  AND pr.requestStatus = 'APPROVED'
-                GROUP BY pr.performance.location.region.subRegion
+    @Query(value = """
+                SELECT pr.sub_region
+                FROM performance_request pr
+                WHERE pr.member_id = :memberId
+                  AND pr.request_status = 'APPROVED'
+                GROUP BY pr.sub_region
                 ORDER BY COUNT(pr.id) DESC
-            """)
-    List<SubRegion> findTopSubRegion(@Param("member") Member member, Pageable pageable);
+                LIMIT 1
+            """, nativeQuery = true)
+    SubRegion findTopSubRegion(@Param("memberId") Long memberId);
 }

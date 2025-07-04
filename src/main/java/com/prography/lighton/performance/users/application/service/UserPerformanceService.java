@@ -16,7 +16,6 @@ import com.prography.lighton.region.domain.entity.SubRegion;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -77,8 +76,7 @@ public class UserPerformanceService {
 
     public GetMyPerformanceStatsResponseDTO getMyPerformanceStats(Member member) {
         SubRegion mostParticipatedSubRegion = performanceRequestRepository
-                .findTopSubRegion(member,
-                        PageRequest.of(0, 1)).getFirst();
+                .findTopSubRegion(member.getId());
 
         return GetMyPerformanceStatsResponseDTO.of(
                 performanceRequestRepository.countMyPerformanceApply(member, LocalDate.now(), LocalTime.now()),
