@@ -4,7 +4,6 @@ import com.prography.lighton.member.common.domain.entity.Member;
 import com.prography.lighton.performance.common.domain.entity.Performance;
 import com.prography.lighton.performance.common.domain.entity.PerformanceRequest;
 import com.prography.lighton.performance.common.domain.exception.NoSuchPerformanceRequestException;
-import com.prography.lighton.region.domain.entity.SubRegion;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -64,13 +63,16 @@ public interface PerformanceRequestRepository extends JpaRepository<PerformanceR
 
 
     @Query(value = """
-                SELECT pr.sub_region
+                SELECT sr.code
                 FROM performance_request pr
+                JOIN performance p ON pr.performance_id = p.id
+                JOIN sub_region sr ON p.sub_region_id = sr.id
                 WHERE pr.member_id = :memberId
                   AND pr.request_status = 'APPROVED'
-                GROUP BY pr.sub_region
+                GROUP BY sr.id
                 ORDER BY COUNT(pr.id) DESC
                 LIMIT 1
             """, nativeQuery = true)
-    SubRegion findTopSubRegion(@Param("memberId") Long memberId);
+    Integer findTopSubRegionId(@Param("memberId") Long memberId);
+
 }

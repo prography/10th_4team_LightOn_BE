@@ -13,6 +13,7 @@ import com.prography.lighton.performance.users.presentation.dto.response.GetMyRe
 import com.prography.lighton.performance.users.presentation.dto.response.GetMyRequestedPerformanceListResponseDTO;
 import com.prography.lighton.performance.users.presentation.dto.response.RequestPerformanceResponseDTO;
 import com.prography.lighton.region.domain.entity.SubRegion;
+import com.prography.lighton.region.infrastructure.cache.RegionCache;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import lombok.RequiredArgsConstructor;
@@ -25,6 +26,8 @@ import org.springframework.transaction.annotation.Transactional;
 public class UserPerformanceService {
 
     private static final String BLANK = " ";
+
+    private final RegionCache regionCache;
 
     private final PerformanceRepository performanceRepository;
     private final PerformanceRequestRepository performanceRequestRepository;
@@ -75,8 +78,11 @@ public class UserPerformanceService {
     }
 
     public GetMyPerformanceStatsResponseDTO getMyPerformanceStats(Member member) {
-        SubRegion mostParticipatedSubRegion = performanceRequestRepository
-                .findTopSubRegion(member.getId());
+        Integer mostParticipatedSubRegionCode = performanceRequestRepository
+                .findTopSubRegionId(member.getId());
+
+        SubRegion mostParticipatedSubRegion = regionCache.getRegionInfoByCode(mostParticipatedSubRegionCode)
+                .getSubRegion();
 
         return GetMyPerformanceStatsResponseDTO.of(
                 performanceRequestRepository.countMyPerformanceApply(member, LocalDate.now(), LocalTime.now()),
