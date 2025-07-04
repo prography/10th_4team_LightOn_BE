@@ -8,6 +8,8 @@ import com.prography.lighton.common.domain.BaseEntity;
 import com.prography.lighton.member.common.domain.entity.Member;
 import com.prography.lighton.performance.common.domain.entity.enums.RequestStatus;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import java.time.LocalDateTime;
@@ -32,6 +34,7 @@ public class PerformanceRequest extends BaseEntity {
     @ManyToOne(fetch = LAZY, optional = false)
     private Performance performance;
 
+    @Enumerated(EnumType.STRING)
     private RequestStatus requestStatus;
 
     private LocalDateTime requestedAt;
@@ -43,6 +46,10 @@ public class PerformanceRequest extends BaseEntity {
     public static PerformanceRequest of(Member member, Performance performance, Integer requestedSeats, Integer fee) {
         return new PerformanceRequest(member, performance, RequestStatus.PENDING, LocalDateTime.now(), requestedSeats,
                 fee);
+    }
+
+    public void updateRequestStatus(RequestStatus requestStatus) {
+        this.requestStatus = requestStatus;
     }
 
 }

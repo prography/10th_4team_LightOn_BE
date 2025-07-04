@@ -30,6 +30,7 @@ import org.hibernate.annotations.SQLRestriction;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Entity
+@Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @SQLDelete(sql = "UPDATE member SET status = false WHERE id = ?")

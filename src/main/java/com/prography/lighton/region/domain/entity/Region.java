@@ -23,6 +23,6 @@ public class Region extends BaseEntity {
     private String name;
 
     @Column(nullable = false)
-    @OneToMany(fetch = FetchType.LAZY)
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "region")
     private List<SubRegion> subRegions;
 }

@@ -4,13 +4,13 @@ import static com.prography.lighton.performance.common.domain.entity.enums.Appro
 import static com.prography.lighton.performance.common.domain.entity.enums.ApproveStatus.REJECTED;
 
 import com.prography.lighton.performance.admin.application.PerformanceApplicationQueryUseCase;
-import com.prography.lighton.performance.admin.application.mapper.PendingPerformanceMapper;
 import com.prography.lighton.performance.admin.infrastructure.repository.AdminPerformanceRepository;
-import com.prography.lighton.performance.admin.presentation.dto.response.GetPerformanceApplicationDetailResponseDTO;
-import com.prography.lighton.performance.admin.presentation.dto.response.GetPerformanceApplicationListResponseDTO;
+import com.prography.lighton.performance.admin.presentation.dto.response.GetPerformanceApplicationsListResponseDTO;
+import com.prography.lighton.performance.common.application.mapper.PerformanceDetailMapper;
 import com.prography.lighton.performance.common.domain.entity.Performance;
 import com.prography.lighton.performance.common.domain.entity.enums.ApproveStatus;
 import com.prography.lighton.performance.common.domain.entity.enums.Type;
+import com.prography.lighton.performance.common.presentation.dto.response.GetPerformanceDetailResponseDTO;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -27,11 +27,11 @@ import org.springframework.transaction.annotation.Transactional;
 public class PerformanceApplicationQueryUseCaseImpl implements PerformanceApplicationQueryUseCase {
 
     private final AdminPerformanceRepository adminPerformanceRepository;
-    private final PendingPerformanceMapper pendingPerformanceMapper;
+    private final PerformanceDetailMapper performanceDetailMapper;
 
     @Override
-    public GetPerformanceApplicationListResponseDTO getAllPerformanceApplications(int page, int size, Type type,
-                                                                                  List<ApproveStatus> approveStatuses) {
+    public GetPerformanceApplicationsListResponseDTO getAllPerformanceApplications(int page, int size, Type type,
+                                                                                   List<ApproveStatus> approveStatuses) {
         Pageable pageable = PageRequest.of(page, size);
 
         List<ApproveStatus> effectiveStatuses;
@@ -42,15 +42,15 @@ public class PerformanceApplicationQueryUseCaseImpl implements PerformanceApplic
         }
         Page<Performance> performances = adminPerformanceRepository.findByApproveStatusesAndType(type,
                 effectiveStatuses, pageable);
-        var dtoPage = performances.map(pendingPerformanceMapper::toPendingPerformanceDTO);
-        return GetPerformanceApplicationListResponseDTO.of(dtoPage);
+        var dtoPage = performances.map(performanceDetailMapper::toPendingPerformanceDTO);
+        return GetPerformanceApplicationsListResponseDTO.of(dtoPage);
     }
 
     @Override
-    public GetPerformanceApplicationDetailResponseDTO getPendingPerformanceDetail(Long performanceId) {
+    public GetPerformanceDetailResponseDTO getPendingPerformanceDetail(Long performanceId) {
         Performance performance = adminPerformanceRepository.getById(performanceId);
 
-        return pendingPerformanceMapper.toDetailDTO(performance);
+        return performanceDetailMapper.toDetailDTO(performance);
     }
 
 
