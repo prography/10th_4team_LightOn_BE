@@ -8,6 +8,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.List;
+import java.util.List;
 import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
@@ -24,6 +25,11 @@ public interface PerformanceRequestRepository extends JpaRepository<PerformanceR
 
     default PerformanceRequest getByMemberAndPerformance(Member member, Performance performance) {
         return findByMemberAndPerformance(member, performance)
+                .orElseThrow(NoSuchPerformanceRequestException::new);
+    }
+
+    default PerformanceRequest getById(Long requestId) {
+        return findById(requestId)
                 .orElseThrow(NoSuchPerformanceRequestException::new);
     }
 
@@ -74,5 +80,15 @@ public interface PerformanceRequestRepository extends JpaRepository<PerformanceR
                 LIMIT 1
             """, nativeQuery = true)
     Integer findTopSubRegionId(@Param("memberId") Long memberId);
+
+
+    @Query("""
+                SELECT pr
+                FROM PerformanceRequest pr
+                JOIN FETCH pr.member m
+                WHERE pr.performance = :performance
+                AND pr.status = true
+            """)
+    List<PerformanceRequest> findAllByPerformance(Performance performance);
 
 }

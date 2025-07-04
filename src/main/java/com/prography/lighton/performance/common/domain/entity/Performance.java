@@ -388,4 +388,12 @@ public class Performance extends BaseEntity {
             throw new NotEnoughSeatsException();
         }
     }
+
+    public void validateIsManagedBy(Member member) {
+        validateApproved();
+
+        if (!this.performer.equals(member)) {
+            throw new NotAuthorizedPerformanceException();
+        }
+    }
 }

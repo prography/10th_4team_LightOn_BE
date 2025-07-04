@@ -5,10 +5,10 @@ import com.prography.lighton.performance.common.domain.entity.vo.Schedule;
 import java.util.List;
 import org.springframework.data.domain.Page;
 
-public record GetPerformanceApplicationListResponseDTO(Page<PerformanceApplicationDTO> performanceApplications) {
+public record GetPerformanceApplicationsListResponseDTO(Page<PerformanceApplicationDTO> performanceApplications) {
 
-    public static GetPerformanceApplicationListResponseDTO of(Page<PerformanceApplicationDTO> performanceApplications) {
-        return new GetPerformanceApplicationListResponseDTO(performanceApplications);
+    public static GetPerformanceApplicationsListResponseDTO of(Page<PerformanceApplicationDTO> performanceApplications) {
+        return new GetPerformanceApplicationsListResponseDTO(performanceApplications);
     }
 
     public record PerformanceApplicationDTO(
