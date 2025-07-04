@@ -5,7 +5,7 @@ import static com.prography.lighton.performance.common.domain.entity.enums.Appro
 
 import com.prography.lighton.performance.admin.application.PerformanceApplicationQueryUseCase;
 import com.prography.lighton.performance.admin.infrastructure.repository.AdminPerformanceRepository;
-import com.prography.lighton.performance.admin.presentation.dto.response.GetPerformanceApplicationListResponseDTO;
+import com.prography.lighton.performance.admin.presentation.dto.response.GetPerformanceApplicationsListResponseDTO;
 import com.prography.lighton.performance.common.application.mapper.PerformanceDetailMapper;
 import com.prography.lighton.performance.common.domain.entity.Performance;
 import com.prography.lighton.performance.common.domain.entity.enums.ApproveStatus;
@@ -30,8 +30,8 @@ public class PerformanceApplicationQueryUseCaseImpl implements PerformanceApplic
     private final PerformanceDetailMapper performanceDetailMapper;
 
     @Override
-    public GetPerformanceApplicationListResponseDTO getAllPerformanceApplications(int page, int size, Type type,
-                                                                                  List<ApproveStatus> approveStatuses) {
+    public GetPerformanceApplicationsListResponseDTO getAllPerformanceApplications(int page, int size, Type type,
+                                                                                   List<ApproveStatus> approveStatuses) {
         Pageable pageable = PageRequest.of(page, size);
 
         List<ApproveStatus> effectiveStatuses;
@@ -43,7 +43,7 @@ public class PerformanceApplicationQueryUseCaseImpl implements PerformanceApplic
         Page<Performance> performances = adminPerformanceRepository.findByApproveStatusesAndType(type,
                 effectiveStatuses, pageable);
         var dtoPage = performances.map(performanceDetailMapper::toPendingPerformanceDTO);
-        return GetPerformanceApplicationListResponseDTO.of(dtoPage);
+        return GetPerformanceApplicationsListResponseDTO.of(dtoPage);
     }
 
     @Override

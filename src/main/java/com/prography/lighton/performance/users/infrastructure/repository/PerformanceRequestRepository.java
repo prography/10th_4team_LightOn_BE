@@ -5,6 +5,7 @@ import com.prography.lighton.performance.common.domain.entity.Performance;
 import com.prography.lighton.performance.common.domain.entity.PerformanceRequest;
 import com.prography.lighton.performance.common.domain.exception.NoSuchPerformanceRequestException;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
@@ -24,6 +25,11 @@ public interface PerformanceRequestRepository extends JpaRepository<PerformanceR
                 .orElseThrow(NoSuchPerformanceRequestException::new);
     }
 
+    default PerformanceRequest getById(Long requestId) {
+        return findById(requestId)
+                .orElseThrow(NoSuchPerformanceRequestException::new);
+    }
+
     @Modifying
     @Query("""
                 UPDATE PerformanceRequest pr
@@ -32,5 +38,15 @@ public interface PerformanceRequestRepository extends JpaRepository<PerformanceR
                   AND pr.createdAt <= :threshold
             """)
     void rejectExpiredRequests(@Param("threshold") LocalDateTime threshold);
+
+
+    @Query("""
+                SELECT pr
+                FROM PerformanceRequest pr
+                JOIN FETCH pr.member m
+                WHERE pr.performance = :performance
+                AND pr.status = true
+            """)
+    List<PerformanceRequest> findAllByPerformance(Performance performance);
 
 }
