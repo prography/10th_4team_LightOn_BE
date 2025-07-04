@@ -8,7 +8,14 @@ import com.prography.lighton.performance.common.domain.exception.DuplicatePerfor
 import com.prography.lighton.performance.common.presentation.dto.response.GetPerformanceDetailResponseDTO;
 import com.prography.lighton.performance.users.infrastructure.repository.PerformanceRepository;
 import com.prography.lighton.performance.users.infrastructure.repository.PerformanceRequestRepository;
+import com.prography.lighton.performance.users.presentation.dto.response.GetMyPerformanceStatsResponseDTO;
+import com.prography.lighton.performance.users.presentation.dto.response.GetMyRegisteredPerformanceListResponseDTO;
+import com.prography.lighton.performance.users.presentation.dto.response.GetMyRequestedPerformanceListResponseDTO;
 import com.prography.lighton.performance.users.presentation.dto.response.RequestPerformanceResponseDTO;
+import com.prography.lighton.region.domain.entity.SubRegion;
+import com.prography.lighton.region.infrastructure.cache.RegionCache;
+import java.time.LocalDate;
+import java.time.LocalTime;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -17,6 +24,10 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
 public class UserPerformanceService {
+
+    private static final String BLANK = " ";
+
+    private final RegionCache regionCache;
 
     private final PerformanceRepository performanceRepository;
     private final PerformanceRequestRepository performanceRequestRepository;
@@ -53,5 +64,31 @@ public class UserPerformanceService {
 
         performance.cancelRequest(performanceRequest.getRequestedSeats());
         performanceRequestRepository.delete(performanceRequest);
+    }
+
+    public GetMyRegisteredPerformanceListResponseDTO getMyRegisteredPerformanceList(Member member) {
+        return GetMyRegisteredPerformanceListResponseDTO.from(
+                performanceRepository.getMyRegisteredOrParticipatedPerformanceList(member));
+    }
+
+    public GetMyRequestedPerformanceListResponseDTO getMyRequestedPerformanceList(Member member) {
+        return GetMyRequestedPerformanceListResponseDTO.from(
+                performanceRequestRepository.getMyRequestedPerformanceList(member)
+        );
+    }
+
+    public GetMyPerformanceStatsResponseDTO getMyPerformanceStats(Member member) {
+        Integer mostParticipatedSubRegionCode = performanceRequestRepository
+                .findTopSubRegionId(member.getId());
+
+        SubRegion mostParticipatedSubRegion = regionCache.getRegionInfoByCode(mostParticipatedSubRegionCode)
+                .getSubRegion();
+
+        return GetMyPerformanceStatsResponseDTO.of(
+                performanceRequestRepository.countMyPerformanceApply(member, LocalDate.now(), LocalTime.now()),
+                mostParticipatedSubRegion.getRegion().getName()
+                        + BLANK
+                        + mostParticipatedSubRegion.getName()
+        );
     }
 }
