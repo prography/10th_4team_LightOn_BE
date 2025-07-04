@@ -43,7 +43,6 @@ public interface PerformanceRequestRepository extends JpaRepository<PerformanceR
                 JOIN FETCH pr.performance p
                 WHERE pr.member = :member
                 AND p.status = true
-                AND pr.requestStatus != 'REJECTED'
                 ORDER BY pr.createdAt DESC
             """)
     List<PerformanceRequest> getMyRequestedPerformanceList(@Param("member") Member member);
