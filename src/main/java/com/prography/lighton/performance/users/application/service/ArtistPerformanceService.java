@@ -24,7 +24,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
-public class PerformanceService {
+public class ArtistPerformanceService {
 
     private static final Integer DAY_OF_WEEK = 7;
     private static final Integer CLOSING_SOON_DAYS = 1;
