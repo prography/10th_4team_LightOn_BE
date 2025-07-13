@@ -8,6 +8,7 @@ import com.prography.lighton.member.users.application.CompleteMemberProfileUseCa
 import com.prography.lighton.member.users.application.ManagePreferredGenreUseCase;
 import com.prography.lighton.member.users.application.RegisterMemberUseCase;
 import com.prography.lighton.member.users.presentation.dto.request.CompleteMemberProfileRequestDTO;
+import com.prography.lighton.member.users.presentation.dto.request.EditMemberGenreRequestDTO;
 import com.prography.lighton.member.users.presentation.dto.request.RegisterMemberRequestDTO;
 import com.prography.lighton.member.users.presentation.dto.response.CheckDuplicateEmailResponseDTO;
 import com.prography.lighton.member.users.presentation.dto.response.CompleteMemberProfileResponseDTO;
@@ -53,7 +54,7 @@ public class MemberController {
 
     @PostMapping("/genres")
     public ResponseEntity<ApiResult<?>> editMemberGenre(
-            @RequestBody @Valid com.prography.lighton.member.presentation.dto.request.EditMemberGenreRequestDTO request,
+            @RequestBody @Valid EditMemberGenreRequestDTO request,
             @LoginMember Member member) {
         managePreferredGenreUseCase.editMemberGenre(member, request);
         return ResponseEntity.status(HttpStatus.CREATED).body(ApiUtils.success());

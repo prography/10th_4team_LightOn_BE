@@ -31,6 +31,7 @@ public class ArtistService {
     private final RegionCache regionCache;
 
     public Artist getApprovedArtistByMember(Member member) {
+        System.out.println("memberId: " + member.getId());
         Artist artist = artistRepository.getByMember(member);
         artist.isValidApproved();
         return artist;
