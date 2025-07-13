@@ -13,7 +13,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface ArtistRepository extends JpaRepository<Artist, Long> {
 
-    Boolean existsByMemberAndApproveStatus(Member member, ApproveStatus approveStatus);
+    boolean existsByMemberAndApproveStatus(Member member, ApproveStatus approveStatus);
 
     Optional<Artist> findByMember(Member member);
 
