@@ -4,6 +4,7 @@ import static java.util.stream.Collectors.collectingAndThen;
 import static java.util.stream.Collectors.toList;
 
 import com.prography.lighton.artist.common.domain.entity.Artist;
+import com.prography.lighton.artist.common.domain.entity.enums.ApproveStatus;
 import com.prography.lighton.artist.common.domain.entity.vo.History;
 import com.prography.lighton.artist.users.application.exception.NoSuchArtistException;
 import com.prography.lighton.artist.users.infrastructure.repository.ArtistRepository;
@@ -11,6 +12,7 @@ import com.prography.lighton.artist.users.presentation.dto.request.ArtistDTO;
 import com.prography.lighton.artist.users.presentation.dto.request.HistoryDTO;
 import com.prography.lighton.artist.users.presentation.dto.request.RegisterArtistRequest;
 import com.prography.lighton.artist.users.presentation.dto.request.UpdateArtistRequest;
+import com.prography.lighton.artist.users.presentation.dto.response.ArtistCheckResponseDTO;
 import com.prography.lighton.common.domain.vo.RegionInfo;
 import com.prography.lighton.genre.application.service.GenreService;
 import com.prography.lighton.genre.domain.entity.Genre;
@@ -81,6 +83,11 @@ public class ArtistService {
                 data.history(),
                 data.genres()
         );
+    }
+
+    public ArtistCheckResponseDTO isArtist(Member member) {
+        return ArtistCheckResponseDTO.of(
+                artistRepository.existsByMemberAndApproveStatus(member, ApproveStatus.APPROVED));
     }
 
     private ArtistData toArtistData(
