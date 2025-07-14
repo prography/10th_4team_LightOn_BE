@@ -14,8 +14,8 @@ import com.prography.lighton.artist.users.presentation.dto.request.RegisterArtis
 import com.prography.lighton.artist.users.presentation.dto.request.UpdateArtistRequest;
 import com.prography.lighton.artist.users.presentation.dto.response.ArtistCheckResponseDTO;
 import com.prography.lighton.common.domain.vo.RegionInfo;
-import com.prography.lighton.genre.application.service.GenreService;
 import com.prography.lighton.genre.domain.entity.Genre;
+import com.prography.lighton.genre.infrastructure.cache.GenreCache;
 import com.prography.lighton.member.common.domain.entity.Member;
 import com.prography.lighton.region.infrastructure.cache.RegionCache;
 import java.util.List;
@@ -29,7 +29,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class ArtistService {
 
     private final ArtistRepository artistRepository;
-    private final GenreService genreService;
+    private final GenreCache genreCache;
     private final RegionCache regionCache;
 
     public Artist getApprovedArtistByMember(Member member) {
@@ -96,7 +96,7 @@ public class ArtistService {
     ) {
         RegionInfo activityRegion = regionCache.getRegionInfoByCode(artistDto.activityLocation());
         History history = History.of(historyDto.bio(), historyDto.activityPhotos());
-        List<Genre> genres = genreService.getGenresOrThrow(artistDto.genre());
+        List<Genre> genres = genreCache.getGenresByNameOrThrow(artistDto.genre());
         return new ArtistData(activityRegion, history, genres);
     }
 

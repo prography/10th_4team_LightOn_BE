@@ -23,7 +23,7 @@ public record InfoDTO(
         String notice,
 
         @NotEmpty(message = "장르는 하나 이상 선택해야 합니다.")
-        List<@NotNull(message = "장르 ID는 필수입니다.") Long> genre,
+        List<@NotNull(message = "장르는 필수입니다.") String> genre,
 
         @URL(message = "포스터는 올바른 URL 형식이어야 합니다.")
         String poster
