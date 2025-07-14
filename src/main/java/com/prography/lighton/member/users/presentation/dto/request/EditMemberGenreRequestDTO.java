@@ -1,4 +1,4 @@
-package com.prography.lighton.member.presentation.dto.request;
+package com.prography.lighton.member.users.presentation.dto.request;
 
 import java.util.List;
 

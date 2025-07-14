@@ -2,8 +2,8 @@ package com.prography.lighton.performance.users.application.resolver;
 
 import com.prography.lighton.artist.common.domain.entity.Artist;
 import com.prography.lighton.artist.users.application.service.ArtistService;
-import com.prography.lighton.genre.application.service.GenreService;
 import com.prography.lighton.genre.domain.entity.Genre;
+import com.prography.lighton.genre.infrastructure.cache.GenreCache;
 import com.prography.lighton.member.common.domain.entity.Member;
 import com.prography.lighton.performance.common.domain.entity.enums.Seat;
 import com.prography.lighton.performance.common.domain.entity.vo.Info;
@@ -24,7 +24,7 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class PerformanceResolver {
 
-    private final GenreService genreService;
+    private final GenreCache genreCache;
     private final ArtistService artistService;
     private final RegionCache regionCache;
     private final AddressGeocodingService addressGeocodingService;
@@ -38,7 +38,7 @@ public class PerformanceResolver {
                 toLocation(infoDTO),
                 toPayment(paymentDTO),
                 seats,
-                genreService.getGenresOrThrow(infoDTO.genre())
+                genreCache.getGenresByNameOrThrow(infoDTO.genre())
         );
     }
 
@@ -48,7 +48,7 @@ public class PerformanceResolver {
                 toInfo(infoDTO),
                 toSchedule(scheduleDTO),
                 toLocation(infoDTO),
-                genreService.getGenresOrThrow(infoDTO.genre()));
+                genreCache.getGenresByNameOrThrow(infoDTO.genre()));
     }
 
     private List<Artist> toArtists(Member member, List<Long> artistIds) {

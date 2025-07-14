@@ -3,6 +3,7 @@ package com.prography.lighton.artist.users.presentation.controller;
 import com.prography.lighton.artist.users.application.service.ArtistService;
 import com.prography.lighton.artist.users.presentation.dto.request.RegisterArtistRequest;
 import com.prography.lighton.artist.users.presentation.dto.request.UpdateArtistRequest;
+import com.prography.lighton.artist.users.presentation.dto.response.ArtistCheckResponseDTO;
 import com.prography.lighton.common.annotation.LoginMember;
 import com.prography.lighton.common.utils.ApiUtils;
 import com.prography.lighton.common.utils.ApiUtils.ApiResult;
@@ -11,6 +12,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -38,5 +40,10 @@ public class ArtistController {
         artistService.updateArtist(member, request);
         return ResponseEntity.ok()
                 .body(ApiUtils.success());
+    }
+
+    @GetMapping("/me")
+    public ResponseEntity<ApiResult<ArtistCheckResponseDTO>> checkIsArtist(@LoginMember Member member) {
+        return ResponseEntity.ok(ApiUtils.success(artistService.isArtist(member)));
     }
 }
