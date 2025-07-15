@@ -1,5 +1,6 @@
 package com.prography.lighton.auth.application.impl;
 
+import com.prography.lighton.artist.users.application.service.ArtistService;
 import com.prography.lighton.auth.application.AuthService;
 import com.prography.lighton.auth.application.AuthVerificationService;
 import com.prography.lighton.auth.application.RefreshTokenService;
@@ -10,6 +11,9 @@ import com.prography.lighton.auth.infrastructure.sms.SmsService;
 import com.prography.lighton.auth.presentation.dto.request.VerifyPhoneRequestDTO;
 import com.prography.lighton.auth.presentation.dto.response.ReissueTokenResponse;
 import com.prography.lighton.member.common.domain.entity.Member;
+import com.prography.lighton.member.users.application.ManagePreferredGenreUseCase;
+import com.prography.lighton.performance.users.application.service.UserPerformanceLikeService;
+import com.prography.lighton.performance.users.application.service.UserPerformanceService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -25,6 +29,11 @@ public class AuthServiceImpl implements AuthService {
     private final RefreshTokenService refreshTokenService;
     private final SmsService smsService;
     private final AuthVerificationService authVerificationService;
+
+    private final UserPerformanceService userPerformanceService;
+    private final UserPerformanceLikeService userPerformanceLikeService;
+    private final ManagePreferredGenreUseCase managePreferredGenreUseCase;
+    private final ArtistService artistService;
 
     @Override
     public ReissueTokenResponse reissueLoginTokens(String refreshToken) {
@@ -45,6 +54,18 @@ public class AuthServiceImpl implements AuthService {
     @Override
     public void logout(Member member) {
         refreshTokenService.deleteRefreshToken(member.getId().toString());
+    }
+
+    @Override
+    @Transactional
+    public void withdraw(Member member) {
+        userPerformanceService.inactivateAllByMember(member);
+
+        managePreferredGenreUseCase.inactivateAllByMember(member);
+        userPerformanceLikeService.inactivateAllByMember(member);
+        artistService.inactiveByMember(member);
+
+        member.delete();
     }
 
     @Override

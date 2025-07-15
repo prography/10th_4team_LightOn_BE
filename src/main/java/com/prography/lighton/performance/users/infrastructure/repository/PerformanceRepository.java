@@ -35,6 +35,10 @@ public interface PerformanceRepository extends JpaRepository<Performance, Long> 
     @Query("SELECT p FROM Busking p WHERE p.id = :id")
     Optional<Busking> findBuskingById(@Param("id") Long id);
 
+    List<Performance> findAllByPerformer(Member performer);
+
+    void deleteAllByPerformer(Member performer);
+
     default Busking getByBuskingId(Long id) {
         return findBuskingById(id)
                 .orElseThrow(NoSuchPerformanceException::new);

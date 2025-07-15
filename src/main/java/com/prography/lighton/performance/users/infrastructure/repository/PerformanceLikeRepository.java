@@ -11,5 +11,8 @@ public interface PerformanceLikeRepository extends JpaRepository<PerformanceLike
     Optional<PerformanceLike> findByMemberAndPerformance(Member member, Performance performance);
 
     boolean existsByMemberAndPerformance(Member member, Performance performance);
+
+    void deleteAllByMember(Member member);
+
 }
 

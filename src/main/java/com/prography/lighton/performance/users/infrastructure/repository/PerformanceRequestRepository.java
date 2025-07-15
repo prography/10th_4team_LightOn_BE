@@ -8,7 +8,6 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.List;
-import java.util.List;
 import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
@@ -22,6 +21,12 @@ public interface PerformanceRequestRepository extends JpaRepository<PerformanceR
     boolean existsByMemberAndPerformance(Member member, Performance performance);
 
     Optional<PerformanceRequest> findByMemberAndPerformance(Member member, Performance performance);
+
+    void deleteAllByMember(Member member);
+
+    @Modifying(clearAutomatically = true)
+    @Query("UPDATE PerformanceRequest pr SET pr.status = false WHERE pr.performance IN :performances")
+    void deleteAllByPerformances(@Param("performances") List<Performance> performances);
 
     default PerformanceRequest getByMemberAndPerformance(Member member, Performance performance) {
         return findByMemberAndPerformance(member, performance)

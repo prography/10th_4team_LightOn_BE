@@ -17,6 +17,8 @@ public interface ArtistRepository extends JpaRepository<Artist, Long> {
 
     Optional<Artist> findByMember(Member member);
 
+    void deleteByMember(Member member);
+
     @Query("""
                 select a from Artist a
                 join fetch a.genres ag

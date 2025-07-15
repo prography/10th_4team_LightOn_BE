@@ -29,5 +29,9 @@ public class UserPerformanceLikeService {
         performanceLikeRepository.save(like);
         return LikePerformanceResponse.of(nowLiked);
     }
+
+    public void inactivateAllByMember(Member member) {
+        performanceLikeRepository.deleteAllByMember(member);
+    }
 }
 
