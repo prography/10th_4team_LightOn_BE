@@ -12,6 +12,7 @@ import com.prography.lighton.auth.presentation.dto.request.VerifyPhoneRequestDTO
 import com.prography.lighton.auth.presentation.dto.response.ReissueTokenResponse;
 import com.prography.lighton.member.common.domain.entity.Member;
 import com.prography.lighton.member.users.application.ManagePreferredGenreUseCase;
+import com.prography.lighton.member.users.infrastructure.repository.MemberRepository;
 import com.prography.lighton.member.users.infrastructure.repository.TemporaryMemberRepository;
 import com.prography.lighton.performance.users.application.service.UserPerformanceLikeService;
 import com.prography.lighton.performance.users.application.service.UserPerformanceService;
@@ -27,6 +28,7 @@ public class AuthServiceImpl implements AuthService {
     private final static String ROLE_KEY = "roles";
 
     private final TemporaryMemberRepository temporaryMemberRepository;
+    private final MemberRepository memberRepository;
 
     private final TokenProvider tokenProvider;
     private final RefreshTokenService refreshTokenService;
@@ -62,14 +64,16 @@ public class AuthServiceImpl implements AuthService {
     @Override
     @Transactional
     public void withdraw(Member member) {
-        userPerformanceService.inactivateAllByMember(member);
+        Member dbMember = memberRepository.getMemberById(member.getId());
+        dbMember.withdraw();
+        memberRepository.flush();
 
-        managePreferredGenreUseCase.inactivateAllByMember(member);
-        userPerformanceLikeService.inactivateAllByMember(member);
-        artistService.inactiveByMember(member);
+        userPerformanceService.inactivateAllByMember(dbMember);
+        managePreferredGenreUseCase.inactivateAllByMember(dbMember);
+        userPerformanceLikeService.inactivateAllByMember(dbMember);
+        artistService.inactiveByMember(dbMember);
 
-        temporaryMemberRepository.deleteByEmail(member.getEmail());
-        member.withdraw();
+        temporaryMemberRepository.deleteByEmail(dbMember.getEmail());
     }
 
     @Override
