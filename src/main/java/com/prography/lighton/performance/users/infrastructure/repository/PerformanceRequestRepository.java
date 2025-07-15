@@ -22,6 +22,7 @@ public interface PerformanceRequestRepository extends JpaRepository<PerformanceR
 
     Optional<PerformanceRequest> findByMemberAndPerformance(Member member, Performance performance);
 
+    @Modifying(clearAutomatically = true)
     void deleteAllByMember(Member member);
 
     @Modifying(clearAutomatically = true)
