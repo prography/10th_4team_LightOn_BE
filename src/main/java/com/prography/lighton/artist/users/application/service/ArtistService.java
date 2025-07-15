@@ -10,9 +10,10 @@ import com.prography.lighton.artist.users.application.exception.NoSuchArtistExce
 import com.prography.lighton.artist.users.infrastructure.repository.ArtistRepository;
 import com.prography.lighton.artist.users.presentation.dto.request.ArtistDTO;
 import com.prography.lighton.artist.users.presentation.dto.request.HistoryDTO;
-import com.prography.lighton.artist.users.presentation.dto.request.RegisterArtistRequest;
+import com.prography.lighton.artist.users.presentation.dto.request.RegisterArtistMultipart;
 import com.prography.lighton.artist.users.presentation.dto.request.UpdateArtistRequest;
 import com.prography.lighton.artist.users.presentation.dto.response.ArtistCheckResponseDTO;
+import com.prography.lighton.common.application.s3.S3UploadService;
 import com.prography.lighton.common.domain.vo.RegionInfo;
 import com.prography.lighton.genre.domain.entity.Genre;
 import com.prography.lighton.genre.infrastructure.cache.GenreCache;
@@ -31,6 +32,7 @@ public class ArtistService {
     private final ArtistRepository artistRepository;
     private final GenreCache genreCache;
     private final RegionCache regionCache;
+    private final S3UploadService uploadService;
 
     public Artist getApprovedArtistByMember(Member member) {
         Artist artist = artistRepository.getByMember(member);
@@ -49,21 +51,20 @@ public class ArtistService {
                 }));
     }
 
-
     @Transactional
-    public void registerArtist(Member member, RegisterArtistRequest request) {
+    public void registerArtist(Member member, RegisterArtistMultipart request) {
         artistRepository.findByMember(member)
                 .ifPresent(Artist::isValidRecreatable);
 
-        var data = toArtistData(request.artist(), request.history());
+        var data = toArtistData(request.data().artist(), request.data().history());
         Artist artist = Artist.create(
                 member,
-                request.artist().name(),
-                request.artist().description(),
-                request.artist().profileImage(),
+                request.data().artist().name(),
+                request.data().artist().description(),
+                uploadService.uploadFile(request.profileImage(), member),
                 data.activityRegion(),
                 data.history(),
-                request.proof(),
+                uploadService.uploadFile(request.proof(), member),
                 data.genres()
         );
 
@@ -78,7 +79,8 @@ public class ArtistService {
         artist.update(
                 request.artist().name(),
                 request.artist().description(),
-                request.artist().profileImage(),
+                //request.artist().profileImage(),
+                "임시.url",
                 data.activityRegion(),
                 data.history(),
                 data.genres()
@@ -95,7 +97,7 @@ public class ArtistService {
             HistoryDTO historyDto
     ) {
         RegionInfo activityRegion = regionCache.getRegionInfoByCode(artistDto.activityLocation());
-        History history = History.of(historyDto.bio(), historyDto.activityPhotos());
+        History history = History.of(historyDto.bio(), List.of("image"));
         List<Genre> genres = genreCache.getGenresByNameOrThrow(artistDto.genre());
         return new ArtistData(activityRegion, history, genres);
     }
