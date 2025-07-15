@@ -12,6 +12,7 @@ import com.prography.lighton.auth.presentation.dto.request.VerifyPhoneRequestDTO
 import com.prography.lighton.auth.presentation.dto.response.ReissueTokenResponse;
 import com.prography.lighton.member.common.domain.entity.Member;
 import com.prography.lighton.member.users.application.ManagePreferredGenreUseCase;
+import com.prography.lighton.member.users.infrastructure.repository.TemporaryMemberRepository;
 import com.prography.lighton.performance.users.application.service.UserPerformanceLikeService;
 import com.prography.lighton.performance.users.application.service.UserPerformanceService;
 import lombok.RequiredArgsConstructor;
@@ -24,6 +25,8 @@ import org.springframework.transaction.annotation.Transactional;
 public class AuthServiceImpl implements AuthService {
 
     private final static String ROLE_KEY = "roles";
+
+    private final TemporaryMemberRepository temporaryMemberRepository;
 
     private final TokenProvider tokenProvider;
     private final RefreshTokenService refreshTokenService;
@@ -65,7 +68,8 @@ public class AuthServiceImpl implements AuthService {
         userPerformanceLikeService.inactivateAllByMember(member);
         artistService.inactiveByMember(member);
 
-        member.delete();
+        temporaryMemberRepository.deleteByEmail(member.getEmail());
+        member.withdraw();
     }
 
     @Override

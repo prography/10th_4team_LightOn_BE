@@ -105,4 +105,14 @@ public class Member extends BaseEntity {
         this.preferredGenres.clear();
         this.preferredGenres.addAll(preferredGenres);
     }
+
+    public void withdraw() {
+        if (!isStatus()) {
+            return;
+        }
+
+        this.phone.withdrawMasked(this.getId());
+        this.email.withdrawMasked(this.getId());
+        this.delete();
+    }
 }

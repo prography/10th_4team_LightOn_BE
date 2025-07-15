@@ -20,6 +20,7 @@ import lombok.NoArgsConstructor;
 public class Email {
 
     private static final Pattern EMAIL_PATTERN = Pattern.compile("^[\\w-.]+@([\\w-]+\\.)+[\\w-]{2,4}$");
+    private static final String MASKED_EMAIL_SUFFIX = "_DELETED_";
 
     @Column(nullable = false, name = "email")
     private String value;
@@ -30,4 +31,9 @@ public class Email {
         }
         return new Email(value);
     }
+
+    public Email withdrawMasked(Long memberId) {
+        return new Email(this.value + MASKED_EMAIL_SUFFIX + memberId);
+    }
+
 }
