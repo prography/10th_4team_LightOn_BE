@@ -396,4 +396,8 @@ public class Performance extends BaseEntity {
             throw new NotAuthorizedPerformanceException();
         }
     }
+
+    public void inactivate() {
+        this.canceled = true;
+    }
 }
