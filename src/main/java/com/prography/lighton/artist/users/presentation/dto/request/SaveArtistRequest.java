@@ -3,7 +3,7 @@ package com.prography.lighton.artist.users.presentation.dto.request;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 
-public record RegisterArtistRequest(
+public record SaveArtistRequest(
 
         @NotNull(message = "아티스트 정보는 필수입니다.")
         @Valid
