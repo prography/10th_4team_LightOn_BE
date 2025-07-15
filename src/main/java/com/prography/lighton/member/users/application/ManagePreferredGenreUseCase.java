@@ -9,4 +9,6 @@ public interface ManagePreferredGenreUseCase {
     void editMemberGenre(final Member member, final EditMemberGenreRequestDTO request);
 
     GetPreferredGenreResponseDTO getPreferredGenre(final Member member);
+
+    void inactivateAllByMember(final Member member);
 }
