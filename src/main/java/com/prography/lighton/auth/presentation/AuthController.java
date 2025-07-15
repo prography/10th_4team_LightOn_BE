@@ -24,6 +24,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -80,6 +81,13 @@ public class AuthController {
     public ResponseEntity<ApiResult<String>> logout(@LoginMember Member member) {
         authService.logout(member);
         return ResponseEntity.status(HttpStatus.OK)
+                .body(ApiUtils.success());
+    }
+
+    @DeleteMapping("/auth/me")
+    public ResponseEntity<ApiResult<String>> withdraw(@LoginMember Member member) {
+        authService.withdraw(member);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT)
                 .body(ApiUtils.success());
     }
 

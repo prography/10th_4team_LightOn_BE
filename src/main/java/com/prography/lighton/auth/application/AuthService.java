@@ -10,6 +10,8 @@ public interface AuthService {
 
     void logout(Member member);
 
+    void withdraw(Member member);
+
     void sendAuthCode(String phoneNumber);
 
     void verifyPhone(VerifyPhoneRequestDTO request);
