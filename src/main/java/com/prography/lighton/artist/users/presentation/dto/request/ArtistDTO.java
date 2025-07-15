@@ -4,7 +4,6 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import java.util.List;
-import org.hibernate.validator.constraints.URL;
 
 public record ArtistDTO(
 
@@ -18,11 +17,7 @@ public record ArtistDTO(
         Integer activityLocation,
 
         @NotEmpty(message = "장르는 하나 이상 선택해야 합니다.")
-        List<@NotNull(message = "장르 항목은 비어 있을 수 없습니다.") String> genre,
-
-        @NotBlank(message = "프로필 이미지 URL은 필수입니다.")
-        @URL(message = "프로필 이미지는 올바른 URL 형식이어야 합니다.")
-        String profileImage
+        List<@NotNull(message = "장르 항목은 비어 있을 수 없습니다.") String> genre
 
 ) {
 }
