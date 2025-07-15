@@ -3,15 +3,15 @@ package com.prography.lighton.common.application.s3;
 import com.prography.lighton.common.utils.ApiUtils;
 import org.springframework.http.HttpStatus;
 
-public class ImageUploadFailedException extends RuntimeException {
+public class S3UploadFailedException extends RuntimeException {
 
-    private static final String MESSAGE = "이미지 업로드 실패";
+    private static final String MESSAGE = "S3 업로드 실패";
 
-    public ImageUploadFailedException(final String message) {
+    public S3UploadFailedException(final String message) {
         super(message);
     }
 
-    public ImageUploadFailedException() {
+    public S3UploadFailedException() {
         this(MESSAGE);
     }
 
