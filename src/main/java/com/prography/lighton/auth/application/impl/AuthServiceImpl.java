@@ -65,7 +65,7 @@ public class AuthServiceImpl implements AuthService {
     @Transactional
     public void withdraw(Member member) {
         Member dbMember = memberRepository.getMemberById(member.getId());
-        dbMember.withdraw();
+        member.withdraw();
         memberRepository.flush();
 
         userPerformanceService.inactivateAllByMember(dbMember);

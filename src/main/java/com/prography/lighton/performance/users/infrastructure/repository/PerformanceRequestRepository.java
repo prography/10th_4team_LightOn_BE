@@ -24,6 +24,14 @@ public interface PerformanceRequestRepository extends JpaRepository<PerformanceR
 
     List<PerformanceRequest> findAllByMember(Member member);
 
+    @Modifying
+    @Query("UPDATE PerformanceRequest pr SET pr.requestStatus = 'REJECTED' WHERE pr.member = :member")
+    void bulkInactivateByMember(@Param("member") Member member);
+
+    @Modifying
+    @Query("UPDATE PerformanceRequest pr SET pr.requestStatus = 'REJECTED' WHERE pr.performance IN :performances")
+    void bulkInactivateByPerformances(@Param("performances") List<Performance> performances);
+
     default PerformanceRequest getByMemberAndPerformance(Member member, Performance performance) {
         return findByMemberAndPerformance(member, performance)
                 .orElseThrow(NoSuchPerformanceRequestException::new);
