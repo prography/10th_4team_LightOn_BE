@@ -7,7 +7,7 @@ import java.util.List;
 import org.springframework.web.multipart.MultipartFile;
 
 public record RegisterArtistMultipart(
-        @Valid SaveArtistRequest data,
+        @Valid RegisterArtistRequest data,
         @NotNull MultipartFile profileImage,
         @NotNull MultipartFile proof,
         @Size(max = 5) List<MultipartFile> activityPhotos

@@ -2,7 +2,7 @@ package com.prography.lighton.artist.users.presentation.controller;
 
 import com.prography.lighton.artist.users.application.service.ArtistService;
 import com.prography.lighton.artist.users.presentation.dto.request.RegisterArtistMultipart;
-import com.prography.lighton.artist.users.presentation.dto.request.SaveArtistRequest;
+import com.prography.lighton.artist.users.presentation.dto.request.RegisterArtistRequest;
 import com.prography.lighton.artist.users.presentation.dto.request.UpdateArtistRequest;
 import com.prography.lighton.artist.users.presentation.dto.response.ArtistCheckResponseDTO;
 import com.prography.lighton.common.annotation.LoginMember;
@@ -39,7 +39,7 @@ public class ArtistController {
             @LoginMember Member member,
 
             @Valid @RequestPart("data")
-            SaveArtistRequest data,
+            RegisterArtistRequest data,
 
             @NotNull @RequestPart("profileImage")
             MultipartFile profileImage,
