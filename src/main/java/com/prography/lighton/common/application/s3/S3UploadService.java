@@ -3,7 +3,7 @@ package com.prography.lighton.common.application.s3;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.PutObjectRequest;
-import java.io.ByteArrayInputStream;
+import com.prography.lighton.member.common.domain.entity.Member;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.UUID;
@@ -16,7 +16,7 @@ import org.springframework.web.multipart.MultipartFile;
 @RequiredArgsConstructor
 public class S3UploadService {
 
-    private static final String DEFAULT_EXTENSION = ".png";
+    private static final String DEFAULT_EXTENSION = "";
     private static final String SLASH = "/";
 
     private final AmazonS3 amazonS3;
@@ -24,33 +24,23 @@ public class S3UploadService {
     @Value("${cloud.aws.s3.bucket}")
     private String bucket;
 
-    public String uploadImageFile(MultipartFile image, String keyPrefix) {
-        try {
-            String contentType = image.getContentType();
-            String originalFilename = image.getOriginalFilename();
-            String extension = extractExtension(originalFilename);
+    public String uploadFile(MultipartFile file, Member member) {
+        String originalFilename = file.getOriginalFilename();
+        String extension = extractExtension(originalFilename);
+        String contentType = file.getContentType();
 
-            return uploadToS3(
-                    new ByteArrayInputStream(image.getBytes()),
-                    image.getSize(),
-                    keyPrefix,
-                    contentType,
-                    extension
-            );
+        try (InputStream is = file.getInputStream()) {
+            long size = file.getSize();
+            String key = member.getId() + SLASH + UUID.randomUUID() + extension;
+
+            ObjectMetadata metadata = new ObjectMetadata();
+            metadata.setContentType(contentType);
+            metadata.setContentLength(size);
+            amazonS3.putObject(new PutObjectRequest(bucket, key, is, metadata));
+            return amazonS3.getUrl(bucket, key).toString();
         } catch (IOException e) {
-            throw new ImageUploadFailedException();
+            throw new S3UploadFailedException();
         }
-    }
-
-    private String uploadToS3(InputStream inputStream, long contentLength, String keyPrefix, String contentType,
-                              String extension) {
-        String fileName = keyPrefix + SLASH + UUID.randomUUID() + extension;
-        ObjectMetadata metadata = new ObjectMetadata();
-        metadata.setContentType(contentType);
-        metadata.setContentLength(contentLength);
-
-        amazonS3.putObject(new PutObjectRequest(bucket, fileName, inputStream, metadata));
-        return amazonS3.getUrl(bucket, fileName).toString();
     }
 
     private String extractExtension(String filename) {
