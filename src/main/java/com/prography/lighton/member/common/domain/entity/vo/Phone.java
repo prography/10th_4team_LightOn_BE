@@ -16,8 +16,9 @@ import lombok.NoArgsConstructor;
 public class Phone {
 
     private static final String PHONE_NUMBER_PATTERN = "^\\d{3}\\d{3,4}\\d{4}$";
+    private static final String MASKED_PHONE_SUFFIX = "_DELETED_";
 
-    @Column(nullable = false, length = 20, unique = true, name = "phone")
+    @Column(nullable = false, length = 30, unique = true, name = "phone")
     private String value;
 
     public static Phone of(String phoneNumber) {
@@ -25,5 +26,9 @@ public class Phone {
             throw new IllegalArgumentException("전화번호 형식이 올바르지 않습니다.");
         }
         return new Phone(phoneNumber);
+    }
+
+    public Phone withdrawMasked(Long memberId) {
+        return new Phone(this.value + MASKED_PHONE_SUFFIX + memberId);
     }
 }

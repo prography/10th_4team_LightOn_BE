@@ -43,6 +43,11 @@ public class ManagePreferredGenreUseCaseImpl implements ManagePreferredGenreUseC
         return GetPreferredGenreResponseDTO.of(genres);
     }
 
+    @Override
+    public void inactivateAllByMember(Member member) {
+        deletePreviousPreferredGenres(member);
+    }
+
     private void deletePreviousPreferredGenres(Member member) {
         preferredGenreRepository.deleteAllByMember(member);
     }

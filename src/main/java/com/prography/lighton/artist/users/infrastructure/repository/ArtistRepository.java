@@ -6,6 +6,7 @@ import com.prography.lighton.artist.users.application.exception.NoSuchArtistExce
 import com.prography.lighton.member.common.domain.entity.Member;
 import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
@@ -16,6 +17,9 @@ public interface ArtistRepository extends JpaRepository<Artist, Long> {
     boolean existsByMemberAndApproveStatus(Member member, ApproveStatus approveStatus);
 
     Optional<Artist> findByMember(Member member);
+
+    @Modifying
+    void deleteByMember(Member member);
 
     @Query("""
                 select a from Artist a
