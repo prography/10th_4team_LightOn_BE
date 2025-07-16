@@ -11,7 +11,7 @@ import com.prography.lighton.artist.users.infrastructure.repository.ArtistReposi
 import com.prography.lighton.artist.users.presentation.dto.request.ArtistDTO;
 import com.prography.lighton.artist.users.presentation.dto.request.HistoryDTO;
 import com.prography.lighton.artist.users.presentation.dto.request.RegisterArtistMultipart;
-import com.prography.lighton.artist.users.presentation.dto.request.UpdateArtistRequest;
+import com.prography.lighton.artist.users.presentation.dto.request.UpdateArtistMultipart;
 import com.prography.lighton.artist.users.presentation.dto.response.ArtistCheckResponseDTO;
 import com.prography.lighton.common.application.s3.S3UploadService;
 import com.prography.lighton.common.domain.vo.RegionInfo;
@@ -72,13 +72,13 @@ public class ArtistService {
     }
 
     @Transactional
-    public void updateArtist(Member member, UpdateArtistRequest request) {
+    public void updateArtist(Member member, UpdateArtistMultipart request) {
         Artist artist = getApprovedArtistByMember(member);
 
-        var data = toArtistData(request.artist(), request.history());
+        var data = toArtistData(request.data().artist(), request.data().history());
         artist.update(
-                request.artist().name(),
-                request.artist().description(),
+                request.data().artist().name(),
+                request.data().artist().description(),
                 //request.artist().profileImage(),
                 "임시.url",
                 data.activityRegion(),

@@ -11,7 +11,9 @@ public record UpdateArtistRequest(
 
         @NotNull(message = "활동 이력 정보는 필수입니다.")
         @Valid
-        HistoryDTO history
+        HistoryDTO history,
+
+        Integer index
 
 ) {
 }
