@@ -51,6 +51,15 @@ public class S3UploadService {
         }
     }
 
+    public List<String> uploadFiles(List<MultipartFile> files, Member member) {
+        if (files == null || files.isEmpty()) {
+            return List.of();
+        }
+        return files.stream()
+                .map(file -> uploadFile(file, member))
+                .toList();
+    }
+
     public void deleteFile(String fileUrl) {
         if (fileUrl == null || fileUrl.isBlank()) {
             return;
