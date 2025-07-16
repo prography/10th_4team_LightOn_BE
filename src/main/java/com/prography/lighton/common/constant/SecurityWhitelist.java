@@ -30,7 +30,8 @@ public final class SecurityWhitelist {
 
     // 정규식으로 매칭되는 경로들
     public static final String[] REGEX_MATCH = {
-            "^/api/members/\\d+/info$"
+            "^/api/members/\\d+/info$",
+            "^/api/members/performances/\\d+$"
     };
 
     private SecurityWhitelist() {
