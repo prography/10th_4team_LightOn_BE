@@ -6,6 +6,7 @@ import com.prography.lighton.common.application.s3.S3UploadService;
 import com.prography.lighton.genre.domain.entity.Genre;
 import com.prography.lighton.genre.infrastructure.cache.GenreCache;
 import com.prography.lighton.member.common.domain.entity.Member;
+import com.prography.lighton.performance.common.domain.entity.Busking;
 import com.prography.lighton.performance.common.domain.entity.Performance;
 import com.prography.lighton.performance.common.domain.entity.enums.Seat;
 import com.prography.lighton.performance.common.domain.entity.vo.Info;
@@ -73,13 +74,34 @@ public class PerformanceResolver {
         );
     }
 
-    public BuskingData toBuskingData(Member member, InfoDTO infoDTO, ScheduleDTO scheduleDTO) {
+    public BuskingData toNewBuskingData(Member member, InfoDTO infoDTO, ScheduleDTO scheduleDTO, MultipartFile poster,
+                                        MultipartFile proof) {
+        String posterUrl = uploadService.uploadFile(poster, member);
+        String proofUrl = uploadService.uploadFile(proof, member);
+
         return new BuskingData(
                 member,
-                toInfo(infoDTO, "posterUrl"),
+                toInfo(infoDTO, posterUrl),
                 toSchedule(scheduleDTO),
                 toLocation(infoDTO),
-                genreCache.getGenresByNameOrThrow(infoDTO.genre()));
+                genreCache.getGenresByNameOrThrow(infoDTO.genre()),
+                proofUrl);
+    }
+
+
+    public BuskingData toUpdateBuskingData(Member member, Busking origin, InfoDTO infoDTO, ScheduleDTO scheduleDTO,
+                                           MultipartFile poster,
+                                           MultipartFile proof) {
+        String posterUrl = replaceSingle(origin.getInfo().getPosterUrl(), poster, member);
+        String proofUrl = replaceSingle(origin.getProofUrl(), proof, member);
+
+        return new BuskingData(
+                member,
+                toInfo(infoDTO, posterUrl),
+                toSchedule(scheduleDTO),
+                toLocation(infoDTO),
+                genreCache.getGenresByNameOrThrow(infoDTO.genre()),
+                proofUrl);
     }
 
     private List<Artist> toArtists(Member member, List<Long> artistIds) {
@@ -155,7 +177,8 @@ public class PerformanceResolver {
             Info info,
             Schedule schedule,
             Location location,
-            List<Genre> genres
+            List<Genre> genres,
+            String proofUrl
     ) {
     }
 
