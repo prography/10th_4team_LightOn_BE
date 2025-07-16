@@ -11,9 +11,7 @@ import com.prography.lighton.artist.users.infrastructure.repository.ArtistReposi
 import com.prography.lighton.artist.users.presentation.dto.request.RegisterArtistMultipart;
 import com.prography.lighton.artist.users.presentation.dto.request.UpdateArtistMultipart;
 import com.prography.lighton.artist.users.presentation.dto.response.ArtistCheckResponseDTO;
-import com.prography.lighton.genre.infrastructure.cache.GenreCache;
 import com.prography.lighton.member.common.domain.entity.Member;
-import com.prography.lighton.region.infrastructure.cache.RegionCache;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -25,8 +23,6 @@ import org.springframework.transaction.annotation.Transactional;
 public class ArtistService {
 
     private final ArtistRepository artistRepository;
-    private final GenreCache genreCache;
-    private final RegionCache regionCache;
     private final ArtistRequestResolver resolver;
 
     public Artist getApprovedArtistByMember(Member member) {
