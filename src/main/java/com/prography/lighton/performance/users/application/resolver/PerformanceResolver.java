@@ -37,7 +37,7 @@ public class PerformanceResolver {
     private final AddressGeocodingService addressGeocodingService;
     private final S3UploadService uploadService;
 
-    public Performance toNewEntity(Member member, RegisterPerformanceMultiPart request) {
+    public Performance toNewPerformanceEntity(Member member, RegisterPerformanceMultiPart request) {
         String posterUrl = uploadService.uploadFile(request.posterImage(), member);
         String proofUrl = uploadService.uploadFile(request.proof(), member);
         SavePerformanceRequest data = request.data();
@@ -56,9 +56,9 @@ public class PerformanceResolver {
                 data.totalSeatsCount());
     }
 
-    public UpdatePayload toUpdateEntity(Member member,
-                                        Performance origin,
-                                        UpdatePerformanceMultiPart request) {
+    public UpdatePayload toUpdatePerformanceEntity(Member member,
+                                                   Performance origin,
+                                                   UpdatePerformanceMultiPart request) {
 
         String posterUrl = replaceSingle(origin.getInfo().getPosterUrl(), request.posterImage(), member);
         String proofUrl = replaceSingle(origin.getProofUrl(), request.proof(), member);

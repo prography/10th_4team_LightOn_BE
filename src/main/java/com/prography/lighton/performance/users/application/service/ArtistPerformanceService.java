@@ -43,14 +43,14 @@ public class ArtistPerformanceService {
 
     @Transactional
     public void registerPerformance(Member member, RegisterPerformanceMultiPart request) {
-        Performance performance = performanceResolver.toNewEntity(member, request);
+        Performance performance = performanceResolver.toNewPerformanceEntity(member, request);
         performanceRepository.save(performance);
     }
 
     @Transactional
     public void updatePerformance(Member member, Long performanceId, UpdatePerformanceMultiPart request) {
         Performance performance = getApprovedPerformanceById(performanceId);
-        var data = performanceResolver.toUpdateEntity(member, performance, request);
+        var data = performanceResolver.toUpdatePerformanceEntity(member, performance, request);
         performance.update(member, data.artists(), data.info(), data.schedule(), data.location(), data.payment(),
                 data.seats(),
                 data.genres(), data.proofUrl());
