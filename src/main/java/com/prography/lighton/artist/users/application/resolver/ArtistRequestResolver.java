@@ -25,13 +25,13 @@ public class ArtistRequestResolver {
     private final GenreCache genreCache;
     private final S3UploadService uploadService;
 
-    public Artist toNewEntity(Member member, RegisterArtistMultipart req) {
-        String profileUrl = uploadService.uploadFile(req.profileImage(), member);
-        String proofUrl = uploadService.uploadFile(req.proof(), member);
-        List<String> activityUrls = uploadService.uploadFiles(req.activityPhotos(), member);
+    public Artist toNewEntity(Member member, RegisterArtistMultipart request) {
+        String profileUrl = uploadService.uploadFile(request.profileImage(), member);
+        String proofUrl = uploadService.uploadFile(request.proof(), member);
+        List<String> activityUrls = uploadService.uploadFiles(request.activityPhotos(), member);
 
-        ArtistDTO artistDTO = req.data().artist();
-        HistoryDTO historyDTO = req.data().history();
+        ArtistDTO artistDTO = request.data().artist();
+        HistoryDTO historyDTO = request.data().history();
 
         return Artist.create(
                 member,
@@ -45,17 +45,17 @@ public class ArtistRequestResolver {
         );
     }
 
-    public UpdatePayload toUpdateEntity(Artist origin, UpdateArtistMultipart req) {
+    public UpdatePayload toUpdateEntity(Artist origin, UpdateArtistMultipart request) {
         Member member = origin.getMember();
 
-        String profileUrl = replaceSingle(origin.getProfileImageUrl(), req.profileImage(), member);
+        String profileUrl = replaceSingle(origin.getProfileImageUrl(), request.profileImage(), member);
         List<String> activityUrls = replaceMultiple(
                 origin.getHistory().getActivityImages().toList(),
-                req.activityPhotos(), member
+                request.activityPhotos(), member
         );
 
-        ArtistDTO artistDTO = req.data().artist();
-        HistoryDTO historyDTO = req.data().history();
+        ArtistDTO artistDTO = request.data().artist();
+        HistoryDTO historyDTO = request.data().history();
 
         return new UpdatePayload(
                 artistDTO.name(),
