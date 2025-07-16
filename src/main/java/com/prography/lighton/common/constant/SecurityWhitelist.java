@@ -12,6 +12,9 @@ public final class SecurityWhitelist {
             "/api/auth/token/refresh",
             "/api/auth/phones/code",
             "/api/auth/phones/code/verify",
+            "/api/members/performances",
+            "/api/members/performances/nearby",
+            "/api/members/performances/popular",
     };
 
     // 접두사로 매칭되는 경로들
@@ -21,7 +24,7 @@ public final class SecurityWhitelist {
             "/docs",
             "/swagger-resources",
             "/webjars",
-            "/api/oauth"
+            "/api/oauth",
     };
 
     // 정규식으로 매칭되는 경로들

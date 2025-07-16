@@ -13,6 +13,8 @@ public interface TemporaryMemberRepository extends JpaRepository<TemporaryMember
 
     Optional<TemporaryMember> findByEmail(Email email);
 
+    void deleteByEmail(Email email);
+
     @Query("SELECT COUNT(m) > 0 FROM TemporaryMember m WHERE m.email.value = :email AND not m.isRegistered")
     boolean existsByEmailAndNotRegistered(@Param("email") String email);
 

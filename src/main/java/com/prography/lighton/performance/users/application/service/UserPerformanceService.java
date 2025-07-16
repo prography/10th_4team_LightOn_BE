@@ -16,6 +16,7 @@ import com.prography.lighton.region.domain.entity.SubRegion;
 import com.prography.lighton.region.infrastructure.cache.RegionCache;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -64,6 +65,15 @@ public class UserPerformanceService {
 
         performance.cancelRequest(performanceRequest.getRequestedSeats());
         performanceRequestRepository.delete(performanceRequest);
+    }
+
+    @Transactional
+    public void inactivateAllByMember(Member member) {
+        List<Performance> performances = performanceRepository.findAllByPerformer(member);
+        performances.forEach(Performance::inactivate);
+
+        performanceRequestRepository.bulkInactivateByMember(member);
+        performanceRequestRepository.bulkInactivateByPerformances(performances);
     }
 
     public GetMyRegisteredPerformanceListResponseDTO getMyRegisteredPerformanceList(Member member) {

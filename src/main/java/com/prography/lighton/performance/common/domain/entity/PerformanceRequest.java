@@ -52,4 +52,9 @@ public class PerformanceRequest extends BaseEntity {
         this.requestStatus = requestStatus;
     }
 
+    public void inactivate() {
+        this.requestStatus = RequestStatus.REJECTED;
+    }
+
+
 }

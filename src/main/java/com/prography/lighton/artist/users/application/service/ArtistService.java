@@ -64,6 +64,10 @@ public class ArtistService {
                 data.genres());
     }
 
+    public void inactiveByMember(Member member) {
+        artistRepository.deleteByMember(member);
+    }
+
     public ArtistCheckResponseDTO isArtist(Member member) {
         return ArtistCheckResponseDTO.of(
                 artistRepository.existsByMemberAndApproveStatus(member, ApproveStatus.APPROVED));
