@@ -5,6 +5,7 @@ import com.prography.lighton.common.utils.ApiUtils;
 import com.prography.lighton.common.utils.ApiUtils.ApiResult;
 import com.prography.lighton.member.common.domain.entity.Member;
 import com.prography.lighton.performance.users.application.service.UserPopularService;
+import com.prography.lighton.performance.users.application.service.UserRecentPerformanceService;
 import com.prography.lighton.performance.users.application.service.UserRecommendationService;
 import com.prography.lighton.performance.users.presentation.dto.response.GetPerformanceBrowseResponse;
 import lombok.RequiredArgsConstructor;
@@ -21,6 +22,7 @@ public class UserPerformanceBrowseController {
 
     private final UserRecommendationService recommendationService;
     private final UserPopularService popularService;
+    private final UserRecentPerformanceService recentPerformanceService;
 
     @GetMapping("/recommend")
     public ResponseEntity<ApiResult<GetPerformanceBrowseResponse>> getRecommendations(
@@ -33,6 +35,13 @@ public class UserPerformanceBrowseController {
     public ResponseEntity<ApiUtils.ApiResult<GetPerformanceBrowseResponse>> getPopulars(
             @RequestParam(required = false) String genre) {
         GetPerformanceBrowseResponse dto = popularService.getPopular(genre);
+        return ResponseEntity.ok(ApiUtils.success(dto));
+    }
+
+    @GetMapping("/recent")
+    public ResponseEntity<ApiResult<GetPerformanceBrowseResponse>> getRecent(
+            @RequestParam(required = false) String genre) {
+        GetPerformanceBrowseResponse dto = recentPerformanceService.getRecentPerformances(genre);
         return ResponseEntity.ok(ApiUtils.success(dto));
     }
 }
