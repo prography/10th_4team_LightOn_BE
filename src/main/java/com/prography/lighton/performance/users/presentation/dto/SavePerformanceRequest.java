@@ -6,7 +6,7 @@ import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import java.util.List;
 
-public record PerformanceRegisterRequest(
+public record SavePerformanceRequest(
 
         List<@NotNull(message = "아티스트 ID에는 빈 값이 들어갈 수 없습니다.") Long> artists,
 
