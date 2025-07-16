@@ -7,8 +7,8 @@ import com.prography.lighton.performance.common.domain.entity.Busking;
 import com.prography.lighton.performance.users.application.resolver.PerformanceResolver;
 import com.prography.lighton.performance.users.infrastructure.repository.PerformanceRepository;
 import com.prography.lighton.performance.users.presentation.dto.request.RegisterArtistBuskingMultiPart;
+import com.prography.lighton.performance.users.presentation.dto.request.RegisterUserBuskingMultiPart;
 import com.prography.lighton.performance.users.presentation.dto.request.UpdateArtistBuskingMultiPart;
-import com.prography.lighton.performance.users.presentation.dto.request.UserBuskingRegisterRequest;
 import com.prography.lighton.performance.users.presentation.dto.request.UserBuskingUpdateRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -30,19 +30,24 @@ public class BuskingService {
     }
 
     @Transactional
-    public void registerBuskingByUser(Member member, UserBuskingRegisterRequest request) {
-        var data = performanceResolver.toBuskingData(member, request.info(), request.schedule());
+    public void registerBuskingByUser(Member member, RegisterUserBuskingMultiPart request) {
+        var data = performanceResolver.toNewBuskingData(member, request.data().info(), request.data().schedule(),
+                request.posterImage(),
+                request.proof());
         Busking busking = Busking.createByUser(member, data.info(), data.schedule(),
-                data.location(), data.genres(), request.proof(), request.artistName(), request.artistDescription());
+                data.location(), data.genres(), data.proofUrl(), request.data().artistName(),
+                request.data().artistDescription());
         performanceRepository.save(busking);
     }
 
     @Transactional
     public void registerBuskingByArtist(Member member, RegisterArtistBuskingMultiPart request) {
         Artist artist = artistService.getApprovedArtistByMember(member);
-        var data = performanceResolver.toBuskingData(member, request.data().info(), request.data().schedule());
+        var data = performanceResolver.toNewBuskingData(member, request.data().info(), request.data().schedule(),
+                request.posterImage(),
+                request.proof());
         Busking busking = Busking.createByArtist(member, data.info(), data.schedule(),
-                data.location(), data.genres(), "proofUrl", artist);
+                data.location(), data.genres(), data.proofUrl(), artist);
         performanceRepository.save(busking);
     }
 
