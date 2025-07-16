@@ -2,9 +2,8 @@ package com.prography.lighton.artist.users.presentation.controller;
 
 import com.prography.lighton.artist.users.application.service.ArtistService;
 import com.prography.lighton.artist.users.presentation.dto.request.RegisterArtistMultipart;
-import com.prography.lighton.artist.users.presentation.dto.request.RegisterArtistRequest;
+import com.prography.lighton.artist.users.presentation.dto.request.SaveArtistRequest;
 import com.prography.lighton.artist.users.presentation.dto.request.UpdateArtistMultipart;
-import com.prography.lighton.artist.users.presentation.dto.request.UpdateArtistRequest;
 import com.prography.lighton.artist.users.presentation.dto.response.ArtistCheckResponseDTO;
 import com.prography.lighton.common.annotation.LoginMember;
 import com.prography.lighton.common.utils.ApiUtils;
@@ -39,7 +38,7 @@ public class ArtistController {
             @LoginMember Member member,
 
             @Valid @RequestPart("data")
-            RegisterArtistRequest data,
+            SaveArtistRequest data,
 
             @NotNull @RequestPart("profileImage")
             MultipartFile profileImage,
@@ -59,7 +58,7 @@ public class ArtistController {
     @PutMapping
     public ResponseEntity<ApiResult<String>> updateArtist(@LoginMember Member member,
                                                           @Valid @RequestPart("data")
-                                                          UpdateArtistRequest data,
+                                                          SaveArtistRequest data,
 
                                                           @RequestPart(value = "profileImage", required = false)
                                                           MultipartFile profileImage,
