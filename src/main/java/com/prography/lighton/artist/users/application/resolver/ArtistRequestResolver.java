@@ -23,8 +23,7 @@ public class ArtistRequestResolver {
     private final GenreCache genreCache;
     private final S3UploadService uploadService;
 
-    public Artist toNewEntity(Member member,
-                              RegisterArtistMultipart req) {
+    public Artist toNewEntity(Member member, RegisterArtistMultipart req) {
         String profileUrl = uploadService.uploadFile(req.profileImage(), member);
         String proofUrl = uploadService.uploadFile(req.proof(), member);
         List<String> activityUrls = uploadService.uploadFiles(req.activityPhotos(), member);
@@ -32,18 +31,29 @@ public class ArtistRequestResolver {
         ArtistDTO artistDTO = req.data().artist();
         HistoryDTO historyDTO = req.data().history();
 
-        RegionInfo region = regionCache.getRegionInfoByCode(artistDTO.activityLocation());
-        List<Genre> genres = genreCache.getGenresByNameOrThrow(artistDTO.genre());
-        History history = History.of(historyDTO.bio(), activityUrls);
-
-        return Artist.create(member,
+        return Artist.create(
+                member,
                 artistDTO.name(),
                 artistDTO.description(),
                 profileUrl,
-                region,
-                history,
+                resolveRegion(artistDTO),
+                resolveHistory(historyDTO, activityUrls),
                 proofUrl,
-                genres);
+                resolveGenres(artistDTO)
+        );
+    }
+
+
+    private RegionInfo resolveRegion(ArtistDTO dto) {
+        return regionCache.getRegionInfoByCode(dto.activityLocation());
+    }
+
+    private List<Genre> resolveGenres(ArtistDTO dto) {
+        return genreCache.getGenresByNameOrThrow(dto.genre());
+    }
+
+    private History resolveHistory(HistoryDTO dto, List<String> urls) {
+        return History.of(dto.bio(), urls);
     }
 
 }
