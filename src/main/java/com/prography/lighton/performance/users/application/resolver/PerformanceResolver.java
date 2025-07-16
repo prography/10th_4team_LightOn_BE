@@ -2,16 +2,21 @@ package com.prography.lighton.performance.users.application.resolver;
 
 import com.prography.lighton.artist.common.domain.entity.Artist;
 import com.prography.lighton.artist.users.application.service.ArtistService;
+import com.prography.lighton.common.application.s3.S3UploadService;
 import com.prography.lighton.genre.domain.entity.Genre;
 import com.prography.lighton.genre.infrastructure.cache.GenreCache;
 import com.prography.lighton.member.common.domain.entity.Member;
+import com.prography.lighton.performance.common.domain.entity.Performance;
 import com.prography.lighton.performance.common.domain.entity.enums.Seat;
+import com.prography.lighton.performance.common.domain.entity.enums.Type;
 import com.prography.lighton.performance.common.domain.entity.vo.Info;
 import com.prography.lighton.performance.common.domain.entity.vo.Location;
 import com.prography.lighton.performance.common.domain.entity.vo.Payment;
 import com.prography.lighton.performance.common.domain.entity.vo.Schedule;
 import com.prography.lighton.performance.users.presentation.dto.InfoDTO;
 import com.prography.lighton.performance.users.presentation.dto.PaymentDTO;
+import com.prography.lighton.performance.users.presentation.dto.RegisterPerformanceMultiPart;
+import com.prography.lighton.performance.users.presentation.dto.SavePerformanceRequest;
 import com.prography.lighton.performance.users.presentation.dto.ScheduleDTO;
 import com.prography.lighton.region.application.dto.Coordinate;
 import com.prography.lighton.region.application.service.AddressGeocodingService;
@@ -28,6 +33,7 @@ public class PerformanceResolver {
     private final ArtistService artistService;
     private final RegionCache regionCache;
     private final AddressGeocodingService addressGeocodingService;
+    private final S3UploadService uploadService;
 
     public DomainData toDomainData(Member member, List<Long> artists, InfoDTO infoDTO, ScheduleDTO scheduleDTO,
                                    PaymentDTO paymentDTO, List<Seat> seats) {
@@ -42,10 +48,29 @@ public class PerformanceResolver {
         );
     }
 
+    public Performance toNewEntity(Member member, RegisterPerformanceMultiPart request) {
+        String posterUrl = uploadService.uploadFile(request.posterImage(), member);
+        String proofUrl = uploadService.uploadFile(request.proof(), member);
+        SavePerformanceRequest data = request.data();
+
+        return Performance.create(
+                member,
+                toArtists(member, data.artists()),
+                toInfo(data.info(), posterUrl),
+                toSchedule(data.schedule()),
+                toLocation(data.info()),
+                toPayment(data.payment()),
+                Type.CONCERT,
+                data.seat(),
+                genreCache.getGenresByNameOrThrow(data.info().genre()),
+                proofUrl,
+                data.totalSeatsCount());
+    }
+
     public BuskingData toBuskingData(Member member, InfoDTO infoDTO, ScheduleDTO scheduleDTO) {
         return new BuskingData(
                 member,
-                toInfo(infoDTO),
+                toInfo(infoDTO, "posterUrl"),
                 toSchedule(scheduleDTO),
                 toLocation(infoDTO),
                 genreCache.getGenresByNameOrThrow(infoDTO.genre()));
@@ -57,13 +82,13 @@ public class PerformanceResolver {
         return artistService.getApprovedArtistsByIds(artistIds);
     }
 
-    private Info toInfo(InfoDTO req) {
+    private Info toInfo(InfoDTO req, String posterUrl) {
         return Info.of(
                 req.title(),
                 req.description(),
                 req.place(),
                 req.notice(),
-                req.poster()
+                posterUrl
         );
     }
 
