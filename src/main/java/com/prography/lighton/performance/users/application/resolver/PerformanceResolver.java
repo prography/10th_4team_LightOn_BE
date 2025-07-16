@@ -37,19 +37,6 @@ public class PerformanceResolver {
     private final AddressGeocodingService addressGeocodingService;
     private final S3UploadService uploadService;
 
-    public DomainData toDomainData(Member member, List<Long> artists, InfoDTO infoDTO, ScheduleDTO scheduleDTO,
-                                   PaymentDTO paymentDTO, List<Seat> seats) {
-        return new DomainData(
-                toArtists(member, artists),
-                toInfo(infoDTO),
-                toSchedule(scheduleDTO),
-                toLocation(infoDTO),
-                toPayment(paymentDTO),
-                seats,
-                genreCache.getGenresByNameOrThrow(infoDTO.genre())
-        );
-    }
-
     public Performance toNewEntity(Member member, RegisterPerformanceMultiPart request) {
         String posterUrl = uploadService.uploadFile(request.posterImage(), member);
         String proofUrl = uploadService.uploadFile(request.proof(), member);
@@ -69,9 +56,9 @@ public class PerformanceResolver {
                 data.totalSeatsCount());
     }
 
-    public UpdatePayload toUpdatePayload(Member member,
-                                         Performance origin,
-                                         UpdatePerformanceMultiPart request) {
+    public UpdatePayload toUpdateEntity(Member member,
+                                        Performance origin,
+                                        UpdatePerformanceMultiPart request) {
 
         String posterUrl = replaceSingle(origin.getInfo().getPosterUrl(), request.posterImage(), member);
         String proofUrl = replaceSingle(origin.getProofUrl(), request.proof(), member);
@@ -151,17 +138,6 @@ public class PerformanceResolver {
             return uploadService.uploadFile(file, member);
         }
         return originUrl;
-    }
-
-    public record DomainData(
-            List<Artist> artists,
-            Info info,
-            Schedule schedule,
-            Location location,
-            Payment payment,
-            List<Seat> seats,
-            List<Genre> genres
-    ) {
     }
 
     public record BuskingData(
