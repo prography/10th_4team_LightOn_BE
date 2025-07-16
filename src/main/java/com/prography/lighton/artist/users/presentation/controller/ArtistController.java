@@ -61,7 +61,7 @@ public class ArtistController {
                                                           @Valid @RequestPart("data")
                                                           UpdateArtistRequest data,
 
-                                                          @RequestPart("profileImage")
+                                                          @RequestPart(value = "profileImage", required = false)
                                                           MultipartFile profileImage,
 
                                                           @Size(max = 5)
