@@ -48,7 +48,7 @@ public class ArtistController {
             MultipartFile proof,
 
             @Size(max = 5)
-            @RequestPart(value = "activityPhotos", required = false)
+            @RequestPart(value = "activityPhotos")
             List<MultipartFile> activityPhotos) {
         RegisterArtistMultipart request = new RegisterArtistMultipart(data, profileImage, proof, activityPhotos);
         artistService.registerArtist(member, request);
@@ -61,7 +61,7 @@ public class ArtistController {
                                                           @Valid @RequestPart("data")
                                                           UpdateArtistRequest data,
 
-                                                          @NotNull @RequestPart("profileImage")
+                                                          @RequestPart("profileImage")
                                                           MultipartFile profileImage,
 
                                                           @Size(max = 5)
