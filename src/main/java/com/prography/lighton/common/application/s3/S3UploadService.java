@@ -13,12 +13,13 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
-import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class S3UploadService {
@@ -54,8 +55,12 @@ public class S3UploadService {
         if (fileUrl == null || fileUrl.isBlank()) {
             return;
         }
-        String key = extractKeyFromUrl(fileUrl);
-        amazonS3.deleteObject(bucket, key);
+        try {
+            String key = extractKeyFromUrl(fileUrl);
+            amazonS3.deleteObject(bucket, key);
+        } catch (S3DeleteFailedException e) {
+            log.warn("잘못된 S3 URL로 인해 삭제 대상에서 제외됨: {}", fileUrl, e);
+        }
     }
 
     public void deleteFiles(Collection<String> fileUrls) {
@@ -66,9 +71,16 @@ public class S3UploadService {
         List<DeleteObjectsRequest.KeyVersion> keys = fileUrls.stream()
                 .filter(Objects::nonNull)
                 .filter(s -> !s.isBlank())
-                .map(this::extractKeyFromUrl)
-                .map(DeleteObjectsRequest.KeyVersion::new)
-                .collect(Collectors.toList());
+                .map(url -> {
+                    try {
+                        return new DeleteObjectsRequest.KeyVersion(extractKeyFromUrl(url));
+                    } catch (S3DeleteFailedException e) {
+                        log.warn("잘못된 S3 URL로 인해 삭제 대상에서 제외됨: {}", url, e);
+                        return null;
+                    }
+                })
+                .filter(Objects::nonNull)
+                .toList();
 
         if (keys.isEmpty()) {
             return;
@@ -90,11 +102,11 @@ public class S3UploadService {
             URI uri = new URI(url);
             String path = uri.getPath();
             if (path == null || path.length() <= 1) {
-                throw new S3DeleteFailedException("잘못된 S3 URL 형식입니다: " + url);
+                throw new S3DeleteFailedException("Invalid S3 URL: " + url);
             }
             return path.substring(1);
         } catch (URISyntaxException e) {
-            throw new S3DeleteFailedException("잘못된 S3 URL 형식입니다: " + url + "\n" + e);
+            throw new S3DeleteFailedException("Invalid S3 URL: " + url + "\n" + e);
         }
     }
 }
