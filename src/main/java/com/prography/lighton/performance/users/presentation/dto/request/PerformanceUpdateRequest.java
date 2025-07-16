@@ -1,4 +1,4 @@
-package com.prography.lighton.performance.users.presentation.dto;
+package com.prography.lighton.performance.users.presentation.dto.request;
 
 import com.prography.lighton.performance.common.domain.entity.enums.Seat;
 import jakarta.validation.Valid;
