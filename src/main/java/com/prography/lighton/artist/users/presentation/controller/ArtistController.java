@@ -3,6 +3,7 @@ package com.prography.lighton.artist.users.presentation.controller;
 import com.prography.lighton.artist.users.application.service.ArtistService;
 import com.prography.lighton.artist.users.presentation.dto.request.RegisterArtistMultipart;
 import com.prography.lighton.artist.users.presentation.dto.request.RegisterArtistRequest;
+import com.prography.lighton.artist.users.presentation.dto.request.UpdateArtistMultipart;
 import com.prography.lighton.artist.users.presentation.dto.request.UpdateArtistRequest;
 import com.prography.lighton.artist.users.presentation.dto.response.ArtistCheckResponseDTO;
 import com.prography.lighton.common.annotation.LoginMember;
@@ -20,7 +21,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
@@ -58,7 +58,16 @@ public class ArtistController {
 
     @PutMapping
     public ResponseEntity<ApiResult<String>> updateArtist(@LoginMember Member member,
-                                                          @Valid @RequestBody UpdateArtistRequest request) {
+                                                          @Valid @RequestPart("data")
+                                                          UpdateArtistRequest data,
+
+                                                          @NotNull @RequestPart("profileImage")
+                                                          MultipartFile profileImage,
+
+                                                          @Size(max = 5)
+                                                          @RequestPart(value = "activityPhotos", required = false)
+                                                          List<MultipartFile> activityPhoto) {
+        UpdateArtistMultipart request = new UpdateArtistMultipart(data, profileImage, activityPhoto);
         artistService.updateArtist(member, request);
         return ResponseEntity.ok()
                 .body(ApiUtils.success());
