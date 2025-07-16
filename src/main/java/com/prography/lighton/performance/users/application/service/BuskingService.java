@@ -9,7 +9,7 @@ import com.prography.lighton.performance.users.infrastructure.repository.Perform
 import com.prography.lighton.performance.users.presentation.dto.request.RegisterArtistBuskingMultiPart;
 import com.prography.lighton.performance.users.presentation.dto.request.RegisterUserBuskingMultiPart;
 import com.prography.lighton.performance.users.presentation.dto.request.UpdateArtistBuskingMultiPart;
-import com.prography.lighton.performance.users.presentation.dto.request.UserBuskingUpdateRequest;
+import com.prography.lighton.performance.users.presentation.dto.request.UpdateUserBuskingMultiPart;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -52,18 +52,23 @@ public class BuskingService {
     }
 
     @Transactional
-    public void updateBuskingByUser(Member member, Long buskingId, UserBuskingUpdateRequest request) {
+    public void updateBuskingByUser(Member member, Long buskingId, UpdateUserBuskingMultiPart request) {
         Busking busking = getApprovedBuskingById(buskingId);
-        var data = performanceResolver.toBuskingData(member, request.info(), request.schedule());
-        busking.updateByUser(member, data.info(), data.schedule(), data.location(), data.genres(), request.proof(),
-                request.artistName(), request.artistDescription());
+        var data = performanceResolver.toUpdateBuskingData(member, busking, request.data().info(),
+                request.data().schedule(),
+                request.posterImage(),
+                request.proof());
+        busking.updateByUser(member, data.info(), data.schedule(), data.location(), data.genres(), data.proofUrl(),
+                request.data().artistName(), request.data().artistDescription());
     }
 
     @Transactional
     public void updateBuskingByArtist(Member member, Long buskingId, UpdateArtistBuskingMultiPart request) {
         Busking busking = getApprovedBuskingById(buskingId);
-        var data = performanceResolver.toBuskingData(member, request.data().info(), request.data().schedule());
-        busking.updateByArtist(member, data.info(), data.schedule(), data.location(), data.genres(), "proofUrl");
+        var data = performanceResolver.toUpdateBuskingData(member, busking, request.data().info(),
+                request.data().schedule(),
+                request.posterImage(), request.proof());
+        busking.updateByArtist(member, data.info(), data.schedule(), data.location(), data.genres(), data.proofUrl());
     }
 
     @Transactional
