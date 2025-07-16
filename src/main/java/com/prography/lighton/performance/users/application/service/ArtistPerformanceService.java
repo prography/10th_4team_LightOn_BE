@@ -5,6 +5,7 @@ import com.prography.lighton.common.geo.GeoUtils;
 import com.prography.lighton.member.common.domain.entity.Member;
 import com.prography.lighton.performance.common.domain.entity.Performance;
 import com.prography.lighton.performance.common.domain.entity.enums.PerformanceFilterType;
+import com.prography.lighton.performance.common.domain.entity.enums.Type;
 import com.prography.lighton.performance.users.application.resolver.PerformanceResolver;
 import com.prography.lighton.performance.users.infrastructure.repository.PerformanceRepository;
 import com.prography.lighton.performance.users.presentation.dto.request.RegisterPerformanceMultiPart;
@@ -43,14 +44,18 @@ public class ArtistPerformanceService {
 
     @Transactional
     public void registerPerformance(Member member, RegisterPerformanceMultiPart request) {
-        Performance performance = performanceResolver.toNewPerformanceEntity(member, request);
+        var data = performanceResolver.toNewPerformanceData(member, request);
+        Performance performance = Performance.create(member, data.artists(), data.info(), data.schedule(),
+                data.location(),
+                data.payment(),
+                Type.CONCERT, data.seats(), data.genres(), data.proofUrl(), request.data().totalSeatsCount());
         performanceRepository.save(performance);
     }
 
     @Transactional
     public void updatePerformance(Member member, Long performanceId, UpdatePerformanceMultiPart request) {
         Performance performance = getApprovedPerformanceById(performanceId);
-        var data = performanceResolver.toUpdatePerformanceEntity(member, performance, request);
+        var data = performanceResolver.toUpdatePerformanceData(member, performance, request);
         performance.update(member, data.artists(), data.info(), data.schedule(), data.location(), data.payment(),
                 data.seats(),
                 data.genres(), data.proofUrl());

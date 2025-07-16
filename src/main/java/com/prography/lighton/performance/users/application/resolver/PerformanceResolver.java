@@ -8,7 +8,6 @@ import com.prography.lighton.genre.infrastructure.cache.GenreCache;
 import com.prography.lighton.member.common.domain.entity.Member;
 import com.prography.lighton.performance.common.domain.entity.Performance;
 import com.prography.lighton.performance.common.domain.entity.enums.Seat;
-import com.prography.lighton.performance.common.domain.entity.enums.Type;
 import com.prography.lighton.performance.common.domain.entity.vo.Info;
 import com.prography.lighton.performance.common.domain.entity.vo.Location;
 import com.prography.lighton.performance.common.domain.entity.vo.Payment;
@@ -37,26 +36,24 @@ public class PerformanceResolver {
     private final AddressGeocodingService addressGeocodingService;
     private final S3UploadService uploadService;
 
-    public Performance toNewPerformanceEntity(Member member, RegisterPerformanceMultiPart request) {
+    public PerformanceData toNewPerformanceData(Member member, RegisterPerformanceMultiPart request) {
         String posterUrl = uploadService.uploadFile(request.posterImage(), member);
         String proofUrl = uploadService.uploadFile(request.proof(), member);
         SavePerformanceRequest data = request.data();
 
-        return Performance.create(
-                member,
+        return new PerformanceData(
                 toArtists(member, data.artists()),
                 toInfo(data.info(), posterUrl),
                 toSchedule(data.schedule()),
                 toLocation(data.info()),
                 toPayment(data.payment()),
-                Type.CONCERT,
                 data.seat(),
                 genreCache.getGenresByNameOrThrow(data.info().genre()),
-                proofUrl,
-                data.totalSeatsCount());
+                proofUrl
+        );
     }
 
-    public UpdatePayload toUpdatePerformanceEntity(Member member,
+    public PerformanceData toUpdatePerformanceData(Member member,
                                                    Performance origin,
                                                    UpdatePerformanceMultiPart request) {
 
@@ -64,7 +61,7 @@ public class PerformanceResolver {
         String proofUrl = replaceSingle(origin.getProofUrl(), request.proof(), member);
         SavePerformanceRequest data = request.data();
 
-        return new UpdatePayload(
+        return new PerformanceData(
                 toArtists(member, data.artists()),
                 toInfo(data.info(), posterUrl),
                 toSchedule(data.schedule()),
@@ -140,16 +137,8 @@ public class PerformanceResolver {
         return originUrl;
     }
 
-    public record BuskingData(
-            Member performer,
-            Info info,
-            Schedule schedule,
-            Location location,
-            List<Genre> genres
-    ) {
-    }
 
-    public record UpdatePayload(
+    public record PerformanceData(
             List<Artist> artists,
             Info info,
             Schedule schedule,
@@ -160,4 +149,14 @@ public class PerformanceResolver {
             String proofUrl
     ) {
     }
+
+    public record BuskingData(
+            Member performer,
+            Info info,
+            Schedule schedule,
+            Location location,
+            List<Genre> genres
+    ) {
+    }
+
 }
