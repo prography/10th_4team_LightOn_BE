@@ -1,15 +1,12 @@
 package com.prography.lighton.performance.users.application.service;
 
-import com.prography.lighton.artist.users.application.service.ArtistService;
 import com.prography.lighton.common.geo.BoundingBox;
 import com.prography.lighton.common.geo.GeoUtils;
 import com.prography.lighton.member.common.domain.entity.Member;
 import com.prography.lighton.performance.common.domain.entity.Performance;
 import com.prography.lighton.performance.common.domain.entity.enums.PerformanceFilterType;
-import com.prography.lighton.performance.common.domain.entity.enums.Type;
 import com.prography.lighton.performance.users.application.resolver.PerformanceResolver;
 import com.prography.lighton.performance.users.infrastructure.repository.PerformanceRepository;
-import com.prography.lighton.performance.users.presentation.dto.PerformanceUpdateRequest;
 import com.prography.lighton.performance.users.presentation.dto.RegisterPerformanceMultiPart;
 import com.prography.lighton.performance.users.presentation.dto.UpdatePerformanceMultiPart;
 import com.prography.lighton.performance.users.presentation.dto.response.GetPerformanceMapListResponseDTO;
@@ -33,7 +30,6 @@ public class ArtistPerformanceService {
 
     private final PerformanceRepository performanceRepository;
     private final PerformanceResolver performanceResolver;
-    private final ArtistService artistService;
 
     public Performance getApprovedPerformanceById(Long id) {
         Performance performance = performanceRepository.getById(id);
@@ -48,14 +44,7 @@ public class ArtistPerformanceService {
 
     @Transactional
     public void registerPerformance(Member member, RegisterPerformanceMultiPart request) {
-        var data = performanceResolver.toDomainData(member, request.data().artists(), request.data().info(),
-                request.data().schedule(),
-                request.data().payment(),
-                request.data().seat());
-        Performance performance = Performance.create(member, data.artists(), data.info(), data.schedule(),
-                data.location(),
-                data.payment(),
-                Type.CONCERT, data.seats(), data.genres(), "proofImage", request.data().totalSeatsCount());
+        Performance performance = performanceResolver.toNewEntity(member, request);
         performanceRepository.save(performance);
     }
 
