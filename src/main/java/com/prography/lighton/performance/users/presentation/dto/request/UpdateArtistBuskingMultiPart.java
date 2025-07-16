@@ -4,7 +4,7 @@ import jakarta.validation.Valid;
 import org.springframework.web.multipart.MultipartFile;
 
 public record UpdateArtistBuskingMultiPart(
-        @Valid SaveBuskingRequest data,
+        @Valid SaveArtistBuskingRequest data,
         MultipartFile posterImage,
         MultipartFile proof
 ) {
