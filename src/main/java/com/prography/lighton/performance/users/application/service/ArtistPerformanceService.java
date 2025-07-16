@@ -27,7 +27,6 @@ public class ArtistPerformanceService {
     private static final Integer DAY_OF_WEEK = 7;
     private static final Integer CLOSING_SOON_DAYS = 1;
 
-
     private final PerformanceRepository performanceRepository;
     private final PerformanceResolver performanceResolver;
 
@@ -51,13 +50,10 @@ public class ArtistPerformanceService {
     @Transactional
     public void updatePerformance(Member member, Long performanceId, UpdatePerformanceMultiPart request) {
         Performance performance = getApprovedPerformanceById(performanceId);
-        var data = performanceResolver.toDomainData(member, request.data().artists(), request.data().info(),
-                request.data().schedule(),
-                request.data().payment(),
-                request.data().seat());
+        var data = performanceResolver.toUpdateEntity(member, performance, request);
         performance.update(member, data.artists(), data.info(), data.schedule(), data.location(), data.payment(),
                 data.seats(),
-                data.genres(), "proof");
+                data.genres(), data.proofUrl());
     }
 
     @Transactional
