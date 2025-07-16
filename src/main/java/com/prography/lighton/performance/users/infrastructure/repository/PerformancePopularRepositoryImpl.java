@@ -27,7 +27,8 @@ public class PerformancePopularRepositoryImpl implements PerformancePopularRepos
                 .where(
                         p.approveStatus.eq(ApproveStatus.APPROVED),
                         p.schedule.endDate.goe(today),
-                        p.status.isTrue()
+                        p.status.isTrue(),
+                        p.canceled.isFalse()
                 )
                 .orderBy(p.likeCount.desc(), p.viewCount.desc())
                 .limit(limit)
@@ -51,6 +52,7 @@ public class PerformancePopularRepositoryImpl implements PerformancePopularRepos
                         p.approveStatus.eq(ApproveStatus.APPROVED),
                         p.schedule.endDate.goe(today),
                         p.status.isTrue(),
+                        p.canceled.isFalse(),
                         g.name.eq(genre)
                 )
                 .orderBy(p.likeCount.desc(), p.viewCount.desc())
