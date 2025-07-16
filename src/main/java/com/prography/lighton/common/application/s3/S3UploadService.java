@@ -6,6 +6,8 @@ import com.amazonaws.services.s3.model.PutObjectRequest;
 import com.prography.lighton.member.common.domain.entity.Member;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -43,10 +45,31 @@ public class S3UploadService {
         }
     }
 
+    public void deleteFile(String fileUrl) {
+        if (fileUrl == null || fileUrl.isBlank()) {
+            return;
+        }
+        String key = extractKeyFromUrl(fileUrl);
+        amazonS3.deleteObject(bucket, key);
+    }
+
     private String extractExtension(String filename) {
         if (filename == null || !filename.contains(".")) {
             return DEFAULT_EXTENSION;
         }
         return filename.substring(filename.lastIndexOf("."));
+    }
+
+    private String extractKeyFromUrl(String url) {
+        try {
+            URI uri = new URI(url);
+            String path = uri.getPath();
+            if (path == null || path.length() <= 1) {
+                throw new S3DeleteFailedException("잘못된 S3 URL 형식입니다: " + url);
+            }
+            return path.substring(1);
+        } catch (URISyntaxException e) {
+            throw new S3DeleteFailedException("잘못된 S3 URL 형식입니다: " + url + "\n" + e);
+        }
     }
 }
