@@ -6,8 +6,8 @@ import com.prography.lighton.member.common.domain.entity.Member;
 import com.prography.lighton.performance.common.domain.entity.Busking;
 import com.prography.lighton.performance.users.application.resolver.PerformanceResolver;
 import com.prography.lighton.performance.users.infrastructure.repository.PerformanceRepository;
-import com.prography.lighton.performance.users.presentation.dto.request.ArtistBuskingUpdateRequest;
 import com.prography.lighton.performance.users.presentation.dto.request.RegisterBuskingMultiPart;
+import com.prography.lighton.performance.users.presentation.dto.request.UpdateArtistBuskingMultiPart;
 import com.prography.lighton.performance.users.presentation.dto.request.UserBuskingRegisterRequest;
 import com.prography.lighton.performance.users.presentation.dto.request.UserBuskingUpdateRequest;
 import lombok.RequiredArgsConstructor;
@@ -55,10 +55,10 @@ public class BuskingService {
     }
 
     @Transactional
-    public void updateBuskingByArtist(Member member, Long buskingId, ArtistBuskingUpdateRequest request) {
+    public void updateBuskingByArtist(Member member, Long buskingId, UpdateArtistBuskingMultiPart request) {
         Busking busking = getApprovedBuskingById(buskingId);
-        var data = performanceResolver.toBuskingData(member, request.info(), request.schedule());
-        busking.updateByArtist(member, data.info(), data.schedule(), data.location(), data.genres(), request.proof());
+        var data = performanceResolver.toBuskingData(member, request.data().info(), request.data().schedule());
+        busking.updateByArtist(member, data.info(), data.schedule(), data.location(), data.genres(), "proofUrl");
     }
 
     @Transactional
