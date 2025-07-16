@@ -11,6 +11,7 @@ import com.prography.lighton.performance.users.application.resolver.PerformanceR
 import com.prography.lighton.performance.users.infrastructure.repository.PerformanceRepository;
 import com.prography.lighton.performance.users.presentation.dto.PerformanceUpdateRequest;
 import com.prography.lighton.performance.users.presentation.dto.RegisterPerformanceMultiPart;
+import com.prography.lighton.performance.users.presentation.dto.UpdatePerformanceMultiPart;
 import com.prography.lighton.performance.users.presentation.dto.response.GetPerformanceMapListResponseDTO;
 import com.prography.lighton.performance.users.presentation.dto.response.PerformanceSearchItemDTO;
 import java.time.LocalDate;
@@ -59,14 +60,15 @@ public class ArtistPerformanceService {
     }
 
     @Transactional
-    public void updatePerformance(Member member, Long performanceId, PerformanceUpdateRequest request) {
+    public void updatePerformance(Member member, Long performanceId, UpdatePerformanceMultiPart request) {
         Performance performance = getApprovedPerformanceById(performanceId);
-        var data = performanceResolver.toDomainData(member, request.artists(), request.info(), request.schedule(),
-                request.payment(),
-                request.seat());
+        var data = performanceResolver.toDomainData(member, request.data().artists(), request.data().info(),
+                request.data().schedule(),
+                request.data().payment(),
+                request.data().seat());
         performance.update(member, data.artists(), data.info(), data.schedule(), data.location(), data.payment(),
                 data.seats(),
-                data.genres(), request.proof());
+                data.genres(), "proof");
     }
 
     @Transactional
