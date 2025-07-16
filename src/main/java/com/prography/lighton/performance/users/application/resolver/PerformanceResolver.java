@@ -18,12 +18,14 @@ import com.prography.lighton.performance.users.presentation.dto.PaymentDTO;
 import com.prography.lighton.performance.users.presentation.dto.RegisterPerformanceMultiPart;
 import com.prography.lighton.performance.users.presentation.dto.SavePerformanceRequest;
 import com.prography.lighton.performance.users.presentation.dto.ScheduleDTO;
+import com.prography.lighton.performance.users.presentation.dto.UpdatePerformanceMultiPart;
 import com.prography.lighton.region.application.dto.Coordinate;
 import com.prography.lighton.region.application.service.AddressGeocodingService;
 import com.prography.lighton.region.infrastructure.cache.RegionCache;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
+import org.springframework.web.multipart.MultipartFile;
 
 @Component
 @RequiredArgsConstructor
@@ -65,6 +67,26 @@ public class PerformanceResolver {
                 genreCache.getGenresByNameOrThrow(data.info().genre()),
                 proofUrl,
                 data.totalSeatsCount());
+    }
+
+    public UpdatePayload toUpdatePayload(Member member,
+                                         Performance origin,
+                                         UpdatePerformanceMultiPart request) {
+
+        String posterUrl = replaceSingle(origin.getInfo().getPosterUrl(), request.posterImage(), member);
+        String proofUrl = replaceSingle(origin.getProofUrl(), request.proof(), member);
+        SavePerformanceRequest data = request.data();
+
+        return new UpdatePayload(
+                toArtists(member, data.artists()),
+                toInfo(data.info(), posterUrl),
+                toSchedule(data.schedule()),
+                toLocation(data.info()),
+                toPayment(data.payment()),
+                data.seat(),
+                genreCache.getGenresByNameOrThrow(data.info().genre()),
+                proofUrl
+        );
     }
 
     public BuskingData toBuskingData(Member member, InfoDTO infoDTO, ScheduleDTO scheduleDTO) {
@@ -123,6 +145,14 @@ public class PerformanceResolver {
         );
     }
 
+    private String replaceSingle(String originUrl, MultipartFile file, Member member) {
+        if (file != null && !file.isEmpty()) {
+            uploadService.deleteFile(originUrl);
+            return uploadService.uploadFile(file, member);
+        }
+        return originUrl;
+    }
+
     public record DomainData(
             List<Artist> artists,
             Info info,
@@ -140,6 +170,18 @@ public class PerformanceResolver {
             Schedule schedule,
             Location location,
             List<Genre> genres
+    ) {
+    }
+
+    public record UpdatePayload(
+            List<Artist> artists,
+            Info info,
+            Schedule schedule,
+            Location location,
+            Payment payment,
+            List<Seat> seats,
+            List<Genre> genres,
+            String proofUrl
     ) {
     }
 }
