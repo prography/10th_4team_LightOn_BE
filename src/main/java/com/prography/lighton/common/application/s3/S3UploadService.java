@@ -1,6 +1,7 @@
 package com.prography.lighton.common.application.s3;
 
 import com.amazonaws.services.s3.AmazonS3;
+import com.amazonaws.services.s3.model.DeleteObjectsRequest;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.PutObjectRequest;
 import com.prography.lighton.member.common.domain.entity.Member;
@@ -8,7 +9,11 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.Collection;
+import java.util.List;
+import java.util.Objects;
 import java.util.UUID;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -51,6 +56,26 @@ public class S3UploadService {
         }
         String key = extractKeyFromUrl(fileUrl);
         amazonS3.deleteObject(bucket, key);
+    }
+
+    public void deleteFiles(Collection<String> fileUrls) {
+        if (fileUrls == null || fileUrls.isEmpty()) {
+            return;
+        }
+
+        List<DeleteObjectsRequest.KeyVersion> keys = fileUrls.stream()
+                .filter(Objects::nonNull)
+                .filter(s -> !s.isBlank())
+                .map(this::extractKeyFromUrl)
+                .map(DeleteObjectsRequest.KeyVersion::new)
+                .collect(Collectors.toList());
+
+        if (keys.isEmpty()) {
+            return;
+        }
+
+        DeleteObjectsRequest request = new DeleteObjectsRequest(bucket).withKeys(keys);
+        amazonS3.deleteObjects(request);
     }
 
     private String extractExtension(String filename) {
