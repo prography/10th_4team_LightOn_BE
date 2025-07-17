@@ -50,7 +50,8 @@ public class PerformanceSummaryRepositoryImpl implements PerformanceSummaryRepos
                 .on(sr.id.eq(subRegionIdPath))
                 .where(
                         perf.getNumber("id", Long.class).in(ids),
-                        perf.getBoolean("status").eq(true)
+                        perf.getBoolean("status").eq(true),
+                        perf.getBoolean("canceled").eq(false)
                 )
                 .transform(
                         groupBy(perf.getNumber("id", Long.class)).list(

@@ -5,42 +5,38 @@ import com.prography.lighton.performance.common.domain.entity.QPerformance;
 import com.prography.lighton.performance.common.domain.entity.association.QPerformanceGenre;
 import com.prography.lighton.performance.common.domain.entity.enums.ApproveStatus;
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import java.time.LocalDate;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
 @Repository
 @RequiredArgsConstructor
-public class PerformancePopularRepositoryImpl implements PerformancePopularRepository {
+public class RecentPerformanceRepositoryImpl implements RecentPerformanceRepository {
 
     private final JPAQueryFactory query;
 
     @Override
-    public List<Long> findTopPopularAll(int limit) {
+    public List<Long> findRecentAll(int limit) {
         QPerformance p = QPerformance.performance;
-        LocalDate today = LocalDate.now();
 
         return query
                 .select(p.id)
                 .from(p)
                 .where(
                         p.approveStatus.eq(ApproveStatus.APPROVED),
-                        p.schedule.endDate.goe(today),
                         p.status.isTrue(),
                         p.canceled.isFalse()
                 )
-                .orderBy(p.likeCount.desc(), p.viewCount.desc())
+                .orderBy(p.createdAt.desc())
                 .limit(limit)
                 .fetch();
     }
 
     @Override
-    public List<Long> findTopPopularByGenre(String genre, int limit) {
+    public List<Long> findRecentByGenre(String genre, int limit) {
         QPerformance p = QPerformance.performance;
         QPerformanceGenre pg = QPerformanceGenre.performanceGenre;
         QGenre g = QGenre.genre;
-        LocalDate today = LocalDate.now();
 
         return query
                 .select(p.id)
@@ -50,12 +46,11 @@ public class PerformancePopularRepositoryImpl implements PerformancePopularRepos
                 .join(pg.genre, g)
                 .where(
                         p.approveStatus.eq(ApproveStatus.APPROVED),
-                        p.schedule.endDate.goe(today),
                         p.status.isTrue(),
                         p.canceled.isFalse(),
                         g.name.eq(genre)
                 )
-                .orderBy(p.likeCount.desc(), p.viewCount.desc())
+                .orderBy(p.createdAt.desc())
                 .limit(limit)
                 .fetch();
     }
