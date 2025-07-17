@@ -1,10 +1,9 @@
-package com.prography.lighton.performance.users.presentation.dto;
+package com.prography.lighton.performance.users.presentation.dto.request;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import java.util.List;
-import org.hibernate.validator.constraints.URL;
 
 public record InfoDTO(
 
@@ -23,9 +22,6 @@ public record InfoDTO(
         String notice,
 
         @NotEmpty(message = "장르는 하나 이상 선택해야 합니다.")
-        List<@NotNull(message = "장르는 필수입니다.") String> genre,
-
-        @URL(message = "포스터는 올바른 URL 형식이어야 합니다.")
-        String poster
+        List<@NotNull(message = "장르는 필수입니다.") String> genre
 ) {
 }

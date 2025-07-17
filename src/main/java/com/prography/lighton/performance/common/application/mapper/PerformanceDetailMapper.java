@@ -62,6 +62,8 @@ public class PerformanceDetailMapper {
                 .type(p.getType())
                 .seats(p.getSeats())
                 .proofUrl(p.getProofUrl())
+                .isPaid(p.getPayment().getIsPaid())
+                .fee(p.getPayment().getFee())
                 .build();
     }
 
@@ -86,6 +88,8 @@ public class PerformanceDetailMapper {
                 .type(b.getType())
                 .seats(b.getSeats())
                 .proofUrl(b.getProofUrl())
+                .isPaid(b.getPayment().getIsPaid())
+                .fee(b.getPayment().getFee())
                 .build();
     }
 
