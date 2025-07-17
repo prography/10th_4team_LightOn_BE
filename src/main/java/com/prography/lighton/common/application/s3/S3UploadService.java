@@ -26,6 +26,7 @@ public class S3UploadService {
 
     private static final String DEFAULT_EXTENSION = "";
     private static final String SLASH = "/";
+    private static final int KEY_START_INDEX = 1;
 
     private final AmazonS3 amazonS3;
 
@@ -111,10 +112,10 @@ public class S3UploadService {
         try {
             URI uri = new URI(url);
             String path = uri.getPath();
-            if (path == null || path.length() <= 1) {
+            if (path == null || path.length() <= KEY_START_INDEX) {
                 throw new S3DeleteFailedException("Invalid S3 URL: " + url);
             }
-            return path.substring(1);
+            return path.substring(KEY_START_INDEX);
         } catch (URISyntaxException e) {
             throw new S3DeleteFailedException("Invalid S3 URL: " + url + "\n" + e);
         }
