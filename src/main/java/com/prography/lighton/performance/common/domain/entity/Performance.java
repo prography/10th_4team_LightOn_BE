@@ -18,6 +18,7 @@ import com.prography.lighton.performance.common.domain.entity.vo.Info;
 import com.prography.lighton.performance.common.domain.entity.vo.Location;
 import com.prography.lighton.performance.common.domain.entity.vo.Payment;
 import com.prography.lighton.performance.common.domain.entity.vo.Schedule;
+import com.prography.lighton.performance.common.domain.exception.InvalidSeatCountException;
 import com.prography.lighton.performance.common.domain.exception.MasterArtistCannotBeRemovedException;
 import com.prography.lighton.performance.common.domain.exception.NotAuthorizedPerformanceException;
 import com.prography.lighton.performance.common.domain.exception.PerformanceNotApprovedException;
@@ -208,7 +209,8 @@ public class Performance extends BaseEntity {
             Payment payment,
             List<Seat> seats,
             List<Genre> genres,
-            String proofUrl
+            String proofUrl,
+            Integer totalSeatsCount
     ) {
         validatePerformer(performer);
         validateWithinAllowedPeriod(UPDATE_DEADLINE_DAYS);
@@ -224,6 +226,12 @@ public class Performance extends BaseEntity {
 
         updateArtists(newArtists);
         updateGenres(genres);
+    }
+
+    private void validSeatCount(Integer totalSeatsCount) {
+        if (totalSeatsCount == null || totalSeatsCount < bookedSeatCount) {
+            throw new InvalidSeatCountException();
+        }
     }
 
     protected void validatePerformer(Member member) {

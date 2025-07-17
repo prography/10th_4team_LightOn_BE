@@ -58,7 +58,7 @@ public class ArtistPerformanceService {
         var data = performanceResolver.toUpdatePerformanceData(member, performance, request);
         performance.update(member, data.artists(), data.info(), data.schedule(), data.location(), data.payment(),
                 data.seats(),
-                data.genres(), data.proofUrl());
+                data.genres(), data.proofUrl(), request.data().totalSeatsCount());
     }
 
     @Transactional
