@@ -47,6 +47,7 @@ public class S3UploadService {
             amazonS3.putObject(new PutObjectRequest(bucket, key, is, metadata));
             return amazonS3.getUrl(bucket, key).toString();
         } catch (IOException e) {
+            log.error("s3 업로드를 실패했습니다. : ", e);
             throw new S3UploadFailedException();
         }
     }
