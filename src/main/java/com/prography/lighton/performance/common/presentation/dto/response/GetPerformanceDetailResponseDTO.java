@@ -18,7 +18,9 @@ public record GetPerformanceDetailResponseDTO(
         String regionName,
         Type type,
         List<Seat> seats,
-        String proofUrl
+        String proofUrl,
+        Boolean isPaid,
+        Integer fee
 ) {
     public record ArtistDTO(Long id, String name, String description) {
         public static ArtistDTO of(Long id, String name, String description) {
