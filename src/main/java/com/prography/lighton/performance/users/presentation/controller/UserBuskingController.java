@@ -53,10 +53,10 @@ public class UserBuskingController {
             @Valid @RequestPart("data")
             SaveUserBuskingRequest data,
 
-            @NotNull @RequestPart(value = "posterImage", required = false)
+            @RequestPart(value = "posterImage", required = false)
             MultipartFile posterImage,
 
-            @NotNull @RequestPart(value = "proof", required = false)
+            @RequestPart(value = "proof", required = false)
             MultipartFile proof) {
         UpdateUserBuskingMultiPart request = new UpdateUserBuskingMultiPart(data, posterImage, proof);
         buskingService.updateBuskingByUser(member, id, request);

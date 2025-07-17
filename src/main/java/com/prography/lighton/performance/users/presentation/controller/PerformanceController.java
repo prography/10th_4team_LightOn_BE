@@ -55,10 +55,10 @@ public class PerformanceController {
             @Valid @RequestPart("data")
             SavePerformanceRequest data,
 
-            @NotNull @RequestPart(value = "posterImage", required = false)
+            @RequestPart(value = "posterImage", required = false)
             MultipartFile posterImage,
 
-            @NotNull @RequestPart(value = "proof", required = false)
+            @RequestPart(value = "proof", required = false)
             MultipartFile proof) {
         UpdatePerformanceMultiPart request = new UpdatePerformanceMultiPart(data, posterImage, proof);
         artistPerformanceService.updatePerformance(member, id, request);

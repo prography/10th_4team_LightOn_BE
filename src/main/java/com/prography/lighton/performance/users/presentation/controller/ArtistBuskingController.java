@@ -54,10 +54,10 @@ public class ArtistBuskingController {
             @Valid @RequestPart("data")
             SaveArtistBuskingRequest data,
 
-            @NotNull @RequestPart(value = "posterImage", required = false)
+            @RequestPart(value = "posterImage", required = false)
             MultipartFile posterImage,
 
-            @NotNull @RequestPart(value = "proof", required = false)
+            @RequestPart(value = "proof", required = false)
             MultipartFile proof) {
         UpdateArtistBuskingMultiPart request = new UpdateArtistBuskingMultiPart(data, posterImage, proof);
         buskingService.updateBuskingByArtist(member, id, request);
