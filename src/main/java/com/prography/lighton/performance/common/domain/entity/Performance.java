@@ -165,7 +165,7 @@ public class Performance extends BaseEntity {
             List<Seat> seats,
             List<Genre> genres,
             String proofUrl,
-            Integer totalSeatsCount
+            int totalSeatsCount
     ) {
         Performance perf = new Performance(performer, info, schedule, location, payment, type, seats, proofUrl,
                 totalSeatsCount);
@@ -392,7 +392,11 @@ public class Performance extends BaseEntity {
             throw new BadPerformanceRequestException();
         }
 
-        if (this.type.equals(Type.CONCERT) && (this.totalSeatsCount - this.bookedSeatCount < applySeats)) {
+        if (this.type.equals(Type.CONCERT)) {
+            throw new BadPerformanceRequestException();
+        }
+
+        if (totalSeatsCount != 0 && (this.totalSeatsCount - this.bookedSeatCount < applySeats)) {
             throw new NotEnoughSeatsException();
         }
     }
