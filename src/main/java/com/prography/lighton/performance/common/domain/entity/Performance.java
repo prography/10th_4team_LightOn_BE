@@ -184,7 +184,7 @@ public class Performance extends BaseEntity {
             Seat seat,
             String proofUrl,
             List<Genre> genres,
-            Integer totalSeatsCount
+            int totalSeatsCount
     ) {
         this.performer = performer;
         this.info = info;
@@ -210,7 +210,7 @@ public class Performance extends BaseEntity {
             List<Seat> seats,
             List<Genre> genres,
             String proofUrl,
-            Integer totalSeatsCount
+            int totalSeatsCount
     ) {
         validatePerformer(performer);
         validateWithinAllowedPeriod(UPDATE_DEADLINE_DAYS);

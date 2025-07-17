@@ -25,7 +25,7 @@ public record SavePerformanceRequest(
         @NotEmpty(message = "좌석 유형은 하나 이상 선택해야 합니다.")
         List<@NotNull(message = "좌석 유형은 비어 있을 수 없습니다.") Seat> seat,
 
-        Integer totalSeatsCount
+        int totalSeatsCount
 
 ) {
 }
