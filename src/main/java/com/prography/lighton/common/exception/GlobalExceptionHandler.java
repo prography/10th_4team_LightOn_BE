@@ -30,7 +30,7 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(S3UploadFailedException.class)
     public ResponseEntity<ApiResult<?>> handleS3UploadFailedException(
-            PerformanceUpdateNotAllowedException exception) {
+            S3UploadFailedException exception) {
         return new ResponseEntity<>(exception.body(), exception.status());
     }
 
