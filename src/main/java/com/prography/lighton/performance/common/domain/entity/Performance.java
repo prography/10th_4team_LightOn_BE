@@ -215,6 +215,7 @@ public class Performance extends BaseEntity {
         validatePerformer(performer);
         validateWithinAllowedPeriod(UPDATE_DEADLINE_DAYS);
         DomainValidator.requireNonBlank(proofUrl);
+        validSeatCount(totalSeatsCount);
 
         this.info = info;
         this.schedule = schedule;
@@ -223,13 +224,14 @@ public class Performance extends BaseEntity {
         this.seats.clear();
         this.seats.addAll(seats);
         this.proofUrl = proofUrl;
+        this.totalSeatsCount = totalSeatsCount;
 
         updateArtists(newArtists);
         updateGenres(genres);
     }
 
-    private void validSeatCount(Integer totalSeatsCount) {
-        if (totalSeatsCount == null || totalSeatsCount < bookedSeatCount) {
+    private void validSeatCount(int totalSeatsCount) {
+        if (totalSeatsCount > 0 && totalSeatsCount < bookedSeatCount) {
             throw new InvalidSeatCountException();
         }
     }
