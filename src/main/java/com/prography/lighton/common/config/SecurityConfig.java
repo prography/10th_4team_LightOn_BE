@@ -38,14 +38,16 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.POST, "/api/auth/phones/code/verify").permitAll()
                         .requestMatchers(HttpMethod.POST, "/api/auth/login").permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/members/duplicate-check").permitAll()
-                        .requestMatchers(HttpMethod.POST, "/api/members/{temporaryMemberId}/info").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/api/members/*/info").permitAll()
                         .requestMatchers("/api/admin/**").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.POST, "/api/members/*/info").permitAll()
                         .requestMatchers("/api/oauth/**").permitAll()
                         .requestMatchers("api/admin/**").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.GET, "/api/members/performances/popular").permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/members/performances/nearby").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/members/performances/recent").permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/members/performances").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/members/performances/*").permitAll()
 
                         // Swagger & OpenAPI
                         .requestMatchers(

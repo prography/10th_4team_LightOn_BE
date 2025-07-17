@@ -2,6 +2,7 @@ package com.prography.lighton.common.exception;
 
 import com.fasterxml.jackson.databind.JsonMappingException.Reference;
 import com.fasterxml.jackson.databind.exc.InvalidFormatException;
+import com.prography.lighton.common.application.s3.S3UploadFailedException;
 import com.prography.lighton.common.exception.base.DuplicateException;
 import com.prography.lighton.common.exception.base.InvalidException;
 import com.prography.lighton.common.exception.base.NotFoundException;
@@ -26,6 +27,12 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 @Order(2)
 @RestControllerAdvice
 public class GlobalExceptionHandler {
+
+    @ExceptionHandler(S3UploadFailedException.class)
+    public ResponseEntity<ApiResult<?>> handleS3UploadFailedException(
+            S3UploadFailedException exception) {
+        return new ResponseEntity<>(exception.body(), exception.status());
+    }
 
     @ExceptionHandler(NotFoundException.class)
     public ResponseEntity<?> handleNotFoundException(NotFoundException e) {

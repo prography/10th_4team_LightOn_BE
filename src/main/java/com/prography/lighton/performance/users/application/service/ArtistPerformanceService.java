@@ -1,6 +1,5 @@
 package com.prography.lighton.performance.users.application.service;
 
-import com.prography.lighton.artist.users.application.service.ArtistService;
 import com.prography.lighton.common.geo.BoundingBox;
 import com.prography.lighton.common.geo.GeoUtils;
 import com.prography.lighton.member.common.domain.entity.Member;
@@ -9,8 +8,8 @@ import com.prography.lighton.performance.common.domain.entity.enums.PerformanceF
 import com.prography.lighton.performance.common.domain.entity.enums.Type;
 import com.prography.lighton.performance.users.application.resolver.PerformanceResolver;
 import com.prography.lighton.performance.users.infrastructure.repository.PerformanceRepository;
-import com.prography.lighton.performance.users.presentation.dto.PerformanceRegisterRequest;
-import com.prography.lighton.performance.users.presentation.dto.PerformanceUpdateRequest;
+import com.prography.lighton.performance.users.presentation.dto.request.RegisterPerformanceMultiPart;
+import com.prography.lighton.performance.users.presentation.dto.request.UpdatePerformanceMultiPart;
 import com.prography.lighton.performance.users.presentation.dto.response.GetPerformanceMapListResponseDTO;
 import com.prography.lighton.performance.users.presentation.dto.response.PerformanceSearchItemDTO;
 import java.time.LocalDate;
@@ -29,10 +28,8 @@ public class ArtistPerformanceService {
     private static final Integer DAY_OF_WEEK = 7;
     private static final Integer CLOSING_SOON_DAYS = 1;
 
-
     private final PerformanceRepository performanceRepository;
     private final PerformanceResolver performanceResolver;
-    private final ArtistService artistService;
 
     public Performance getApprovedPerformanceById(Long id) {
         Performance performance = performanceRepository.getById(id);
@@ -46,26 +43,22 @@ public class ArtistPerformanceService {
     }
 
     @Transactional
-    public void registerPerformance(Member member, PerformanceRegisterRequest request) {
-        var data = performanceResolver.toDomainData(member, request.artists(), request.info(), request.schedule(),
-                request.payment(),
-                request.seat());
+    public void registerPerformance(Member member, RegisterPerformanceMultiPart request) {
+        var data = performanceResolver.toNewPerformanceData(member, request);
         Performance performance = Performance.create(member, data.artists(), data.info(), data.schedule(),
                 data.location(),
                 data.payment(),
-                Type.CONCERT, data.seats(), data.genres(), request.proof(), request.totalSeatsCount());
+                Type.CONCERT, data.seats(), data.genres(), data.proofUrl(), request.data().totalSeatsCount());
         performanceRepository.save(performance);
     }
 
     @Transactional
-    public void updatePerformance(Member member, Long performanceId, PerformanceUpdateRequest request) {
+    public void updatePerformance(Member member, Long performanceId, UpdatePerformanceMultiPart request) {
         Performance performance = getApprovedPerformanceById(performanceId);
-        var data = performanceResolver.toDomainData(member, request.artists(), request.info(), request.schedule(),
-                request.payment(),
-                request.seat());
+        var data = performanceResolver.toUpdatePerformanceData(member, performance, request);
         performance.update(member, data.artists(), data.info(), data.schedule(), data.location(), data.payment(),
                 data.seats(),
-                data.genres(), request.proof());
+                data.genres(), data.proofUrl(), request.data().totalSeatsCount());
     }
 
     @Transactional

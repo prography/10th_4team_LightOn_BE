@@ -1,4 +1,4 @@
-package com.prography.lighton.performance.users.presentation.dto;
+package com.prography.lighton.performance.users.presentation.dto.request;
 
 import jakarta.validation.constraints.NotNull;
 import java.time.LocalDate;

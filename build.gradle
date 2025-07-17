@@ -91,6 +91,9 @@ dependencies {
 
     // JWT for apple login
     implementation 'com.auth0:java-jwt:4.4.0'
+    
+    // s3
+    implementation 'org.springframework.cloud:spring-cloud-starter-aws:2.2.6.RELEASE'
 }
 
 tasks.named('test') {

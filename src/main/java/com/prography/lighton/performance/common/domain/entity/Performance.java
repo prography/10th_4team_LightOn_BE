@@ -18,6 +18,7 @@ import com.prography.lighton.performance.common.domain.entity.vo.Info;
 import com.prography.lighton.performance.common.domain.entity.vo.Location;
 import com.prography.lighton.performance.common.domain.entity.vo.Payment;
 import com.prography.lighton.performance.common.domain.entity.vo.Schedule;
+import com.prography.lighton.performance.common.domain.exception.InvalidSeatCountException;
 import com.prography.lighton.performance.common.domain.exception.MasterArtistCannotBeRemovedException;
 import com.prography.lighton.performance.common.domain.exception.NotAuthorizedPerformanceException;
 import com.prography.lighton.performance.common.domain.exception.PerformanceNotApprovedException;
@@ -164,7 +165,7 @@ public class Performance extends BaseEntity {
             List<Seat> seats,
             List<Genre> genres,
             String proofUrl,
-            Integer totalSeatsCount
+            int totalSeatsCount
     ) {
         Performance perf = new Performance(performer, info, schedule, location, payment, type, seats, proofUrl,
                 totalSeatsCount);
@@ -183,7 +184,7 @@ public class Performance extends BaseEntity {
             Seat seat,
             String proofUrl,
             List<Genre> genres,
-            Integer totalSeatsCount
+            int totalSeatsCount
     ) {
         this.performer = performer;
         this.info = info;
@@ -208,11 +209,13 @@ public class Performance extends BaseEntity {
             Payment payment,
             List<Seat> seats,
             List<Genre> genres,
-            String proofUrl
+            String proofUrl,
+            int totalSeatsCount
     ) {
         validatePerformer(performer);
         validateWithinAllowedPeriod(UPDATE_DEADLINE_DAYS);
         DomainValidator.requireNonBlank(proofUrl);
+        validSeatCount(totalSeatsCount);
 
         this.info = info;
         this.schedule = schedule;
@@ -221,9 +224,16 @@ public class Performance extends BaseEntity {
         this.seats.clear();
         this.seats.addAll(seats);
         this.proofUrl = proofUrl;
+        this.totalSeatsCount = totalSeatsCount;
 
         updateArtists(newArtists);
         updateGenres(genres);
+    }
+
+    private void validSeatCount(int totalSeatsCount) {
+        if (totalSeatsCount > 0 && totalSeatsCount < bookedSeatCount) {
+            throw new InvalidSeatCountException();
+        }
     }
 
     protected void validatePerformer(Member member) {
@@ -384,7 +394,11 @@ public class Performance extends BaseEntity {
             throw new BadPerformanceRequestException();
         }
 
-        if (this.type.equals(Type.CONCERT) && (this.totalSeatsCount - this.bookedSeatCount < applySeats)) {
+        if (this.type.equals(Type.CONCERT)) {
+            throw new BadPerformanceRequestException();
+        }
+
+        if (totalSeatsCount != 0 && (this.totalSeatsCount - this.bookedSeatCount < applySeats)) {
             throw new NotEnoughSeatsException();
         }
     }

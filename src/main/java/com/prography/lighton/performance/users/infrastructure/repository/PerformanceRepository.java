@@ -13,7 +13,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Lock;
-import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
@@ -37,10 +36,6 @@ public interface PerformanceRepository extends JpaRepository<Performance, Long> 
     Optional<Busking> findBuskingById(@Param("id") Long id);
 
     List<Performance> findAllByPerformer(Member performer);
-
-
-    @Modifying
-    void deleteAllByPerformer(Member performer);
 
     default Busking getByBuskingId(Long id) {
         return findBuskingById(id)
