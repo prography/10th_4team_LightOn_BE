@@ -57,8 +57,9 @@ public class RecentPerformanceRepositoryImpl implements RecentPerformanceReposit
     }
 
     @Override
-    public List<Long> findRecentExcluding(List<Long> excludeIds, int limit, LocalDate today) {
+    public List<Long> findRecentExcluding(List<Long> excludeIds, int limit) {
         QPerformance p = QPerformance.performance;
+        LocalDate today = LocalDate.now();
 
         return query
                 .select(p.id)

@@ -1,6 +1,5 @@
 package com.prography.lighton.performance.users.infrastructure.repository;
 
-import java.time.LocalDate;
 import java.util.List;
 import org.springframework.util.StringUtils;
 
@@ -10,7 +9,7 @@ public interface RecentPerformanceRepository {
 
     List<Long> findRecentByGenre(String genre, int limit);
 
-    List<Long> findRecentExcluding(List<Long> excludeIds, int limit, LocalDate today);
+    List<Long> findRecentExcluding(List<Long> excludeIds, int limit);
 
     default List<Long> findRecentIds(String genre, int limit) {
         if (StringUtils.hasText(genre)) {
