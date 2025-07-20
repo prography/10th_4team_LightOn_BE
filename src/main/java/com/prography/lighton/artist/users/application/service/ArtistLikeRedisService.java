@@ -21,9 +21,18 @@ public class ArtistLikeRedisService {
 
     private final RedisZsetRepository redisZsetRepository;
 
-    public void incrementToday(Long artistId) {
+    public void incrementToday(List<Long> artistIds) {
         String todayKey = buildKey(LocalDate.now());
-        redisZsetRepository.incrementScore(todayKey, artistId.toString(), 1, ZSET_TTL);
+        artistIds.stream()
+                .map(Object::toString)
+                .forEach(idStr ->
+                        redisZsetRepository.incrementScore(
+                                todayKey,
+                                idStr,
+                                1,
+                                ZSET_TTL
+                        )
+                );
     }
 
     public List<ArtistRankDto> topArtistsLast14Days(int topN) {
