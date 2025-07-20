@@ -4,6 +4,7 @@ import com.prography.lighton.artist.users.application.service.ArtistLikeRedisSer
 import com.prography.lighton.member.common.domain.entity.Member;
 import com.prography.lighton.performance.common.domain.entity.Performance;
 import com.prography.lighton.performance.common.domain.entity.PerformanceLike;
+import com.prography.lighton.performance.common.domain.entity.enums.Type;
 import com.prography.lighton.performance.users.infrastructure.repository.PerformanceLikeRepository;
 import com.prography.lighton.performance.users.infrastructure.repository.PerformanceRepository;
 import com.prography.lighton.performance.users.presentation.dto.response.LikePerformanceResponse;
@@ -29,7 +30,7 @@ public class UserPerformanceLikeService {
                 .orElseGet(() -> PerformanceLike.of(member, performance, false));
 
         boolean nowLiked = like.toggleLike();
-        if (nowLiked) {
+        if (nowLiked && performance.getType() == Type.CONCERT) {
             List<Long> artistIds = performance.getArtists().stream()
                     .map(pa -> pa.getArtist().getId())
                     .toList();
