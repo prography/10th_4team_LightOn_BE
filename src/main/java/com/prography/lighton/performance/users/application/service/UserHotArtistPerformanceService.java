@@ -21,12 +21,17 @@ public class UserHotArtistPerformanceService {
     private final PerformanceLatestByArtistRepository latestRepository;
     private final ArtistLikeRedisService artistLikeRedisService;
     private final PerformanceListHelper helper;
+    private final UserRecentPerformanceService recentPerformanceService;
 
     public GetPerformanceBrowseResponse getLatestHotArtistPerformance() {
         String key = LATEST_HOT_CACHE_KEY_PREFIX;
-        return helper.fetchWithCache(
+        GetPerformanceBrowseResponse response = helper.fetchWithCache(
                 key,
                 () -> findLatestHotPerformanceIds());
+        if (response.performances().isEmpty()) {
+            response = recentPerformanceService.getRecentPerformances("");
+        }
+        return response;
     }
 
     private List<Long> findLatestHotPerformanceIds() {
@@ -42,10 +47,13 @@ public class UserHotArtistPerformanceService {
                 popularArtistIds, LocalDate.now());
 
         // 아티스트 인기 순서를 유지하며 5개 선택해야함, 지금은 해당 로직 없음.
-        List<Long> ordered = ids.subList(0, 5);
+        //List<Long> ordered = ids.subList(0, 5);
 
-        return ordered;
+        if (ids.size() < 5) {
+
+        }
+
+        return ids;
     }
-
 
 }
