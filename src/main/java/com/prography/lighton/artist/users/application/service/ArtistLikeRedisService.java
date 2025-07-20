@@ -1,4 +1,4 @@
-package com.prography.lighton.performance.users.application.service;
+package com.prography.lighton.artist.users.application.service;
 
 import com.prography.lighton.common.infrastructure.redis.RedisZsetRepository;
 import java.time.Duration;
