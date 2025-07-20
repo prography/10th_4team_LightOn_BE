@@ -29,10 +29,8 @@ public class UserHotArtistPerformanceService {
 
     public GetPerformanceBrowseResponse getLatestHotArtistPerformance() {
         String key = LATEST_HOT_CACHE_KEY_PREFIX;
-        GetPerformanceBrowseResponse response = helper.fetchWithCache(
-                key,
-                () -> findLatestHotPerformanceIds());
-        return response;
+        return helper.fetchWithCache(
+                key, this::findLatestHotPerformanceIds);
     }
 
     private List<Long> findLatestHotPerformanceIds() {
@@ -68,6 +66,4 @@ public class UserHotArtistPerformanceService {
 
         return hotIds;
     }
-
-
 }
