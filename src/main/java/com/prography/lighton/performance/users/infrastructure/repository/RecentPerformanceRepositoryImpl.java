@@ -5,6 +5,7 @@ import com.prography.lighton.performance.common.domain.entity.QPerformance;
 import com.prography.lighton.performance.common.domain.entity.association.QPerformanceGenre;
 import com.prography.lighton.performance.common.domain.entity.enums.ApproveStatus;
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import java.time.LocalDate;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
@@ -49,6 +50,25 @@ public class RecentPerformanceRepositoryImpl implements RecentPerformanceReposit
                         p.status.isTrue(),
                         p.canceled.isFalse(),
                         g.name.eq(genre)
+                )
+                .orderBy(p.createdAt.desc())
+                .limit(limit)
+                .fetch();
+    }
+
+    @Override
+    public List<Long> findRecentExcluding(List<Long> excludeIds, int limit, LocalDate today) {
+        QPerformance p = QPerformance.performance;
+
+        return query
+                .select(p.id)
+                .from(p)
+                .where(
+                        p.id.notIn(excludeIds),
+                        p.approveStatus.eq(ApproveStatus.APPROVED),
+                        p.status.isTrue(),
+                        p.canceled.isFalse(),
+                        p.schedule.endDate.goe(today)
                 )
                 .orderBy(p.createdAt.desc())
                 .limit(limit)
