@@ -1,5 +1,6 @@
 package com.prography.lighton.artist.users.application.service;
 
+import com.prography.lighton.artist.users.application.dto.ArtistRankDto;
 import com.prography.lighton.common.infrastructure.redis.RedisZsetRepository;
 import java.time.Duration;
 import java.time.LocalDate;
@@ -59,8 +60,5 @@ public class ArtistLikeRedisService {
 
     private String buildKey(LocalDate date) {
         return "artist:likes:z:" + date.format(DTF);
-    }
-
-    public record ArtistRankDto(Long artistId, Long likeCount) {
     }
 }

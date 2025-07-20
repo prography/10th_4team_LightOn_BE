@@ -1,7 +1,7 @@
 package com.prography.lighton.performance.users.application.service;
 
+import com.prography.lighton.artist.users.application.dto.ArtistRankDto;
 import com.prography.lighton.artist.users.application.service.ArtistLikeRedisService;
-import com.prography.lighton.artist.users.application.service.ArtistLikeRedisService.ArtistRankDto;
 import com.prography.lighton.performance.users.application.resolver.PerformanceListHelper;
 import com.prography.lighton.performance.users.infrastructure.repository.PerformanceLatestByArtistRepository;
 import com.prography.lighton.performance.users.infrastructure.repository.RecentPerformanceRepository;
