@@ -41,6 +41,7 @@ public class PerformanceLatestByArtistRepositoryImpl implements PerformanceLates
 
         return query
                 .select(performance.id)
+                .distinct()
                 .from(performance)
                 .join(performance.artists, performanceArtist)
                 .where(
