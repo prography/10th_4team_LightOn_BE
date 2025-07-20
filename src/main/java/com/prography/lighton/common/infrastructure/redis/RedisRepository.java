@@ -1,6 +1,8 @@
 package com.prography.lighton.common.infrastructure.redis;
 
 import java.time.Duration;
+import java.util.Collection;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Component;
@@ -31,4 +33,7 @@ public class RedisRepository {
         return value;
     }
 
+    public List<String> multiGet(Collection<String> keys) {
+        return redisTemplate.opsForValue().multiGet(keys);
+    }
 }
