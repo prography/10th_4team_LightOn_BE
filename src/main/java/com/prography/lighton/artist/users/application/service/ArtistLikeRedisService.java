@@ -17,8 +17,11 @@ import org.springframework.stereotype.Service;
 public class ArtistLikeRedisService {
 
     private static final Duration ZSET_TTL = Duration.ofDays(15);
-    private static final Duration TMP_TTL = Duration.ofSeconds(30);
+    private static final Duration AGGREGATE_TTL = Duration.ofSeconds(30);
     private static final DateTimeFormatter DTF = DateTimeFormatter.BASIC_ISO_DATE;
+
+    private static final String KEY_PREFIX = "artist:likes:z:";
+    private static final String SUM_KEY = "artist:likes:z:sum14d";
 
     private final RedisZsetRepository redisZsetRepository;
 
@@ -41,11 +44,10 @@ public class ArtistLikeRedisService {
                 .mapToObj(i -> buildKey(LocalDate.now().minusDays(i)))
                 .toList();
 
-        String tmpKey = "artist:likes:z:sum14d";
-        redisZsetRepository.unionAndStore(tmpKey, dayKeys, TMP_TTL);
+        redisZsetRepository.unionAndStore(SUM_KEY, dayKeys, AGGREGATE_TTL);
 
         Set<TypedTuple<String>> tuples =
-                redisZsetRepository.reverseRangeWithScores(tmpKey, 0, topN - 1);
+                redisZsetRepository.reverseRangeWithScores(SUM_KEY, 0, topN - 1);
 
         if (tuples == null || tuples.isEmpty()) {
             return List.of();
@@ -59,6 +61,6 @@ public class ArtistLikeRedisService {
     }
 
     private String buildKey(LocalDate date) {
-        return "artist:likes:z:" + date.format(DTF);
+        return KEY_PREFIX + date.format(DTF);
     }
 }
