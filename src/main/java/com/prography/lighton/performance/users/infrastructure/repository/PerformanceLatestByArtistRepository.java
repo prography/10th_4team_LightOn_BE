@@ -1,8 +1,8 @@
 package com.prography.lighton.performance.users.infrastructure.repository;
 
-import java.util.List;
+import java.util.Optional;
 
 public interface PerformanceLatestByArtistRepository {
 
-    List<Long> findLatestUpcomingIdsByArtists(List<Long> artistIds);
+    Optional<Long> findLatestUpcomingIdByArtist(long artistId);
 }

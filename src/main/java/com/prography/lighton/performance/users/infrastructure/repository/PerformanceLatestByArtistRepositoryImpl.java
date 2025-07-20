@@ -1,16 +1,11 @@
 package com.prography.lighton.performance.users.infrastructure.repository;
 
-
-import static com.prography.lighton.performance.common.domain.entity.QPerformance.performance;
-import static com.prography.lighton.performance.common.domain.entity.association.QPerformanceArtist.performanceArtist;
-
 import com.prography.lighton.performance.common.domain.entity.QPerformance;
 import com.prography.lighton.performance.common.domain.entity.association.QPerformanceArtist;
 import com.prography.lighton.performance.common.domain.entity.enums.ApproveStatus;
-import com.querydsl.jpa.JPAExpressions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import java.time.LocalDate;
-import java.util.List;
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
@@ -21,34 +16,24 @@ public class PerformanceLatestByArtistRepositoryImpl implements PerformanceLates
     private final JPAQueryFactory query;
 
     @Override
-    public List<Long> findLatestUpcomingIdsByArtists(List<Long> artistIds) {
-
-        QPerformance pSub = new QPerformance("pSub");
-        QPerformanceArtist paSub = new QPerformanceArtist("paSub");
+    public Optional<Long> findLatestUpcomingIdByArtist(long artistId) {
+        QPerformance p = QPerformance.performance;
+        QPerformanceArtist pa = QPerformanceArtist.performanceArtist;
         LocalDate today = LocalDate.now();
 
-        var latestPerArtist = JPAExpressions
-                .select(pSub.id.max())
-                .from(pSub)
-                .join(pSub.artists, paSub)
+        Long latestId = query
+                .select(p.id.max())
+                .from(p)
+                .join(p.artists, pa)
                 .where(
-                        paSub.artist.id.in(artistIds),
-                        pSub.status.isTrue(),
-                        pSub.canceled.isFalse(),
-                        pSub.approveStatus.eq(ApproveStatus.APPROVED),
-                        pSub.schedule.endDate.goe(today)
+                        pa.artist.id.eq(artistId),
+                        p.status.isTrue(),
+                        p.canceled.isFalse(),
+                        p.approveStatus.eq(ApproveStatus.APPROVED),
+                        p.schedule.endDate.goe(today)
                 )
-                .groupBy(paSub.artist.id);
+                .fetchOne();
 
-        return query
-                .select(performance.id)
-                .distinct()
-                .from(performance)
-                .join(performance.artists, performanceArtist)
-                .where(
-                        performanceArtist.artist.id.in(artistIds),
-                        performance.id.in(latestPerArtist)
-                )
-                .fetch();
+        return Optional.ofNullable(latestId);
     }
 }
