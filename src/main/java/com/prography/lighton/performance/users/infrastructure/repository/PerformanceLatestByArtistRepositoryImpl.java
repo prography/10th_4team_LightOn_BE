@@ -32,6 +32,7 @@ public class PerformanceLatestByArtistRepositoryImpl implements PerformanceLates
                 .join(pSub.artists, paSub)
                 .where(
                         paSub.artist.id.in(artistIds),
+                        pSub.status.isTrue(),
                         pSub.canceled.isFalse(),
                         pSub.approveStatus.eq(ApproveStatus.APPROVED),
                         pSub.schedule.endDate.goe(today)
