@@ -22,4 +22,13 @@ public class RedisRepository {
     public void delete(String key) {
         redisTemplate.delete(key);
     }
+
+    public Long increment(String key, long delta, Duration ttl) {
+        Long value = redisTemplate.opsForValue().increment(key, delta);
+        if (redisTemplate.getExpire(key) == -1) {
+            redisTemplate.expire(key, ttl);
+        }
+        return value;
+    }
+
 }
