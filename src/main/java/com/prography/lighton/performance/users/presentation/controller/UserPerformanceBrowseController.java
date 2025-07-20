@@ -4,6 +4,7 @@ import com.prography.lighton.common.annotation.LoginMember;
 import com.prography.lighton.common.utils.ApiUtils;
 import com.prography.lighton.common.utils.ApiUtils.ApiResult;
 import com.prography.lighton.member.common.domain.entity.Member;
+import com.prography.lighton.performance.users.application.service.UserHotArtistPerformanceService;
 import com.prography.lighton.performance.users.application.service.UserPopularService;
 import com.prography.lighton.performance.users.application.service.UserRecentPerformanceService;
 import com.prography.lighton.performance.users.application.service.UserRecommendationService;
@@ -23,6 +24,7 @@ public class UserPerformanceBrowseController {
     private final UserRecommendationService recommendationService;
     private final UserPopularService popularService;
     private final UserRecentPerformanceService recentPerformanceService;
+    private final UserHotArtistPerformanceService hotArtistPerformanceService;
 
     @GetMapping("/recommend")
     public ResponseEntity<ApiResult<GetPerformanceBrowseResponse>> getRecommendations(
@@ -44,4 +46,11 @@ public class UserPerformanceBrowseController {
         GetPerformanceBrowseResponse dto = recentPerformanceService.getRecentPerformances(genre);
         return ResponseEntity.ok(ApiUtils.success(dto));
     }
+
+    @GetMapping("/hot-artist")
+    public ResponseEntity<ApiResult<GetPerformanceBrowseResponse>> getRecommendations() {
+        GetPerformanceBrowseResponse dto = hotArtistPerformanceService.getLatestHotArtistPerformance();
+        return ResponseEntity.ok(ApiUtils.success(dto));
+    }
+
 }
