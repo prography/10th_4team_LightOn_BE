@@ -4,6 +4,7 @@ import com.prography.lighton.genre.domain.entity.QGenre;
 import com.prography.lighton.performance.common.domain.entity.QPerformance;
 import com.prography.lighton.performance.common.domain.entity.association.QPerformanceGenre;
 import com.prography.lighton.performance.common.domain.entity.enums.ApproveStatus;
+import com.prography.lighton.performance.common.domain.entity.enums.Type;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import java.time.LocalDate;
 import java.util.List;
@@ -28,7 +29,8 @@ public class RecentPerformanceRepositoryImpl implements RecentPerformanceReposit
                         p.approveStatus.eq(ApproveStatus.APPROVED),
                         p.status.isTrue(),
                         p.canceled.isFalse(),
-                        p.schedule.endDate.goe(today)
+                        p.schedule.endDate.goe(today),
+                        p.type.eq(Type.CONCERT)
                 )
                 .orderBy(p.createdAt.desc())
                 .limit(limit)
@@ -53,7 +55,8 @@ public class RecentPerformanceRepositoryImpl implements RecentPerformanceReposit
                         p.status.isTrue(),
                         p.canceled.isFalse(),
                         g.name.eq(genre),
-                        p.schedule.endDate.goe(today)
+                        p.schedule.endDate.goe(today),
+                        p.type.eq(Type.CONCERT)
                 )
                 .orderBy(p.createdAt.desc())
                 .limit(limit)
@@ -73,7 +76,8 @@ public class RecentPerformanceRepositoryImpl implements RecentPerformanceReposit
                         p.approveStatus.eq(ApproveStatus.APPROVED),
                         p.status.isTrue(),
                         p.canceled.isFalse(),
-                        p.schedule.endDate.goe(today)
+                        p.schedule.endDate.goe(today),
+                        p.type.eq(Type.CONCERT)
                 )
                 .orderBy(p.createdAt.desc())
                 .limit(limit)
