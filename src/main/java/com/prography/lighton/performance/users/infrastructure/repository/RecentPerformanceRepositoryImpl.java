@@ -19,6 +19,7 @@ public class RecentPerformanceRepositoryImpl implements RecentPerformanceReposit
     @Override
     public List<Long> findRecentAll(int limit) {
         QPerformance p = QPerformance.performance;
+        LocalDate today = LocalDate.now();
 
         return query
                 .select(p.id)
@@ -26,7 +27,8 @@ public class RecentPerformanceRepositoryImpl implements RecentPerformanceReposit
                 .where(
                         p.approveStatus.eq(ApproveStatus.APPROVED),
                         p.status.isTrue(),
-                        p.canceled.isFalse()
+                        p.canceled.isFalse(),
+                        p.schedule.endDate.goe(today)
                 )
                 .orderBy(p.createdAt.desc())
                 .limit(limit)
@@ -38,6 +40,7 @@ public class RecentPerformanceRepositoryImpl implements RecentPerformanceReposit
         QPerformance p = QPerformance.performance;
         QPerformanceGenre pg = QPerformanceGenre.performanceGenre;
         QGenre g = QGenre.genre;
+        LocalDate today = LocalDate.now();
 
         return query
                 .select(p.id)
@@ -49,7 +52,8 @@ public class RecentPerformanceRepositoryImpl implements RecentPerformanceReposit
                         p.approveStatus.eq(ApproveStatus.APPROVED),
                         p.status.isTrue(),
                         p.canceled.isFalse(),
-                        g.name.eq(genre)
+                        g.name.eq(genre),
+                        p.schedule.endDate.goe(today)
                 )
                 .orderBy(p.createdAt.desc())
                 .limit(limit)
