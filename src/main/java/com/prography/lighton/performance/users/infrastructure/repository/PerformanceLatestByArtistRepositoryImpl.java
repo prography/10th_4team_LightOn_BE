@@ -21,10 +21,11 @@ public class PerformanceLatestByArtistRepositoryImpl implements PerformanceLates
     private final JPAQueryFactory query;
 
     @Override
-    public List<Long> findLatestUpcomingIdsByArtists(List<Long> artistIds, LocalDate today) {
+    public List<Long> findLatestUpcomingIdsByArtists(List<Long> artistIds) {
 
         QPerformance pSub = new QPerformance("pSub");
         QPerformanceArtist paSub = new QPerformanceArtist("paSub");
+        LocalDate today = LocalDate.now();
 
         var latestPerArtist = JPAExpressions
                 .select(pSub.id.max())
