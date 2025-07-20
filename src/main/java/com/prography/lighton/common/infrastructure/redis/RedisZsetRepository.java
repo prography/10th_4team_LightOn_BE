@@ -2,8 +2,10 @@ package com.prography.lighton.common.infrastructure.redis;
 
 import java.time.Duration;
 import java.util.List;
+import java.util.Set;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.redis.core.StringRedisTemplate;
+import org.springframework.data.redis.core.ZSetOperations.TypedTuple;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -28,4 +30,7 @@ public class RedisZsetRepository {
         redisTemplate.expire(destKey, ttl);
     }
 
+    public Set<TypedTuple<String>> reverseRangeWithScores(String key, long start, long end) {
+        return redisTemplate.opsForZSet().reverseRangeWithScores(key, start, end);
+    }
 }
