@@ -34,21 +34,30 @@ public class S3UploadService {
     private String bucket;
 
     public String uploadFile(MultipartFile file, Member member) {
+        return upload(file, String.valueOf(member.getId()));
+    }
+
+    public String uploadFile(MultipartFile file, String directory) {
+        return upload(file, directory);
+    }
+
+    private String upload(MultipartFile file, String directory) {
         String originalFilename = file.getOriginalFilename();
         String extension = extractExtension(originalFilename);
         String contentType = file.getContentType();
 
         try (InputStream is = file.getInputStream()) {
             long size = file.getSize();
-            String key = member.getId() + SLASH + UUID.randomUUID() + extension;
+            String key = directory + "/" + UUID.randomUUID() + extension;
 
             ObjectMetadata metadata = new ObjectMetadata();
             metadata.setContentType(contentType);
             metadata.setContentLength(size);
             amazonS3.putObject(new PutObjectRequest(bucket, key, is, metadata));
+
             return amazonS3.getUrl(bucket, key).toString();
         } catch (IOException e) {
-            log.error("s3 업로드를 실패했습니다. : ", e);
+            log.error("s3 업로드 실패 - directory: {}: ", directory, e);
             throw new S3UploadFailedException();
         }
     }
