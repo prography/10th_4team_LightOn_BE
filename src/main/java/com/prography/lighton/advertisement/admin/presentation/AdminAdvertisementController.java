@@ -1,5 +1,6 @@
 package com.prography.lighton.advertisement.admin.presentation;
 
+import com.prography.lighton.advertisement.admin.application.AdminAdvertisementCommandService;
 import com.prography.lighton.advertisement.admin.presentation.dto.request.SaveAdvertisementRequestDTO;
 import com.prography.lighton.common.utils.ApiUtils;
 import com.prography.lighton.common.utils.ApiUtils.ApiResult;
@@ -20,11 +21,14 @@ import org.springframework.web.multipart.MultipartFile;
 @RequiredArgsConstructor
 public class AdminAdvertisementController {
 
+    private final AdminAdvertisementCommandService adminAdvertisementCommandService;
+
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<ApiResult<?>> saveAdvertisement(
             @RequestPart SaveAdvertisementRequestDTO request,
             @RequestPart MultipartFile image
     ) {
+        adminAdvertisementCommandService.saveAdvertisement(request, image);
         return ResponseEntity.ok(ApiUtils.success());
     }
 
@@ -32,6 +36,7 @@ public class AdminAdvertisementController {
     public ResponseEntity<ApiResult<?>> deleteAdvertisement(
             @PathVariable Long advertisementId
     ) {
+        adminAdvertisementCommandService.deleteAdvertisement(advertisementId);
         return ResponseEntity.ok(ApiUtils.success());
     }
 
@@ -41,6 +46,7 @@ public class AdminAdvertisementController {
             @RequestPart SaveAdvertisementRequestDTO request,
             @RequestPart MultipartFile image
     ) {
+        adminAdvertisementCommandService.updateAdvertisement(request, image, advertisementId);
         return ResponseEntity.ok(ApiUtils.success());
     }
 }
