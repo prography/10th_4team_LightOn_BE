@@ -31,13 +31,6 @@ public class AdminAdvertisementCommandService {
         deleteAdvertisement(advertisementRepository.getById(advertisementId));
     }
 
-    public void updateAdvertisement(SaveAdvertisementRequestDTO request, MultipartFile image, Long advertisementId) {
-        Advertisement advertisement = advertisementRepository.getById(advertisementId);
-
-        String imageUrl = uploadService.uploadFile(image, IMAGE_PREFIX);
-        advertisement.updateAdvertisement(imageUrl, request.displayOrder(), request.linkUrl());
-    }
-
     private void deleteAdvertisement(Advertisement advertisement) {
         uploadService.deleteFile(advertisement.getImageUrl());
         advertisementRepository.delete(advertisement);
