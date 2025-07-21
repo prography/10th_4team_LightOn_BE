@@ -5,6 +5,7 @@ import com.prography.lighton.advertisement.users.application.UserAdvertisementQu
 import com.prography.lighton.advertisement.users.presentation.response.GetAdvertisementResponseDTO;
 import com.prography.lighton.common.utils.ApiUtils;
 import com.prography.lighton.common.utils.ApiUtils.ApiResult;
+import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,7 +22,7 @@ public class UserAdvertisementController {
 
     @GetMapping
     public ResponseEntity<ApiResult<GetAdvertisementResponseDTO>> getAdvertisementsByPosition(
-            @RequestParam Position position
+            @RequestParam @NotNull Position position
     ) {
         return ResponseEntity.ok(ApiUtils.success(userAdvertisementQueryService.getAdvertisementsByPosition(position)));
     }

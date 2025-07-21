@@ -4,6 +4,8 @@ import com.prography.lighton.advertisement.admin.application.AdminAdvertisementC
 import com.prography.lighton.advertisement.admin.presentation.dto.request.SaveAdvertisementRequestDTO;
 import com.prography.lighton.common.utils.ApiUtils;
 import com.prography.lighton.common.utils.ApiUtils.ApiResult;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -24,8 +26,8 @@ public class AdminAdvertisementController {
 
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<ApiResult<?>> saveAdvertisement(
-            @RequestPart SaveAdvertisementRequestDTO request,
-            @RequestPart MultipartFile image
+            @RequestPart @Valid SaveAdvertisementRequestDTO request,
+            @RequestPart @Valid @NotNull MultipartFile image
     ) {
         adminAdvertisementCommandService.saveAdvertisement(request, image);
         return ResponseEntity.ok(ApiUtils.success());
