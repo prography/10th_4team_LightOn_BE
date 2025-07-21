@@ -35,10 +35,4 @@ public class Advertisement extends BaseEntity {
     public static Advertisement of(String imageUrl, Position position, int displayOrder, String linkUrl) {
         return new Advertisement(imageUrl, position, displayOrder, linkUrl);
     }
-
-    public void updateAdvertisement(String imageUrl, int displayOrder, String linkUrl) {
-        this.imageUrl = imageUrl;
-        this.displayOrder = displayOrder;
-        this.linkUrl = linkUrl;
-    }
 }
