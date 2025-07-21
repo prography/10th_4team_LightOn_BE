@@ -54,7 +54,6 @@ public interface PerformanceRepository extends JpaRepository<Performance, Long> 
 
     @Query(value = """
                 SELECT p.* FROM performance p
-                JOIN performance_location pl ON p.location_id = pl.id
                 JOIN performance_genre pg ON p.id = pg.performance_id
                 WHERE p.latitude BETWEEN :minLat AND :maxLat
                 AND p.longitude BETWEEN :minLng AND :maxLng
