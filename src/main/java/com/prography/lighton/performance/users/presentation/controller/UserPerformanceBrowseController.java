@@ -48,7 +48,7 @@ public class UserPerformanceBrowseController {
     }
 
     @GetMapping("/trending")
-    public ResponseEntity<ApiResult<GetPerformanceBrowseResponse>> getRecommendations() {
+    public ResponseEntity<ApiResult<GetPerformanceBrowseResponse>> getLatestHotArtistPerformance() {
         GetPerformanceBrowseResponse dto = hotArtistPerformanceService.getLatestHotArtistPerformance();
         return ResponseEntity.ok(ApiUtils.success(dto));
     }
