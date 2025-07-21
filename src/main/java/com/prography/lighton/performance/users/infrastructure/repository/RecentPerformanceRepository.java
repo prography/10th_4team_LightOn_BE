@@ -9,6 +9,8 @@ public interface RecentPerformanceRepository {
 
     List<Long> findRecentByGenre(String genre, int limit);
 
+    List<Long> findRecentExcluding(List<Long> excludeIds, int limit);
+
     default List<Long> findRecentIds(String genre, int limit) {
         if (StringUtils.hasText(genre)) {
             return findRecentByGenre(genre.trim().toLowerCase(), limit);

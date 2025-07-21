@@ -4,6 +4,7 @@ import com.prography.lighton.member.common.domain.entity.association.QPreferredG
 import com.prography.lighton.performance.common.domain.entity.QPerformance;
 import com.prography.lighton.performance.common.domain.entity.association.QPerformanceGenre;
 import com.prography.lighton.performance.common.domain.entity.enums.ApproveStatus;
+import com.prography.lighton.performance.common.domain.entity.enums.Type;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import java.time.LocalDate;
 import java.util.List;
@@ -34,7 +35,8 @@ public class PerformanceRecommendationRepositoryImpl implements PerformanceRecom
                         p.approveStatus.eq(ApproveStatus.APPROVED),
                         p.schedule.endDate.goe(LocalDate.now()),
                         p.status.eq(true),
-                        p.canceled.isFalse()
+                        p.canceled.isFalse(),
+                        p.type.eq(Type.CONCERT)
                 )
                 .groupBy(p.id)
                 .orderBy(

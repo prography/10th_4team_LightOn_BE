@@ -16,6 +16,8 @@ public final class SecurityWhitelist {
             "/api/members/performances/nearby",
             "/api/members/performances/popular",
             "/api/members/performances/recent",
+            "/api/members/advertisements",
+            "/api/members/performances/hot-artist"
     };
 
     // 접두사로 매칭되는 경로들

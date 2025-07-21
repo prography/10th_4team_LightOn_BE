@@ -46,8 +46,10 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.GET, "/api/members/performances/popular").permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/members/performances/nearby").permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/members/performances/recent").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/members/performances/hot-artist").permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/members/performances").permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/members/performances/*").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/members/advertisements").permitAll()
 
                         // Swagger & OpenAPI
                         .requestMatchers(
