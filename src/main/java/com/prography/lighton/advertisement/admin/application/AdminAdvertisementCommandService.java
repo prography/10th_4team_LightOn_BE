@@ -22,7 +22,7 @@ public class AdminAdvertisementCommandService {
     private final S3UploadService uploadService;
 
     public void saveAdvertisement(SaveAdvertisementRequestDTO request, MultipartFile image) {
-        validateAlreadyExistAtDisplayOrder(request.position(), request.displayOrder());
+        validateAlreadyExistAtPositionAndDisplayOrder(request.position(), request.displayOrder());
 
         String imageUrl = uploadService.uploadFile(image, IMAGE_PREFIX);
 
@@ -35,7 +35,7 @@ public class AdminAdvertisementCommandService {
         deleteAdvertisement(adminAdvertisementRepository.getById(advertisementId));
     }
 
-    private void validateAlreadyExistAtDisplayOrder(Position position, int displayOrder) {
+    private void validateAlreadyExistAtPositionAndDisplayOrder(Position position, int displayOrder) {
         if (adminAdvertisementRepository.existsByPositionAndDisplayOrder(position, displayOrder)) {
             throw new DuplicateDisplayOrderException();
         }

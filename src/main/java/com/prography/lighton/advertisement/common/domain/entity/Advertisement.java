@@ -28,6 +28,7 @@ public class Advertisement extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private Position position;
 
+    @Column(nullable = false)
     private int displayOrder;
 
     private String title;

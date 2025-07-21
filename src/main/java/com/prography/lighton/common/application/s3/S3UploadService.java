@@ -57,7 +57,7 @@ public class S3UploadService {
 
             return amazonS3.getUrl(bucket, key).toString();
         } catch (IOException e) {
-            log.error("s3 업로드 실패 - directory: {}: ", directory, e);
+            log.error("s3 업로드를 실패했습니다. : ", directory, e);
             throw new S3UploadFailedException();
         }
     }
