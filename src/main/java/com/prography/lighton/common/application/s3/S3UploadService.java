@@ -48,7 +48,7 @@ public class S3UploadService {
 
         try (InputStream is = file.getInputStream()) {
             long size = file.getSize();
-            String key = directory + "/" + UUID.randomUUID() + extension;
+            String key = directory + SLASH + UUID.randomUUID() + extension;
 
             ObjectMetadata metadata = new ObjectMetadata();
             metadata.setContentType(contentType);
