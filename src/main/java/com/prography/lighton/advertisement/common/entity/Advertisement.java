@@ -1,0 +1,44 @@
+package com.prography.lighton.advertisement.common.entity;
+
+import com.prography.lighton.advertisement.common.entity.enums.Position;
+import com.prography.lighton.common.domain.BaseEntity;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.SQLRestriction;
+
+@Entity
+@Getter
+@SQLDelete(sql = "UPDATE advertisement SET status = false WHERE id = ?")
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
+@SQLRestriction("status = true")
+public class Advertisement extends BaseEntity {
+
+    @Column(nullable = false)
+    private String imageUrl;
+
+    @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
+    private Position position;
+
+    private int displayOrder;
+
+    private String linkUrl;
+
+    public static Advertisement of(String imageUrl, Position position, int displayOrder, String linkUrl) {
+        return new Advertisement(imageUrl, position, displayOrder, linkUrl);
+    }
+
+    public void updateAdvertisement(String imageUrl, int displayOrder, String linkUrl) {
+        this.imageUrl = imageUrl;
+        this.displayOrder = displayOrder;
+        this.linkUrl = linkUrl;
+    }
+}
