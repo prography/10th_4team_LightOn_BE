@@ -22,6 +22,7 @@ public record GetPerformanceMapListResponseDTO(List<PerformanceMapDTO> performan
             Long id,
             String posterUrl,
             String title,
+            List<String> artistNames,
             Double latitude,
             Double longitude,
             LocalDate startDate,
@@ -36,6 +37,9 @@ public record GetPerformanceMapListResponseDTO(List<PerformanceMapDTO> performan
                     performance.getId(),
                     performance.getInfo().getPosterUrl(),
                     performance.getInfo().getTitle(),
+                    performance.getArtists().stream()
+                            .map(artist -> artist.getArtist().getStageName())
+                            .toList(),
                     performance.getLocation().getLatitude(),
                     performance.getLocation().getLongitude(),
                     performance.getSchedule().getStartDate(),
