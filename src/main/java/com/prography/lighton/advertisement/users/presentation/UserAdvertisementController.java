@@ -1,6 +1,7 @@
 package com.prography.lighton.advertisement.users.presentation;
 
 import com.prography.lighton.advertisement.common.domain.entity.enums.Position;
+import com.prography.lighton.advertisement.users.application.UserAdvertisementQueryService;
 import com.prography.lighton.advertisement.users.presentation.response.GetAdvertisementResponseDTO;
 import com.prography.lighton.common.utils.ApiUtils;
 import com.prography.lighton.common.utils.ApiUtils.ApiResult;
@@ -16,10 +17,12 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class UserAdvertisementController {
 
+    private final UserAdvertisementQueryService userAdvertisementQueryService;
+
     @GetMapping
     public ResponseEntity<ApiResult<GetAdvertisementResponseDTO>> getAdvertisementsByPosition(
             @RequestParam Position position
     ) {
-        return ResponseEntity.ok(ApiUtils.success(null));
+        return ResponseEntity.ok(ApiUtils.success(userAdvertisementQueryService.getAdvertisementsByPosition(position)));
     }
 }
