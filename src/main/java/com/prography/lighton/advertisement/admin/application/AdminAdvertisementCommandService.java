@@ -32,7 +32,7 @@ public class AdminAdvertisementCommandService {
     }
 
     public void deleteAdvertisement(Long advertisementId) {
-        deleteAdvertisement(adminAdvertisementRepository.getById(advertisementId));
+        removeAdvertisementCompletely(adminAdvertisementRepository.getById(advertisementId));
     }
 
     private void validateAlreadyExistAtPositionAndDisplayOrder(Position position, int displayOrder) {
@@ -41,7 +41,7 @@ public class AdminAdvertisementCommandService {
         }
     }
 
-    private void deleteAdvertisement(Advertisement advertisement) {
+    private void removeAdvertisementCompletely(Advertisement advertisement) {
         uploadService.deleteFile(advertisement.getImageUrl());
         adminAdvertisementRepository.delete(advertisement);
     }
