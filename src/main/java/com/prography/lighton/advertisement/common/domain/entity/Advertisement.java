@@ -1,6 +1,6 @@
-package com.prography.lighton.advertisement.common.entity;
+package com.prography.lighton.advertisement.common.domain.entity;
 
-import com.prography.lighton.advertisement.common.entity.enums.Position;
+import com.prography.lighton.advertisement.common.domain.entity.enums.Position;
 import com.prography.lighton.common.domain.BaseEntity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
