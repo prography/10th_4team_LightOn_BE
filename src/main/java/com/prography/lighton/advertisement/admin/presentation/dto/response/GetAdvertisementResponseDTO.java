@@ -1,7 +1,7 @@
 package com.prography.lighton.advertisement.admin.presentation.dto.response;
 
-import com.prography.lighton.advertisement.common.entity.Advertisement;
-import com.prography.lighton.advertisement.common.entity.enums.Position;
+import com.prography.lighton.advertisement.common.domain.entity.Advertisement;
+import com.prography.lighton.advertisement.common.domain.entity.enums.Position;
 import java.util.List;
 
 public record GetAdvertisementResponseDTO(List<AdvertisementDTO> advertisements) {
