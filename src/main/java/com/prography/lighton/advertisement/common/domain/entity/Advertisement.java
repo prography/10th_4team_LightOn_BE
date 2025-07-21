@@ -1,6 +1,7 @@
 package com.prography.lighton.advertisement.common.domain.entity;
 
 import com.prography.lighton.advertisement.common.domain.entity.enums.Position;
+import com.prography.lighton.advertisement.common.domain.exception.InvalidDisplayOrderException;
 import com.prography.lighton.common.domain.BaseEntity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -39,6 +40,13 @@ public class Advertisement extends BaseEntity {
 
     public static Advertisement of(String imageUrl, Position position, int displayOrder, String linkUrl, String title,
                                    String content) {
+        validateDisplayOrderIsGreaterThanZero(displayOrder);
         return new Advertisement(imageUrl, position, displayOrder, linkUrl, title, content);
+    }
+
+    private static void validateDisplayOrderIsGreaterThanZero(int displayOrder) {
+        if (displayOrder <= 0) {
+            throw new InvalidDisplayOrderException();
+        }
     }
 }
