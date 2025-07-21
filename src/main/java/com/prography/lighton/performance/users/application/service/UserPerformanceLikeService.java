@@ -30,15 +30,25 @@ public class UserPerformanceLikeService {
                 .orElseGet(() -> PerformanceLike.of(member, performance, false));
 
         boolean nowLiked = like.toggleLike();
-        if (nowLiked && performance.getType() == Type.CONCERT) {
-            List<Long> artistIds = performance.getArtists().stream()
-                    .map(pa -> pa.getArtist().getId())
-                    .toList();
+        performanceLikeRepository.save(like);
 
+        if (like.toggleLike()) {
+            incrementArtistLikes(performance);
+        }
+        return LikePerformanceResponse.of(nowLiked);
+    }
+
+    private void incrementArtistLikes(Performance performance) {
+        if (performance.getType() != Type.CONCERT) {
+            return;
+        }
+        List<Long> artistIds = performance.getArtists().stream()
+                .map(pa -> pa.getArtist().getId())
+                .toList();
+
+        if (!artistIds.isEmpty()) {
             likeRedisService.incrementToday(artistIds);
         }
-        performanceLikeRepository.save(like);
-        return LikePerformanceResponse.of(nowLiked);
     }
 
     public void inactivateAllByMember(Member member) {
