@@ -6,6 +6,8 @@ import com.prography.lighton.advertisement.common.domain.entity.enums.Position;
 public record SaveAdvertisementRequestDTO(
         Position position,
         int displayOrder,
-        String linkUrl
+        String linkUrl,
+        String title,
+        String content
 ) {
 }

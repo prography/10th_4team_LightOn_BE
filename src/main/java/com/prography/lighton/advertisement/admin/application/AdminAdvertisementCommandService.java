@@ -23,7 +23,7 @@ public class AdminAdvertisementCommandService {
         String imageUrl = uploadService.uploadFile(image, IMAGE_PREFIX);
 
         Advertisement advertisement = Advertisement.of(imageUrl, request.position(), request.displayOrder(),
-                request.linkUrl());
+                request.linkUrl(), request.title(), request.content());
         advertisementRepository.save(advertisement);
     }
 
