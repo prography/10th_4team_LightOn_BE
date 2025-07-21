@@ -1,4 +1,4 @@
-package com.prography.lighton.advertisement.admin.presentation.dto.response;
+package com.prography.lighton.advertisement.users.presentation.response;
 
 import com.prography.lighton.advertisement.common.domain.entity.Advertisement;
 import com.prography.lighton.advertisement.common.domain.entity.enums.Position;

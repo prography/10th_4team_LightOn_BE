@@ -1,7 +1,7 @@
-package com.prography.lighton.advertisement.users;
+package com.prography.lighton.advertisement.users.presentation;
 
-import com.prography.lighton.advertisement.admin.presentation.dto.response.GetAdvertisementResponseDTO;
 import com.prography.lighton.advertisement.common.domain.entity.enums.Position;
+import com.prography.lighton.advertisement.users.presentation.response.GetAdvertisementResponseDTO;
 import com.prography.lighton.common.utils.ApiUtils;
 import com.prography.lighton.common.utils.ApiUtils.ApiResult;
 import lombok.RequiredArgsConstructor;
