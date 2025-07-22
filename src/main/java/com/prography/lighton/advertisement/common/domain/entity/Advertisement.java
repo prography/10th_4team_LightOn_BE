@@ -22,6 +22,8 @@ import org.hibernate.annotations.SQLRestriction;
 @SQLRestriction("status = true")
 public class Advertisement extends BaseEntity {
 
+    private static final int MIN_DISPLAY_ORDER = 1;
+
     @Column(nullable = false)
     private String imageUrl;
 
@@ -45,7 +47,7 @@ public class Advertisement extends BaseEntity {
     }
 
     private static void validateDisplayOrderIsGreaterThanZero(int displayOrder) {
-        if (displayOrder <= 0) {
+        if (displayOrder < MIN_DISPLAY_ORDER) {
             throw new InvalidDisplayOrderException();
         }
     }
