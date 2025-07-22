@@ -1,11 +1,10 @@
 package com.prography.lighton.performance.users.presentation.dto.response;
 
-import static com.prography.lighton.performance.users.presentation.util.PerformanceRegionFormatter.getAddress;
-
 import com.prography.lighton.genre.domain.entity.Genre;
 import com.prography.lighton.performance.common.domain.entity.Performance;
 import com.prography.lighton.performance.common.domain.entity.association.PerformanceGenre;
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.List;
 
 public record GetPerformanceMapListResponseDTO(List<PerformanceMapDTO> performanceMapList) {
@@ -26,7 +25,9 @@ public record GetPerformanceMapListResponseDTO(List<PerformanceMapDTO> performan
             Double latitude,
             Double longitude,
             LocalDate startDate,
+            LocalTime startTime,
             LocalDate endDate,
+            LocalTime endTime,
             String address,
             List<String> genres
 
@@ -43,8 +44,10 @@ public record GetPerformanceMapListResponseDTO(List<PerformanceMapDTO> performan
                     performance.getLocation().getLatitude(),
                     performance.getLocation().getLongitude(),
                     performance.getSchedule().getStartDate(),
+                    performance.getSchedule().getStartTime(),
                     performance.getSchedule().getEndDate(),
-                    getAddress(performance),
+                    performance.getSchedule().getEndTime(),
+                    performance.getInfo().getPlace(),
                     performance.getGenres().stream()
                             .map(PerformanceGenre::getGenre)
                             .map(Genre::getName)
