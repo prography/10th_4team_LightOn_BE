@@ -4,6 +4,7 @@ import static com.querydsl.core.group.GroupBy.groupBy;
 import static com.querydsl.core.types.Projections.constructor;
 import static com.querydsl.core.types.Projections.list;
 
+import com.prography.lighton.artist.common.domain.entity.QArtist;
 import com.prography.lighton.performance.common.domain.entity.Performance;
 import com.prography.lighton.performance.common.domain.entity.QPerformance;
 import com.prography.lighton.performance.common.domain.entity.association.QPerformanceGenre;
@@ -42,10 +43,13 @@ public class PerformanceSummaryRepositoryImpl implements PerformanceSummaryRepos
         QPerformance p = QPerformance.performance;
         QPerformanceGenre pg = QPerformanceGenre.performanceGenre;
         QSubRegion sr = QSubRegion.subRegion;
+        QArtist a = QArtist.artist;
 
         return query
                 .from(perf)
                 .leftJoin(p.genres, pg)
+                .leftJoin(a)
+                .on(a.member.id.eq(p.performer.id))
                 .leftJoin(sr)
                 .on(sr.id.eq(subRegionIdPath))
                 .where(
@@ -64,7 +68,8 @@ public class PerformanceSummaryRepositoryImpl implements PerformanceSummaryRepos
                                         perf.get("schedule").get("startTime", LocalTime.class),
                                         perf.get("payment").get("isPaid", Boolean.class),
                                         sr.name,
-                                        list(pg.genre.name)
+                                        list(pg.genre.name),
+                                        a.stageName
                                 )
                         )
                 );
