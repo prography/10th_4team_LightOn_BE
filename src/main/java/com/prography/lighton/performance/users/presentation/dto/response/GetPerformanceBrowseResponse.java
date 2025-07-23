@@ -18,7 +18,8 @@ public record GetPerformanceBrowseResponse(List<PerformanceSummaryDTO> performan
                         summary.startDate(),
                         summary.startTime(),
                         summary.isPaid(),
-                        summary.regionName()
+                        summary.regionName(),
+                        summary.artistName()
                 ))
                 .toList();
 
@@ -34,7 +35,8 @@ public record GetPerformanceBrowseResponse(List<PerformanceSummaryDTO> performan
             LocalDate startDate,
             LocalTime startTime,
             Boolean isPaid,
-            String regionName
+            String regionName,
+            String artistName
     ) {
         public static PerformanceSummaryDTO of(
                 Long id,
@@ -45,10 +47,11 @@ public record GetPerformanceBrowseResponse(List<PerformanceSummaryDTO> performan
                 LocalDate startDate,
                 LocalTime startTime,
                 Boolean isPaid,
-                String regionName
+                String regionName,
+                String artistName
         ) {
             return new PerformanceSummaryDTO(id, title, description, thumbnailImageUrl,
-                    genres, startDate, startTime, isPaid, regionName);
+                    genres, startDate, startTime, isPaid, regionName, artistName);
         }
     }
 }
