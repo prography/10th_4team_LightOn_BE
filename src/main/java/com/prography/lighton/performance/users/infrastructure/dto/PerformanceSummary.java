@@ -13,6 +13,7 @@ public record PerformanceSummary(
         LocalTime startTime,
         Boolean isPaid,
         String regionName,
-        List<String> genreNames
+        List<String> genreNames,
+        String artistName
 ) {
 }
