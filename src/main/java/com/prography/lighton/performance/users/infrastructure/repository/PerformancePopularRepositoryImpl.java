@@ -4,6 +4,7 @@ import com.prography.lighton.genre.domain.entity.QGenre;
 import com.prography.lighton.performance.common.domain.entity.QPerformance;
 import com.prography.lighton.performance.common.domain.entity.association.QPerformanceGenre;
 import com.prography.lighton.performance.common.domain.entity.enums.ApproveStatus;
+import com.prography.lighton.performance.common.domain.entity.enums.Type;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import java.time.LocalDate;
 import java.util.List;
@@ -28,7 +29,8 @@ public class PerformancePopularRepositoryImpl implements PerformancePopularRepos
                         p.approveStatus.eq(ApproveStatus.APPROVED),
                         p.schedule.endDate.goe(today),
                         p.status.isTrue(),
-                        p.canceled.isFalse()
+                        p.canceled.isFalse(),
+                        p.type.eq(Type.CONCERT) // TODO 추후 버스킹도 조회 가능하도록 수정 예정
                 )
                 .orderBy(p.likeCount.desc(), p.viewCount.desc())
                 .limit(limit)
@@ -53,7 +55,8 @@ public class PerformancePopularRepositoryImpl implements PerformancePopularRepos
                         p.schedule.endDate.goe(today),
                         p.status.isTrue(),
                         p.canceled.isFalse(),
-                        g.name.eq(genre)
+                        g.name.eq(genre),
+                        p.type.eq(Type.CONCERT) // TODO 추후 버스킹도 조회 가능하도록 수정 예정
                 )
                 .orderBy(p.likeCount.desc(), p.viewCount.desc())
                 .limit(limit)
