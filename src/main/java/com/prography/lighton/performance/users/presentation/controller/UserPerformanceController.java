@@ -9,7 +9,7 @@ import com.prography.lighton.performance.users.application.service.UserPerforman
 import com.prography.lighton.performance.users.presentation.dto.response.GetMyPerformanceStatsResponseDTO;
 import com.prography.lighton.performance.users.presentation.dto.response.GetMyRegisteredPerformanceListResponseDTO;
 import com.prography.lighton.performance.users.presentation.dto.response.GetMyRequestedPerformanceListResponseDTO;
-import com.prography.lighton.performance.users.presentation.dto.response.RequestPerformanceResponseDTO;
+import com.prography.lighton.performance.users.presentation.dto.response.GetPerformancePaymentInfoResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -32,8 +32,17 @@ public class UserPerformanceController {
         return ResponseEntity.ok(ApiUtils.success(userPerformanceService.getPerformanceDetail(performanceId)));
     }
 
+    @GetMapping("/{performanceId}/payment")
+    public ResponseEntity<ApiResult<GetPerformancePaymentInfoResponse>> getPerformancePayment(
+            @PathVariable Long performanceId,
+            @RequestParam Integer applySeats
+    ) {
+        return ResponseEntity.ok(
+                ApiUtils.success(userPerformanceService.getPerformancePaymentDetail(performanceId, applySeats)));
+    }
+
     @PostMapping("/{performanceId}")
-    public ResponseEntity<ApiResult<RequestPerformanceResponseDTO>> requestForPerformance(
+    public ResponseEntity<ApiResult<GetPerformancePaymentInfoResponse>> requestForPerformance(
             @PathVariable Long performanceId,
             @RequestParam Integer applySeats,
             @LoginMember Member member) {

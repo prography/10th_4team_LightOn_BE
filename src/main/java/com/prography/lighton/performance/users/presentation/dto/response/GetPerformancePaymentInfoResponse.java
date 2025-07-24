@@ -2,14 +2,14 @@ package com.prography.lighton.performance.users.presentation.dto.response;
 
 import com.prography.lighton.performance.common.domain.entity.Performance;
 
-public record RequestPerformanceResponseDTO(
+public record GetPerformancePaymentInfoResponse(
         String account,
         String bank,
         String accountHolder,
         Integer fee
 ) {
-    public static RequestPerformanceResponseDTO of(Performance performance, Integer requestedSeats) {
-        return new RequestPerformanceResponseDTO(
+    public static GetPerformancePaymentInfoResponse of(Performance performance, Integer requestedSeats) {
+        return new GetPerformancePaymentInfoResponse(
                 performance.getPayment().getAccount(),
                 performance.getPayment().getBank(),
                 performance.getPayment().getAccountHolder(),
@@ -17,3 +17,4 @@ public record RequestPerformanceResponseDTO(
         );
     }
 }
+
