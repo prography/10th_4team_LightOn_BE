@@ -397,7 +397,6 @@ public class Performance extends BaseEntity {
     }
 
     private void validateRequest(Integer applySeats) {
-        System.out.println(applySeats);
         if (applySeats == null || applySeats < MIN_REQUESTED_SEATS || applySeats > MAX_REQUESTED_SEATS) {
             throw new BadPerformanceRequestException();
         }
