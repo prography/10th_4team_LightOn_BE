@@ -9,7 +9,9 @@ import com.prography.lighton.performance.users.application.service.UserPerforman
 import com.prography.lighton.performance.users.presentation.dto.response.GetMyPerformanceStatsResponseDTO;
 import com.prography.lighton.performance.users.presentation.dto.response.GetMyRegisteredPerformanceListResponseDTO;
 import com.prography.lighton.performance.users.presentation.dto.response.GetMyRequestedPerformanceListResponseDTO;
-import com.prography.lighton.performance.users.presentation.dto.response.RequestPerformanceResponseDTO;
+import com.prography.lighton.performance.users.presentation.dto.response.GetPerformancePaymentInfoResponse;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -32,10 +34,19 @@ public class UserPerformanceController {
         return ResponseEntity.ok(ApiUtils.success(userPerformanceService.getPerformanceDetail(performanceId)));
     }
 
-    @PostMapping("/{performanceId}")
-    public ResponseEntity<ApiResult<RequestPerformanceResponseDTO>> requestForPerformance(
+    @GetMapping("/{performanceId}/payment")
+    public ResponseEntity<ApiResult<GetPerformancePaymentInfoResponse>> getPerformancePayment(
             @PathVariable Long performanceId,
-            @RequestParam Integer applySeats,
+            @RequestParam @Min(1) @Max(10) Integer applySeats
+    ) {
+        return ResponseEntity.ok(
+                ApiUtils.success(userPerformanceService.getPerformancePaymentDetail(performanceId, applySeats)));
+    }
+
+    @PostMapping("/{performanceId}/request")
+    public ResponseEntity<ApiResult<GetPerformancePaymentInfoResponse>> requestForPerformance(
+            @PathVariable Long performanceId,
+            @RequestParam @Min(1) @Max(10) Integer applySeats,
             @LoginMember Member member) {
         return ResponseEntity.ok(ApiUtils.success(userPerformanceService.requestForPerformance(
                 performanceId, applySeats, member

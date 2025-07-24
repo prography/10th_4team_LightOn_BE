@@ -379,7 +379,7 @@ public class Performance extends BaseEntity {
         validateRequest(applySeats);
 
         this.bookedSeatCount += applySeats;
-        return PerformanceRequest.of(member, this, applySeats, payment.getFee() * applySeats);
+        return PerformanceRequest.of(member, this, applySeats, payment.getFee());
     }
 
     public void cancelRequest(int requestedSeats) {
@@ -394,7 +394,7 @@ public class Performance extends BaseEntity {
             throw new BadPerformanceRequestException();
         }
 
-        if (this.type.equals(Type.CONCERT)) {
+        if (!this.type.equals(Type.CONCERT)) {
             throw new BadPerformanceRequestException();
         }
 
