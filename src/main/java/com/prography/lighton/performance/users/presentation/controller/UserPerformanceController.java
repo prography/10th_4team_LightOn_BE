@@ -41,7 +41,7 @@ public class UserPerformanceController {
                 ApiUtils.success(userPerformanceService.getPerformancePaymentDetail(performanceId, applySeats)));
     }
 
-    @PostMapping("/{performanceId}")
+    @PostMapping("/{performanceId}/request")
     public ResponseEntity<ApiResult<GetPerformancePaymentInfoResponse>> requestForPerformance(
             @PathVariable Long performanceId,
             @RequestParam Integer applySeats,
