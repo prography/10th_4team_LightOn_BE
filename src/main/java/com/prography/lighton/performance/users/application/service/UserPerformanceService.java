@@ -41,7 +41,6 @@ public class UserPerformanceService {
 
     public GetPerformancePaymentInfoResponse getPerformancePaymentDetail(Long performanceId, Integer applySeats) {
         Performance performance = performanceRepository.getById(performanceId);
-        performance.validateExistPaymentDetails();
 
         return GetPerformancePaymentInfoResponse.of(performance, applySeats);
     }

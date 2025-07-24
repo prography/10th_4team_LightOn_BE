@@ -18,7 +18,6 @@ import com.prography.lighton.performance.common.domain.entity.vo.Info;
 import com.prography.lighton.performance.common.domain.entity.vo.Location;
 import com.prography.lighton.performance.common.domain.entity.vo.Payment;
 import com.prography.lighton.performance.common.domain.entity.vo.Schedule;
-import com.prography.lighton.performance.common.domain.exception.FreePerformanceException;
 import com.prography.lighton.performance.common.domain.exception.InvalidSeatCountException;
 import com.prography.lighton.performance.common.domain.exception.MasterArtistCannotBeRemovedException;
 import com.prography.lighton.performance.common.domain.exception.NotAuthorizedPerformanceException;
@@ -302,12 +301,6 @@ public class Performance extends BaseEntity {
     public void validateApproved() {
         if (this.approveStatus != ApproveStatus.APPROVED) {
             throw new PerformanceNotApprovedException();
-        }
-    }
-
-    public void validateExistPaymentDetails() {
-        if (!this.payment.getIsPaid()) {
-            throw new FreePerformanceException();
         }
     }
 
