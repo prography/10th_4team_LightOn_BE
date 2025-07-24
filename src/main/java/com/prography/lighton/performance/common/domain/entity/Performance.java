@@ -394,6 +394,10 @@ public class Performance extends BaseEntity {
             throw new BadPerformanceRequestException();
         }
 
+        if (!this.type.equals(Type.CONCERT)) {
+            throw new BadPerformanceRequestException();
+        }
+
         if (totalSeatsCount != 0 && (this.totalSeatsCount - this.bookedSeatCount < applySeats)) {
             throw new NotEnoughSeatsException();
         }
