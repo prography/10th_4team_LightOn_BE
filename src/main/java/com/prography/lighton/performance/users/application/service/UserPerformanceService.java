@@ -11,7 +11,7 @@ import com.prography.lighton.performance.users.infrastructure.repository.Perform
 import com.prography.lighton.performance.users.presentation.dto.response.GetMyPerformanceStatsResponseDTO;
 import com.prography.lighton.performance.users.presentation.dto.response.GetMyRegisteredPerformanceListResponseDTO;
 import com.prography.lighton.performance.users.presentation.dto.response.GetMyRequestedPerformanceListResponseDTO;
-import com.prography.lighton.performance.users.presentation.dto.response.RequestPerformanceResponseDTO;
+import com.prography.lighton.performance.users.presentation.dto.response.GetPerformancePaymentInfoResponse;
 import com.prography.lighton.region.domain.entity.SubRegion;
 import com.prography.lighton.region.infrastructure.cache.RegionCache;
 import java.time.LocalDate;
@@ -39,9 +39,16 @@ public class UserPerformanceService {
         return performanceDetailMapper.toDetailDTO(performance);
     }
 
+    public GetPerformancePaymentInfoResponse getPerformancePaymentDetail(Long performanceId, Integer applySeats) {
+        Performance performance = performanceRepository.getById(performanceId);
+        performance.validateExistPaymentDetails();
+
+        return GetPerformancePaymentInfoResponse.of(performance, applySeats);
+    }
+
     @Transactional
-    public RequestPerformanceResponseDTO requestForPerformance(Long performanceId, Integer applySeats,
-                                                               Member member) {
+    public GetPerformancePaymentInfoResponse requestForPerformance(Long performanceId, Integer applySeats,
+                                                                   Member member) {
         Performance performance = performanceRepository.getByIdWithPessimisticLock(performanceId);
         performance.validateApproved();
 
@@ -52,7 +59,7 @@ public class UserPerformanceService {
         PerformanceRequest performanceRequest = performance.createRequest(applySeats, member);
         performanceRequestRepository.save(performanceRequest);
 
-        return RequestPerformanceResponseDTO.of(performance, applySeats);
+        return GetPerformancePaymentInfoResponse.of(performance, applySeats);
     }
 
     @Transactional

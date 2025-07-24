@@ -18,6 +18,7 @@ import com.prography.lighton.performance.common.domain.entity.vo.Info;
 import com.prography.lighton.performance.common.domain.entity.vo.Location;
 import com.prography.lighton.performance.common.domain.entity.vo.Payment;
 import com.prography.lighton.performance.common.domain.entity.vo.Schedule;
+import com.prography.lighton.performance.common.domain.exception.FreePerformanceException;
 import com.prography.lighton.performance.common.domain.exception.InvalidSeatCountException;
 import com.prography.lighton.performance.common.domain.exception.MasterArtistCannotBeRemovedException;
 import com.prography.lighton.performance.common.domain.exception.NotAuthorizedPerformanceException;
@@ -304,6 +305,12 @@ public class Performance extends BaseEntity {
         }
     }
 
+    public void validateExistPaymentDetails() {
+        if (!this.payment.getIsPaid()) {
+            throw new FreePerformanceException();
+        }
+    }
+
     public void cancel(Member member) {
         validatePerformer(member);
         validateWithinAllowedPeriod(CANCEL_DEADLINE_DAYS);
@@ -379,7 +386,7 @@ public class Performance extends BaseEntity {
         validateRequest(applySeats);
 
         this.bookedSeatCount += applySeats;
-        return PerformanceRequest.of(member, this, applySeats, payment.getFee() * applySeats);
+        return PerformanceRequest.of(member, this, applySeats, payment.getFee());
     }
 
     public void cancelRequest(int requestedSeats) {
@@ -390,11 +397,8 @@ public class Performance extends BaseEntity {
     }
 
     private void validateRequest(Integer applySeats) {
+        System.out.println(applySeats);
         if (applySeats == null || applySeats < MIN_REQUESTED_SEATS || applySeats > MAX_REQUESTED_SEATS) {
-            throw new BadPerformanceRequestException();
-        }
-
-        if (this.type.equals(Type.CONCERT)) {
             throw new BadPerformanceRequestException();
         }
 
