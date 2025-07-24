@@ -13,8 +13,15 @@ public record GetPerformancePaymentInfoResponse(
                 performance.getPayment().getAccount(),
                 performance.getPayment().getBank(),
                 performance.getPayment().getAccountHolder(),
-                performance.getPayment().getFee() * requestedSeats
+                getTotalFee(performance, requestedSeats)
         );
+    }
+
+    public static int getTotalFee(Performance performance, Integer requestedSeats) {
+        if (!performance.getPayment().getIsPaid()) {
+            return 0;
+        }
+        return performance.getPayment().getFee() * requestedSeats;
     }
 }
 
