@@ -2,6 +2,7 @@ package com.prography.lighton.member.domain.entity;
 
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
@@ -51,6 +52,16 @@ class MemberTest {
         assertEquals(Authority.NORMAL, member.getAuthority());
         assertEquals(email, member.getEmail());
         assertEquals(name, member.getName());
+    }
+
+    @Test
+    @DisplayName("일반 회원인 경우, 권한이 NORMAL로 설정된다.")
+    void should_have_normal_authority() {
+        // Given
+        Member member = Member.toNormalMember(email, password, region, name, phone, loginType, agreement);
+
+        // When & Then
+        assertFalse(member.isAdmin());
     }
 
     @Test
