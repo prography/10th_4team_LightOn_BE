@@ -1,5 +1,6 @@
 package com.prography.lighton.auth.infrastructure.sms;
 
+import com.prography.lighton.auth.application.port.SmsSender;
 import com.prography.lighton.auth.infrastructure.sms.exception.SmsSendFailedException;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
@@ -13,7 +14,7 @@ import org.springframework.stereotype.Service;
 @Slf4j
 @RequiredArgsConstructor
 @Service
-public class SmsService {
+public class SmsService implements SmsSender {
 
     private static final String AUTH_MESSAGE_TEMPLATE = "[Light ON] 인증번호는 %s 입니다. 정확히 입력해주세요.";
 
@@ -30,6 +31,7 @@ public class SmsService {
         );
     }
 
+    @Override
     public void sendSms(String to, String text) {
         Message message = createMessage(to, text);
 
