@@ -3,15 +3,15 @@ package com.prography.lighton.member.users.presentation.dto.response;
 import com.prography.lighton.genre.domain.entity.Genre;
 import java.util.List;
 
-public record GetPreferredGenreResponseDTO(
+public record GetPreferredGenreResponse(
         List<GenreDTO> genres
 ) {
-    public static GetPreferredGenreResponseDTO of(List<Genre> genres) {
+    public static GetPreferredGenreResponse of(List<Genre> genres) {
         List<GenreDTO> genreDTOs = genres.stream()
                 .map(genre -> GenreDTO.of(genre.getName(), genre.getImageUrl()))
                 .toList();
 
-        return new GetPreferredGenreResponseDTO(genreDTOs);
+        return new GetPreferredGenreResponse(genreDTOs);
     }
 
     public record GenreDTO(

@@ -14,23 +14,23 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import com.epages.restdocs.apispec.ResourceSnippetParameters;
 import com.prography.lighton.common.presentation.ControllerTest;
-import com.prography.lighton.member.users.presentation.dto.response.CompleteMemberProfileResponseDTO;
-import com.prography.lighton.member.users.presentation.dto.response.LoginMemberResponseDTO;
-import com.prography.lighton.member.users.presentation.dto.response.RegisterMemberResponseDTO;
+import com.prography.lighton.member.users.presentation.dto.response.CompleteMemberProfileResponse;
+import com.prography.lighton.member.users.presentation.dto.response.LoginMemberResponse;
+import com.prography.lighton.member.users.presentation.dto.response.RegisterMemberResponse;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors;
 
 @AutoConfigureMockMvc
-class MemberControllerTest extends ControllerTest {
+class UserMemberControllerTest extends ControllerTest {
 
     @Test
     @WithMockUser
     void register() throws Exception {
         // given
-        given(registerMemberUseCase.registerMember(any()))
-                .willReturn(RegisterMemberResponseDTO.of(123L));
+        given(userMemberCommandService.registerMember(any()))
+                .willReturn(RegisterMemberResponse.of(123L));
 
         // when & then
         mockMvc.perform(post("/api/members")
@@ -75,7 +75,7 @@ class MemberControllerTest extends ControllerTest {
     void login() throws Exception {
         // given
         given(loginMemberUseCase.login(any()))
-                .willReturn(LoginMemberResponseDTO.of("aaa.ccc.ddd", "refreshToken"));
+                .willReturn(LoginMemberResponse.of("aaa.ccc.ddd", "refreshToken"));
 
         // when & then: 로그인 API 호출 및 문서화
         mockMvc.perform(post("/api/auth/login")
@@ -118,8 +118,8 @@ class MemberControllerTest extends ControllerTest {
     @WithMockUser
     void completeMember() throws Exception {
         // given
-        given(completeMemberProfileUseCase.completeMemberProfile(anyLong(), any()))
-                .willReturn(CompleteMemberProfileResponseDTO.of("aaa.ccc.ddd", "refreshToken"));
+        given(userMemberCommandService.completeMemberProfile(anyLong(), any()))
+                .willReturn(CompleteMemberProfileResponse.of("aaa.ccc.ddd", "refreshToken"));
 
         // when & then: 로그인 API 호출 및 문서화
         mockMvc.perform(post("/api/members/{temporaryMemberId}/info", 123L)

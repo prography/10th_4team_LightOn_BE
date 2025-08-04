@@ -1,14 +1,14 @@
 package com.prography.lighton.member.users.presentation.dto.response;
 
-public record CompleteMemberProfileResponseDTO(
+public record CompleteMemberProfileResponse(
         String accessToken,
         String refreshToken
 ) {
 
-    public static CompleteMemberProfileResponseDTO of(
+    public static CompleteMemberProfileResponse of(
             String accessToken,
             String refreshToken
     ) {
-        return new CompleteMemberProfileResponseDTO(accessToken, refreshToken);
+        return new CompleteMemberProfileResponse(accessToken, refreshToken);
     }
 }

@@ -1,4 +1,4 @@
-package com.prography.lighton.member.users.infrastructure.repository;
+package com.prography.lighton.member.common.infrastructure.repository;
 
 import com.prography.lighton.auth.domain.enums.SocialLoginType;
 import com.prography.lighton.member.common.domain.entity.TemporaryMember;

@@ -1,12 +1,12 @@
 package com.prography.lighton.member.admin.presentation.dto.response;
 
-public record GetMemberStatsResponseDTO(
+public record GetMemberStatsResponse(
         Long totalMemberCount
 ) {
-    public static GetMemberStatsResponseDTO of(
+    public static GetMemberStatsResponse of(
             Long totalMemberCount
     ) {
-        return new GetMemberStatsResponseDTO(
+        return new GetMemberStatsResponse(
                 totalMemberCount
         );
     }
