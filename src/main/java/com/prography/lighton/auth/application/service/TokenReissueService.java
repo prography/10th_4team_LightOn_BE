@@ -32,6 +32,7 @@ public class TokenReissueService {
         return ReissueTokenResponse.of(newAccessToken, newRefreshToken);
     }
 
+    @Transactional
     public void logout(Long memberId) {
         refreshTokenService.deleteRefreshToken(memberId.toString());
     }

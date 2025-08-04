@@ -1,6 +1,5 @@
 package com.prography.lighton.auth.application.service;
 
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -53,10 +52,10 @@ class MemberWithdrawalServiceTest {
 
         // then
         verify(memberRepository).flush();
-        verify(userPerformanceService).inactivateAllByMember(any());
-        verify(managePreferredGenreUseCase).inactivateAllByMember(any());
-        verify(userPerformanceLikeService).inactivateAllByMember(any());
-        verify(artistService).inactiveByMember(any());
-        verify(temporaryMemberRepository).deleteByEmail(any());
+        verify(userPerformanceService).inactivateAllByMember(member);
+        verify(managePreferredGenreUseCase).inactivateAllByMember(member);
+        verify(userPerformanceLikeService).inactivateAllByMember(member);
+        verify(artistService).inactiveByMember(member);
+        verify(temporaryMemberRepository).deleteByEmail(member.getEmail());
     }
 }
