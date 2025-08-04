@@ -1,4 +1,4 @@
-package com.prography.lighton.auth.application;
+package com.prography.lighton.auth.application.port;
 
 public interface RefreshTokenService {
     void saveRefreshToken(String userId, String refreshToken);

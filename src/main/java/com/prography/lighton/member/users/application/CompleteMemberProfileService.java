@@ -1,7 +1,7 @@
 package com.prography.lighton.member.users.application;
 
-import com.prography.lighton.auth.application.AuthVerificationService;
-import com.prography.lighton.auth.application.TokenProvider;
+import com.prography.lighton.auth.application.port.AuthVerificationService;
+import com.prography.lighton.auth.application.port.TokenProvider;
 import com.prography.lighton.common.domain.vo.RegionInfo;
 import com.prography.lighton.member.common.domain.entity.Member;
 import com.prography.lighton.member.common.domain.entity.TemporaryMember;

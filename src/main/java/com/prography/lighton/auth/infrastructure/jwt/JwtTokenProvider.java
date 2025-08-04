@@ -1,8 +1,8 @@
 package com.prography.lighton.auth.infrastructure.jwt;
 
-import com.prography.lighton.auth.application.RefreshTokenService;
-import com.prography.lighton.auth.application.TokenProvider;
 import com.prography.lighton.auth.application.exception.InvalidTokenException;
+import com.prography.lighton.auth.application.port.RefreshTokenService;
+import com.prography.lighton.auth.application.port.TokenProvider;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;

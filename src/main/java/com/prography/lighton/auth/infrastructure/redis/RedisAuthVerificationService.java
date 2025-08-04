@@ -1,7 +1,7 @@
 package com.prography.lighton.auth.infrastructure.redis;
 
-import com.prography.lighton.auth.application.AuthVerificationService;
 import com.prography.lighton.auth.application.exception.PhoneNotVerifiedException;
+import com.prography.lighton.auth.application.port.AuthVerificationService;
 import com.prography.lighton.common.infrastructure.redis.RedisRepository;
 import java.time.Duration;
 import lombok.RequiredArgsConstructor;

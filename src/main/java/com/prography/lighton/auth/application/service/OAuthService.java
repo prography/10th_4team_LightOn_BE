@@ -1,10 +1,9 @@
-package com.prography.lighton.auth.application.impl;
+package com.prography.lighton.auth.application.service;
 
-import com.prography.lighton.auth.application.OAuthUseCase;
-import com.prography.lighton.auth.application.RefreshTokenService;
-import com.prography.lighton.auth.application.TokenProvider;
 import com.prography.lighton.auth.application.exception.MemberProfileIncompleteException;
 import com.prography.lighton.auth.application.exception.UnsupportedSocialLoginTypeException;
+import com.prography.lighton.auth.application.port.RefreshTokenService;
+import com.prography.lighton.auth.application.port.TokenProvider;
 import com.prography.lighton.auth.application.validator.DuplicateEmailValidator;
 import com.prography.lighton.auth.domain.enums.SocialLoginType;
 import com.prography.lighton.auth.infrastructure.oauth.apple.AppleOauth;
@@ -31,7 +30,7 @@ import org.springframework.stereotype.Service;
 @Slf4j
 @Service
 @RequiredArgsConstructor
-public class OAuthService implements OAuthUseCase {
+public class OAuthService {
 
     private final KaKaoOauth kaKaoOauth;
     private final GoogleOauth googleOauth;
@@ -44,7 +43,6 @@ public class OAuthService implements OAuthUseCase {
     private final TemporaryMemberRepository temporaryMemberRepository;
     private final MemberRepository memberRepository;
 
-    @Override
     public String accessRequest(SocialLoginType socialLoginType) {
         return switch (socialLoginType) {
             case GOOGLE -> googleOauth.getOauthRedirectURL();
@@ -54,7 +52,6 @@ public class OAuthService implements OAuthUseCase {
         };
     }
 
-    @Override
     public SocialLoginResult oAuthLoginOrJoin(SocialLoginType socialLoginType, String code) {
         String email = extractEmailFromSocialProvider(socialLoginType, code);
         return handleLoginOrRegister(email, socialLoginType);

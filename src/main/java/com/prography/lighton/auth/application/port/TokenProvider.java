@@ -1,4 +1,4 @@
-package com.prography.lighton.auth.application;
+package com.prography.lighton.auth.application.port;
 
 
 import io.jsonwebtoken.Claims;

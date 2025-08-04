@@ -1,10 +1,12 @@
 package com.prography.lighton.common.presentation;
 
-import com.prography.lighton.auth.application.AuthService;
-import com.prography.lighton.auth.application.AuthVerificationService;
-import com.prography.lighton.auth.application.LoginMemberUseCase;
-import com.prography.lighton.auth.application.OAuthUseCase;
-import com.prography.lighton.auth.application.TokenProvider;
+import com.prography.lighton.auth.application.port.AuthVerificationService;
+import com.prography.lighton.auth.application.port.TokenProvider;
+import com.prography.lighton.auth.application.service.LoginMemberService;
+import com.prography.lighton.auth.application.service.MemberWithdrawalService;
+import com.prography.lighton.auth.application.service.OAuthService;
+import com.prography.lighton.auth.application.service.PhoneVerificationService;
+import com.prography.lighton.auth.application.service.TokenReissueService;
 import com.prography.lighton.auth.presentation.AuthController;
 import com.prography.lighton.genre.infrastructure.cache.GenreCache;
 import com.prography.lighton.member.users.application.CompleteMemberProfileUseCase;
@@ -34,13 +36,19 @@ public abstract class ControllerTest {
     protected CompleteMemberProfileUseCase completeMemberProfileUseCase;
 
     @MockBean
-    protected LoginMemberUseCase loginMemberUseCase;
+    protected LoginMemberService loginMemberService;
 
     @MockBean
-    protected OAuthUseCase oAuthUseCase;
+    protected OAuthService oAuthService;
 
     @MockBean
-    protected AuthService authService;
+    protected TokenReissueService tokenReissueService;
+
+    @MockBean
+    protected MemberWithdrawalService memberWithdrawalService;
+
+    @MockBean
+    protected PhoneVerificationService phoneVerificationService;
 
     @MockBean
     protected ManagePreferredGenreUseCase managePreferredGenreUseCase;

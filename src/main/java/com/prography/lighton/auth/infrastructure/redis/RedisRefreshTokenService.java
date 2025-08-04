@@ -1,7 +1,7 @@
 package com.prography.lighton.auth.infrastructure.redis;
 
-import com.prography.lighton.auth.application.RefreshTokenService;
 import com.prography.lighton.auth.application.exception.ExpiredTokenException;
+import com.prography.lighton.auth.application.port.RefreshTokenService;
 import com.prography.lighton.common.infrastructure.redis.RedisRepository;
 import java.time.Duration;
 import lombok.RequiredArgsConstructor;

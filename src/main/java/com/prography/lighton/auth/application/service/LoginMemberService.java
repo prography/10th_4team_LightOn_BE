@@ -1,7 +1,6 @@
-package com.prography.lighton.auth.application.impl;
+package com.prography.lighton.auth.application.service;
 
-import com.prography.lighton.auth.application.LoginMemberUseCase;
-import com.prography.lighton.auth.application.TokenProvider;
+import com.prography.lighton.auth.application.port.TokenProvider;
 import com.prography.lighton.auth.application.validator.DuplicateEmailValidator;
 import com.prography.lighton.auth.domain.enums.SocialLoginType;
 import com.prography.lighton.member.common.domain.entity.Member;
@@ -19,7 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
-public class LoginMemberService implements LoginMemberUseCase {
+public class LoginMemberService {
 
     private final MemberRepository memberRepository;
     private final TemporaryMemberRepository temporaryMemberRepository;
@@ -28,7 +27,6 @@ public class LoginMemberService implements LoginMemberUseCase {
     private final TokenProvider tokenProvider;
     private final DuplicateEmailValidator duplicateEmailValidator;
 
-    @Override
     public LoginMemberResponseDTO login(LoginMemberRequestDTO request) {
         duplicateEmailValidator.validateConflictingLoginType(request.email(), SocialLoginType.DEFAULT);
         validateIsNotTemporaryMember(request.email());
