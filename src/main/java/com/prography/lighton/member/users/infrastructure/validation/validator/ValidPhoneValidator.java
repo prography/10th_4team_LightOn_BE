@@ -1,6 +1,6 @@
-package com.prography.lighton.member.users.validation.validator;
+package com.prography.lighton.member.users.infrastructure.validation.validator;
 
-import com.prography.lighton.member.users.validation.annotation.ValidPhone;
+import com.prography.lighton.member.users.infrastructure.validation.annotation.ValidPhone;
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
 import java.util.regex.Pattern;
