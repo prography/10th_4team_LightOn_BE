@@ -1,6 +1,6 @@
 package com.prography.lighton.auth.infrastructure.oauth.apple;
 
-import com.prography.lighton.auth.application.exception.ApplePrivateKeyLoadException;
+import com.prography.lighton.auth.infrastructure.oauth.apple.exception.ApplePrivateKeyLoadException;
 import com.prography.lighton.common.exception.base.NotFoundException;
 import java.io.InputStream;
 import java.security.KeyFactory;

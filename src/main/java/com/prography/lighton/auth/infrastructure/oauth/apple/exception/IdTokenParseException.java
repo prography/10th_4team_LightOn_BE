@@ -1,17 +1,17 @@
-package com.prography.lighton.auth.application.exception;
+package com.prography.lighton.auth.infrastructure.oauth.apple.exception;
 
 import com.prography.lighton.common.utils.ApiUtils;
 import org.springframework.http.HttpStatus;
 
-public class ApplePrivateKeyLoadException extends RuntimeException {
+public class IdTokenParseException extends RuntimeException {
 
-    private final static String DEFAULT_MESSAGE = "Apple 개인 키 로드에 실패했습니다.";
+    private final static String DEFAULT_MESSAGE = "ID 토큰 파싱에 실패했습니다.";
 
-    public ApplePrivateKeyLoadException(final String message) {
+    public IdTokenParseException(final String message) {
         super(message);
     }
 
-    public ApplePrivateKeyLoadException() {
+    public IdTokenParseException() {
         this(DEFAULT_MESSAGE);
     }
 
@@ -22,4 +22,5 @@ public class ApplePrivateKeyLoadException extends RuntimeException {
     public HttpStatus status() {
         return HttpStatus.INTERNAL_SERVER_ERROR;
     }
+
 }
