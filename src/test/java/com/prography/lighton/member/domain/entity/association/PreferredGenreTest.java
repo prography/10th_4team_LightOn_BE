@@ -25,5 +25,6 @@ public class PreferredGenreTest {
 
         // Then
         assertEquals(member, preferredGenre.getMember());
+        assertEquals(genre, preferredGenre.getGenre());
     }
 }

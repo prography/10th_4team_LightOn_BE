@@ -43,7 +43,7 @@ public class PhoneTest {
 
     @Test
     @DisplayName("같은 전화번호 값이면 두 객체는 동등하다")
-    void should_be_equal_when_emails_have_same_value() {
+    void should_be_equal_when_phones_have_same_value() {
         Phone phone1 = Phone.of("01012341234");
         Phone phone2 = Phone.of("01012341234");
 

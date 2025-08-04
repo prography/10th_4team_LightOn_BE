@@ -72,12 +72,11 @@ class MemberTest {
     @DisplayName("비밀번호가 잘못된 경우 예외를 던진다.")
     void should_throw_when_password_invalid() {
         // Given
-        PasswordEncoder encoder = mock(PasswordEncoder.class);
-        when(encoder.matches(anyString(), anyString())).thenReturn(false);
+        when(passwordEncoder.matches(anyString(), anyString())).thenReturn(false);
         Member member = createNormalMember(passwordEncoder);
 
         // When & Then
-        assertThrows(InvalidMemberException.class, () -> member.validatePassword("wrong", encoder));
+        assertThrows(InvalidMemberException.class, () -> member.validatePassword("wrong", passwordEncoder));
     }
 
 
