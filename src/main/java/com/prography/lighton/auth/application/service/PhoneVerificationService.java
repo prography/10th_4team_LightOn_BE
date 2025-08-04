@@ -4,7 +4,7 @@ import com.prography.lighton.auth.application.exception.PhoneVerificationFailedE
 import com.prography.lighton.auth.application.port.AuthVerificationService;
 import com.prography.lighton.auth.application.port.SmsSender;
 import com.prography.lighton.auth.domain.vo.VerificationCode;
-import com.prography.lighton.auth.presentation.dto.request.VerifyPhoneRequestDTO;
+import com.prography.lighton.auth.presentation.dto.request.VerifyPhoneRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -24,7 +24,7 @@ public class PhoneVerificationService {
     }
 
 
-    public void verifyPhone(VerifyPhoneRequestDTO request) {
+    public void verifyPhone(VerifyPhoneRequest request) {
         if (!authVerificationService.isCodeMatched(request.phoneNumber(), request.code())) {
             throw new PhoneVerificationFailedException();
         }

@@ -12,7 +12,7 @@ import static com.prography.lighton.common.constant.AuthConstants.RESPONSE_TYPE_
 
 import com.prography.lighton.auth.infrastructure.client.kakao.KaKaoApiClient;
 import com.prography.lighton.auth.infrastructure.client.kakao.KaKaoAuthClient;
-import com.prography.lighton.auth.presentation.dto.kakao.KaKaoOAuthTokenDTO;
+import com.prography.lighton.auth.presentation.dto.kakao.KaKaoOAuthToken;
 import com.prography.lighton.auth.presentation.dto.kakao.KaKaoUser;
 import com.prography.lighton.common.constant.JwtConstants;
 import com.prography.lighton.common.feign.SafeFeignExecutor;
@@ -52,21 +52,21 @@ public class KaKaoOauth {
         return KAKAO_SNS_URL + QUERY_PREFIX + parameterString;
     }
 
-    public KaKaoOAuthTokenDTO requestAccessToken(String code) {
+    public KaKaoOAuthToken requestAccessToken(String code) {
         return SafeFeignExecutor.run(
                 () -> kaKaoAuthClient.getKaKaoAccessToken(
                         CONTENT_TYPE, GRANT_TYPE, KAKAO_SNS_CALLBACK_LOGIN_URL, KAKAO_SNS_CLIENT_ID, code));
     }
 
 
-    public KaKaoUser requestUserInfo(KaKaoOAuthTokenDTO kaKaoOAuthTokenDTO) {
+    public KaKaoUser requestUserInfo(KaKaoOAuthToken kaKaoOAuthToken) {
         return SafeFeignExecutor.run(
                 () -> kaKaoApiClient.getKaKaoUserInfo(
-                        getAccessToken(kaKaoOAuthTokenDTO), CONTENT_TYPE));
+                        getAccessToken(kaKaoOAuthToken), CONTENT_TYPE));
     }
 
-    private static String getAccessToken(KaKaoOAuthTokenDTO kaKaoOAuthTokenDTO) {
-        return JwtConstants.BEARER_PREFIX + kaKaoOAuthTokenDTO.access_token();
+    private static String getAccessToken(KaKaoOAuthToken kaKaoOAuthToken) {
+        return JwtConstants.BEARER_PREFIX + kaKaoOAuthToken.access_token();
     }
 
 

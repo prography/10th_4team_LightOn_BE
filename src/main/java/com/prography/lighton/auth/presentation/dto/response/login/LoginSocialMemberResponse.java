@@ -1,15 +1,15 @@
 package com.prography.lighton.auth.presentation.dto.response.login;
 
-public record LoginSocialMemberResponseDTO(
+public record LoginSocialMemberResponse(
         boolean isRegistered,
         String accessToken,
         String refreshToken) implements SocialLoginResult {
 
 
-    public static LoginSocialMemberResponseDTO from(
+    public static LoginSocialMemberResponse from(
             boolean isRegistered,
             String accessToken,
             String refreshToken) {
-        return new LoginSocialMemberResponseDTO(isRegistered, accessToken, refreshToken);
+        return new LoginSocialMemberResponse(isRegistered, accessToken, refreshToken);
     }
 }

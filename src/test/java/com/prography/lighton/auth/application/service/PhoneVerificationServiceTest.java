@@ -8,7 +8,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import com.prography.lighton.auth.application.exception.PhoneVerificationFailedException;
 import com.prography.lighton.auth.application.fake.FakeAuthVerificationService;
 import com.prography.lighton.auth.application.fake.FakeSmsSender;
-import com.prography.lighton.auth.presentation.dto.request.VerifyPhoneRequestDTO;
+import com.prography.lighton.auth.presentation.dto.request.VerifyPhoneRequest;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -48,7 +48,7 @@ class PhoneVerificationServiceTest {
         fakeAuthVerificationService.saveCode(phoneNumber, code);
 
         // when
-        phoneVerificationService.verifyPhone(new VerifyPhoneRequestDTO(phoneNumber, code));
+        phoneVerificationService.verifyPhone(new VerifyPhoneRequest(phoneNumber, code));
 
         // then
         assertDoesNotThrow(() -> fakeAuthVerificationService.checkIsVerified(phoneNumber));
@@ -65,7 +65,7 @@ class PhoneVerificationServiceTest {
 
         // when & then
         assertThrows(PhoneVerificationFailedException.class,
-                () -> phoneVerificationService.verifyPhone(new VerifyPhoneRequestDTO(phoneNumber, wrongCode)));
+                () -> phoneVerificationService.verifyPhone(new VerifyPhoneRequest(phoneNumber, wrongCode)));
 
     }
 

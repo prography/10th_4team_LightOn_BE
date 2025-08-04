@@ -13,10 +13,10 @@ import com.prography.lighton.auth.presentation.dto.apple.AppleOAuthToken;
 import com.prography.lighton.auth.presentation.dto.apple.AppleUser;
 import com.prography.lighton.auth.presentation.dto.google.GoogleOAuthToken;
 import com.prography.lighton.auth.presentation.dto.google.GoogleUser;
-import com.prography.lighton.auth.presentation.dto.kakao.KaKaoOAuthTokenDTO;
+import com.prography.lighton.auth.presentation.dto.kakao.KaKaoOAuthToken;
 import com.prography.lighton.auth.presentation.dto.kakao.KaKaoUser;
-import com.prography.lighton.auth.presentation.dto.response.login.LoginSocialMemberResponseDTO;
-import com.prography.lighton.auth.presentation.dto.response.login.RegisterSocialMemberResponseDTO;
+import com.prography.lighton.auth.presentation.dto.response.login.LoginSocialMemberResponse;
+import com.prography.lighton.auth.presentation.dto.response.login.RegisterSocialMemberResponse;
 import com.prography.lighton.auth.presentation.dto.response.login.SocialLoginResult;
 import com.prography.lighton.member.common.domain.entity.Member;
 import com.prography.lighton.member.common.domain.entity.TemporaryMember;
@@ -60,7 +60,7 @@ public class OAuthService {
     private String extractEmailFromSocialProvider(SocialLoginType socialLoginType, String code) {
         return switch (socialLoginType) {
             case KAKAO -> {
-                KaKaoOAuthTokenDTO token = kaKaoOauth.requestAccessToken(code);
+                KaKaoOAuthToken token = kaKaoOauth.requestAccessToken(code);
                 KaKaoUser user = kaKaoOauth.requestUserInfo(token);
                 yield user.kakao_account().email();
             }
@@ -96,7 +96,7 @@ public class OAuthService {
                 .orElseGet(() -> temporaryMemberRepository.save(
                         TemporaryMember.socialLoginMemberOf(emailVO, socialLoginType)));
 
-        return RegisterSocialMemberResponseDTO.of(tempMember.isRegistered(), tempMember.getId());
+        return RegisterSocialMemberResponse.of(tempMember.isRegistered(), tempMember.getId());
     }
 
 
@@ -108,8 +108,8 @@ public class OAuthService {
         return memberRepository.existsByEmail(email);
     }
 
-    private LoginSocialMemberResponseDTO issueTokensFor(Member member) {
-        return LoginSocialMemberResponseDTO.from(
+    private LoginSocialMemberResponse issueTokensFor(Member member) {
+        return LoginSocialMemberResponse.from(
                 true,
                 tokenProvider.createAccessToken(String.valueOf(member.getId()), member.getAuthority().toString()),
                 createAndSaveRefreshToken(member));
