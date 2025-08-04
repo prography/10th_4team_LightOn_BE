@@ -33,6 +33,11 @@ public class FakeTokenProvider implements TokenProvider {
         return claims;
     }
 
+    public String getSubject(String token) {
+        Claims claims = getClaims(token);
+        return claims.getSubject();
+    }
+
     private void storeClaims(String token, String subject, String role) {
         Claims claims = new DefaultClaims();
         claims.setSubject(subject);
