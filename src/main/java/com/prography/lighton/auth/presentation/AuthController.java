@@ -83,7 +83,7 @@ public class AuthController {
 
     @PostMapping("/auth/logout")
     public ResponseEntity<ApiResult<String>> logout(@LoginMember Member member) {
-        tokenReissueService.logout(member);
+        tokenReissueService.logout(member.getId());
         return ResponseEntity.status(HttpStatus.OK)
                 .body(ApiUtils.success());
     }

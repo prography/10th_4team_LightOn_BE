@@ -26,4 +26,11 @@ public class FakeRefreshTokenService implements RefreshTokenService {
     public void deleteRefreshToken(String userId) {
         store.remove(userId);
     }
+
+    public String getRefreshToken(String userId) {
+        if (!store.containsKey(userId)) {
+            return null;
+        }
+        return store.get(userId);
+    }
 }

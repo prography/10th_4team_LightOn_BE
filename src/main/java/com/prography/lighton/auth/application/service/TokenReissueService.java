@@ -3,7 +3,6 @@ package com.prography.lighton.auth.application.service;
 import com.prography.lighton.auth.application.port.RefreshTokenService;
 import com.prography.lighton.auth.application.port.TokenProvider;
 import com.prography.lighton.auth.presentation.dto.response.ReissueTokenResponse;
-import com.prography.lighton.member.common.domain.entity.Member;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -33,7 +32,7 @@ public class TokenReissueService {
         return ReissueTokenResponse.of(newAccessToken, newRefreshToken);
     }
 
-    public void logout(Member member) {
-        refreshTokenService.deleteRefreshToken(member.getId().toString());
+    public void logout(Long memberId) {
+        refreshTokenService.deleteRefreshToken(memberId.toString());
     }
 }
