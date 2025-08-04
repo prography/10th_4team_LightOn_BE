@@ -1,4 +1,4 @@
-package com.prography.lighton.auth.application.impl.token;
+package com.prography.lighton.auth.infrastructure.oauth.apple;
 
 
 import com.auth0.jwt.JWT;
@@ -6,7 +6,6 @@ import com.auth0.jwt.algorithms.Algorithm;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.prography.lighton.auth.application.exception.IdTokenParseException;
 import com.prography.lighton.auth.application.exception.InvalidTokenException;
-import com.prography.lighton.auth.infrastructure.AppleKeyUtils;
 import com.prography.lighton.auth.infrastructure.config.AppleOAuthProperties;
 import com.prography.lighton.auth.presentation.dto.apple.AppleIdTokenPayload;
 import com.prography.lighton.auth.presentation.dto.apple.AppleUser;

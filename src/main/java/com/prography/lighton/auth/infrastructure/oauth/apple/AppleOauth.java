@@ -1,4 +1,4 @@
-package com.prography.lighton.auth.application.impl.oauth;
+package com.prography.lighton.auth.infrastructure.oauth.apple;
 
 import static com.prography.lighton.common.constant.AuthConstants.CLIENT_ID;
 import static com.prography.lighton.common.constant.AuthConstants.GRANT_TYPE;
@@ -6,7 +6,6 @@ import static com.prography.lighton.common.constant.AuthConstants.REDIRECT_URI;
 import static com.prography.lighton.common.constant.AuthConstants.RESPONSE_TYPE;
 import static com.prography.lighton.common.constant.AuthConstants.SCOPE;
 
-import com.prography.lighton.auth.application.impl.token.AppleOAuthTokenService;
 import com.prography.lighton.auth.infrastructure.client.apple.AppleOAuthClient;
 import com.prography.lighton.auth.infrastructure.config.AppleOAuthProperties;
 import com.prography.lighton.auth.presentation.dto.apple.AppleOAuthToken;

@@ -1,4 +1,4 @@
-package com.prography.lighton.auth.application.impl;
+package com.prography.lighton.auth.infrastructure.redis;
 
 import com.prography.lighton.auth.application.AuthVerificationService;
 import com.prography.lighton.auth.application.exception.PhoneNotVerifiedException;

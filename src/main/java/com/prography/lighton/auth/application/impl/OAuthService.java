@@ -1,4 +1,4 @@
-package com.prography.lighton.auth.application.impl.oauth;
+package com.prography.lighton.auth.application.impl;
 
 import com.prography.lighton.auth.application.OAuthUseCase;
 import com.prography.lighton.auth.application.RefreshTokenService;
@@ -7,6 +7,9 @@ import com.prography.lighton.auth.application.exception.MemberProfileIncompleteE
 import com.prography.lighton.auth.application.exception.UnsupportedSocialLoginTypeException;
 import com.prography.lighton.auth.application.validator.DuplicateEmailValidator;
 import com.prography.lighton.auth.domain.enums.SocialLoginType;
+import com.prography.lighton.auth.infrastructure.oauth.apple.AppleOauth;
+import com.prography.lighton.auth.infrastructure.oauth.google.GoogleOauth;
+import com.prography.lighton.auth.infrastructure.oauth.kakao.KaKaoOauth;
 import com.prography.lighton.auth.presentation.dto.apple.AppleOAuthToken;
 import com.prography.lighton.auth.presentation.dto.apple.AppleUser;
 import com.prography.lighton.auth.presentation.dto.google.GoogleOAuthToken;

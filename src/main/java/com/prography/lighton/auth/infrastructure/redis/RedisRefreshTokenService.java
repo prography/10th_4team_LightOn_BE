@@ -1,4 +1,4 @@
-package com.prography.lighton.auth.application.impl.token;
+package com.prography.lighton.auth.infrastructure.redis;
 
 import com.prography.lighton.auth.application.RefreshTokenService;
 import com.prography.lighton.auth.application.exception.ExpiredTokenException;

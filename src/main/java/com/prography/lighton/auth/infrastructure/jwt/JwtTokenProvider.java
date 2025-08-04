@@ -1,4 +1,4 @@
-package com.prography.lighton.auth.application.impl.token;
+package com.prography.lighton.auth.infrastructure.jwt;
 
 import com.prography.lighton.auth.application.RefreshTokenService;
 import com.prography.lighton.auth.application.TokenProvider;

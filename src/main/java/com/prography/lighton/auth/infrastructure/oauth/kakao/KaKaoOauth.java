@@ -1,4 +1,4 @@
-package com.prography.lighton.auth.application.impl.oauth;
+package com.prography.lighton.auth.infrastructure.oauth.kakao;
 
 import static com.prography.lighton.common.constant.AuthConstants.CLIENT_ID;
 import static com.prography.lighton.common.constant.AuthConstants.CONTENT_TYPE;
