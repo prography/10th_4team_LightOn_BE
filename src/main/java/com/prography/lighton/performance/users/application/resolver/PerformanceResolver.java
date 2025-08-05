@@ -143,7 +143,6 @@ public class PerformanceResolver {
 
     private Payment toPayment(PaymentDTO req) {
         return Payment.of(
-                req.isPaid(),
                 req.account(),
                 req.bank(),
                 req.accountHolder(),

@@ -26,12 +26,12 @@ public class Payment {
 
     private Integer fee;
 
-    public static Payment of(Boolean isPaid, String account, String bank, String accountHolder, Integer fee) {
-        if (Boolean.TRUE.equals(isPaid) && isInvalid(account, bank, accountHolder, fee)) {
+    public static Payment of(String account, String bank, String accountHolder, Integer fee) {
+        if (isInvalid(account, bank, accountHolder, fee)) {
             throw new InvalidPaymentInfoException();
         }
 
-        return new Payment(isPaid, account, bank, accountHolder, fee);
+        return new Payment(true, account, bank, accountHolder, fee);
     }
 
     private static boolean isInvalid(String account, String bank, String holder, Integer fee) {
