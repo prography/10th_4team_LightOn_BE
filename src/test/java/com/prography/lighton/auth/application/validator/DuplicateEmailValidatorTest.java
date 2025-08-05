@@ -8,8 +8,8 @@ import static org.mockito.Mockito.when;
 
 import com.prography.lighton.auth.domain.enums.SocialLoginType;
 import com.prography.lighton.member.common.domain.exception.DuplicateMemberException;
-import com.prography.lighton.member.users.infrastructure.repository.MemberRepository;
-import com.prography.lighton.member.users.infrastructure.repository.TemporaryMemberRepository;
+import com.prography.lighton.member.common.infrastructure.repository.MemberRepository;
+import com.prography.lighton.member.common.infrastructure.repository.TemporaryMemberRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

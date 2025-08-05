@@ -6,9 +6,9 @@ import static org.mockito.Mockito.when;
 import com.prography.lighton.artist.users.application.service.ArtistService;
 import com.prography.lighton.common.fixture.MemberTestFixture;
 import com.prography.lighton.member.common.domain.entity.Member;
-import com.prography.lighton.member.users.application.ManagePreferredGenreUseCase;
-import com.prography.lighton.member.users.infrastructure.repository.MemberRepository;
-import com.prography.lighton.member.users.infrastructure.repository.TemporaryMemberRepository;
+import com.prography.lighton.member.common.infrastructure.repository.MemberRepository;
+import com.prography.lighton.member.common.infrastructure.repository.TemporaryMemberRepository;
+import com.prography.lighton.member.users.application.UserMemberCommandService;
 import com.prography.lighton.performance.users.application.service.UserPerformanceLikeService;
 import com.prography.lighton.performance.users.application.service.UserPerformanceService;
 import org.junit.jupiter.api.DisplayName;
@@ -31,7 +31,7 @@ class MemberWithdrawalServiceTest {
     @Mock
     UserPerformanceLikeService userPerformanceLikeService;
     @Mock
-    ManagePreferredGenreUseCase managePreferredGenreUseCase;
+    UserMemberCommandService userMemberCommandService;
     @Mock
     ArtistService artistService;
     @Mock
@@ -51,9 +51,8 @@ class MemberWithdrawalServiceTest {
         withdrawalService.withdraw(member);
 
         // then
-        verify(memberRepository).flush();
         verify(userPerformanceService).inactivateAllByMember(member);
-        verify(managePreferredGenreUseCase).inactivateAllByMember(member);
+        verify(userMemberCommandService).inactivateAllByMember(member);
         verify(userPerformanceLikeService).inactivateAllByMember(member);
         verify(artistService).inactiveByMember(member);
         verify(temporaryMemberRepository).deleteByEmail(member.getEmail());
