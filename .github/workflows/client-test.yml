@@ -37,7 +37,7 @@ jobs:
           ./gradlew clean build
 
       - name: Second build for Include docs in jar
-        run: ./gradlew build
+        run: ./gradlew build -x test
 
       - name: Docker build & push to Docker Hub
         run: |

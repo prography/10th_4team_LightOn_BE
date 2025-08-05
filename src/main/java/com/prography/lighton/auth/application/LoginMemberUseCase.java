@@ -1,10 +1,10 @@
 package com.prography.lighton.auth.application;
 
 
-import com.prography.lighton.member.users.presentation.dto.request.LoginMemberRequestDTO;
-import com.prography.lighton.member.users.presentation.dto.response.LoginMemberResponseDTO;
+import com.prography.lighton.member.users.presentation.dto.request.LoginMemberRequest;
+import com.prography.lighton.member.users.presentation.dto.response.LoginMemberResponse;
 
 public interface LoginMemberUseCase {
 
-    LoginMemberResponseDTO login(final LoginMemberRequestDTO request);
+    LoginMemberResponse login(final LoginMemberRequest request);
 }

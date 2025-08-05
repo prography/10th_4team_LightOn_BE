@@ -11,9 +11,9 @@ import com.prography.lighton.auth.infrastructure.sms.SmsService;
 import com.prography.lighton.auth.presentation.dto.request.VerifyPhoneRequestDTO;
 import com.prography.lighton.auth.presentation.dto.response.ReissueTokenResponse;
 import com.prography.lighton.member.common.domain.entity.Member;
-import com.prography.lighton.member.users.application.ManagePreferredGenreUseCase;
-import com.prography.lighton.member.users.infrastructure.repository.MemberRepository;
-import com.prography.lighton.member.users.infrastructure.repository.TemporaryMemberRepository;
+import com.prography.lighton.member.common.infrastructure.repository.MemberRepository;
+import com.prography.lighton.member.common.infrastructure.repository.TemporaryMemberRepository;
+import com.prography.lighton.member.users.application.UserMemberCommandService;
 import com.prography.lighton.performance.users.application.service.UserPerformanceLikeService;
 import com.prography.lighton.performance.users.application.service.UserPerformanceService;
 import lombok.RequiredArgsConstructor;
@@ -37,7 +37,7 @@ public class AuthServiceImpl implements AuthService {
 
     private final UserPerformanceService userPerformanceService;
     private final UserPerformanceLikeService userPerformanceLikeService;
-    private final ManagePreferredGenreUseCase managePreferredGenreUseCase;
+    private final UserMemberCommandService userMemberCommandService;
     private final ArtistService artistService;
 
     @Override
@@ -69,7 +69,7 @@ public class AuthServiceImpl implements AuthService {
         memberRepository.flush();
 
         userPerformanceService.inactivateAllByMember(dbMember);
-        managePreferredGenreUseCase.inactivateAllByMember(dbMember);
+        userMemberCommandService.inactivateAllByMember(dbMember);
         userPerformanceLikeService.inactivateAllByMember(dbMember);
         artistService.inactiveByMember(dbMember);
 
