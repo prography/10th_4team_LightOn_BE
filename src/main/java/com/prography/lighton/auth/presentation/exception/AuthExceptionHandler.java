@@ -1,10 +1,10 @@
 package com.prography.lighton.auth.presentation.exception;
 
-import com.prography.lighton.auth.application.exception.IdTokenParseException;
 import com.prography.lighton.auth.application.exception.MemberProfileIncompleteException;
 import com.prography.lighton.auth.application.exception.PhoneNotVerifiedException;
 import com.prography.lighton.auth.application.exception.PhoneVerificationFailedException;
 import com.prography.lighton.auth.application.exception.UnsupportedSocialLoginTypeException;
+import com.prography.lighton.auth.infrastructure.oauth.apple.exception.IdTokenParseException;
 import com.prography.lighton.auth.infrastructure.sms.exception.SmsSendFailedException;
 import com.prography.lighton.auth.security.exception.ForbiddenException;
 import com.prography.lighton.auth.security.exception.UnauthorizedException;

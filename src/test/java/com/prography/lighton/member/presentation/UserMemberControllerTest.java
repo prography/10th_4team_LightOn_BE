@@ -74,7 +74,7 @@ class UserMemberControllerTest extends ControllerTest {
     @WithMockUser
     void login() throws Exception {
         // given
-        given(loginMemberUseCase.login(any()))
+        given(loginMemberService.login(any()))
                 .willReturn(LoginMemberResponse.of("aaa.ccc.ddd", "refreshToken"));
 
         // when & then: 로그인 API 호출 및 문서화

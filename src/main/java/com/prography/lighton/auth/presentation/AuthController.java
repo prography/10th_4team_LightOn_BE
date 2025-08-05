@@ -3,12 +3,14 @@ package com.prography.lighton.auth.presentation;
 import static org.springframework.web.bind.annotation.RequestMethod.GET;
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
 
-import com.prography.lighton.auth.application.AuthService;
-import com.prography.lighton.auth.application.LoginMemberUseCase;
-import com.prography.lighton.auth.application.OAuthUseCase;
+import com.prography.lighton.auth.application.service.LoginMemberService;
+import com.prography.lighton.auth.application.service.MemberWithdrawalService;
+import com.prography.lighton.auth.application.service.OAuthService;
+import com.prography.lighton.auth.application.service.PhoneVerificationService;
+import com.prography.lighton.auth.application.service.TokenReissueService;
 import com.prography.lighton.auth.domain.enums.SocialLoginType;
-import com.prography.lighton.auth.presentation.dto.request.SendAuthCodeRequestDTO;
-import com.prography.lighton.auth.presentation.dto.request.VerifyPhoneRequestDTO;
+import com.prography.lighton.auth.presentation.dto.request.SendAuthCodeRequest;
+import com.prography.lighton.auth.presentation.dto.request.VerifyPhoneRequest;
 import com.prography.lighton.auth.presentation.dto.response.ReissueTokenResponse;
 import com.prography.lighton.auth.presentation.dto.response.login.SocialLoginResult;
 import com.prography.lighton.common.annotation.LoginMember;
@@ -40,14 +42,16 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class AuthController {
 
-    private final LoginMemberUseCase loginMemberUseCase;
-    private final OAuthUseCase oAuthUseCase;
-    private final AuthService authService;
+    private final LoginMemberService loginMemberService;
+    private final OAuthService oAuthService;
+    private final TokenReissueService tokenReissueService;
+    private final MemberWithdrawalService memberWithdrawalService;
+    private final PhoneVerificationService phoneVerificationService;
 
     @PostMapping("/auth/login")
     public ResponseEntity<ApiResult<LoginMemberResponse>> login(@RequestBody @Valid LoginMemberRequest request) {
         return ResponseEntity.status(HttpStatus.OK)
-                .body(ApiUtils.success(loginMemberUseCase.login(request)));
+                .body(ApiUtils.success(loginMemberService.login(request)));
     }
 
     @GetMapping("/oauth/{socialLoginType}")
@@ -55,7 +59,7 @@ public class AuthController {
             @PathVariable(name = "socialLoginType") String socialLoginPath,
             HttpServletResponse response) throws IOException {
         SocialLoginType socialLoginType = SocialLoginType.valueOf(socialLoginPath.toUpperCase());
-        String redirectUrl = oAuthUseCase.accessRequest(socialLoginType);
+        String redirectUrl = oAuthService.accessRequest(socialLoginType);
         response.sendRedirect(redirectUrl);
     }
 
@@ -66,41 +70,41 @@ public class AuthController {
             @RequestParam(name = "code") String code) throws RuntimeException {
         SocialLoginType socialLoginType = SocialLoginType.valueOf(socialLoginPath.toUpperCase());
         return ResponseEntity.status(HttpStatus.OK)
-                .body(ApiUtils.success(oAuthUseCase.oAuthLoginOrJoin(socialLoginType, code)));
+                .body(ApiUtils.success(oAuthService.oAuthLoginOrJoin(socialLoginType, code)));
     }
 
     @PostMapping("/auth/token/refresh")
     public ResponseEntity<ApiResult<ReissueTokenResponse>> reissueLoginTokens(
             @RequestHeader("Refresh-Token") String refreshToken) {
-        ReissueTokenResponse response = authService.reissueLoginTokens(refreshToken);
+        ReissueTokenResponse response = tokenReissueService.reissueLoginTokens(refreshToken);
         return ResponseEntity.status(HttpStatus.OK)
                 .body(ApiUtils.success(response));
     }
 
     @PostMapping("/auth/logout")
     public ResponseEntity<ApiResult<String>> logout(@LoginMember Member member) {
-        authService.logout(member);
+        tokenReissueService.logout(member.getId());
         return ResponseEntity.status(HttpStatus.OK)
                 .body(ApiUtils.success());
     }
 
     @DeleteMapping("/auth/me")
     public ResponseEntity<ApiResult<String>> withdraw(@LoginMember Member member) {
-        authService.withdraw(member);
+        memberWithdrawalService.withdraw(member);
         return ResponseEntity.status(HttpStatus.NO_CONTENT)
                 .body(ApiUtils.success());
     }
 
     @PostMapping("/auth/phones/code")
-    public ResponseEntity<ApiResult<String>> sendAuthCode(@Valid @RequestBody SendAuthCodeRequestDTO request) {
-        authService.sendAuthCode(request.phoneNumber());
+    public ResponseEntity<ApiResult<String>> sendAuthCode(@Valid @RequestBody SendAuthCodeRequest request) {
+        phoneVerificationService.sendAuthCode(request.phoneNumber());
         return ResponseEntity.status(HttpStatus.OK)
                 .body(ApiUtils.success());
     }
 
     @PostMapping("/auth/phones/code/verify")
-    public ResponseEntity<ApiResult<String>> verifyPhone(@Valid @RequestBody VerifyPhoneRequestDTO request) {
-        authService.verifyPhone(request);
+    public ResponseEntity<ApiResult<String>> verifyPhone(@Valid @RequestBody VerifyPhoneRequest request) {
+        phoneVerificationService.verifyPhone(request);
         return ResponseEntity.status(HttpStatus.OK)
                 .body(ApiUtils.success());
     }

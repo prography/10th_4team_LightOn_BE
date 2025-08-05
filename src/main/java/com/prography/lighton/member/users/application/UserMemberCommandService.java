@@ -3,8 +3,8 @@ package com.prography.lighton.member.users.application;
 import static com.prography.lighton.member.common.domain.entity.vo.Email.of;
 import static com.prography.lighton.member.common.domain.entity.vo.Password.encodeAndCreate;
 
-import com.prography.lighton.auth.application.AuthVerificationService;
-import com.prography.lighton.auth.application.TokenProvider;
+import com.prography.lighton.auth.application.port.AuthVerificationService;
+import com.prography.lighton.auth.application.port.TokenProvider;
 import com.prography.lighton.common.domain.vo.RegionInfo;
 import com.prography.lighton.genre.infrastructure.cache.GenreCache;
 import com.prography.lighton.member.common.domain.entity.Member;
