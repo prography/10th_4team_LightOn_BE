@@ -20,7 +20,7 @@ class PasswordTest {
 
     @Test
     @DisplayName("유효한 비밀번호로 생성 시 암호화된 Password 객체가 생성된다")
-    void create_valid_password() {
+    void should_create_valid_password() {
         String rawPassword = "Aa1!aaaa";
         when(encoder.encode(rawPassword)).thenReturn("encodedPwd");
         when(encoder.matches(anyString(), anyString())).thenReturn(true);
@@ -34,7 +34,7 @@ class PasswordTest {
 
     @Test
     @DisplayName("비밀번호가 형식에 맞지 않으면 예외가 발생한다")
-    void invalid_password_format_throws_exception() {
+    void should_throw_exception_when_invalid_password_format() {
         String invalidPassword = "1234";
 
         assertThrows(InvalidMemberException.class, () ->
@@ -44,7 +44,7 @@ class PasswordTest {
 
     @Test
     @DisplayName("공백 또는 빈 문자열은 예외를 발생시킨다")
-    void blank_password_throws_exception() {
+    void should_throw_exception_when_blank_password() {
         assertThrows(InvalidMemberException.class, () ->
                 Password.encodeAndCreate("   ", encoder)
         );
@@ -52,7 +52,7 @@ class PasswordTest {
 
     @Test
     @DisplayName("소셜 로그인용 비밀번호는 UUID로 생성된다")
-    void create_social_login_password() {
+    void should_create_social_login_password_by_uuid() {
         Password password = Password.forSocialLogin();
 
         assertNotNull(password);
