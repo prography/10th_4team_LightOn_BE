@@ -9,10 +9,10 @@ import com.prography.lighton.auth.application.fake.FakeTokenProvider;
 import com.prography.lighton.auth.application.validator.DuplicateEmailValidator;
 import com.prography.lighton.member.common.domain.entity.Member;
 import com.prography.lighton.member.common.domain.exception.InvalidMemberException;
-import com.prography.lighton.member.users.infrastructure.repository.MemberRepository;
-import com.prography.lighton.member.users.infrastructure.repository.TemporaryMemberRepository;
-import com.prography.lighton.member.users.presentation.dto.request.LoginMemberRequestDTO;
-import com.prography.lighton.member.users.presentation.dto.response.LoginMemberResponseDTO;
+import com.prography.lighton.member.common.infrastructure.repository.MemberRepository;
+import com.prography.lighton.member.common.infrastructure.repository.TemporaryMemberRepository;
+import com.prography.lighton.member.users.presentation.dto.request.LoginMemberRequest;
+import com.prography.lighton.member.users.presentation.dto.response.LoginMemberResponse;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -61,8 +61,8 @@ class LoginMemberServiceTest {
         when(passwordEncoder.matches(password, member.getPassword().getValue())).thenReturn(true);
 
         // When
-        LoginMemberResponseDTO response = loginMemberService.login(
-                new LoginMemberRequestDTO(member.getEmail().getValue(), password)
+        LoginMemberResponse response = loginMemberService.login(
+                new LoginMemberRequest(member.getEmail().getValue(), password)
         );
 
         // Then
@@ -79,7 +79,7 @@ class LoginMemberServiceTest {
 
         // When & Then
         assertThrows(InvalidMemberException.class, () ->
-                loginMemberService.login(new LoginMemberRequestDTO(member.getEmail().getValue(), "anyPassword"))
+                loginMemberService.login(new LoginMemberRequest(member.getEmail().getValue(), "anyPassword"))
         );
     }
 
@@ -94,7 +94,7 @@ class LoginMemberServiceTest {
 
         // When & Then
         assertThrows(InvalidMemberException.class, () ->
-                loginMemberService.login(new LoginMemberRequestDTO(member.getEmail().getValue(), "WrongPassword"))
+                loginMemberService.login(new LoginMemberRequest(member.getEmail().getValue(), "WrongPassword"))
         );
     }
 }

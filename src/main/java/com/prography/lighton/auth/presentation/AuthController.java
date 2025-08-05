@@ -17,8 +17,8 @@ import com.prography.lighton.common.annotation.LoginMember;
 import com.prography.lighton.common.utils.ApiUtils;
 import com.prography.lighton.common.utils.ApiUtils.ApiResult;
 import com.prography.lighton.member.common.domain.entity.Member;
-import com.prography.lighton.member.users.presentation.dto.request.LoginMemberRequestDTO;
-import com.prography.lighton.member.users.presentation.dto.response.LoginMemberResponseDTO;
+import com.prography.lighton.member.users.presentation.dto.request.LoginMemberRequest;
+import com.prography.lighton.member.users.presentation.dto.response.LoginMemberResponse;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import java.io.IOException;
@@ -49,7 +49,7 @@ public class AuthController {
     private final PhoneVerificationService phoneVerificationService;
 
     @PostMapping("/auth/login")
-    public ResponseEntity<ApiResult<LoginMemberResponseDTO>> login(@RequestBody @Valid LoginMemberRequestDTO request) {
+    public ResponseEntity<ApiResult<LoginMemberResponse>> login(@RequestBody @Valid LoginMemberRequest request) {
         return ResponseEntity.status(HttpStatus.OK)
                 .body(ApiUtils.success(loginMemberService.login(request)));
     }

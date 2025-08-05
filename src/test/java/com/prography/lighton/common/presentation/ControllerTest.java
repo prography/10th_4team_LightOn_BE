@@ -9,12 +9,11 @@ import com.prography.lighton.auth.application.service.PhoneVerificationService;
 import com.prography.lighton.auth.application.service.TokenReissueService;
 import com.prography.lighton.auth.presentation.AuthController;
 import com.prography.lighton.genre.infrastructure.cache.GenreCache;
-import com.prography.lighton.member.users.application.CompleteMemberProfileUseCase;
-import com.prography.lighton.member.users.application.ManagePreferredGenreUseCase;
-import com.prography.lighton.member.users.application.RegisterMemberUseCase;
-import com.prography.lighton.member.users.infrastructure.repository.MemberRepository;
-import com.prography.lighton.member.users.infrastructure.repository.PreferredGenreRepository;
-import com.prography.lighton.member.users.presentation.MemberController;
+import com.prography.lighton.member.common.infrastructure.repository.MemberRepository;
+import com.prography.lighton.member.common.infrastructure.repository.PreferredGenreRepository;
+import com.prography.lighton.member.users.application.UserMemberCommandService;
+import com.prography.lighton.member.users.application.UserMemberQueryService;
+import com.prography.lighton.member.users.presentation.UserMemberController;
 import com.prography.lighton.region.infrastructure.cache.RegionCache;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
@@ -23,17 +22,17 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.web.servlet.MockMvc;
 
 @AutoConfigureRestDocs
-@WebMvcTest(controllers = {MemberController.class, AuthController.class})
+@WebMvcTest(controllers = {UserMemberController.class, AuthController.class})
 public abstract class ControllerTest {
 
     @Autowired
     protected MockMvc mockMvc;
 
     @MockBean
-    protected RegisterMemberUseCase registerMemberUseCase;
+    protected UserMemberCommandService userMemberCommandService;
 
     @MockBean
-    protected CompleteMemberProfileUseCase completeMemberProfileUseCase;
+    protected UserMemberQueryService userMemberQueryService;
 
     @MockBean
     protected LoginMemberService loginMemberService;
@@ -49,9 +48,6 @@ public abstract class ControllerTest {
 
     @MockBean
     protected PhoneVerificationService phoneVerificationService;
-
-    @MockBean
-    protected ManagePreferredGenreUseCase managePreferredGenreUseCase;
 
     @MockBean
     protected TokenProvider tokenProvider;

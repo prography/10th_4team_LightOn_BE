@@ -6,10 +6,10 @@ import com.prography.lighton.auth.domain.enums.SocialLoginType;
 import com.prography.lighton.member.common.domain.entity.Member;
 import com.prography.lighton.member.common.domain.entity.vo.Email;
 import com.prography.lighton.member.common.domain.exception.InvalidMemberException;
-import com.prography.lighton.member.users.infrastructure.repository.MemberRepository;
-import com.prography.lighton.member.users.infrastructure.repository.TemporaryMemberRepository;
-import com.prography.lighton.member.users.presentation.dto.request.LoginMemberRequestDTO;
-import com.prography.lighton.member.users.presentation.dto.response.LoginMemberResponseDTO;
+import com.prography.lighton.member.common.infrastructure.repository.MemberRepository;
+import com.prography.lighton.member.common.infrastructure.repository.TemporaryMemberRepository;
+import com.prography.lighton.member.users.presentation.dto.request.LoginMemberRequest;
+import com.prography.lighton.member.users.presentation.dto.response.LoginMemberResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -27,7 +27,7 @@ public class LoginMemberService {
     private final TokenProvider tokenProvider;
     private final DuplicateEmailValidator duplicateEmailValidator;
 
-    public LoginMemberResponseDTO login(LoginMemberRequestDTO request) {
+    public LoginMemberResponse login(LoginMemberRequest request) {
         duplicateEmailValidator.validateConflictingLoginType(request.email(), SocialLoginType.DEFAULT);
         validateIsNotTemporaryMember(request.email());
 
@@ -43,8 +43,8 @@ public class LoginMemberService {
         }
     }
 
-    private LoginMemberResponseDTO issueTokensFor(Member member) {
-        return LoginMemberResponseDTO.of(
+    private LoginMemberResponse issueTokensFor(Member member) {
+        return LoginMemberResponse.of(
                 tokenProvider.createAccessToken(String.valueOf(member.getId()), member.getAuthority().toString()),
                 tokenProvider.createRefreshToken(String.valueOf(member.getId()), member.getAuthority().toString())
         );

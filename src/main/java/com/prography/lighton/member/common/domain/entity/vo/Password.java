@@ -2,6 +2,7 @@ package com.prography.lighton.member.common.domain.entity.vo;
 
 import static io.micrometer.common.util.StringUtils.isBlank;
 
+import com.prography.lighton.member.common.domain.exception.InvalidMemberException;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
 import java.util.UUID;
@@ -29,7 +30,7 @@ public class Password {
 
     public static Password encodeAndCreate(String rawPassword, PasswordEncoder encoder) {
         if (!PASSWORD_PATTERN.matcher(rawPassword).matches() || isBlank(rawPassword)) {
-            throw new IllegalArgumentException("비밀번호 형식이 올바르지 않습니다.");
+            throw new InvalidMemberException("비밀번호 형식이 올바르지 않습니다.");
         }
         return new Password(encoder.encode(rawPassword));
     }
