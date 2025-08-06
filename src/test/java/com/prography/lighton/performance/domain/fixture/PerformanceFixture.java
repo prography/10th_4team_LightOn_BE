@@ -48,8 +48,8 @@ public class PerformanceFixture {
     }
 
     public static Schedule defaultSchedule() {
-        LocalDate start = LocalDate.now().plusDays(1);
-        LocalDate end = start.plusDays(1);
+        LocalDate start = LocalDate.now().plusDays(10);
+        LocalDate end = start.plusDays(10);
         return Schedule.of(
                 start,
                 end,
