@@ -1,4 +1,4 @@
-package com.prography.lighton;
+package com.prography.lighton.performance.domain;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
