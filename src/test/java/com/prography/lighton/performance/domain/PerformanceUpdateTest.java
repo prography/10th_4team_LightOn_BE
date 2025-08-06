@@ -395,4 +395,31 @@ class PerformanceUpdateTest {
             ).isInstanceOf(NotAuthorizedPerformanceException.class);
         }
     }
+
+    @Nested
+    class LikeTest {
+        @Test
+        @DisplayName("공연 좋아요가 정상적으로 증가한다.")
+        void should_increase_like_count() {
+            Performance p = PerformanceFixture.defaultPerformance();
+
+            long before = p.getLikeCount();
+            p.increaseLike();
+            long after = p.getLikeCount();
+
+            assertThat(after).isEqualTo(before + 1);
+        }
+        
+        @Test
+        @DisplayName("공연 좋아요가 정상적으로 감소한다.")
+        void should_decrease_like_count() {
+            Performance p = PerformanceFixture.defaultPerformance();
+
+            long before = p.getLikeCount();
+            p.decreaseLike();
+            long after = p.getLikeCount();
+
+            assertThat(after).isEqualTo(before - 1);
+        }
+    }
 }
