@@ -5,7 +5,6 @@ import com.prography.lighton.common.geo.GeoUtils;
 import com.prography.lighton.member.common.domain.entity.Member;
 import com.prography.lighton.performance.common.domain.entity.Performance;
 import com.prography.lighton.performance.common.domain.entity.enums.PerformanceFilterType;
-import com.prography.lighton.performance.common.domain.entity.enums.Type;
 import com.prography.lighton.performance.users.application.resolver.PerformanceResolver;
 import com.prography.lighton.performance.users.infrastructure.repository.PerformanceRepository;
 import com.prography.lighton.performance.users.presentation.dto.request.RegisterPerformanceMultiPart;
@@ -47,8 +46,7 @@ public class ArtistPerformanceService {
         var data = performanceResolver.toNewPerformanceData(member, request);
         Performance performance = Performance.create(member, data.artists(), data.info(), data.schedule(),
                 data.location(),
-                data.payment(),
-                Type.CONCERT, data.seats(), data.genres(), data.proofUrl(), request.data().totalSeatsCount());
+                data.payment(), data.seats(), data.genres(), data.proofUrl(), request.data().totalSeatsCount());
         performanceRepository.save(performance);
     }
 
