@@ -33,8 +33,9 @@ class PerformanceUpdateTest {
         @DisplayName("Performance 객체를 정상적으로 수정할 수 있다.")
         void should_update_performance() {
             // give
+            Member performer = PerformanceFixture.defaultMember();
             Performance p = Performance.create(
-                    PerformanceFixture.defaultMember(),
+                    performer,
                     PerformanceFixture.defaultArtists(PerformanceFixture.defaultMember()),
                     PerformanceFixture.defaultInfo(),
                     PerformanceFixture.defaultSchedule(),
@@ -48,7 +49,7 @@ class PerformanceUpdateTest {
 
             Info updatedInfo = Info.of("수정 제목", "수정 설명", "수정 장소", "", "");
             p.update(
-                    PerformanceFixture.defaultMember(),
+                    performer,
                     PerformanceFixture.defaultArtists(PerformanceFixture.defaultMember()),
                     updatedInfo,
                     PerformanceFixture.defaultSchedule(),
@@ -94,12 +95,13 @@ class PerformanceUpdateTest {
                     LocalTime.of(9, 0),
                     LocalTime.of(18, 0)
             );
-            Performance p = PerformanceFixture.defaultPerformance();
+            Member performer = PerformanceFixture.defaultMember();
+            Performance p = PerformanceFixture.defaultPerformance(performer);
             ReflectionTestUtils.setField(p, "schedule", nearSched);
 
             assertThatThrownBy(() ->
                     p.update(
-                            PerformanceFixture.defaultMember(),
+                            performer,
                             PerformanceFixture.defaultArtists(PerformanceFixture.defaultMember()),
                             PerformanceFixture.defaultInfo(),
                             nearSched,
@@ -116,10 +118,11 @@ class PerformanceUpdateTest {
         @Test
         @DisplayName("공연 증빙자료 url이 빈 값이라면 에러가 발생한다.")
         void should_throw_if_proofUrl_blank() {
-            Performance p = PerformanceFixture.defaultPerformance();
+            Member performer = PerformanceFixture.defaultMember();
+            Performance p = PerformanceFixture.defaultPerformance(performer);
             assertThatThrownBy(() ->
                     p.update(
-                            PerformanceFixture.defaultMember(),
+                            performer,
                             PerformanceFixture.defaultArtists(PerformanceFixture.defaultMember()),
                             PerformanceFixture.defaultInfo(),
                             PerformanceFixture.defaultSchedule(),
@@ -136,7 +139,8 @@ class PerformanceUpdateTest {
         @Test
         @DisplayName("총 좌석 수가 예약 좌석 수 미만이면 에러가 발생한다")
         void should_throw_if_totalSeats_less_than_bookedCount() {
-            Performance p = PerformanceFixture.defaultPerformance();
+            Member performer = PerformanceFixture.defaultMember();
+            Performance p = PerformanceFixture.defaultPerformance(performer);
             p.managePerformanceApplication(ApproveStatus.APPROVED);
 
             int applySeatCount = 5;
@@ -145,7 +149,7 @@ class PerformanceUpdateTest {
 
             assertThatThrownBy(() ->
                     p.update(
-                            PerformanceFixture.defaultMember(),
+                            performer,
                             PerformanceFixture.defaultArtists(PerformanceFixture.defaultMember()),
                             PerformanceFixture.defaultInfo(),
                             PerformanceFixture.defaultSchedule(),
@@ -167,7 +171,7 @@ class PerformanceUpdateTest {
             Artist master = PerformanceFixture.defaultArtist(performer);
             Artist a2 = mock(Artist.class);
             when(a2.getId()).thenReturn(99L);
-            when(a2.getMember()).thenReturn(performer);
+            when(a2.getMember()).thenReturn(mock(Member.class));
             Performance p = Performance.create(
                     performer,
                     List.of(master, a2),
@@ -245,7 +249,7 @@ class PerformanceUpdateTest {
             // given
             Member performer = PerformanceFixture.defaultMember();
             Artist existing = PerformanceFixture.defaultArtist(performer);
-            Performance p = PerformanceFixture.defaultPerformance();
+            Performance p = PerformanceFixture.defaultPerformance(performer);
 
             // when: 새로운 아티스트 추가
             Artist newArtist = mock(Artist.class);
@@ -315,7 +319,7 @@ class PerformanceUpdateTest {
             // given
             Member performer = PerformanceFixture.defaultMember();
             Genre existing = PerformanceFixture.defaultGenre();
-            Performance p = PerformanceFixture.defaultPerformance();
+            Performance p = PerformanceFixture.defaultPerformance(performer);
 
             // when: 새로운 장르 추가
             Genre newGenre = mock(Genre.class);
@@ -375,7 +379,7 @@ class PerformanceUpdateTest {
                     LocalTime.of(18, 0)
             );
             Member performer = PerformanceFixture.defaultMember();
-            Performance p = PerformanceFixture.defaultPerformance();
+            Performance p = PerformanceFixture.defaultPerformance(performer);
             ReflectionTestUtils.setField(p, "schedule", nearSched);
 
             assertThatThrownBy(() ->
@@ -392,7 +396,7 @@ class PerformanceUpdateTest {
 
             assertThatThrownBy(() ->
                     p.cancel(performer)
-            ).isInstanceOf(NotAuthorizedPerformanceException.class);
+            ).isInstanceOf(IllegalStateException.class);
         }
     }
 
@@ -409,11 +413,12 @@ class PerformanceUpdateTest {
 
             assertThat(after).isEqualTo(before + 1);
         }
-        
+
         @Test
         @DisplayName("공연 좋아요가 정상적으로 감소한다.")
         void should_decrease_like_count() {
             Performance p = PerformanceFixture.defaultPerformance();
+            p.increaseLike();
 
             long before = p.getLikeCount();
             p.decreaseLike();
