@@ -13,6 +13,7 @@ import com.prography.lighton.performance.common.domain.entity.enums.ApproveStatu
 import com.prography.lighton.performance.common.domain.entity.vo.Info;
 import com.prography.lighton.performance.common.domain.entity.vo.Schedule;
 import com.prography.lighton.performance.common.domain.exception.InvalidSeatCountException;
+import com.prography.lighton.performance.common.domain.exception.MasterArtistCannotBeRemovedException;
 import com.prography.lighton.performance.common.domain.exception.NotAuthorizedPerformanceException;
 import com.prography.lighton.performance.common.domain.exception.PerformanceUpdateNotAllowedException;
 import com.prography.lighton.performance.domain.fixture.PerformanceFixture;
@@ -110,7 +111,7 @@ class PerformanceUpdateTest {
     }
 
     @Test
-    @DisplayName("공연 증빙자료 url이 빈 값이라면 에러를 발생한다.")
+    @DisplayName("공연 증빙자료 url이 빈 값이라면 에러가 발생한다.")
     void should_throw_if_proofUrl_blank() {
         Performance p = PerformanceFixture.defaultPerformance();
         assertThatThrownBy(() ->
@@ -130,7 +131,7 @@ class PerformanceUpdateTest {
     }
 
     @Test
-    @DisplayName("총 좌석 수가 예약 좌석 수 미만이면 InvalidSeatCountException이 발생한다")
+    @DisplayName("총 좌석 수가 예약 좌석 수 미만이면 에러가 발생한다")
     void should_throw_if_totalSeats_less_than_bookedCount() {
         Performance p = PerformanceFixture.defaultPerformance();
         p.managePerformanceApplication(ApproveStatus.APPROVED);
@@ -153,6 +154,44 @@ class PerformanceUpdateTest {
                         updateSeatCount
                 )
         ).isInstanceOf(InvalidSeatCountException.class);
+    }
+
+    @Test
+    @DisplayName("공연 등록자를 공연 아티스트에서 삭제하면 에러가 발생한다")
+    void should_throw_if_removing_performer() {
+        // given
+        Member performer = PerformanceFixture.defaultMember();
+        Artist master = PerformanceFixture.defaultArtist(performer);
+        Artist a2 = mock(Artist.class);
+        when(a2.getId()).thenReturn(99L);
+        when(a2.getMember()).thenReturn(performer);
+        Performance p = Performance.create(
+                performer,
+                List.of(master, a2),
+                PerformanceFixture.defaultInfo(),
+                PerformanceFixture.defaultSchedule(),
+                PerformanceFixture.defaultLocation(),
+                PerformanceFixture.defaultPayment(),
+                PerformanceFixture.defaultSeats(),
+                PerformanceFixture.defaultGenres(),
+                PerformanceFixture.DEFAULT_PROOF_URL,
+                PerformanceFixture.DEFAULT_TOTAL_SEATS
+        );
+
+        // when: 마스터 아티스트(공연 등록자) 제거
+        assertThatThrownBy(() ->
+                p.update(
+                        performer,
+                        List.of(a2),
+                        PerformanceFixture.defaultInfo(),
+                        PerformanceFixture.defaultSchedule(),
+                        PerformanceFixture.defaultLocation(),
+                        PerformanceFixture.defaultPayment(),
+                        PerformanceFixture.defaultSeats(),
+                        PerformanceFixture.defaultGenres(),
+                        PerformanceFixture.DEFAULT_PROOF_URL,
+                        PerformanceFixture.DEFAULT_TOTAL_SEATS)
+        ).isInstanceOf(MasterArtistCannotBeRemovedException.class);
     }
 
     @Test
@@ -295,4 +334,6 @@ class PerformanceUpdateTest {
                 .extracting(pg -> pg.getGenre().getId())
                 .contains(existing.getId(), newGenre.getId());
     }
+
+
 }
