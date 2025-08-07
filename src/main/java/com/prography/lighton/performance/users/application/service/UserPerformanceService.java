@@ -107,4 +107,11 @@ public class UserPerformanceService {
                         + mostParticipatedSubRegion.getName()
         );
     }
+
+    public List<Long> getAppliedPerformances(Member member) {
+        return performanceRequestRepository.findAllByMember(member).stream()
+                .map(PerformanceRequest::getPerformance)
+                .map(Performance::getId)
+                .toList();
+    }
 }

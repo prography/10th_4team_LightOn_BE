@@ -1,12 +1,15 @@
 package com.prography.lighton.performance.users.application.service;
 
+import com.prography.lighton.artist.common.domain.entity.Artist;
 import com.prography.lighton.common.geo.BoundingBox;
 import com.prography.lighton.common.geo.GeoUtils;
 import com.prography.lighton.member.common.domain.entity.Member;
 import com.prography.lighton.performance.common.domain.entity.Performance;
+import com.prography.lighton.performance.common.domain.entity.association.PerformanceArtist;
 import com.prography.lighton.performance.common.domain.entity.enums.PerformanceFilterType;
 import com.prography.lighton.performance.common.domain.entity.enums.Type;
 import com.prography.lighton.performance.users.application.resolver.PerformanceResolver;
+import com.prography.lighton.performance.users.infrastructure.repository.PerformanceArtistRepository;
 import com.prography.lighton.performance.users.infrastructure.repository.PerformanceRepository;
 import com.prography.lighton.performance.users.presentation.dto.request.RegisterPerformanceMultiPart;
 import com.prography.lighton.performance.users.presentation.dto.request.UpdatePerformanceMultiPart;
@@ -29,6 +32,7 @@ public class ArtistPerformanceService {
     private static final Integer CLOSING_SOON_DAYS = 1;
 
     private final PerformanceRepository performanceRepository;
+    private final PerformanceArtistRepository performanceArtistRepository;
     private final PerformanceResolver performanceResolver;
 
     public Performance getApprovedPerformanceById(Long id) {
@@ -84,6 +88,12 @@ public class ArtistPerformanceService {
 
         List<Performance> performances = findPerformancesByType(type, today, box);
         return GetPerformanceMapListResponseDTO.from(performances);
+    }
+
+    public List<Artist> getArtistsByAppliedPerformanceIds(List<Long> performanceIds) {
+        return performanceArtistRepository.findAllByPerformances(performanceIds).stream()
+                .map(PerformanceArtist::getArtist)
+                .toList();
     }
 
     private List<Performance> findPerformancesByType(PerformanceFilterType type, LocalDate today, BoundingBox box) {
