@@ -23,9 +23,34 @@ public class BuskingFixture {
         );
     }
 
+    public static Busking defaultBuskingByUser(Member performer) {
+        return Busking.createByUser(
+                performer,
+                PerformanceFixture.defaultInfo(),
+                PerformanceFixture.defaultSchedule(),
+                PerformanceFixture.defaultLocation(),
+                PerformanceFixture.defaultGenres(),
+                PerformanceFixture.DEFAULT_PROOF_URL,
+                ARTIST_NAME,
+                ARTIST_DESCRIPTION
+        );
+    }
+
     public static Busking defaultBuskingByArtist() {
         Member performer = PerformanceFixture.defaultMember();
         Artist artist = PerformanceFixture.defaultArtist(performer);
+        return Busking.createByArtist(
+                performer,
+                PerformanceFixture.defaultInfo(),
+                PerformanceFixture.defaultSchedule(),
+                PerformanceFixture.defaultLocation(),
+                PerformanceFixture.defaultGenres(),
+                PerformanceFixture.DEFAULT_PROOF_URL,
+                artist
+        );
+    }
+
+    public static Busking defaultBuskingByArtist(Member performer, Artist artist) {
         return Busking.createByArtist(
                 performer,
                 PerformanceFixture.defaultInfo(),
