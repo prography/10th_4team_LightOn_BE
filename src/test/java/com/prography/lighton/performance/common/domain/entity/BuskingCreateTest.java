@@ -2,6 +2,7 @@ package com.prography.lighton.performance.common.domain.entity;
 
 import static com.prography.lighton.performance.common.domain.entity.Busking.BUSKING_SEAT_COUNT;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.Mockito.when;
 
 import com.prography.lighton.artist.common.domain.entity.Artist;
@@ -12,6 +13,7 @@ import com.prography.lighton.performance.common.domain.entity.enums.Seat;
 import com.prography.lighton.performance.common.domain.entity.enums.Type;
 import com.prography.lighton.performance.common.domain.entity.fixture.BuskingFixture;
 import com.prography.lighton.performance.common.domain.entity.fixture.PerformanceFixture;
+import com.prography.lighton.performance.common.domain.exception.MasterArtistCannotBeRemovedException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -108,6 +110,25 @@ class BuskingCreateTest {
                     );
         }
 
+        @Test
+        @DisplayName("performer와 artist가 일치하지 않으면 에러가 발생한다")
+        void should_throw_when_performer_and_artist_is_not_same() {
+            Member performer = PerformanceFixture.defaultMember();
+            Member notPerformer = PerformanceFixture.defaultMember();
+            Artist artist = PerformanceFixture.defaultArtist(notPerformer);
+            when(performer.getId()).thenReturn(1L);
+            when(performer.getId()).thenReturn(2L);
+
+            assertThatThrownBy(() -> Busking.createByArtist(
+                    performer,
+                    PerformanceFixture.defaultInfo(),
+                    PerformanceFixture.defaultSchedule(),
+                    PerformanceFixture.defaultLocation(),
+                    PerformanceFixture.defaultGenres(),
+                    PerformanceFixture.DEFAULT_PROOF_URL,
+                    artist
+            )).isInstanceOf(MasterArtistCannotBeRemovedException.class);
+        }
     }
 
     @Nested
