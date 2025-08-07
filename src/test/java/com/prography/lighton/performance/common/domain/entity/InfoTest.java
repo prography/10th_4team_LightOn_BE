@@ -1,4 +1,4 @@
-package com.prography.lighton.performance.domain;
+package com.prography.lighton.performance.common.domain.entity;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;

@@ -1,4 +1,4 @@
-package com.prography.lighton.performance.domain.fixture;
+package com.prography.lighton.performance.common.domain.entity.fixture;
 
 import com.prography.lighton.artist.common.domain.entity.Artist;
 import com.prography.lighton.member.common.domain.entity.Member;

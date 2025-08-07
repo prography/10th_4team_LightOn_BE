@@ -1,13 +1,11 @@
-package com.prography.lighton.performance.domain;
+package com.prography.lighton.performance.common.domain.entity;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-import com.prography.lighton.performance.common.domain.entity.Performance;
-import com.prography.lighton.performance.common.domain.entity.PerformanceRequest;
 import com.prography.lighton.performance.common.domain.entity.enums.ApproveStatus;
+import com.prography.lighton.performance.common.domain.entity.fixture.PerformanceFixture;
 import com.prography.lighton.performance.common.domain.exception.PerformanceNotApprovedException;
-import com.prography.lighton.performance.domain.fixture.PerformanceFixture;
 import com.prography.lighton.performance.users.application.exception.BadPerformanceRequestException;
 import com.prography.lighton.performance.users.application.exception.NotEnoughSeatsException;
 import org.junit.jupiter.api.DisplayName;

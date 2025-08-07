@@ -1,11 +1,9 @@
-package com.prography.lighton.performance.domain;
+package com.prography.lighton.performance.common.domain.entity;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
 
 import com.prography.lighton.member.common.domain.entity.Member;
-import com.prography.lighton.performance.common.domain.entity.Performance;
-import com.prography.lighton.performance.common.domain.entity.PerformanceRequest;
 import com.prography.lighton.performance.common.domain.entity.enums.RequestStatus;
 import java.time.LocalDateTime;
 import org.junit.jupiter.api.DisplayName;

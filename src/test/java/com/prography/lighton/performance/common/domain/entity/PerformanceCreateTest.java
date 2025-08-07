@@ -1,12 +1,11 @@
-package com.prography.lighton.performance.domain;
+package com.prography.lighton.performance.common.domain.entity;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import com.prography.lighton.performance.common.domain.entity.Performance;
 import com.prography.lighton.performance.common.domain.entity.association.PerformanceArtist;
 import com.prography.lighton.performance.common.domain.entity.association.PerformanceGenre;
 import com.prography.lighton.performance.common.domain.entity.enums.Type;
-import com.prography.lighton.performance.domain.fixture.PerformanceFixture;
+import com.prography.lighton.performance.common.domain.entity.fixture.PerformanceFixture;
 import java.util.List;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

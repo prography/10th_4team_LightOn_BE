@@ -1,4 +1,4 @@
-package com.prography.lighton.performance.domain;
+package com.prography.lighton.performance.common.domain.entity;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -8,15 +8,14 @@ import static org.mockito.Mockito.when;
 import com.prography.lighton.artist.common.domain.entity.Artist;
 import com.prography.lighton.genre.domain.entity.Genre;
 import com.prography.lighton.member.common.domain.entity.Member;
-import com.prography.lighton.performance.common.domain.entity.Performance;
 import com.prography.lighton.performance.common.domain.entity.enums.ApproveStatus;
+import com.prography.lighton.performance.common.domain.entity.fixture.PerformanceFixture;
 import com.prography.lighton.performance.common.domain.entity.vo.Info;
 import com.prography.lighton.performance.common.domain.entity.vo.Schedule;
 import com.prography.lighton.performance.common.domain.exception.InvalidSeatCountException;
 import com.prography.lighton.performance.common.domain.exception.MasterArtistCannotBeRemovedException;
 import com.prography.lighton.performance.common.domain.exception.NotAuthorizedPerformanceException;
 import com.prography.lighton.performance.common.domain.exception.PerformanceUpdateNotAllowedException;
-import com.prography.lighton.performance.domain.fixture.PerformanceFixture;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;

@@ -1,13 +1,12 @@
-package com.prography.lighton.performance.domain;
+package com.prography.lighton.performance.common.domain.entity;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import com.prography.lighton.artist.admin.domain.exception.InvalidApproveStatusTransitionException;
 import com.prography.lighton.artist.admin.domain.exception.SameApproveStatusException;
-import com.prography.lighton.performance.common.domain.entity.Performance;
 import com.prography.lighton.performance.common.domain.entity.enums.ApproveStatus;
-import com.prography.lighton.performance.domain.fixture.PerformanceFixture;
+import com.prography.lighton.performance.common.domain.entity.fixture.PerformanceFixture;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 

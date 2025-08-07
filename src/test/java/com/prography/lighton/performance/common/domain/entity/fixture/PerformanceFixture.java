@@ -1,4 +1,4 @@
-package com.prography.lighton.performance.domain.fixture;
+package com.prography.lighton.performance.common.domain.entity.fixture;
 
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
