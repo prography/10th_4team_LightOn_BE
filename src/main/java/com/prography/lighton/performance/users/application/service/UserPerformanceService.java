@@ -97,15 +97,18 @@ public class UserPerformanceService {
         Integer mostParticipatedSubRegionCode = performanceRequestRepository
                 .findTopSubRegionId(member.getId());
 
+        Integer applyCount = performanceRequestRepository.countMyPerformanceApply(member, LocalDate.now(),
+                LocalTime.now());
+
         if (mostParticipatedSubRegionCode == null) {
-            return GetMyPerformanceStatsResponseDTO.of(0, null);
+            return GetMyPerformanceStatsResponseDTO.of(applyCount, null);
         }
 
         SubRegion mostParticipatedSubRegion = regionCache.getRegionInfoByCode(mostParticipatedSubRegionCode)
                 .getSubRegion();
 
         return GetMyPerformanceStatsResponseDTO.of(
-                performanceRequestRepository.countMyPerformanceApply(member, LocalDate.now(), LocalTime.now()),
+                applyCount,
                 mostParticipatedSubRegion.getRegion().getName()
                         + BLANK
                         + mostParticipatedSubRegion.getName()
