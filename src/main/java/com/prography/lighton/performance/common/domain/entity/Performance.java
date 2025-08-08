@@ -161,13 +161,12 @@ public class Performance extends BaseEntity {
             Schedule schedule,
             Location location,
             Payment payment,
-            Type type,
             List<Seat> seats,
             List<Genre> genres,
             String proofUrl,
             int totalSeatsCount
     ) {
-        Performance perf = new Performance(performer, info, schedule, location, payment, type, seats, proofUrl,
+        Performance perf = new Performance(performer, info, schedule, location, payment, Type.CONCERT, seats, proofUrl,
                 totalSeatsCount);
         perf.updateArtists(artists);
         perf.updateGenres(genres);

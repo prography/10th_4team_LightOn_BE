@@ -6,11 +6,13 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Embeddable
 @Getter
+@EqualsAndHashCode
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 public class Payment {
@@ -26,12 +28,12 @@ public class Payment {
 
     private Integer fee;
 
-    public static Payment of(Boolean isPaid, String account, String bank, String accountHolder, Integer fee) {
-        if (Boolean.TRUE.equals(isPaid) && isInvalid(account, bank, accountHolder, fee)) {
+    public static Payment of(String account, String bank, String accountHolder, Integer fee) {
+        if (isInvalid(account, bank, accountHolder, fee)) {
             throw new InvalidPaymentInfoException();
         }
 
-        return new Payment(isPaid, account, bank, accountHolder, fee);
+        return new Payment(true, account, bank, accountHolder, fee);
     }
 
     private static boolean isInvalid(String account, String bank, String holder, Integer fee) {
