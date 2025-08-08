@@ -116,6 +116,7 @@ public class UserPerformanceService {
         return performanceRequestRepository.findAllByMember(member).stream()
                 .map(PerformanceRequest::getPerformance)
                 .map(Performance::getId)
+                .distinct()
                 .toList();
     }
 }

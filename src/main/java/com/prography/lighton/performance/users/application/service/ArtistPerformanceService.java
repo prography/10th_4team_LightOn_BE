@@ -93,6 +93,7 @@ public class ArtistPerformanceService {
     public List<Artist> getArtistsByAppliedPerformanceIds(List<Long> performanceIds) {
         return performanceArtistRepository.findAllByPerformances(performanceIds).stream()
                 .map(PerformanceArtist::getArtist)
+                .distinct()
                 .toList();
     }
 
