@@ -11,6 +11,7 @@ import com.prography.lighton.member.users.presentation.dto.request.EditMemberGen
 import com.prography.lighton.member.users.presentation.dto.request.RegisterMemberRequest;
 import com.prography.lighton.member.users.presentation.dto.response.CheckDuplicateEmailResponse;
 import com.prography.lighton.member.users.presentation.dto.response.CompleteMemberProfileResponse;
+import com.prography.lighton.member.users.presentation.dto.response.GetMyPreferredArtistsResponse;
 import com.prography.lighton.member.users.presentation.dto.response.GetPreferredGenreResponse;
 import com.prography.lighton.member.users.presentation.dto.response.RegisterMemberResponse;
 import jakarta.validation.Valid;
@@ -68,5 +69,13 @@ public class UserMemberController {
     public ResponseEntity<ApiResult<CheckDuplicateEmailResponse>> duplicateCheck(@RequestParam String email) {
         return ResponseEntity.status(HttpStatus.OK)
                 .body(ApiUtils.success(userMemberQueryService.checkEmailExists(email)));
+    }
+
+    @GetMapping("/preferred-artist")
+    public ResponseEntity<ApiResult<GetMyPreferredArtistsResponse>> getMyPreferredArtists(
+            @LoginMember Member member) {
+        // 현재 구현은 내가 신청했던 공연의 아티스트 조회 - 추후 아티스트 페이지 개발 시 변경 예정
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(ApiUtils.success(userMemberQueryService.getMyPreferredArtists(member)));
     }
 }
