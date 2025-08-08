@@ -97,6 +97,10 @@ public class UserPerformanceService {
         Integer mostParticipatedSubRegionCode = performanceRequestRepository
                 .findTopSubRegionId(member.getId());
 
+        if (mostParticipatedSubRegionCode == null) {
+            return GetMyPerformanceStatsResponseDTO.of(0, null);
+        }
+
         SubRegion mostParticipatedSubRegion = regionCache.getRegionInfoByCode(mostParticipatedSubRegionCode)
                 .getSubRegion();
 
