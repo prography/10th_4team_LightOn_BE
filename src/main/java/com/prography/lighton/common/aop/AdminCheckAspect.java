@@ -4,7 +4,7 @@ import com.prography.lighton.auth.security.exception.ForbiddenException;
 import com.prography.lighton.auth.security.exception.UnauthorizedException;
 import com.prography.lighton.auth.security.util.SecurityUtils;
 import com.prography.lighton.member.common.domain.entity.Member;
-import com.prography.lighton.member.users.infrastructure.repository.MemberRepository;
+import com.prography.lighton.member.common.infrastructure.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;

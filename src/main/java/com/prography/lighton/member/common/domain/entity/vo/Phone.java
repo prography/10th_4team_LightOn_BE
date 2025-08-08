@@ -2,13 +2,16 @@ package com.prography.lighton.member.common.domain.entity.vo;
 
 import static io.micrometer.common.util.StringUtils.isBlank;
 
+import com.prography.lighton.member.common.domain.exception.InvalidMemberException;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+@Getter
 @Embeddable
 @EqualsAndHashCode
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -23,7 +26,7 @@ public class Phone {
 
     public static Phone of(String phoneNumber) {
         if (isBlank(phoneNumber) || !phoneNumber.matches(PHONE_NUMBER_PATTERN)) {
-            throw new IllegalArgumentException("전화번호 형식이 올바르지 않습니다.");
+            throw new InvalidMemberException("전화번호 형식이 올바르지 않습니다.");
         }
         return new Phone(phoneNumber);
     }

@@ -1,7 +1,7 @@
 package com.prography.lighton;
 
-import com.prography.lighton.auth.application.impl.oauth.GoogleOauth;
-import com.prography.lighton.auth.application.impl.oauth.KaKaoOauth;
+import com.prography.lighton.auth.infrastructure.oauth.google.GoogleOauth;
+import com.prography.lighton.auth.infrastructure.oauth.kakao.KaKaoOauth;
 import com.prography.lighton.genre.infrastructure.cache.GenreCache;
 import com.prography.lighton.region.infrastructure.cache.RegionCache;
 import org.junit.jupiter.api.Test;

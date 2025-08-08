@@ -22,6 +22,15 @@ public interface PerformanceRequestRepository extends JpaRepository<PerformanceR
 
     Optional<PerformanceRequest> findByMemberAndPerformance(Member member, Performance performance);
 
+    @Query("""
+                SELECT pr FROM PerformanceRequest pr
+                JOIN FETCH pr.performance p
+                WHERE pr.member = :member
+                  AND pr.performance.status = true
+                  AND pr.performance.approveStatus = 'APPROVED'
+                  AND pr.requestStatus IN ('PENDING', 'APPROVED')
+                ORDER BY pr.createdAt DESC
+            """)
     List<PerformanceRequest> findAllByMember(Member member);
 
     @Modifying
