@@ -101,13 +101,14 @@ public class UserPerformanceService {
                 LocalTime.now());
 
         if (mostParticipatedSubRegionCode == null) {
-            return GetMyPerformanceStatsResponseDTO.of(applyCount, null);
+            return GetMyPerformanceStatsResponseDTO.of(member.getName(), applyCount, null);
         }
 
         SubRegion mostParticipatedSubRegion = regionCache.getRegionInfoByCode(mostParticipatedSubRegionCode)
                 .getSubRegion();
 
         return GetMyPerformanceStatsResponseDTO.of(
+                member.getName(),
                 applyCount,
                 mostParticipatedSubRegion.getRegion().getName()
                         + BLANK
