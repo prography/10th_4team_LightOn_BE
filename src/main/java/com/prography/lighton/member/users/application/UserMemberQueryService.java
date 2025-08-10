@@ -7,6 +7,7 @@ import com.prography.lighton.member.common.domain.entity.association.PreferredGe
 import com.prography.lighton.member.common.infrastructure.repository.MemberRepository;
 import com.prography.lighton.member.common.infrastructure.repository.PreferredGenreRepository;
 import com.prography.lighton.member.users.presentation.dto.response.CheckDuplicateEmailResponse;
+import com.prography.lighton.member.users.presentation.dto.response.GetMemberInfoResponse;
 import com.prography.lighton.member.users.presentation.dto.response.GetMyPreferredArtistsResponse;
 import com.prography.lighton.member.users.presentation.dto.response.GetPreferredGenreResponse;
 import com.prography.lighton.performance.users.application.service.ArtistPerformanceService;
@@ -49,5 +50,9 @@ public class UserMemberQueryService {
         List<Artist> preferredArtists = artistPerformanceService.getArtistsByAppliedPerformanceIds(
                 appliedPerformanceIds);
         return GetMyPreferredArtistsResponse.of(preferredArtists);
+    }
+
+    public GetMemberInfoResponse getMyInfo(Member member) {
+        return GetMemberInfoResponse.of(member);
     }
 }
