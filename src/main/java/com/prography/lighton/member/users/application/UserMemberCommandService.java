@@ -21,6 +21,7 @@ import com.prography.lighton.member.users.presentation.dto.request.EditMemberGen
 import com.prography.lighton.member.users.presentation.dto.request.RegisterMemberRequest;
 import com.prography.lighton.member.users.presentation.dto.response.CompleteMemberProfileResponse;
 import com.prography.lighton.member.users.presentation.dto.response.RegisterMemberResponse;
+import com.prography.lighton.performance.users.application.service.UserRecommendationService;
 import com.prography.lighton.region.infrastructure.cache.RegionCache;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -42,6 +43,7 @@ public class UserMemberCommandService {
     private final RegionCache regionCache;
     private final TokenProvider tokenProvider;
     private final AuthVerificationService authVerificationService;
+    private final UserRecommendationService userRecommendationService;
 
     public CompleteMemberProfileResponse completeMemberProfile(final Long temporaryMemberId,
                                                                final CompleteMemberProfileRequest request) {
@@ -131,5 +133,6 @@ public class UserMemberCommandService {
 
     private void deletePreviousPreferredGenres(Member member) {
         preferredGenreRepository.deleteAllByMember(member);
+        userRecommendationService.deleteCache(member);
     }
 }

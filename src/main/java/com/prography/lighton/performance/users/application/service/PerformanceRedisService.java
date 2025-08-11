@@ -40,4 +40,8 @@ public class PerformanceRedisService {
                 .map(String::valueOf).toList());
         redisRepository.save(key, csv, ttlToday());
     }
+
+    public void delete(String key) {
+        redisRepository.delete(key);
+    }
 }

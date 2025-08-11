@@ -26,6 +26,11 @@ public class UserRecommendationService {
                 () -> recommendationRepository.findTopRecommendedIds(member.getId(), LIMIT));
     }
 
+    public void deleteCache(Member member) {
+        String key = buildKey(member);
+        helper.deleteCache(key);
+    }
+
     private String buildKey(Member member) {
         return RECOMMENDATION_CACHE_KEY_PREFIX + member.getId();
     }
