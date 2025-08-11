@@ -2,8 +2,6 @@ package com.prography.lighton.performance.common.domain.entity;
 
 import static jakarta.persistence.FetchType.LAZY;
 
-import com.prography.lighton.artist.admin.domain.exception.InvalidApproveStatusTransitionException;
-import com.prography.lighton.artist.admin.domain.exception.SameApproveStatusException;
 import com.prography.lighton.artist.common.domain.entity.Artist;
 import com.prography.lighton.common.domain.BaseEntity;
 import com.prography.lighton.common.domain.DomainValidator;
@@ -16,6 +14,7 @@ import com.prography.lighton.performance.common.domain.entity.collection.GenreSe
 import com.prography.lighton.performance.common.domain.entity.enums.ApproveStatus;
 import com.prography.lighton.performance.common.domain.entity.enums.Seat;
 import com.prography.lighton.performance.common.domain.entity.enums.Type;
+import com.prography.lighton.performance.common.domain.entity.policy.ApprovalPolicy;
 import com.prography.lighton.performance.common.domain.entity.vo.Info;
 import com.prography.lighton.performance.common.domain.entity.vo.Location;
 import com.prography.lighton.performance.common.domain.entity.vo.Payment;
@@ -266,52 +265,13 @@ public class Performance extends BaseEntity {
     }
 
     public void managePerformanceApplication(ApproveStatus targetStatus) {
-        validateDifferentStatus(targetStatus);
+        ApproveStatus prev = this.approveStatus;
+        ApproveStatus next = ApprovalPolicy.next(prev, targetStatus);
 
-        if (isFromPending()) {
-            handlePendingTransition(targetStatus);
-            return;
+        this.approveStatus = next;
+        if (ApprovalPolicy.requiresApprovedAt(prev, next)) {
+            this.approvedAt = LocalDateTime.now();
         }
-
-        if (isFromApprovedToPending(targetStatus)) {
-            this.approveStatus = targetStatus;
-            return;
-        }
-
-        throw new InvalidApproveStatusTransitionException("현재 상태에서는 해당 상태로 변경할 수 없습니다.");
-    }
-
-    private void validateDifferentStatus(ApproveStatus targetStatus) {
-        if (this.approveStatus == targetStatus) {
-            throw new SameApproveStatusException("동일한 상태로는 변경할 수 없습니다.");
-        }
-    }
-
-    private boolean isFromPending() {
-        return this.approveStatus == ApproveStatus.PENDING;
-    }
-
-    private boolean isFromApprovedToPending(ApproveStatus targetStatus) {
-        return this.approveStatus == ApproveStatus.APPROVED && targetStatus == ApproveStatus.PENDING;
-    }
-
-    private void handlePendingTransition(ApproveStatus targetStatus) {
-        if (targetStatus == ApproveStatus.APPROVED) {
-            approvePerformance();
-        } else if (targetStatus == ApproveStatus.REJECTED) {
-            rejectPerformance();
-        } else {
-            throw new InvalidApproveStatusTransitionException("PENDING 상태에서는 APPROVED 또는 REJECTED로만 변경할 수 있습니다.");
-        }
-    }
-
-    private void approvePerformance() {
-        this.approveStatus = ApproveStatus.APPROVED;
-        this.approvedAt = LocalDateTime.now();
-    }
-
-    private void rejectPerformance() {
-        this.approveStatus = ApproveStatus.REJECTED;
     }
 
     public void increaseLike() {
