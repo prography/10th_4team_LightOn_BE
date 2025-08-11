@@ -12,6 +12,7 @@ import com.prography.lighton.member.common.domain.entity.Member;
 import com.prography.lighton.performance.common.domain.entity.association.PerformanceArtist;
 import com.prography.lighton.performance.common.domain.entity.association.PerformanceGenre;
 import com.prography.lighton.performance.common.domain.entity.collection.ArtistSet;
+import com.prography.lighton.performance.common.domain.entity.collection.GenreSet;
 import com.prography.lighton.performance.common.domain.entity.enums.ApproveStatus;
 import com.prography.lighton.performance.common.domain.entity.enums.Seat;
 import com.prography.lighton.performance.common.domain.entity.enums.Type;
@@ -41,8 +42,6 @@ import jakarta.persistence.OneToMany;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -248,21 +247,7 @@ public class Performance extends BaseEntity {
 
 
     private void updateGenres(List<Genre> newGenres) {
-        Set<Long> newIds = newGenres.stream()
-                .map(Genre::getId)
-                .collect(Collectors.toSet());
-
-        this.genres.removeIf(pg -> !newIds.contains(pg.getGenre().getId()));
-
-        Set<Long> existingGenreIds = this.genres.stream()
-                .map(pg -> pg.getGenre().getId())
-                .collect(Collectors.toSet());
-
-        List<Genre> genresToAdd = newGenres.stream()
-                .filter(g -> !existingGenreIds.contains(g.getId()))
-                .toList();
-
-        this.genres.addAll(PerformanceGenre.createListFor(this, genresToAdd));
+        GenreSet.updateGenres(this, this.genres, newGenres);
     }
 
     public void validateApproved() {
