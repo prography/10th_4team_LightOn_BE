@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.exc.InvalidFormatException;
 import com.prography.lighton.common.application.s3.S3UploadFailedException;
 import com.prography.lighton.common.exception.base.DuplicateException;
 import com.prography.lighton.common.exception.base.InvalidException;
+import com.prography.lighton.common.exception.base.NotAuthorizedException;
 import com.prography.lighton.common.exception.base.NotFoundException;
 import com.prography.lighton.common.exception.base.UnsupportedTypeException;
 import com.prography.lighton.common.utils.ApiUtils;
@@ -46,6 +47,12 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(DuplicateException.class)
     public ResponseEntity<?> handleDuplicateMemberException(DuplicateException e) {
+        return ResponseEntity.status(e.status())
+                .body(ApiUtils.error(e.status(), e.getMessage()));
+    }
+
+    @ExceptionHandler(NotAuthorizedException.class)
+    public ResponseEntity<?> handleNotAuthorizedException(NotAuthorizedException e) {
         return ResponseEntity.status(e.status())
                 .body(ApiUtils.error(e.status(), e.getMessage()));
     }
