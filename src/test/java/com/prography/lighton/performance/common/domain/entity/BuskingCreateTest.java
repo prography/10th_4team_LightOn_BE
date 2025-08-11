@@ -29,7 +29,7 @@ class BuskingCreateTest {
             Artist artist = PerformanceFixture.defaultArtist(member);
 
             Busking b = Busking.createByArtist(
-                    PerformanceFixture.defaultMember(),
+                    member,
                     PerformanceFixture.defaultInfo(),
                     PerformanceFixture.defaultSchedule(),
                     PerformanceFixture.defaultLocation(),
