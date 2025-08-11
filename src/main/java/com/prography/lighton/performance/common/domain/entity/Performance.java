@@ -21,6 +21,7 @@ import com.prography.lighton.performance.common.domain.entity.vo.Schedule;
 import com.prography.lighton.performance.common.domain.entity.vo.SeatInventory;
 import com.prography.lighton.performance.common.domain.exception.MasterArtistCannotBeRemovedException;
 import com.prography.lighton.performance.common.domain.exception.NotAuthorizedPerformanceException;
+import com.prography.lighton.performance.common.domain.exception.NotAuthorizedPerformanceRequestException;
 import com.prography.lighton.performance.common.domain.exception.PerformanceNotApprovedException;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.CollectionTable;
@@ -371,7 +372,9 @@ public class Performance extends BaseEntity {
     }
 
     public void cancelRequest(PerformanceRequest request, Member member) {
-
+        if (!request.getMember().getId().equals(member.getId())) {
+            throw new NotAuthorizedPerformanceRequestException();
+        }
         seatInventory.cancel(request.getRequestedSeats());
     }
 
