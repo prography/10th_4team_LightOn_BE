@@ -22,7 +22,6 @@ import com.prography.lighton.performance.common.domain.exception.InvalidSeatCoun
 import com.prography.lighton.performance.common.domain.exception.MasterArtistCannotBeRemovedException;
 import com.prography.lighton.performance.common.domain.exception.NotAuthorizedPerformanceException;
 import com.prography.lighton.performance.common.domain.exception.PerformanceNotApprovedException;
-import com.prography.lighton.performance.common.domain.exception.PerformanceUpdateNotAllowedException;
 import com.prography.lighton.performance.users.application.exception.BadPerformanceRequestException;
 import com.prography.lighton.performance.users.application.exception.NotEnoughSeatsException;
 import jakarta.persistence.CascadeType;
@@ -40,7 +39,6 @@ import jakarta.persistence.InheritanceType;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -173,6 +171,22 @@ public class Performance extends BaseEntity {
         return perf;
     }
 
+    protected int updateDeadlineDays() {
+        return UPDATE_DEADLINE_DAYS;
+    }
+
+    protected int cancelDeadlineDays() {
+        return CANCEL_DEADLINE_DAYS;
+    }
+
+    protected final void ensureUpdatableWindow() {
+        getSchedule().validateWithinAllowedPeriod(updateDeadlineDays());
+    }
+
+    protected final void ensureCancelableWindow() {
+        getSchedule().validateWithinAllowedPeriod(cancelDeadlineDays());
+    }
+
     protected void initCommonFields(
             Member performer,
             Info info,
@@ -212,7 +226,7 @@ public class Performance extends BaseEntity {
             int totalSeatsCount
     ) {
         validatePerformer(performer);
-        validateWithinAllowedPeriod(UPDATE_DEADLINE_DAYS);
+        ensureUpdatableWindow();
         DomainValidator.requireNonBlank(proofUrl);
         validSeatCount(totalSeatsCount);
 
@@ -288,15 +302,6 @@ public class Performance extends BaseEntity {
         this.genres.addAll(PerformanceGenre.createListFor(this, genresToAdd));
     }
 
-    protected void validateWithinAllowedPeriod(int daysBeforePerformance) {
-        LocalDate today = LocalDate.now();
-        LocalDate updateDeadline = this.schedule.getStartDate().minusDays(daysBeforePerformance);
-
-        if (today.isAfter(updateDeadline)) {
-            throw new PerformanceUpdateNotAllowedException();
-        }
-    }
-
     public void validateApproved() {
         if (this.approveStatus != ApproveStatus.APPROVED) {
             throw new PerformanceNotApprovedException();
@@ -305,7 +310,7 @@ public class Performance extends BaseEntity {
 
     public void cancel(Member member) {
         validatePerformer(member);
-        validateWithinAllowedPeriod(CANCEL_DEADLINE_DAYS);
+        ensureCancelableWindow();
         if (this.canceled) {
             throw new IllegalStateException("이미 취소된 공연입니다.");
         }

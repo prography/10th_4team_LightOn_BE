@@ -102,6 +102,11 @@ public class Busking extends Performance {
         return busking;
     }
 
+    @Override
+    protected int updateDeadlineDays() {
+        return UPDATE_DEADLINE_DAYS;
+    }
+
     public void updateByArtist(
             Member performer,
             Info info,
@@ -111,7 +116,7 @@ public class Busking extends Performance {
             String proofUrl
     ) {
         validatePerformer(performer);
-        validateWithinAllowedPeriod(UPDATE_DEADLINE_DAYS);
+        ensureUpdatableWindow();
         DomainValidator.requireNonBlank(proofUrl);
         initCommonFields(
                 performer,
@@ -139,7 +144,7 @@ public class Busking extends Performance {
             String artistDescription
     ) {
         validatePerformer(performer);
-        validateWithinAllowedPeriod(UPDATE_DEADLINE_DAYS);
+        ensureUpdatableWindow();
         DomainValidator.requireNonBlank(proofUrl);
         DomainValidator.requireNonBlank(artistName);
         DomainValidator.requireNonBlank(artistDescription);
