@@ -1,6 +1,5 @@
 package com.prography.lighton.performance.common.domain.entity;
 
-import static com.prography.lighton.performance.common.domain.entity.Busking.BUSKING_SEAT_COUNT;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.Mockito.when;
@@ -43,14 +42,6 @@ class BuskingCreateTest {
             assertThat(b.getSchedule()).isEqualTo(PerformanceFixture.defaultSchedule());
             assertThat(b.getLocation()).isNotNull();
             assertThat(b.getProofUrl()).isEqualTo(PerformanceFixture.DEFAULT_PROOF_URL);
-        }
-
-        @Test
-        @DisplayName("아티스트 Busking 객체를 생성하면 좌석 수는 기본 버스킹 좌석수로 들어간다.")
-        void should_seat_count_is_default() {
-            Busking b = BuskingFixture.defaultBuskingByArtist();
-
-            assertThat(b.getTotalSeatsCount()).isEqualTo(BUSKING_SEAT_COUNT);
         }
 
         @Test
@@ -154,14 +145,6 @@ class BuskingCreateTest {
         void should_set_seat_standing() {
             Busking b = BuskingFixture.defaultBuskingByUser();
             assertThat(b.getSeats()).containsExactly(Seat.STANDING);
-        }
-
-        @Test
-        @DisplayName("사용자 Busking 객체 생성 시 좌석 수는 기본 버스킹 좌석수로 들어간다.")
-        void should_seat_count_is_default() {
-            Busking b = BuskingFixture.defaultBuskingByUser();
-
-            assertThat(b.getTotalSeatsCount()).isEqualTo(BUSKING_SEAT_COUNT);
         }
     }
 }

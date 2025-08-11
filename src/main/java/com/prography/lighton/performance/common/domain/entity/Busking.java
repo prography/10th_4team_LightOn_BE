@@ -33,8 +33,8 @@ import org.hibernate.annotations.SQLRestriction;
 @SQLRestriction("status = true")
 public class Busking extends Performance {
 
-    static final int UPDATE_DEADLINE_DAYS = 3;
-    static final int BUSKING_SEAT_COUNT = -1;
+    private static final int UPDATE_DEADLINE_DAYS = 3;
+    private static final int BUSKING_SEAT_COUNT = -1;
 
     @Column(length = 100)
     private String artistName;
