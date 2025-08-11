@@ -60,10 +60,6 @@ public class Performance extends BaseEntity {
 
     private static final int UPDATE_DEADLINE_DAYS = 3;
     private static final int CANCEL_DEADLINE_DAYS = 1;
-    private static final int MAX_REQUESTED_SEATS = 10;
-    private static final int MIN_REQUESTED_SEATS = 1;
-
-    private static final int ZERO = 0;
 
     @ManyToOne(fetch = LAZY, optional = false)
     private Member performer;
@@ -144,6 +140,7 @@ public class Performance extends BaseEntity {
         this.seatInventory = seatInventory;
     }
 
+    /* ---------------------------- 공연 생성 관련 메서드 ---------------------------- */
     public static Performance create(
             Member performer,
             List<Artist> artists,
@@ -163,6 +160,15 @@ public class Performance extends BaseEntity {
         return perf;
     }
 
+    protected void updateArtists(List<Artist> newArtists) {
+        ArtistSet.updateArtists(this, this.artists, newArtists, this.getPerformer());
+    }
+
+    private void updateGenres(List<Genre> newGenres) {
+        GenreSet.updateGenres(this, this.genres, newGenres);
+    }
+
+    /* ---------------------------- 공연 수정 관련 메서드 ---------------------------- */
     protected int updateDeadlineDays() {
         return UPDATE_DEADLINE_DAYS;
     }
@@ -234,24 +240,9 @@ public class Performance extends BaseEntity {
         updateGenres(genres);
     }
 
-    protected void updateArtists(List<Artist> newArtists) {
-        ArtistSet.updateArtists(this, this.artists, newArtists, this.getPerformer());
-    }
-
     protected void validatePerformer(Member member) {
         if (!performer.equals(member)) {
             throw new NotAuthorizedPerformanceException();
-        }
-    }
-
-
-    private void updateGenres(List<Genre> newGenres) {
-        GenreSet.updateGenres(this, this.genres, newGenres);
-    }
-
-    public void validateApproved() {
-        if (this.approveStatus != ApproveStatus.APPROVED) {
-            throw new PerformanceNotApprovedException();
         }
     }
 
@@ -264,6 +255,8 @@ public class Performance extends BaseEntity {
         this.canceled = true;
     }
 
+
+    /* ---------------------------- 공연 상태 관련 메서드 ---------------------------- */
     public void managePerformanceApplication(ApproveStatus targetStatus) {
         ApproveStatus prev = this.approveStatus;
         ApproveStatus next = ApprovalPolicy.next(prev, targetStatus);
@@ -274,6 +267,13 @@ public class Performance extends BaseEntity {
         }
     }
 
+    public void validateApproved() {
+        if (this.approveStatus != ApproveStatus.APPROVED) {
+            throw new PerformanceNotApprovedException();
+        }
+    }
+
+    /* ---------------------------- 공연 좋아요 관련 메서드 ---------------------------- */
     public void increaseLike() {
         this.likeCount++;
     }
@@ -285,7 +285,6 @@ public class Performance extends BaseEntity {
     }
 
     /* ---------------------------- 공연 신청 관련 메서드 ---------------------------- */
-
     public PerformanceRequest createRequest(int applySeats, Member member) {
         validateApproved();
         seatInventory.reserve(applySeats);
