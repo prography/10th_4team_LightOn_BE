@@ -160,57 +160,7 @@ public class Performance extends BaseEntity {
         return perf;
     }
 
-    protected void updateArtists(List<Artist> newArtists) {
-        ArtistSet.updateArtists(this, this.artists, newArtists, this.getPerformer());
-    }
-
-    private void updateGenres(List<Genre> newGenres) {
-        GenreSet.updateGenres(this, this.genres, newGenres);
-    }
-
     /* ---------------------------- 공연 수정 관련 메서드 ---------------------------- */
-    protected int updateDeadlineDays() {
-        return UPDATE_DEADLINE_DAYS;
-    }
-
-    protected int cancelDeadlineDays() {
-        return CANCEL_DEADLINE_DAYS;
-    }
-
-    protected final void ensureUpdatableWindow() {
-        getSchedule().validateWithinAllowedPeriod(updateDeadlineDays());
-    }
-
-    protected final void ensureCancelableWindow() {
-        getSchedule().validateWithinAllowedPeriod(cancelDeadlineDays());
-    }
-
-    protected void initCommonFields(
-            Member performer,
-            Info info,
-            Schedule schedule,
-            Location location,
-            Payment payment,
-            Type type,
-            Seat seat,
-            String proofUrl,
-            List<Genre> genres,
-            SeatInventory seatInventory
-    ) {
-        this.performer = performer;
-        this.info = info;
-        this.schedule = schedule;
-        this.location = location;
-        this.payment = payment;
-        this.type = type;
-        this.seats.clear();
-        this.seats.add(seat);
-        this.proofUrl = proofUrl;
-        this.seatInventory = seatInventory;
-        updateGenres(genres);
-    }
-
-
     public void update(
             Member performer,
             List<Artist> newArtists,
@@ -240,10 +190,29 @@ public class Performance extends BaseEntity {
         updateGenres(genres);
     }
 
-    protected void validatePerformer(Member member) {
-        if (!performer.equals(member)) {
-            throw new NotAuthorizedPerformanceException();
-        }
+    protected void initCommonFields(
+            Member performer,
+            Info info,
+            Schedule schedule,
+            Location location,
+            Payment payment,
+            Type type,
+            Seat seat,
+            String proofUrl,
+            List<Genre> genres,
+            SeatInventory seatInventory
+    ) {
+        this.performer = performer;
+        this.info = info;
+        this.schedule = schedule;
+        this.location = location;
+        this.payment = payment;
+        this.type = type;
+        this.seats.clear();
+        this.seats.add(seat);
+        this.proofUrl = proofUrl;
+        this.seatInventory = seatInventory;
+        updateGenres(genres);
     }
 
     public void cancel(Member member) {
@@ -255,6 +224,29 @@ public class Performance extends BaseEntity {
         this.canceled = true;
     }
 
+    protected int updateDeadlineDays() {
+        return UPDATE_DEADLINE_DAYS;
+    }
+
+    protected int cancelDeadlineDays() {
+        return CANCEL_DEADLINE_DAYS;
+    }
+
+    protected final void ensureUpdatableWindow() {
+        getSchedule().validateWithinAllowedPeriod(updateDeadlineDays());
+    }
+
+    protected final void ensureCancelableWindow() {
+        getSchedule().validateWithinAllowedPeriod(cancelDeadlineDays());
+    }
+
+    protected void updateArtists(List<Artist> newArtists) {
+        ArtistSet.updateArtists(this, this.artists, newArtists, this.getPerformer());
+    }
+
+    private void updateGenres(List<Genre> newGenres) {
+        GenreSet.updateGenres(this, this.genres, newGenres);
+    }
 
     /* ---------------------------- 공연 상태 관련 메서드 ---------------------------- */
     public void managePerformanceApplication(ApproveStatus targetStatus) {
@@ -264,23 +256,6 @@ public class Performance extends BaseEntity {
         this.approveStatus = next;
         if (ApprovalPolicy.requiresApprovedAt(prev, next)) {
             this.approvedAt = LocalDateTime.now();
-        }
-    }
-
-    public void validateApproved() {
-        if (this.approveStatus != ApproveStatus.APPROVED) {
-            throw new PerformanceNotApprovedException();
-        }
-    }
-
-    /* ---------------------------- 공연 좋아요 관련 메서드 ---------------------------- */
-    public void increaseLike() {
-        this.likeCount++;
-    }
-
-    public void decreaseLike() {
-        if (this.likeCount > 0) {
-            this.likeCount--;
         }
     }
 
@@ -296,6 +271,31 @@ public class Performance extends BaseEntity {
             throw new NotAuthorizedPerformanceRequestException();
         }
         seatInventory.cancel(request.getRequestedSeats());
+    }
+
+    /* ---------------------------- 공연 좋아요 관련 메서드 ---------------------------- */
+    public void increaseLike() {
+        this.likeCount++;
+    }
+
+    public void decreaseLike() {
+        if (this.likeCount > 0) {
+            this.likeCount--;
+        }
+    }
+
+
+    /* ---------------------------- 공연 검증 관련 메서드 ---------------------------- */
+    protected void validatePerformer(Member member) {
+        if (!performer.equals(member)) {
+            throw new NotAuthorizedPerformanceException();
+        }
+    }
+
+    public void validateApproved() {
+        if (this.approveStatus != ApproveStatus.APPROVED) {
+            throw new PerformanceNotApprovedException();
+        }
     }
 
     public void validateIsManagedBy(Member member) {
