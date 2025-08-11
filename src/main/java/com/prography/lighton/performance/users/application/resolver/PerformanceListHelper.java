@@ -44,5 +44,9 @@ public class PerformanceListHelper {
 
         return GetPerformanceBrowseResponse.of(summaries);
     }
+
+    public void deleteCache(String cacheKey) {
+        cache.delete(cacheKey);
+    }
 }
 
