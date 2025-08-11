@@ -12,7 +12,7 @@ import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
-public class ArtistSet {
+public final class ArtistSet {
 
     public static void updateArtists(Performance owner,
                                      List<PerformanceArtist> current,
