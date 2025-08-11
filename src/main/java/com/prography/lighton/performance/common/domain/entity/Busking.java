@@ -1,6 +1,5 @@
 package com.prography.lighton.performance.common.domain.entity;
 
-import static lombok.AccessLevel.PRIVATE;
 import static lombok.AccessLevel.PROTECTED;
 
 import com.prography.lighton.artist.common.domain.entity.Artist;
@@ -8,18 +7,14 @@ import com.prography.lighton.common.domain.DomainValidator;
 import com.prography.lighton.genre.domain.entity.Genre;
 import com.prography.lighton.member.common.domain.entity.Member;
 import com.prography.lighton.performance.common.domain.entity.enums.ApproveStatus;
-import com.prography.lighton.performance.common.domain.entity.enums.Seat;
-import com.prography.lighton.performance.common.domain.entity.enums.Type;
+import com.prography.lighton.performance.common.domain.entity.profile.PerformanceProfile;
 import com.prography.lighton.performance.common.domain.entity.vo.Info;
 import com.prography.lighton.performance.common.domain.entity.vo.Location;
-import com.prography.lighton.performance.common.domain.entity.vo.Payment;
 import com.prography.lighton.performance.common.domain.entity.vo.Schedule;
-import com.prography.lighton.performance.common.domain.entity.vo.SeatInventory;
 import jakarta.persistence.Column;
 import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
 import java.util.List;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.SQLDelete;
@@ -29,7 +24,6 @@ import org.hibernate.annotations.SQLRestriction;
 @DiscriminatorValue("BUSKING")
 @Getter
 @NoArgsConstructor(access = PROTECTED)
-@AllArgsConstructor(access = PRIVATE)
 @SQLDelete(sql = "UPDATE performance SET status = false WHERE id = ?")
 @SQLRestriction("status = true")
 public class Busking extends Performance {
@@ -43,6 +37,31 @@ public class Busking extends Performance {
     private
     String artistDescription;
 
+    private Busking(
+            Member performer,
+            Info info,
+            Schedule schedule,
+            Location location,
+            String proofUrl,
+            List<Genre> genres,
+            List<Artist> artists,
+            String artistName,
+            String artistDescription
+    ) {
+        super(
+                performer,
+                info,
+                schedule,
+                location,
+                proofUrl,
+                PerformanceProfile.busking(),
+                genres,
+                artists
+        );
+        this.artistName = artistName;
+        this.artistDescription = artistDescription;
+    }
+
     public static Busking createByUser(
             Member performer,
             Info info,
@@ -53,24 +72,8 @@ public class Busking extends Performance {
             String artistName,
             String artistDescription
     ) {
-        DomainValidator.requireNonBlank(artistName);
-        DomainValidator.requireNonBlank(artistDescription);
-        DomainValidator.requireNonBlank(proofUrl);
-
-        Busking busking = new Busking(artistName, artistDescription);
-        busking.initCommonFields(
-                performer,
-                info,
-                schedule,
-                location,
-                Payment.free(),
-                Type.BUSKING,
-                Seat.STANDING,
-                proofUrl,
-                genres,
-                SeatInventory.unlimited()
-        );
-        return busking;
+        return new Busking(performer, info, schedule, location, proofUrl, genres, List.of(), artistName,
+                artistDescription);
     }
 
     public static Busking createByArtist(
@@ -82,22 +85,10 @@ public class Busking extends Performance {
             String proofUrl,
             Artist artist
     ) {
-        DomainValidator.requireNonBlank(proofUrl);
-
-        Busking busking = new Busking(artist.getStageName(), artist.getDescription());
-        busking.initCommonFields(
-                performer,
-                info,
-                schedule,
-                location,
-                Payment.free(),
-                Type.BUSKING,
-                Seat.STANDING,
-                proofUrl,
-                genres,
-                SeatInventory.unlimited()
+        Busking busking = new Busking(
+                performer, info, schedule, location, proofUrl, genres,
+                List.of(artist), artist.getStageName(), artist.getDescription()
         );
-        busking.updateArtists(List.of(artist));
         busking.managePerformanceApplication(ApproveStatus.APPROVED);
         return busking;
     }
@@ -118,17 +109,12 @@ public class Busking extends Performance {
         validatePerformer(performer);
         ensureUpdatableWindow();
         DomainValidator.requireNonBlank(proofUrl);
-        initCommonFields(
-                performer,
+        updateCommonDetails(
                 info,
                 schedule,
                 location,
-                Payment.free(),
-                Type.BUSKING,
-                Seat.STANDING,
                 proofUrl,
-                genres,
-                SeatInventory.unlimited()
+                genres
         );
     }
 
@@ -152,17 +138,12 @@ public class Busking extends Performance {
         this.artistName = artistName;
         this.artistDescription = artistDescription;
 
-        initCommonFields(
-                this.getPerformer(),
+        updateCommonDetails(
                 info,
                 schedule,
                 location,
-                Payment.free(),
-                Type.BUSKING,
-                Seat.STANDING,
                 proofUrl,
-                genres,
-                SeatInventory.unlimited()
+                genres
         );
     }
 }

@@ -15,6 +15,7 @@ import com.prography.lighton.performance.common.domain.entity.enums.ApproveStatu
 import com.prography.lighton.performance.common.domain.entity.enums.Seat;
 import com.prography.lighton.performance.common.domain.entity.enums.Type;
 import com.prography.lighton.performance.common.domain.entity.policy.ApprovalPolicy;
+import com.prography.lighton.performance.common.domain.entity.profile.PerformanceProfile;
 import com.prography.lighton.performance.common.domain.entity.vo.Info;
 import com.prography.lighton.performance.common.domain.entity.vo.Location;
 import com.prography.lighton.performance.common.domain.entity.vo.Payment;
@@ -118,26 +119,29 @@ public class Performance extends BaseEntity {
 
     private LocalDateTime approvedAt;
 
-    private Performance(
+    protected Performance(
             Member performer,
             Info info,
             Schedule schedule,
             Location location,
-            Payment payment,
-            Type type,
-            List<Seat> seats,
             String proofUrl,
-            SeatInventory seatInventory
+            PerformanceProfile profile,
+            List<Genre> genres,
+            List<Artist> artists
     ) {
         this.performer = performer;
         this.info = info;
         this.schedule = schedule;
         this.location = location;
-        this.payment = payment;
-        this.type = type;
         this.proofUrl = proofUrl;
-        this.seats.addAll(seats);
-        this.seatInventory = seatInventory;
+
+        this.type = profile.type();
+        this.payment = profile.payment();
+        this.seats.addAll(profile.seats());
+        this.seatInventory = profile.seatInventory();
+
+        updateGenres(genres);
+        updateArtists(artists);
     }
 
     /* ---------------------------- 공연 생성 관련 메서드 ---------------------------- */
@@ -153,11 +157,16 @@ public class Performance extends BaseEntity {
             String proofUrl,
             int totalSeatsCount
     ) {
-        Performance perf = new Performance(performer, info, schedule, location, payment, Type.CONCERT, seats, proofUrl,
-                SeatInventory.ofTotal(totalSeatsCount));
-        perf.updateArtists(artists);
-        perf.updateGenres(genres);
-        return perf;
+        return new Performance(
+                performer,
+                info,
+                schedule,
+                location,
+                proofUrl,
+                PerformanceProfile.concert(payment, seats, totalSeatsCount),
+                genres,
+                artists
+        );
     }
 
     /* ---------------------------- 공연 수정 관련 메서드 ---------------------------- */
@@ -177,41 +186,27 @@ public class Performance extends BaseEntity {
         ensureUpdatableWindow();
         DomainValidator.requireNonBlank(proofUrl);
 
-        this.info = info;
-        this.schedule = schedule;
-        this.location = location;
+        updateCommonDetails(info, schedule, location, proofUrl, genres);
         this.payment = payment;
         this.seats.clear();
         this.seats.addAll(seats);
-        this.proofUrl = proofUrl;
         seatInventory.updateSeat(totalSeatsCount);
 
         updateArtists(newArtists);
-        updateGenres(genres);
     }
 
-    protected void initCommonFields(
-            Member performer,
+    protected void updateCommonDetails(
             Info info,
             Schedule schedule,
             Location location,
-            Payment payment,
-            Type type,
-            Seat seat,
             String proofUrl,
-            List<Genre> genres,
-            SeatInventory seatInventory
+            List<Genre> genres
     ) {
-        this.performer = performer;
         this.info = info;
         this.schedule = schedule;
         this.location = location;
-        this.payment = payment;
-        this.type = type;
-        this.seats.clear();
-        this.seats.add(seat);
         this.proofUrl = proofUrl;
-        this.seatInventory = seatInventory;
+
         updateGenres(genres);
     }
 
@@ -240,7 +235,10 @@ public class Performance extends BaseEntity {
         getSchedule().validateWithinAllowedPeriod(cancelDeadlineDays());
     }
 
-    protected void updateArtists(List<Artist> newArtists) {
+    private void updateArtists(List<Artist> newArtists) {
+        if (newArtists.isEmpty() && this.artists.isEmpty()) {
+            return;
+        }
         ArtistSet.updateArtists(this, this.artists, newArtists, this.getPerformer());
     }
 
