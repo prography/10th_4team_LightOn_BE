@@ -14,6 +14,7 @@ import com.prography.lighton.performance.common.domain.entity.vo.Info;
 import com.prography.lighton.performance.common.domain.entity.vo.Location;
 import com.prography.lighton.performance.common.domain.entity.vo.Payment;
 import com.prography.lighton.performance.common.domain.entity.vo.Schedule;
+import com.prography.lighton.performance.common.domain.entity.vo.SeatInventory;
 import jakarta.persistence.Column;
 import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
@@ -34,7 +35,6 @@ import org.hibernate.annotations.SQLRestriction;
 public class Busking extends Performance {
 
     private static final int UPDATE_DEADLINE_DAYS = 3;
-    private static final int BUSKING_SEAT_COUNT = -1;
 
     @Column(length = 100)
     private String artistName;
@@ -68,7 +68,7 @@ public class Busking extends Performance {
                 Seat.STANDING,
                 proofUrl,
                 genres,
-                BUSKING_SEAT_COUNT
+                SeatInventory.unlimited()
         );
         return busking;
     }
@@ -95,7 +95,7 @@ public class Busking extends Performance {
                 Seat.STANDING,
                 proofUrl,
                 genres,
-                BUSKING_SEAT_COUNT
+                SeatInventory.unlimited()
         );
         busking.updateArtists(List.of(artist));
         busking.managePerformanceApplication(ApproveStatus.APPROVED);
@@ -128,7 +128,7 @@ public class Busking extends Performance {
                 Seat.STANDING,
                 proofUrl,
                 genres,
-                BUSKING_SEAT_COUNT
+                SeatInventory.unlimited()
         );
     }
 
@@ -162,7 +162,7 @@ public class Busking extends Performance {
                 Seat.STANDING,
                 proofUrl,
                 genres,
-                BUSKING_SEAT_COUNT
+                SeatInventory.unlimited()
         );
     }
 }

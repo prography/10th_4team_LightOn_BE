@@ -18,12 +18,10 @@ import com.prography.lighton.performance.common.domain.entity.vo.Info;
 import com.prography.lighton.performance.common.domain.entity.vo.Location;
 import com.prography.lighton.performance.common.domain.entity.vo.Payment;
 import com.prography.lighton.performance.common.domain.entity.vo.Schedule;
-import com.prography.lighton.performance.common.domain.exception.InvalidSeatCountException;
+import com.prography.lighton.performance.common.domain.entity.vo.SeatInventory;
 import com.prography.lighton.performance.common.domain.exception.MasterArtistCannotBeRemovedException;
 import com.prography.lighton.performance.common.domain.exception.NotAuthorizedPerformanceException;
 import com.prography.lighton.performance.common.domain.exception.PerformanceNotApprovedException;
-import com.prography.lighton.performance.users.application.exception.BadPerformanceRequestException;
-import com.prography.lighton.performance.users.application.exception.NotEnoughSeatsException;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.CollectionTable;
 import jakarta.persistence.Column;
@@ -110,13 +108,8 @@ public class Performance extends BaseEntity {
     @ColumnDefault("0")
     private Long likeCount = 0L;
 
-    @Column
-    @ColumnDefault("0")
-    private Integer totalSeatsCount = 0;
-
-    @Column
-    @ColumnDefault("0")
-    private Integer bookedSeatCount = 0;
+    @Embedded
+    private SeatInventory seatInventory;
 
     @OneToMany(mappedBy = "performance", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<PerformanceGenre> genres = new ArrayList<>();
@@ -139,7 +132,7 @@ public class Performance extends BaseEntity {
             Type type,
             List<Seat> seats,
             String proofUrl,
-            Integer totalSeatsCount
+            SeatInventory seatInventory
     ) {
         this.performer = performer;
         this.info = info;
@@ -149,7 +142,7 @@ public class Performance extends BaseEntity {
         this.type = type;
         this.proofUrl = proofUrl;
         this.seats.addAll(seats);
-        this.totalSeatsCount = totalSeatsCount;
+        this.seatInventory = seatInventory;
     }
 
     public static Performance create(
@@ -165,7 +158,7 @@ public class Performance extends BaseEntity {
             int totalSeatsCount
     ) {
         Performance perf = new Performance(performer, info, schedule, location, payment, Type.CONCERT, seats, proofUrl,
-                totalSeatsCount);
+                SeatInventory.ofTotal(totalSeatsCount));
         perf.updateArtists(artists);
         perf.updateGenres(genres);
         return perf;
@@ -197,7 +190,7 @@ public class Performance extends BaseEntity {
             Seat seat,
             String proofUrl,
             List<Genre> genres,
-            int totalSeatsCount
+            SeatInventory seatInventory
     ) {
         this.performer = performer;
         this.info = info;
@@ -208,7 +201,7 @@ public class Performance extends BaseEntity {
         this.seats.clear();
         this.seats.add(seat);
         this.proofUrl = proofUrl;
-        this.totalSeatsCount = totalSeatsCount;
+        this.seatInventory = seatInventory;
         updateGenres(genres);
     }
 
@@ -228,7 +221,6 @@ public class Performance extends BaseEntity {
         validatePerformer(performer);
         ensureUpdatableWindow();
         DomainValidator.requireNonBlank(proofUrl);
-        validSeatCount(totalSeatsCount);
 
         this.info = info;
         this.schedule = schedule;
@@ -237,16 +229,10 @@ public class Performance extends BaseEntity {
         this.seats.clear();
         this.seats.addAll(seats);
         this.proofUrl = proofUrl;
-        this.totalSeatsCount = totalSeatsCount;
+        seatInventory.updateSeat(totalSeatsCount);
 
         updateArtists(newArtists);
         updateGenres(genres);
-    }
-
-    private void validSeatCount(int totalSeatsCount) {
-        if (totalSeatsCount > 0 && totalSeatsCount < bookedSeatCount) {
-            throw new InvalidSeatCountException();
-        }
     }
 
     protected void validatePerformer(Member member) {
@@ -380,31 +366,13 @@ public class Performance extends BaseEntity {
 
     public PerformanceRequest createRequest(int applySeats, Member member) {
         validateApproved();
-        validateRequest(applySeats);
-
-        this.bookedSeatCount += applySeats;
+        seatInventory.reserve(applySeats);
         return PerformanceRequest.of(member, this, applySeats, payment.getFee());
     }
 
-    public void cancelRequest(int requestedSeats) {
-        this.bookedSeatCount -= requestedSeats;
-        if (this.bookedSeatCount < ZERO) {
-            this.bookedSeatCount = ZERO;
-        }
-    }
+    public void cancelRequest(PerformanceRequest request, Member member) {
 
-    private void validateRequest(Integer applySeats) {
-        if (applySeats == null || applySeats < MIN_REQUESTED_SEATS || applySeats > MAX_REQUESTED_SEATS) {
-            throw new BadPerformanceRequestException();
-        }
-
-        if (!this.type.equals(Type.CONCERT)) {
-            throw new BadPerformanceRequestException();
-        }
-
-        if (totalSeatsCount != 0 && (this.totalSeatsCount - this.bookedSeatCount < applySeats)) {
-            throw new NotEnoughSeatsException();
-        }
+        seatInventory.cancel(request.getRequestedSeats());
     }
 
     public void validateIsManagedBy(Member member) {
