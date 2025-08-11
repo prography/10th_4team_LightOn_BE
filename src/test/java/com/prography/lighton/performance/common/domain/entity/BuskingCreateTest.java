@@ -117,7 +117,7 @@ class BuskingCreateTest {
             Member notPerformer = PerformanceFixture.defaultMember();
             Artist artist = PerformanceFixture.defaultArtist(notPerformer);
             when(performer.getId()).thenReturn(1L);
-            when(performer.getId()).thenReturn(2L);
+            when(notPerformer.getId()).thenReturn(2L);
 
             assertThatThrownBy(() -> Busking.createByArtist(
                     performer,
