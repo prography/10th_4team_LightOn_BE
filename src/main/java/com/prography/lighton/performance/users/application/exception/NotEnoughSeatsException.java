@@ -6,6 +6,14 @@ import org.springframework.http.HttpStatus;
 public class NotEnoughSeatsException extends RuntimeException {
     private static final String message = "공연 좌석이 부족합니다.";
 
+    public NotEnoughSeatsException() {
+        super(message);
+    }
+
+    public NotEnoughSeatsException(String message) {
+        super(message);
+    }
+
     public ApiUtils.ApiResult<?> body() {
         return ApiUtils.error(HttpStatus.BAD_REQUEST, message);
     }
