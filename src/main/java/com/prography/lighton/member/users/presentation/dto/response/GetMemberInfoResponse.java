@@ -4,10 +4,11 @@ import com.prography.lighton.member.common.domain.entity.Member;
 
 public record GetMemberInfoResponse(
         long id,
-        String name
+        String name,
+        String email
 ) {
     public static GetMemberInfoResponse of(Member member) {
-        return new GetMemberInfoResponse(member.getId(), member.getName());
+        return new GetMemberInfoResponse(member.getId(), member.getName(), member.getEmail().getValue());
 
     }
 }
