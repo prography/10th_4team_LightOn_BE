@@ -23,18 +23,12 @@ public class ArtistSet {
         Set<Long> newArtistIds = incoming.stream()
                 .map(Artist::getId)
                 .collect(Collectors.toSet());
-
-        current.removeIf(pa -> !newArtistIds.contains(pa.getArtist().getId()));
+        removeAbsent(current, newArtistIds);
 
         Set<Long> existingArtistIds = current.stream()
                 .map(pa -> pa.getArtist().getId())
                 .collect(Collectors.toSet());
-
-        List<Artist> artistsToAdd = incoming.stream()
-                .filter(a -> !existingArtistIds.contains(a.getId()))
-                .toList();
-
-        current.addAll(PerformanceArtist.createListFor(owner, artistsToAdd));
+        addMissing(owner, current, incoming, existingArtistIds);
     }
 
     private static void validateNotRemovingMaster(List<Artist> incoming, Member performer) {
@@ -42,6 +36,22 @@ public class ArtistSet {
                 .anyMatch(artist -> artist.getMember().getId().equals(performer.getId()));
         if (!masterPresent) {
             throw new MasterArtistCannotBeRemovedException();
+        }
+    }
+
+    private static void removeAbsent(List<PerformanceArtist> current, Set<Long> keepIds) {
+        current.removeIf(pa -> !keepIds.contains(pa.getArtist().getId()));
+    }
+
+    private static void addMissing(Performance owner,
+                                   List<PerformanceArtist> current,
+                                   List<Artist> incoming,
+                                   Set<Long> existingIds) {
+        List<Artist> toAdd = incoming.stream()
+                .filter(a -> !existingIds.contains(a.getId()))
+                .toList();
+        if (!toAdd.isEmpty()) {
+            current.addAll(PerformanceArtist.createListFor(owner, toAdd));
         }
     }
 
