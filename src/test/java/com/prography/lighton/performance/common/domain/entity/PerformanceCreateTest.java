@@ -36,7 +36,7 @@ class PerformanceCreateTest {
         assertThat(p.getType()).isEqualTo(Type.CONCERT);
         assertThat(p.getSeats()).containsExactlyElementsOf(PerformanceFixture.defaultSeats());
         assertThat(p.getProofUrl()).isEqualTo(PerformanceFixture.DEFAULT_PROOF_URL);
-        assertThat(p.getTotalSeatsCount()).isEqualTo(PerformanceFixture.DEFAULT_TOTAL_SEATS);
+        assertThat(p.getSeatInventory().getTotalSeatsCount()).isEqualTo(PerformanceFixture.DEFAULT_TOTAL_SEATS);
     }
 
     @Test
