@@ -11,6 +11,7 @@ import com.prography.lighton.genre.domain.entity.Genre;
 import com.prography.lighton.member.common.domain.entity.Member;
 import com.prography.lighton.performance.common.domain.entity.association.PerformanceArtist;
 import com.prography.lighton.performance.common.domain.entity.association.PerformanceGenre;
+import com.prography.lighton.performance.common.domain.entity.collection.ArtistSet;
 import com.prography.lighton.performance.common.domain.entity.enums.ApproveStatus;
 import com.prography.lighton.performance.common.domain.entity.enums.Seat;
 import com.prography.lighton.performance.common.domain.entity.enums.Type;
@@ -19,7 +20,6 @@ import com.prography.lighton.performance.common.domain.entity.vo.Location;
 import com.prography.lighton.performance.common.domain.entity.vo.Payment;
 import com.prography.lighton.performance.common.domain.entity.vo.Schedule;
 import com.prography.lighton.performance.common.domain.entity.vo.SeatInventory;
-import com.prography.lighton.performance.common.domain.exception.MasterArtistCannotBeRemovedException;
 import com.prography.lighton.performance.common.domain.exception.NotAuthorizedPerformanceException;
 import com.prography.lighton.performance.common.domain.exception.NotAuthorizedPerformanceRequestException;
 import com.prography.lighton.performance.common.domain.exception.PerformanceNotApprovedException;
@@ -236,40 +236,16 @@ public class Performance extends BaseEntity {
         updateGenres(genres);
     }
 
+    protected void updateArtists(List<Artist> newArtists) {
+        ArtistSet.updateArtists(this, this.artists, newArtists, this.getPerformer());
+    }
+
     protected void validatePerformer(Member member) {
         if (!performer.equals(member)) {
             throw new NotAuthorizedPerformanceException();
         }
     }
 
-    protected void updateArtists(List<Artist> newArtists) {
-        validateNotRemovingMaster(newArtists);
-
-        Set<Long> newArtistIds = newArtists.stream()
-                .map(Artist::getId)
-                .collect(Collectors.toSet());
-
-        this.artists.removeIf(pa -> !newArtistIds.contains(pa.getArtist().getId()));
-
-        Set<Long> existingArtistIds = this.artists.stream()
-                .map(pa -> pa.getArtist().getId())
-                .collect(Collectors.toSet());
-
-        List<Artist> artistsToAdd = newArtists.stream()
-                .filter(a -> !existingArtistIds.contains(a.getId()))
-                .toList();
-
-        this.artists.addAll(PerformanceArtist.createListFor(this, artistsToAdd));
-    }
-
-    private void validateNotRemovingMaster(List<Artist> newArtists) {
-        boolean isMasterPresent = newArtists.stream()
-                .anyMatch(artist -> artist.getMember().getId().equals(this.performer.getId()));
-
-        if (!isMasterPresent) {
-            throw new MasterArtistCannotBeRemovedException();
-        }
-    }
 
     private void updateGenres(List<Genre> newGenres) {
         Set<Long> newIds = newGenres.stream()
