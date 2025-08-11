@@ -3,6 +3,7 @@ package com.prography.lighton.common.exception;
 import com.fasterxml.jackson.databind.JsonMappingException.Reference;
 import com.fasterxml.jackson.databind.exc.InvalidFormatException;
 import com.prography.lighton.common.application.s3.S3UploadFailedException;
+import com.prography.lighton.common.exception.base.BusinessConflictException;
 import com.prography.lighton.common.exception.base.DuplicateException;
 import com.prography.lighton.common.exception.base.InvalidException;
 import com.prography.lighton.common.exception.base.NotAuthorizedException;
@@ -53,6 +54,12 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(NotAuthorizedException.class)
     public ResponseEntity<?> handleNotAuthorizedException(NotAuthorizedException e) {
+        return ResponseEntity.status(e.status())
+                .body(ApiUtils.error(e.status(), e.getMessage()));
+    }
+
+    @ExceptionHandler(BusinessConflictException.class)
+    public ResponseEntity<?> handleBusinessConflictException(BusinessConflictException e) {
         return ResponseEntity.status(e.status())
                 .body(ApiUtils.error(e.status(), e.getMessage()));
     }
