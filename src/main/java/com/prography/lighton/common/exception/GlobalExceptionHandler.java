@@ -3,15 +3,14 @@ package com.prography.lighton.common.exception;
 import com.fasterxml.jackson.databind.JsonMappingException.Reference;
 import com.fasterxml.jackson.databind.exc.InvalidFormatException;
 import com.prography.lighton.common.application.s3.S3UploadFailedException;
+import com.prography.lighton.common.exception.base.BusinessConflictException;
 import com.prography.lighton.common.exception.base.DuplicateException;
 import com.prography.lighton.common.exception.base.InvalidException;
+import com.prography.lighton.common.exception.base.NotAuthorizedException;
 import com.prography.lighton.common.exception.base.NotFoundException;
 import com.prography.lighton.common.exception.base.UnsupportedTypeException;
 import com.prography.lighton.common.utils.ApiUtils;
 import com.prography.lighton.common.utils.ApiUtils.ApiResult;
-import com.prography.lighton.performance.common.domain.exception.MasterArtistCannotBeRemovedException;
-import com.prography.lighton.performance.common.domain.exception.PerformanceNotApprovedException;
-import com.prography.lighton.performance.common.domain.exception.PerformanceUpdateNotAllowedException;
 import java.util.stream.Collectors;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.annotation.Order;
@@ -46,6 +45,18 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(DuplicateException.class)
     public ResponseEntity<?> handleDuplicateMemberException(DuplicateException e) {
+        return ResponseEntity.status(e.status())
+                .body(ApiUtils.error(e.status(), e.getMessage()));
+    }
+
+    @ExceptionHandler(NotAuthorizedException.class)
+    public ResponseEntity<?> handleNotAuthorizedException(NotAuthorizedException e) {
+        return ResponseEntity.status(e.status())
+                .body(ApiUtils.error(e.status(), e.getMessage()));
+    }
+
+    @ExceptionHandler(BusinessConflictException.class)
+    public ResponseEntity<?> handleBusinessConflictException(BusinessConflictException e) {
         return ResponseEntity.status(e.status())
                 .body(ApiUtils.error(e.status(), e.getMessage()));
     }
@@ -95,25 +106,4 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                 .body(ApiUtils.error(HttpStatus.INTERNAL_SERVER_ERROR, "서버 오류가 발생했습니다."));
     }
-
-    // 나중에 수정 필요
-
-    @ExceptionHandler(PerformanceNotApprovedException.class)
-    public ResponseEntity<ApiResult<?>> performanceNotApprovedException(
-            PerformanceNotApprovedException exception) {
-        return new ResponseEntity<>(exception.body(), exception.status());
-    }
-
-    @ExceptionHandler(MasterArtistCannotBeRemovedException.class)
-    public ResponseEntity<ApiResult<?>> masterArtistCannotBeRemovedException(
-            MasterArtistCannotBeRemovedException exception) {
-        return new ResponseEntity<>(exception.body(), exception.status());
-    }
-
-    @ExceptionHandler(PerformanceUpdateNotAllowedException.class)
-    public ResponseEntity<ApiResult<?>> performanceUpdateNotAllowedException(
-            PerformanceUpdateNotAllowedException exception) {
-        return new ResponseEntity<>(exception.body(), exception.status());
-    }
-
 }

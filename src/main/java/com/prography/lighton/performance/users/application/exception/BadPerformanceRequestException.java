@@ -7,6 +7,14 @@ import org.springframework.http.HttpStatus;
 public class BadPerformanceRequestException extends RuntimeException {
     private static final String message = "잘못된 공연 신청입니다.";
 
+    public BadPerformanceRequestException() {
+        super(message);
+    }
+
+    public BadPerformanceRequestException(String message) {
+        super(message);
+    }
+
     public ApiResult<String> body() {
         return ApiUtils.error(HttpStatus.BAD_REQUEST, message);
     }

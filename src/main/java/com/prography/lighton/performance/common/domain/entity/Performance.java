@@ -2,8 +2,6 @@ package com.prography.lighton.performance.common.domain.entity;
 
 import static jakarta.persistence.FetchType.LAZY;
 
-import com.prography.lighton.artist.admin.domain.exception.InvalidApproveStatusTransitionException;
-import com.prography.lighton.artist.admin.domain.exception.SameApproveStatusException;
 import com.prography.lighton.artist.common.domain.entity.Artist;
 import com.prography.lighton.common.domain.BaseEntity;
 import com.prography.lighton.common.domain.DomainValidator;
@@ -11,20 +9,21 @@ import com.prography.lighton.genre.domain.entity.Genre;
 import com.prography.lighton.member.common.domain.entity.Member;
 import com.prography.lighton.performance.common.domain.entity.association.PerformanceArtist;
 import com.prography.lighton.performance.common.domain.entity.association.PerformanceGenre;
+import com.prography.lighton.performance.common.domain.entity.collection.ArtistSet;
+import com.prography.lighton.performance.common.domain.entity.collection.GenreSet;
 import com.prography.lighton.performance.common.domain.entity.enums.ApproveStatus;
 import com.prography.lighton.performance.common.domain.entity.enums.Seat;
 import com.prography.lighton.performance.common.domain.entity.enums.Type;
+import com.prography.lighton.performance.common.domain.entity.policy.ApprovalPolicy;
+import com.prography.lighton.performance.common.domain.entity.profile.PerformanceProfile;
 import com.prography.lighton.performance.common.domain.entity.vo.Info;
 import com.prography.lighton.performance.common.domain.entity.vo.Location;
 import com.prography.lighton.performance.common.domain.entity.vo.Payment;
 import com.prography.lighton.performance.common.domain.entity.vo.Schedule;
-import com.prography.lighton.performance.common.domain.exception.InvalidSeatCountException;
-import com.prography.lighton.performance.common.domain.exception.MasterArtistCannotBeRemovedException;
-import com.prography.lighton.performance.common.domain.exception.NotAuthorizedPerformanceException;
+import com.prography.lighton.performance.common.domain.entity.vo.SeatInventory;
+import com.prography.lighton.performance.common.domain.exception.NotAuthorizedPerformanceAccessException;
+import com.prography.lighton.performance.common.domain.exception.NotAuthorizedPerformanceRequestException;
 import com.prography.lighton.performance.common.domain.exception.PerformanceNotApprovedException;
-import com.prography.lighton.performance.common.domain.exception.PerformanceUpdateNotAllowedException;
-import com.prography.lighton.performance.users.application.exception.BadPerformanceRequestException;
-import com.prography.lighton.performance.users.application.exception.NotEnoughSeatsException;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.CollectionTable;
 import jakarta.persistence.Column;
@@ -40,12 +39,9 @@ import jakarta.persistence.InheritanceType;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -65,10 +61,6 @@ public class Performance extends BaseEntity {
 
     private static final int UPDATE_DEADLINE_DAYS = 3;
     private static final int CANCEL_DEADLINE_DAYS = 1;
-    private static final int MAX_REQUESTED_SEATS = 10;
-    private static final int MIN_REQUESTED_SEATS = 1;
-
-    private static final int ZERO = 0;
 
     @ManyToOne(fetch = LAZY, optional = false)
     private Member performer;
@@ -112,13 +104,8 @@ public class Performance extends BaseEntity {
     @ColumnDefault("0")
     private Long likeCount = 0L;
 
-    @Column
-    @ColumnDefault("0")
-    private Integer totalSeatsCount = 0;
-
-    @Column
-    @ColumnDefault("0")
-    private Integer bookedSeatCount = 0;
+    @Embedded
+    private SeatInventory seatInventory;
 
     @OneToMany(mappedBy = "performance", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<PerformanceGenre> genres = new ArrayList<>();
@@ -132,28 +119,32 @@ public class Performance extends BaseEntity {
 
     private LocalDateTime approvedAt;
 
-    private Performance(
+    protected Performance(
             Member performer,
             Info info,
             Schedule schedule,
             Location location,
-            Payment payment,
-            Type type,
-            List<Seat> seats,
             String proofUrl,
-            Integer totalSeatsCount
+            PerformanceProfile profile,
+            List<Genre> genres,
+            List<Artist> artists
     ) {
         this.performer = performer;
         this.info = info;
         this.schedule = schedule;
         this.location = location;
-        this.payment = payment;
-        this.type = type;
         this.proofUrl = proofUrl;
-        this.seats.addAll(seats);
-        this.totalSeatsCount = totalSeatsCount;
+
+        this.type = profile.type();
+        this.payment = profile.payment();
+        this.seats.addAll(profile.seats());
+        this.seatInventory = profile.seatInventory();
+
+        updateGenres(genres);
+        updateArtists(artists);
     }
 
+    /* ---------------------------- 공연 생성 관련 메서드 ---------------------------- */
     public static Performance create(
             Member performer,
             List<Artist> artists,
@@ -166,39 +157,19 @@ public class Performance extends BaseEntity {
             String proofUrl,
             int totalSeatsCount
     ) {
-        Performance perf = new Performance(performer, info, schedule, location, payment, Type.CONCERT, seats, proofUrl,
-                totalSeatsCount);
-        perf.updateArtists(artists);
-        perf.updateGenres(genres);
-        return perf;
+        return new Performance(
+                performer,
+                info,
+                schedule,
+                location,
+                proofUrl,
+                PerformanceProfile.concert(payment, seats, totalSeatsCount),
+                genres,
+                artists
+        );
     }
 
-    protected void initCommonFields(
-            Member performer,
-            Info info,
-            Schedule schedule,
-            Location location,
-            Payment payment,
-            Type type,
-            Seat seat,
-            String proofUrl,
-            List<Genre> genres,
-            int totalSeatsCount
-    ) {
-        this.performer = performer;
-        this.info = info;
-        this.schedule = schedule;
-        this.location = location;
-        this.payment = payment;
-        this.type = type;
-        this.seats.clear();
-        this.seats.add(seat);
-        this.proofUrl = proofUrl;
-        this.totalSeatsCount = totalSeatsCount;
-        updateGenres(genres);
-    }
-
-
+    /* ---------------------------- 공연 수정 관련 메서드 ---------------------------- */
     public void update(
             Member performer,
             List<Artist> newArtists,
@@ -212,155 +183,95 @@ public class Performance extends BaseEntity {
             int totalSeatsCount
     ) {
         validatePerformer(performer);
-        validateWithinAllowedPeriod(UPDATE_DEADLINE_DAYS);
+        ensureUpdatableWindow();
         DomainValidator.requireNonBlank(proofUrl);
-        validSeatCount(totalSeatsCount);
 
-        this.info = info;
-        this.schedule = schedule;
-        this.location = location;
+        updateCommonDetails(info, schedule, location, proofUrl, genres);
         this.payment = payment;
         this.seats.clear();
         this.seats.addAll(seats);
-        this.proofUrl = proofUrl;
-        this.totalSeatsCount = totalSeatsCount;
+        seatInventory.updateSeat(totalSeatsCount);
 
         updateArtists(newArtists);
+    }
+
+    protected void updateCommonDetails(
+            Info info,
+            Schedule schedule,
+            Location location,
+            String proofUrl,
+            List<Genre> genres
+    ) {
+        this.info = info;
+        this.schedule = schedule;
+        this.location = location;
+        this.proofUrl = proofUrl;
+
         updateGenres(genres);
-    }
-
-    private void validSeatCount(int totalSeatsCount) {
-        if (totalSeatsCount > 0 && totalSeatsCount < bookedSeatCount) {
-            throw new InvalidSeatCountException();
-        }
-    }
-
-    protected void validatePerformer(Member member) {
-        if (!performer.equals(member)) {
-            throw new NotAuthorizedPerformanceException();
-        }
-    }
-
-    protected void updateArtists(List<Artist> newArtists) {
-        validateNotRemovingMaster(newArtists);
-
-        Set<Long> newArtistIds = newArtists.stream()
-                .map(Artist::getId)
-                .collect(Collectors.toSet());
-
-        this.artists.removeIf(pa -> !newArtistIds.contains(pa.getArtist().getId()));
-
-        Set<Long> existingArtistIds = this.artists.stream()
-                .map(pa -> pa.getArtist().getId())
-                .collect(Collectors.toSet());
-
-        List<Artist> artistsToAdd = newArtists.stream()
-                .filter(a -> !existingArtistIds.contains(a.getId()))
-                .toList();
-
-        this.artists.addAll(PerformanceArtist.createListFor(this, artistsToAdd));
-    }
-
-    private void validateNotRemovingMaster(List<Artist> newArtists) {
-        boolean isMasterPresent = newArtists.stream()
-                .anyMatch(artist -> artist.getMember().getId().equals(this.performer.getId()));
-
-        if (!isMasterPresent) {
-            throw new MasterArtistCannotBeRemovedException();
-        }
-    }
-
-    private void updateGenres(List<Genre> newGenres) {
-        Set<Long> newIds = newGenres.stream()
-                .map(Genre::getId)
-                .collect(Collectors.toSet());
-
-        this.genres.removeIf(pg -> !newIds.contains(pg.getGenre().getId()));
-
-        Set<Long> existingGenreIds = this.genres.stream()
-                .map(pg -> pg.getGenre().getId())
-                .collect(Collectors.toSet());
-
-        List<Genre> genresToAdd = newGenres.stream()
-                .filter(g -> !existingGenreIds.contains(g.getId()))
-                .toList();
-
-        this.genres.addAll(PerformanceGenre.createListFor(this, genresToAdd));
-    }
-
-    protected void validateWithinAllowedPeriod(int daysBeforePerformance) {
-        LocalDate today = LocalDate.now();
-        LocalDate updateDeadline = this.schedule.getStartDate().minusDays(daysBeforePerformance);
-
-        if (today.isAfter(updateDeadline)) {
-            throw new PerformanceUpdateNotAllowedException();
-        }
-    }
-
-    public void validateApproved() {
-        if (this.approveStatus != ApproveStatus.APPROVED) {
-            throw new PerformanceNotApprovedException();
-        }
     }
 
     public void cancel(Member member) {
         validatePerformer(member);
-        validateWithinAllowedPeriod(CANCEL_DEADLINE_DAYS);
+        ensureCancelableWindow();
         if (this.canceled) {
             throw new IllegalStateException("이미 취소된 공연입니다.");
         }
         this.canceled = true;
     }
 
+    protected int updateDeadlineDays() {
+        return UPDATE_DEADLINE_DAYS;
+    }
+
+    protected int cancelDeadlineDays() {
+        return CANCEL_DEADLINE_DAYS;
+    }
+
+    protected final void ensureUpdatableWindow() {
+        getSchedule().validateWithinAllowedPeriod(updateDeadlineDays());
+    }
+
+    protected final void ensureCancelableWindow() {
+        getSchedule().validateWithinAllowedPeriod(cancelDeadlineDays());
+    }
+
+    private void updateArtists(List<Artist> newArtists) {
+        if (newArtists.isEmpty() && this.artists.isEmpty()) {
+            return;
+        }
+        ArtistSet.updateArtists(this, this.artists, newArtists, this.getPerformer());
+    }
+
+    private void updateGenres(List<Genre> newGenres) {
+        GenreSet.updateGenres(this, this.genres, newGenres);
+    }
+
+    /* ---------------------------- 공연 상태 관련 메서드 ---------------------------- */
     public void managePerformanceApplication(ApproveStatus targetStatus) {
-        validateDifferentStatus(targetStatus);
+        ApproveStatus prev = this.approveStatus;
+        ApproveStatus next = ApprovalPolicy.next(prev, targetStatus);
 
-        if (isFromPending()) {
-            handlePendingTransition(targetStatus);
-            return;
-        }
-
-        if (isFromApprovedToPending(targetStatus)) {
-            this.approveStatus = targetStatus;
-            return;
-        }
-
-        throw new InvalidApproveStatusTransitionException("현재 상태에서는 해당 상태로 변경할 수 없습니다.");
-    }
-
-    private void validateDifferentStatus(ApproveStatus targetStatus) {
-        if (this.approveStatus == targetStatus) {
-            throw new SameApproveStatusException("동일한 상태로는 변경할 수 없습니다.");
+        this.approveStatus = next;
+        if (ApprovalPolicy.requiresApprovedAt(prev, next)) {
+            this.approvedAt = LocalDateTime.now();
         }
     }
 
-    private boolean isFromPending() {
-        return this.approveStatus == ApproveStatus.PENDING;
+    /* ---------------------------- 공연 신청 관련 메서드 ---------------------------- */
+    public PerformanceRequest createRequest(int applySeats, Member member) {
+        validateApproved();
+        seatInventory.reserve(applySeats);
+        return PerformanceRequest.of(member, this, applySeats, payment.getFee());
     }
 
-    private boolean isFromApprovedToPending(ApproveStatus targetStatus) {
-        return this.approveStatus == ApproveStatus.APPROVED && targetStatus == ApproveStatus.PENDING;
-    }
-
-    private void handlePendingTransition(ApproveStatus targetStatus) {
-        if (targetStatus == ApproveStatus.APPROVED) {
-            approvePerformance();
-        } else if (targetStatus == ApproveStatus.REJECTED) {
-            rejectPerformance();
-        } else {
-            throw new InvalidApproveStatusTransitionException("PENDING 상태에서는 APPROVED 또는 REJECTED로만 변경할 수 있습니다.");
+    public void cancelRequest(PerformanceRequest request, Member member) {
+        if (!request.getMember().getId().equals(member.getId())) {
+            throw new NotAuthorizedPerformanceRequestException();
         }
+        seatInventory.cancel(request.getRequestedSeats());
     }
 
-    private void approvePerformance() {
-        this.approveStatus = ApproveStatus.APPROVED;
-        this.approvedAt = LocalDateTime.now();
-    }
-
-    private void rejectPerformance() {
-        this.approveStatus = ApproveStatus.REJECTED;
-    }
-
+    /* ---------------------------- 공연 좋아요 관련 메서드 ---------------------------- */
     public void increaseLike() {
         this.likeCount++;
     }
@@ -371,34 +282,17 @@ public class Performance extends BaseEntity {
         }
     }
 
-    /* ---------------------------- 공연 신청 관련 메서드 ---------------------------- */
 
-    public PerformanceRequest createRequest(int applySeats, Member member) {
-        validateApproved();
-        validateRequest(applySeats);
-
-        this.bookedSeatCount += applySeats;
-        return PerformanceRequest.of(member, this, applySeats, payment.getFee());
-    }
-
-    public void cancelRequest(int requestedSeats) {
-        this.bookedSeatCount -= requestedSeats;
-        if (this.bookedSeatCount < ZERO) {
-            this.bookedSeatCount = ZERO;
+    /* ---------------------------- 공연 검증 관련 메서드 ---------------------------- */
+    protected void validatePerformer(Member member) {
+        if (!performer.equals(member)) {
+            throw new NotAuthorizedPerformanceAccessException();
         }
     }
 
-    private void validateRequest(Integer applySeats) {
-        if (applySeats == null || applySeats < MIN_REQUESTED_SEATS || applySeats > MAX_REQUESTED_SEATS) {
-            throw new BadPerformanceRequestException();
-        }
-
-        if (!this.type.equals(Type.CONCERT)) {
-            throw new BadPerformanceRequestException();
-        }
-
-        if (totalSeatsCount != 0 && (this.totalSeatsCount - this.bookedSeatCount < applySeats)) {
-            throw new NotEnoughSeatsException();
+    public void validateApproved() {
+        if (this.approveStatus != ApproveStatus.APPROVED) {
+            throw new PerformanceNotApprovedException();
         }
     }
 
@@ -406,11 +300,7 @@ public class Performance extends BaseEntity {
         validateApproved();
 
         if (!this.performer.equals(member)) {
-            throw new NotAuthorizedPerformanceException();
+            throw new NotAuthorizedPerformanceAccessException();
         }
-    }
-
-    public void inactivate() {
-        this.canceled = true;
     }
 }
