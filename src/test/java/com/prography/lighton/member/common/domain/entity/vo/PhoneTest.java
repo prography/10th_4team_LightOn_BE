@@ -1,9 +1,8 @@
-package com.prography.lighton.member.domain.entity.vo;
+package com.prography.lighton.member.common.domain.entity.vo;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-import com.prography.lighton.member.common.domain.entity.vo.Phone;
 import com.prography.lighton.member.common.domain.exception.InvalidMemberException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

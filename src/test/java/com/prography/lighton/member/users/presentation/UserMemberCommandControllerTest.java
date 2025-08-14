@@ -1,4 +1,4 @@
-package com.prography.lighton.member.presentation;
+package com.prography.lighton.member.users.presentation;
 
 import static com.epages.restdocs.apispec.MockMvcRestDocumentationWrapper.document;
 import static com.epages.restdocs.apispec.ResourceDocumentation.resource;

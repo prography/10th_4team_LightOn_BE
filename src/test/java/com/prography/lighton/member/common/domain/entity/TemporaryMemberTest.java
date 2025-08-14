@@ -1,4 +1,4 @@
-package com.prography.lighton.member.domain.entity;
+package com.prography.lighton.member.common.domain.entity;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -6,7 +6,6 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.mock;
 
 import com.prography.lighton.auth.domain.enums.SocialLoginType;
-import com.prography.lighton.member.common.domain.entity.TemporaryMember;
 import com.prography.lighton.member.common.domain.entity.vo.Email;
 import com.prography.lighton.member.common.domain.entity.vo.Password;
 import org.junit.jupiter.api.DisplayName;

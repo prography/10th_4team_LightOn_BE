@@ -1,4 +1,4 @@
-package com.prography.lighton.member.domain.entity;
+package com.prography.lighton.member.common.domain.entity;
 
 import static com.prography.lighton.common.fixture.MemberTestFixture.TEST_AGREEMENT;
 import static com.prography.lighton.common.fixture.MemberTestFixture.TEST_EMAIL;
@@ -19,7 +19,6 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.util.ReflectionTestUtils.setField;
 
-import com.prography.lighton.member.common.domain.entity.Member;
 import com.prography.lighton.member.common.domain.entity.association.PreferredGenre;
 import com.prography.lighton.member.common.domain.entity.enums.Authority;
 import com.prography.lighton.member.common.domain.entity.vo.Password;

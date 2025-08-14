@@ -1,4 +1,4 @@
-package com.prography.lighton.member.domain.entity.vo;
+package com.prography.lighton.member.common.domain.entity.vo;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -8,7 +8,6 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import com.prography.lighton.member.common.domain.entity.vo.Password;
 import com.prography.lighton.member.common.domain.exception.InvalidMemberException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
