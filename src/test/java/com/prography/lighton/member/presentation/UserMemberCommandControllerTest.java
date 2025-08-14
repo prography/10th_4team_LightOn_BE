@@ -23,7 +23,7 @@ import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors;
 
 @AutoConfigureMockMvc
-class UserMemberControllerTest extends ControllerTest {
+class UserMemberCommandControllerTest extends ControllerTest {
 
     @Test
     @WithMockUser
