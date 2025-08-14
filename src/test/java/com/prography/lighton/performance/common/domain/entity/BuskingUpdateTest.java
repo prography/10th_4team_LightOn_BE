@@ -10,7 +10,7 @@ import com.prography.lighton.performance.common.domain.entity.fixture.BuskingFix
 import com.prography.lighton.performance.common.domain.entity.fixture.PerformanceFixture;
 import com.prography.lighton.performance.common.domain.entity.vo.Info;
 import com.prography.lighton.performance.common.domain.entity.vo.Schedule;
-import com.prography.lighton.performance.common.domain.exception.NotAuthorizedPerformanceException;
+import com.prography.lighton.performance.common.domain.exception.NotAuthorizedPerformanceAccessException;
 import com.prography.lighton.performance.common.domain.exception.PerformanceUpdateNotAllowedException;
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -63,7 +63,7 @@ class BuskingUpdateTest {
                     notPerformer,
                     b.getInfo(), b.getSchedule(), b.getLocation(),
                     PerformanceFixture.defaultGenres(), "수정 url"
-            )).isInstanceOf(NotAuthorizedPerformanceException.class);
+            )).isInstanceOf(NotAuthorizedPerformanceAccessException.class);
         }
 
         @Test
@@ -126,7 +126,7 @@ class BuskingUpdateTest {
                     PerformanceFixture.defaultGenres(),
                     PerformanceFixture.DEFAULT_PROOF_URL,
                     newName, newDesc
-            )).isInstanceOf(NotAuthorizedPerformanceException.class);
+            )).isInstanceOf(NotAuthorizedPerformanceAccessException.class);
         }
 
         @Test

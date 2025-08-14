@@ -14,7 +14,7 @@ import com.prography.lighton.performance.common.domain.entity.vo.Info;
 import com.prography.lighton.performance.common.domain.entity.vo.Schedule;
 import com.prography.lighton.performance.common.domain.exception.InvalidSeatCountException;
 import com.prography.lighton.performance.common.domain.exception.MasterArtistCannotBeRemovedException;
-import com.prography.lighton.performance.common.domain.exception.NotAuthorizedPerformanceException;
+import com.prography.lighton.performance.common.domain.exception.NotAuthorizedPerformanceAccessException;
 import com.prography.lighton.performance.common.domain.exception.PerformanceUpdateNotAllowedException;
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -81,7 +81,7 @@ class PerformanceUpdateTest {
                             PerformanceFixture.DEFAULT_PROOF_URL,
                             PerformanceFixture.DEFAULT_TOTAL_SEATS
                     )
-            ).isInstanceOf(NotAuthorizedPerformanceException.class);
+            ).isInstanceOf(NotAuthorizedPerformanceAccessException.class);
         }
 
         @Test
@@ -364,7 +364,7 @@ class PerformanceUpdateTest {
             Performance p = PerformanceFixture.defaultPerformance();
             assertThatThrownBy(() ->
                     p.cancel(mock(PerformanceFixture.defaultMember().getClass()))
-            ).isInstanceOf(NotAuthorizedPerformanceException.class);
+            ).isInstanceOf(NotAuthorizedPerformanceAccessException.class);
         }
 
         @Test

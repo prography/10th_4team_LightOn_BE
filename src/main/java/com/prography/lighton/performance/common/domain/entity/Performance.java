@@ -21,7 +21,7 @@ import com.prography.lighton.performance.common.domain.entity.vo.Location;
 import com.prography.lighton.performance.common.domain.entity.vo.Payment;
 import com.prography.lighton.performance.common.domain.entity.vo.Schedule;
 import com.prography.lighton.performance.common.domain.entity.vo.SeatInventory;
-import com.prography.lighton.performance.common.domain.exception.NotAuthorizedPerformanceException;
+import com.prography.lighton.performance.common.domain.exception.NotAuthorizedPerformanceAccessException;
 import com.prography.lighton.performance.common.domain.exception.NotAuthorizedPerformanceRequestException;
 import com.prography.lighton.performance.common.domain.exception.PerformanceNotApprovedException;
 import jakarta.persistence.CascadeType;
@@ -286,7 +286,7 @@ public class Performance extends BaseEntity {
     /* ---------------------------- 공연 검증 관련 메서드 ---------------------------- */
     protected void validatePerformer(Member member) {
         if (!performer.equals(member)) {
-            throw new NotAuthorizedPerformanceException();
+            throw new NotAuthorizedPerformanceAccessException();
         }
     }
 
@@ -300,7 +300,7 @@ public class Performance extends BaseEntity {
         validateApproved();
 
         if (!this.performer.equals(member)) {
-            throw new NotAuthorizedPerformanceException();
+            throw new NotAuthorizedPerformanceAccessException();
         }
     }
 }
