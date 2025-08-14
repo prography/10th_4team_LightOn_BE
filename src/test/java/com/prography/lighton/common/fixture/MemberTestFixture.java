@@ -5,6 +5,7 @@ import static org.mockito.Mockito.mock;
 import com.prography.lighton.auth.domain.enums.SocialLoginType;
 import com.prography.lighton.common.domain.vo.RegionInfo;
 import com.prography.lighton.member.common.domain.entity.Member;
+import com.prography.lighton.member.common.domain.entity.TemporaryMember;
 import com.prography.lighton.member.common.domain.entity.vo.Email;
 import com.prography.lighton.member.common.domain.entity.vo.MarketingAgreement;
 import com.prography.lighton.member.common.domain.entity.vo.Password;
@@ -32,5 +33,10 @@ public class MemberTestFixture {
                                                 String name, Phone phone, SocialLoginType loginType,
                                                 MarketingAgreement agreement) {
         return Member.toNormalMember(email, password, region, name, phone, loginType, agreement);
+    }
+
+    public static TemporaryMember createTemporaryMember(PasswordEncoder encoder) {
+        Password password = Password.encodeAndCreate("Password123!@", encoder);
+        return TemporaryMember.of(TEST_EMAIL, password);
     }
 }

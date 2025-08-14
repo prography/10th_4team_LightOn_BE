@@ -11,6 +11,10 @@ import com.prography.lighton.auth.presentation.AuthController;
 import com.prography.lighton.genre.infrastructure.cache.GenreCache;
 import com.prography.lighton.member.common.infrastructure.repository.MemberRepository;
 import com.prography.lighton.member.common.infrastructure.repository.PreferredGenreRepository;
+import com.prography.lighton.member.users.application.command.CompleteProfileService;
+import com.prography.lighton.member.users.application.command.EditPreferredGenreService;
+import com.prography.lighton.member.users.application.command.InactivateMemberService;
+import com.prography.lighton.member.users.application.command.RegisterMemberService;
 import com.prography.lighton.member.users.application.query.UserMemberQueryService;
 import com.prography.lighton.member.users.presentation.UserMemberController;
 import com.prography.lighton.region.infrastructure.cache.RegionCache;
@@ -28,7 +32,16 @@ public abstract class ControllerTest {
     protected MockMvc mockMvc;
 
     @MockBean
-    protected UserMemberCommandService userMemberCommandService;
+    protected CompleteProfileService completeProfileService;
+
+    @MockBean
+    protected RegisterMemberService registerMemberService;
+
+    @MockBean
+    protected InactivateMemberService inactivateMemberService;
+    
+    @MockBean
+    protected EditPreferredGenreService editPreferredGenreService;
 
     @MockBean
     protected UserMemberQueryService userMemberQueryService;
