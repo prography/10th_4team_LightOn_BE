@@ -13,6 +13,7 @@ import com.prography.lighton.member.common.domain.entity.vo.Phone;
 import com.prography.lighton.region.domain.entity.Region;
 import com.prography.lighton.region.domain.entity.SubRegion;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.test.util.ReflectionTestUtils;
 
 public class MemberTestFixture {
 
@@ -24,7 +25,15 @@ public class MemberTestFixture {
     public static final RegionInfo TEST_REGION = RegionInfo.of(mock(Region.class), mock(SubRegion.class));
 
     public static Member createNormalMember() {
-        return createNormalMember(mock(PasswordEncoder.class));
+        Member normalMember = createNormalMember(mock(PasswordEncoder.class));
+        ReflectionTestUtils.setField(normalMember, "id", 1L);
+        return normalMember;
+    }
+
+    public static Member createNormalMember(long id) {
+        Member normalMember = createNormalMember(mock(PasswordEncoder.class));
+        ReflectionTestUtils.setField(normalMember, "id", id);
+        return normalMember;
     }
 
     public static Member createNormalMember(PasswordEncoder encoder) {

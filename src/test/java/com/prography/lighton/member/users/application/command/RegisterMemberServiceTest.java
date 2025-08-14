@@ -33,36 +33,36 @@ class RegisterMemberServiceTest {
     @Test
     @DisplayName("임시 회원을 정상적으로 생성할 수 있다.")
     void should_create_temporary_member() {
-        // given
+        // Given
         RegisterMemberRequest req = new RegisterMemberRequest("user@example.com", "Password123!@");
 
         TemporaryMember savedEntity = createTemporaryMember(passwordEncoder);
         when(temporaryMemberRepository.save(any())).thenReturn(savedEntity);
 
-        // when
+        // When
         RegisterMemberResponse res = service.handle(req);
 
-        // then
+        // Then
         verify(temporaryMemberRepository).save(any());
     }
 
     @Test
     @DisplayName("올바르지 않은 이메일 입력 시, 예외가 발생한다.")
     void should_throw_exception_for_invalid_email() {
-        // given
+        // Given
         RegisterMemberRequest req = new RegisterMemberRequest("invalid-email", "plainPw");
 
-        // when & then
+        // When & Then
         assertThrows(InvalidMemberException.class, () -> service.handle(req));
     }
 
     @Test
     @DisplayName("올바르지 않은 비밀번호 입력 시, 예외가 발생한다.")
     void should_throw_exception_for_invalid_password() {
-        // given
+        // Given
         RegisterMemberRequest req = new RegisterMemberRequest("user@example.com", "invalid");
 
-        // when & then
+        // When & Then
         assertThrows(InvalidMemberException.class, () -> service.handle(req));
     }
 

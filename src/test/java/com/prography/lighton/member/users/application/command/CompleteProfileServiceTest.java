@@ -50,7 +50,7 @@ class CompleteProfileServiceTest {
     @Test
     @DisplayName("회원 프로필을 정상적으로 완료할 수 있다")
     void should_complete_member_profile() {
-        // given
+        // Given
         var svc = new CompleteProfileService(temporaryMemberRepository, memberRepository, auth, tokens, regionCache);
 
         Long tmpId = 1L;
@@ -80,10 +80,10 @@ class CompleteProfileServiceTest {
         when(saved.getAuthority()).thenReturn(Authority.NORMAL);
         when(memberRepository.save(any(Member.class))).thenReturn(saved);
 
-        // when
+        // When
         CompleteMemberProfileResponse res = svc.handle(tmpId, req);
 
-        // then
+        // Then
         verify(temporaryMemberRepository).getById(tmpId);
         verify(memberRepository).existsByPhone(any());
         verify(memberRepository).save(any(Member.class));
@@ -98,6 +98,7 @@ class CompleteProfileServiceTest {
     @Test
     @DisplayName("전화번호가 중복이면 예외가 발생한다.")
     void should_throw_when_phone_duplicate() {
+        // Given
         var svc = new CompleteProfileService(temporaryMemberRepository, memberRepository, auth, tokens, regionCache);
 
         Long tmpId = 1L;
@@ -111,6 +112,7 @@ class CompleteProfileServiceTest {
         when(regionCache.getRegionInfoByCode(anyInt())).thenReturn(mock(RegionInfo.class));
         when(memberRepository.existsByPhone(any())).thenReturn(true);
 
+        // When & Then
         assertThrows(DuplicateMemberException.class, () -> svc.handle(tmpId, req));
         verify(memberRepository, never()).save(any());
     }
@@ -118,6 +120,7 @@ class CompleteProfileServiceTest {
     @Test
     @DisplayName("이미 등록된 임시회원이면 예외가 발생한다.")
     void should_throw_when_already_registered() {
+        // Given
         var svc = new CompleteProfileService(temporaryMemberRepository, memberRepository, auth, tokens, regionCache);
 
         Long tmpId = 1L;
@@ -128,6 +131,7 @@ class CompleteProfileServiceTest {
         when(tmp.isRegistered()).thenReturn(true); // <- 이미 등록
         when(temporaryMemberRepository.getById(tmpId)).thenReturn(tmp);
 
+        // When & Then
         assertThrows(DuplicateMemberException.class, () -> svc.handle(tmpId, req));
         verify(memberRepository, never()).save(any());
     }
