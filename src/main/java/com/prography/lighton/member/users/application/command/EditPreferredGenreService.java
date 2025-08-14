@@ -21,7 +21,7 @@ public class EditPreferredGenreService {
     private final GenreCache genreCache;
     private final UserRecommendationService userRecommendationService;
 
-    public void handle(final Member member, EditMemberGenreRequest request) {
+    public void handle(Member member, EditMemberGenreRequest request) {
         deletePreviousPreferredGenres(member);
 
         List<PreferredGenre> preferredGenres = genreCache.getGenresByNameOrThrow(request.genres()).stream()

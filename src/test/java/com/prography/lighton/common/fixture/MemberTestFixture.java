@@ -23,6 +23,10 @@ public class MemberTestFixture {
     public static final SocialLoginType TEST_LOGIN_TYPE = SocialLoginType.KAKAO;
     public static final RegionInfo TEST_REGION = RegionInfo.of(mock(Region.class), mock(SubRegion.class));
 
+    public static Member createNormalMember() {
+        return createNormalMember(mock(PasswordEncoder.class));
+    }
+
     public static Member createNormalMember(PasswordEncoder encoder) {
         Password password = Password.encodeAndCreate("Password123!@", encoder);
         return Member.toNormalMember(TEST_EMAIL, password, TEST_REGION, TEST_NAME, TEST_PHONE, TEST_LOGIN_TYPE,
