@@ -4,8 +4,11 @@ import com.prography.lighton.common.annotation.LoginMember;
 import com.prography.lighton.common.utils.ApiUtils;
 import com.prography.lighton.common.utils.ApiUtils.ApiResult;
 import com.prography.lighton.member.common.domain.entity.Member;
-import com.prography.lighton.member.users.application.UserMemberCommandService;
-import com.prography.lighton.member.users.application.UserMemberQueryService;
+import com.prography.lighton.member.users.application.command.CompleteProfileService;
+import com.prography.lighton.member.users.application.command.EditPreferredGenreService;
+import com.prography.lighton.member.users.application.command.InactivateMemberService;
+import com.prography.lighton.member.users.application.command.RegisterMemberService;
+import com.prography.lighton.member.users.application.query.UserMemberQueryService;
 import com.prography.lighton.member.users.presentation.dto.request.CompleteMemberProfileRequest;
 import com.prography.lighton.member.users.presentation.dto.request.EditMemberGenreRequest;
 import com.prography.lighton.member.users.presentation.dto.request.RegisterMemberRequest;
@@ -34,14 +37,18 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class UserMemberController {
 
-    private final UserMemberCommandService userMemberCommandService;
+    private final CompleteProfileService completeProfileService;
+    private final RegisterMemberService registerMemberService;
+    private final EditPreferredGenreService editPreferredGenreService;
+    private final InactivateMemberService inactivateMemberService;
+
     private final UserMemberQueryService userMemberQueryService;
 
     @PostMapping
     public ResponseEntity<ApiResult<RegisterMemberResponse>> register(
             @RequestBody @Valid RegisterMemberRequest request) {
         return ResponseEntity.status(HttpStatus.OK)
-                .body(ApiUtils.success(userMemberCommandService.registerMember(request)));
+                .body(ApiUtils.success(registerMemberService.handle(request)));
     }
 
     @PostMapping("/{temporaryMemberId}/info")
@@ -49,14 +56,14 @@ public class UserMemberController {
             @PathVariable Long temporaryMemberId,
             @RequestBody @Valid CompleteMemberProfileRequest request) {
         return ResponseEntity.status(HttpStatus.OK)
-                .body(ApiUtils.success(userMemberCommandService.completeMemberProfile(temporaryMemberId, request)));
+                .body(ApiUtils.success(completeProfileService.handle(temporaryMemberId, request)));
     }
 
     @PostMapping("/genres")
     public ResponseEntity<ApiResult<?>> editMemberGenre(
             @RequestBody @Valid EditMemberGenreRequest request,
             @LoginMember Member member) {
-        userMemberCommandService.editMemberGenre(member, request);
+        editPreferredGenreService.handle(member, request);
         return ResponseEntity.status(HttpStatus.CREATED).body(ApiUtils.success());
     }
 

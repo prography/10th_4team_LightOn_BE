@@ -1,4 +1,4 @@
-package com.prography.lighton.member.users.application;
+package com.prography.lighton.member.users.application.query;
 
 import com.prography.lighton.artist.common.domain.entity.Artist;
 import com.prography.lighton.genre.domain.entity.Genre;
