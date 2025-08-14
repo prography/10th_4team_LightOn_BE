@@ -1,11 +1,15 @@
 package com.prography.lighton.performance.common.domain.entity.collection;
 
+import static java.util.function.UnaryOperator.identity;
+import static java.util.stream.Collectors.toMap;
+
 import com.prography.lighton.artist.common.domain.entity.Artist;
 import com.prography.lighton.member.common.domain.entity.Member;
 import com.prography.lighton.performance.common.domain.entity.Performance;
 import com.prography.lighton.performance.common.domain.entity.association.PerformanceArtist;
 import com.prography.lighton.performance.common.domain.exception.MasterArtistCannotBeRemovedException;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 import lombok.AccessLevel;
@@ -47,7 +51,10 @@ public final class ArtistSet {
                                    List<PerformanceArtist> current,
                                    List<Artist> incoming,
                                    Set<Long> existingIds) {
-        List<Artist> toAdd = incoming.stream()
+        Map<Long, Artist> incomingById = incoming.stream()
+                .collect(toMap(Artist::getId, identity(), (l, r) -> l));
+
+        List<Artist> toAdd = incomingById.values().stream()
                 .filter(a -> !existingIds.contains(a.getId()))
                 .toList();
         if (!toAdd.isEmpty()) {
