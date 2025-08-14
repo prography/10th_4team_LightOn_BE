@@ -18,8 +18,12 @@ public class UserRecommendationService {
 
     private final PerformanceListHelper helper;
     private final PerformanceRecommendationRepository recommendationRepository;
+    private final UserRecentPerformanceService recentPerformanceService;
 
     public GetPerformanceBrowseResponse getRecommendations(Member member) {
+        if (member.getPreferredGenres().isEmpty()) {
+            return recentPerformanceService.getRecentPerformances(null);
+        }
         String key = buildKey(member);
         return helper.fetchWithCache(
                 key,
