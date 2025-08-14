@@ -49,7 +49,19 @@ class ManageAnnouncementServiceTest {
         // Given
         ManageAnnouncementService service = new ManageAnnouncementService(adminAnnouncementRepository);
         Announcement announcement = createAnnouncement();
-        ManageAnnouncementRequestDTO request = createRequest();
+
+        String updatedTitle = "수정된 공지사항 제목";
+        String updatedContent = "수정된 공지사항 내용";
+        List<String> updatedImages = List.of(
+                "https://example.com/updated1.jpg",
+                "https://example.com/updated2.jpg"
+
+        );
+        ManageAnnouncementRequestDTO request = new ManageAnnouncementRequestDTO(updatedTitle,
+                updatedContent,
+                updatedImages
+        );
+
         when(adminAnnouncementRepository.getById(anyLong())).thenReturn(announcement);
 
         // When
@@ -57,7 +69,9 @@ class ManageAnnouncementServiceTest {
 
         // Then
         verify(adminAnnouncementRepository).getById(ANNOUNCEMENT_ID);
-        assertThat(announcement.getTitle()).isEqualTo(TITLE);
+        assertThat(announcement.getTitle()).isEqualTo(updatedTitle);
+        assertThat(announcement.getContent()).isEqualTo(updatedContent);
+        assertThat(announcement.getImages()).containsExactlyElementsOf(updatedImages);
     }
 
     @Test

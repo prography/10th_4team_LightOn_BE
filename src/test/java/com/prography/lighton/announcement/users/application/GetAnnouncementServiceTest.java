@@ -4,11 +4,13 @@ import static com.prography.lighton.common.fixture.AnnouncementTestFixture.ANNOU
 import static com.prography.lighton.common.fixture.AnnouncementTestFixture.TITLE;
 import static com.prography.lighton.common.fixture.AnnouncementTestFixture.createAnnouncement;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.springframework.data.domain.PageRequest.of;
 
+import com.prography.lighton.announcement.common.application.exception.NoSuchAnnouncementException;
 import com.prography.lighton.announcement.common.domain.entity.Announcement;
 import com.prography.lighton.announcement.users.infrastructure.UserAnnouncementRepository;
 import com.prography.lighton.announcement.users.presentation.dto.response.GetAnnouncementDetailResponseDTO;
@@ -43,6 +45,16 @@ class GetAnnouncementServiceTest {
         verify(userAnnouncementRepository).getById(anyLong());
         assertEquals(ANNOUNCEMENT_ID, res.id());
         assertEquals(TITLE, res.title());
+    }
+
+    @Test
+    @DisplayName("존재하지 않는 공지사항을 조회할 때 예외가 발생한다")
+    void should_throw_exception_when_announcement_not_found() {
+        // Given
+        GetAnnouncementService service = new GetAnnouncementService(userAnnouncementRepository);
+        when(userAnnouncementRepository.getById(999L)).thenThrow(new NoSuchAnnouncementException());
+        // When & Then
+        assertThrows(NoSuchAnnouncementException.class, () -> service.getAnnouncementDetail(999L));
     }
 
     @Test
