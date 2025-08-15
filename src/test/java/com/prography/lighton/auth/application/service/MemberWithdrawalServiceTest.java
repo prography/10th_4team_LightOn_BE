@@ -8,9 +8,9 @@ import com.prography.lighton.common.fixture.MemberTestFixture;
 import com.prography.lighton.member.common.domain.entity.Member;
 import com.prography.lighton.member.common.infrastructure.repository.MemberRepository;
 import com.prography.lighton.member.common.infrastructure.repository.TemporaryMemberRepository;
-import com.prography.lighton.member.users.application.command.ClearMemberPreferencesService;
 import com.prography.lighton.performance.users.application.service.UserPerformanceLikeService;
 import com.prography.lighton.performance.users.application.service.UserPerformanceService;
+import com.prography.lighton.performance.users.application.service.UserRecommendationService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -31,7 +31,7 @@ class MemberWithdrawalServiceTest {
     @Mock
     UserPerformanceLikeService userPerformanceLikeService;
     @Mock
-    ClearMemberPreferencesService clearMemberPreferencesService;
+    UserRecommendationService userRecommendationService;
     @Mock
     ArtistService artistService;
     @Mock
@@ -52,8 +52,8 @@ class MemberWithdrawalServiceTest {
 
         // then
         verify(userPerformanceService).inactivateAllByMember(member);
-        verify(clearMemberPreferencesService).handle(member);
         verify(userPerformanceLikeService).inactivateAllByMember(member);
+        verify(userRecommendationService).deleteCache(member);
         verify(artistService).inactiveByMember(member);
         verify(temporaryMemberRepository).deleteByEmail(member.getEmail());
     }

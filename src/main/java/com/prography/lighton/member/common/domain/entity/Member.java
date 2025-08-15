@@ -12,6 +12,7 @@ import com.prography.lighton.member.common.domain.entity.vo.Password;
 import com.prography.lighton.member.common.domain.entity.vo.Phone;
 import com.prography.lighton.member.common.domain.exception.InvalidMemberException;
 import jakarta.persistence.AttributeOverride;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
@@ -66,11 +67,13 @@ public class Member extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private Authority authority;
 
-    @OneToMany(mappedBy = "member", fetch = FetchType.LAZY)
-    private List<PreferredArtist> preferredArtists;
+    @OneToMany(mappedBy = "member", fetch = FetchType.LAZY,
+            cascade = CascadeType.ALL, orphanRemoval = true)
+    private final List<PreferredArtist> preferredArtists = new ArrayList<>();
 
-    @OneToMany(mappedBy = "member", fetch = FetchType.LAZY)
-    private List<PreferredGenre> preferredGenres;
+    @OneToMany(mappedBy = "member", fetch = FetchType.LAZY,
+            cascade = CascadeType.ALL, orphanRemoval = true)
+    private final List<PreferredGenre> preferredGenres = new ArrayList<>();
 
 
     public static Member toNormalMember(Email email, Password password, RegionInfo preferredRegion,
@@ -84,9 +87,7 @@ public class Member extends BaseEntity {
                 phone,
                 loginType,
                 marketingAgreement,
-                Authority.NORMAL,
-                new ArrayList<>(),
-                new ArrayList<>()
+                Authority.NORMAL
         );
     }
 
@@ -106,7 +107,14 @@ public class Member extends BaseEntity {
         this.preferredGenres.addAll(preferredGenres);
     }
 
+    public void clearPreferences() {
+        preferredGenres.clear();
+        preferredArtists.clear();
+    }
+
+
     public void withdraw() {
+        clearPreferences();
         this.phone = this.phone.withdrawMasked(this.getId());
         this.email = this.email.withdrawMasked(this.getId());
         this.delete();

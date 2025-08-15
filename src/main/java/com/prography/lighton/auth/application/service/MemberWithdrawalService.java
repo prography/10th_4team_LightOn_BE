@@ -4,9 +4,9 @@ import com.prography.lighton.artist.users.application.service.ArtistService;
 import com.prography.lighton.member.common.domain.entity.Member;
 import com.prography.lighton.member.common.infrastructure.repository.MemberRepository;
 import com.prography.lighton.member.common.infrastructure.repository.TemporaryMemberRepository;
-import com.prography.lighton.member.users.application.command.ClearMemberPreferencesService;
 import com.prography.lighton.performance.users.application.service.UserPerformanceLikeService;
 import com.prography.lighton.performance.users.application.service.UserPerformanceService;
+import com.prography.lighton.performance.users.application.service.UserRecommendationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,7 +20,7 @@ public class MemberWithdrawalService {
     private final TemporaryMemberRepository temporaryMemberRepository;
     private final UserPerformanceService userPerformanceService;
     private final UserPerformanceLikeService userPerformanceLikeService;
-    private final ClearMemberPreferencesService clearMemberPreferencesService;
+    private final UserRecommendationService userRecommendationService;
     private final ArtistService artistService;
 
 
@@ -29,8 +29,8 @@ public class MemberWithdrawalService {
         Member dbMember = memberRepository.getMemberById(member.getId());
         dbMember.withdraw();
 
+        userRecommendationService.deleteCache(member);
         userPerformanceService.inactivateAllByMember(dbMember);
-        clearMemberPreferencesService.handle(dbMember);
         userPerformanceLikeService.inactivateAllByMember(dbMember);
         artistService.inactiveByMember(dbMember);
 
