@@ -1,6 +1,5 @@
-package com.prography.lighton.announcement.admin.application.impl;
+package com.prography.lighton.announcement.admin.application;
 
-import com.prography.lighton.announcement.admin.application.ManageAnnouncementUseCase;
 import com.prography.lighton.announcement.admin.infrastructure.AdminAnnouncementRepository;
 import com.prography.lighton.announcement.admin.presentation.dto.request.ManageAnnouncementRequestDTO;
 import com.prography.lighton.announcement.common.domain.entity.Announcement;
@@ -11,11 +10,10 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
-public class ManageAnnouncementUseCaseImpl implements ManageAnnouncementUseCase {
+public class ManageAnnouncementService {
 
     private final AdminAnnouncementRepository adminAnnouncementRepository;
 
-    @Override
     @Transactional
     public void registerAnnouncement(ManageAnnouncementRequestDTO request) {
         Announcement announcement = Announcement.of(
@@ -27,7 +25,7 @@ public class ManageAnnouncementUseCaseImpl implements ManageAnnouncementUseCase 
         adminAnnouncementRepository.save(announcement);
     }
 
-    @Override
+
     @Transactional
     public void updateAnnouncement(Long announcementId, ManageAnnouncementRequestDTO request) {
         Announcement announcement = adminAnnouncementRepository.getById(announcementId);
@@ -39,7 +37,6 @@ public class ManageAnnouncementUseCaseImpl implements ManageAnnouncementUseCase 
         );
     }
 
-    @Override
     @Transactional
     public void deleteAnnouncement(Long announcementId) {
         Announcement announcement = adminAnnouncementRepository.getById(announcementId);
