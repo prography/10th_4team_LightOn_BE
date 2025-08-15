@@ -69,14 +69,14 @@ public class UserPerformanceService {
         PerformanceRequest performanceRequest = performanceRequestRepository.getByMemberAndPerformance(member,
                 performance);
 
-        performance.cancelRequest(performanceRequest.getRequestedSeats());
+        performance.cancelRequest(performanceRequest, member);
         performanceRequestRepository.delete(performanceRequest);
     }
 
     @Transactional
     public void inactivateAllByMember(Member member) {
         List<Performance> performances = performanceRepository.findAllByPerformer(member);
-        performances.forEach(Performance::inactivate);
+        performances.forEach(Performance::delete);
 
         performanceRequestRepository.bulkInactivateByMember(member);
         performanceRequestRepository.bulkInactivateByPerformances(performances);

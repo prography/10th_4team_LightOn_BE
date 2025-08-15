@@ -1,17 +1,20 @@
 package com.prography.lighton.performance.common.domain.entity.vo;
 
 import com.prography.lighton.performance.common.domain.exception.InvalidScheduleException;
+import com.prography.lighton.performance.common.domain.exception.PerformanceUpdateNotAllowedException;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Embeddable
 @Getter
+@EqualsAndHashCode
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 public class Schedule {
@@ -41,6 +44,15 @@ public class Schedule {
 
         if (endTime.isBefore(startTime)) {
             throw new InvalidScheduleException("종료 시간은 시작 시간보다 뒤여야 합니다.");
+        }
+    }
+
+    public void validateWithinAllowedPeriod(int daysBeforePerformance) {
+        LocalDate today = LocalDate.now();
+        LocalDate updateDeadline = this.startDate.minusDays(daysBeforePerformance);
+
+        if (today.isAfter(updateDeadline)) {
+            throw new PerformanceUpdateNotAllowedException();
         }
     }
 }
