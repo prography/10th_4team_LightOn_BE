@@ -8,6 +8,7 @@ import static com.prography.lighton.common.fixture.AnnouncementTestFixture.IMAGE
 import static com.prography.lighton.common.fixture.AnnouncementTestFixture.TITLE;
 import static com.prography.lighton.common.fixture.AnnouncementTestFixture.createAnnouncement;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.verify;
@@ -15,6 +16,7 @@ import static org.mockito.Mockito.when;
 
 import com.prography.lighton.announcement.admin.infrastructure.AdminAnnouncementRepository;
 import com.prography.lighton.announcement.admin.presentation.dto.request.ManageAnnouncementRequestDTO;
+import com.prography.lighton.announcement.common.application.exception.NoSuchAnnouncementException;
 import com.prography.lighton.announcement.common.domain.entity.Announcement;
 import java.util.List;
 import org.junit.jupiter.api.DisplayName;
@@ -62,7 +64,7 @@ class ManageAnnouncementServiceTest {
                 updatedImages
         );
 
-        when(adminAnnouncementRepository.getById(anyLong())).thenReturn(announcement);
+        when(adminAnnouncementRepository.getById(ANNOUNCEMENT_ID)).thenReturn(announcement);
 
         // When
         service.updateAnnouncement(ANNOUNCEMENT_ID, request);
@@ -72,6 +74,18 @@ class ManageAnnouncementServiceTest {
         assertThat(announcement.getTitle()).isEqualTo(updatedTitle);
         assertThat(announcement.getContent()).isEqualTo(updatedContent);
         assertThat(announcement.getImages()).containsExactlyElementsOf(updatedImages);
+    }
+
+    @Test
+    @DisplayName("존재하지 않는 공지사항을 수정하려고 하면 예외가 발생한다.")
+    void should_throw_exception_when_update_nonexistent_announcement() {
+        // Given
+        ManageAnnouncementService service = new ManageAnnouncementService(adminAnnouncementRepository);
+        ManageAnnouncementRequestDTO request = createRequest();
+        when(adminAnnouncementRepository.getById(999L)).thenThrow(NoSuchAnnouncementException.class);
+
+        // When & Then
+        assertThrows(NoSuchAnnouncementException.class, () -> service.updateAnnouncement(999L, request));
     }
 
     @Test

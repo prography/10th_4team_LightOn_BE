@@ -31,6 +31,29 @@ class AnnouncementTest {
     }
 
     @Test
+    @DisplayName("공지사항의 제목이 비어있는 경우 예외가 발생한다")
+    void should_throw_exception_when_title_is_empty() {
+        // Given
+
+        // When & Then
+        assertThrows(InvalidAnnouncementException.class,
+                () -> Announcement.of("", CONTENT, List.of(IMAGE_URL1, IMAGE_URL2, IMAGE_URL3))
+        );
+    }
+
+    @Test
+    @DisplayName("공지사항의 내용이 비어있는 경우 예외가 발생한다")
+    void should_throw_exception_when_content_is_empty() {
+        // Given
+
+        // When & Then
+        assertThrows(InvalidAnnouncementException.class,
+                () -> Announcement.of(TITLE, "", List.of(IMAGE_URL1, IMAGE_URL2, IMAGE_URL3))
+        );
+    }
+
+
+    @Test
     @DisplayName("공지사항의 이미지는 최대 3개까지만 허용된다")
     void should_limit_images_to_three() {
         // Given
