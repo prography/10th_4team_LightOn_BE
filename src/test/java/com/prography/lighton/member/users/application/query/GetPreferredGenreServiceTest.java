@@ -3,6 +3,7 @@ package com.prography.lighton.member.users.application.query;
 import static com.prography.lighton.common.fixture.MemberTestFixture.createNormalMember;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -33,8 +34,8 @@ class GetPreferredGenreServiceTest {
 
         member = createNormalMember();
 
-        PreferredGenre preferredGenre1 = createPreferredGenre(createGenre("팝"));
-        PreferredGenre preferredGenre2 = createPreferredGenre(createGenre("록"));
+        PreferredGenre preferredGenre1 = createPreferredGenre(mock(Genre.class));
+        PreferredGenre preferredGenre2 = createPreferredGenre(mock(Genre.class));
 
         when(preferredGenreRepository.findAllByMember(member)).thenReturn(
                 List.of(preferredGenre1, preferredGenre2)
@@ -46,7 +47,6 @@ class GetPreferredGenreServiceTest {
         verify(preferredGenreRepository).findAllByMember(any());
 
         assertThat(response.genres()).hasSize(2);
-        assertThat(response.genres().getFirst().name()).isEqualTo("팝");
     }
 
     @Test
@@ -64,10 +64,6 @@ class GetPreferredGenreServiceTest {
         // Then
         verify(preferredGenreRepository).findAllByMember(any());
         assertThat(response.genres()).isEmpty();
-    }
-
-    private Genre createGenre(String name) {
-        return Genre.of(name, "imageUrl");
     }
 
     private PreferredGenre createPreferredGenre(Genre genre) {

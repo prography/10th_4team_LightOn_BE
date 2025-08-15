@@ -1,5 +1,6 @@
 package com.prography.lighton.member.users.application.command;
 
+import static com.prography.lighton.common.fixture.MemberTestFixture.TEST_PASSWORD_STRING;
 import static com.prography.lighton.common.fixture.MemberTestFixture.createTemporaryMember;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.any;
@@ -36,7 +37,7 @@ class RegisterMemberServiceTest {
         // Given
         RegisterMemberRequest req = new RegisterMemberRequest("user@example.com", "Password123!@");
 
-        TemporaryMember savedEntity = createTemporaryMember(passwordEncoder);
+        TemporaryMember savedEntity = createTemporaryMember();
         when(temporaryMemberRepository.save(any())).thenReturn(savedEntity);
 
         // When
@@ -50,7 +51,7 @@ class RegisterMemberServiceTest {
     @DisplayName("올바르지 않은 이메일 입력 시, 예외가 발생한다.")
     void should_throw_exception_for_invalid_email() {
         // Given
-        RegisterMemberRequest req = new RegisterMemberRequest("invalid-email", "plainPw");
+        RegisterMemberRequest req = new RegisterMemberRequest("invalid-email", TEST_PASSWORD_STRING);
 
         // When & Then
         assertThrows(InvalidMemberException.class, () -> service.handle(req));

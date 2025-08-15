@@ -4,7 +4,7 @@ import com.prography.lighton.artist.users.application.service.ArtistService;
 import com.prography.lighton.member.common.domain.entity.Member;
 import com.prography.lighton.member.common.infrastructure.repository.MemberRepository;
 import com.prography.lighton.member.common.infrastructure.repository.TemporaryMemberRepository;
-import com.prography.lighton.member.users.application.command.InactivateMemberService;
+import com.prography.lighton.member.users.application.command.ClearMemberPreferencesService;
 import com.prography.lighton.performance.users.application.service.UserPerformanceLikeService;
 import com.prography.lighton.performance.users.application.service.UserPerformanceService;
 import lombok.RequiredArgsConstructor;
@@ -20,7 +20,7 @@ public class MemberWithdrawalService {
     private final TemporaryMemberRepository temporaryMemberRepository;
     private final UserPerformanceService userPerformanceService;
     private final UserPerformanceLikeService userPerformanceLikeService;
-    private final InactivateMemberService inactivateMemberService;
+    private final ClearMemberPreferencesService clearMemberPreferencesService;
     private final ArtistService artistService;
 
 
@@ -30,7 +30,7 @@ public class MemberWithdrawalService {
         dbMember.withdraw();
 
         userPerformanceService.inactivateAllByMember(dbMember);
-        inactivateMemberService.handle(dbMember);
+        clearMemberPreferencesService.handle(dbMember);
         userPerformanceLikeService.inactivateAllByMember(dbMember);
         artistService.inactiveByMember(dbMember);
 

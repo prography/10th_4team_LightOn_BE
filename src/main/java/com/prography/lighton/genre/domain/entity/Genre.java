@@ -20,8 +20,4 @@ public class Genre extends BaseEntity {
     private String name;
 
     private String imageUrl;
-
-    public static Genre of(String name, String imageUrl) {
-        return new Genre(name, imageUrl);
-    }
 }
