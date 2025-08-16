@@ -11,9 +11,14 @@ import com.prography.lighton.auth.presentation.AuthController;
 import com.prography.lighton.genre.infrastructure.cache.GenreCache;
 import com.prography.lighton.member.common.infrastructure.repository.MemberRepository;
 import com.prography.lighton.member.common.infrastructure.repository.PreferredGenreRepository;
-import com.prography.lighton.member.users.application.UserMemberCommandService;
-import com.prography.lighton.member.users.application.UserMemberQueryService;
-import com.prography.lighton.member.users.presentation.UserMemberController;
+import com.prography.lighton.member.users.application.command.CompleteProfileService;
+import com.prography.lighton.member.users.application.command.EditPreferredGenreService;
+import com.prography.lighton.member.users.application.command.RegisterMemberService;
+import com.prography.lighton.member.users.application.query.CheckEmailExistService;
+import com.prography.lighton.member.users.application.query.GetMemberInfoService;
+import com.prography.lighton.member.users.application.query.GetPreferredArtistsService;
+import com.prography.lighton.member.users.application.query.GetPreferredGenreService;
+import com.prography.lighton.member.users.presentation.UserMemberCommandController;
 import com.prography.lighton.region.infrastructure.cache.RegionCache;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
@@ -22,17 +27,32 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.web.servlet.MockMvc;
 
 @AutoConfigureRestDocs
-@WebMvcTest(controllers = {UserMemberController.class, AuthController.class})
+@WebMvcTest(controllers = {UserMemberCommandController.class, AuthController.class})
 public abstract class ControllerTest {
 
     @Autowired
     protected MockMvc mockMvc;
 
     @MockBean
-    protected UserMemberCommandService userMemberCommandService;
+    protected CompleteProfileService completeProfileService;
 
     @MockBean
-    protected UserMemberQueryService userMemberQueryService;
+    protected RegisterMemberService registerMemberService;
+
+    @MockBean
+    protected EditPreferredGenreService editPreferredGenreService;
+
+    @MockBean
+    protected CheckEmailExistService checkEmailExistsService;
+
+    @MockBean
+    protected GetMemberInfoService getMemberInfoService;
+
+    @MockBean
+    protected GetPreferredArtistsService getPreferredArtistsService;
+
+    @MockBean
+    protected GetPreferredGenreService getPreferredGenreService;
 
     @MockBean
     protected LoginMemberService loginMemberService;

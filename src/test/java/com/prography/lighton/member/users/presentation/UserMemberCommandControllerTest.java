@@ -1,4 +1,4 @@
-package com.prography.lighton.member.presentation;
+package com.prography.lighton.member.users.presentation;
 
 import static com.epages.restdocs.apispec.MockMvcRestDocumentationWrapper.document;
 import static com.epages.restdocs.apispec.ResourceDocumentation.resource;
@@ -23,13 +23,13 @@ import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors;
 
 @AutoConfigureMockMvc
-class UserMemberControllerTest extends ControllerTest {
+class UserMemberCommandControllerTest extends ControllerTest {
 
     @Test
     @WithMockUser
     void register() throws Exception {
         // given
-        given(userMemberCommandService.registerMember(any()))
+        given(registerMemberService.handle(any()))
                 .willReturn(RegisterMemberResponse.of(123L));
 
         // when & then
@@ -118,7 +118,7 @@ class UserMemberControllerTest extends ControllerTest {
     @WithMockUser
     void completeMember() throws Exception {
         // given
-        given(userMemberCommandService.completeMemberProfile(anyLong(), any()))
+        given(completeProfileService.handle(anyLong(), any()))
                 .willReturn(CompleteMemberProfileResponse.of("aaa.ccc.ddd", "refreshToken"));
 
         // when & then: 로그인 API 호출 및 문서화

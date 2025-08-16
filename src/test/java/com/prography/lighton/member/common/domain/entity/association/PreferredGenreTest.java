@@ -1,4 +1,4 @@
-package com.prography.lighton.member.domain.entity.association;
+package com.prography.lighton.member.common.domain.entity.association;
 
 import static com.prography.lighton.common.fixture.MemberTestFixture.createNormalMember;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -6,7 +6,6 @@ import static org.mockito.Mockito.mock;
 
 import com.prography.lighton.genre.domain.entity.Genre;
 import com.prography.lighton.member.common.domain.entity.Member;
-import com.prography.lighton.member.common.domain.entity.association.PreferredGenre;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.security.crypto.password.PasswordEncoder;
