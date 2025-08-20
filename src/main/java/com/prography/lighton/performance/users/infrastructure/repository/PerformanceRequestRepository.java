@@ -3,6 +3,7 @@ package com.prography.lighton.performance.users.infrastructure.repository;
 import com.prography.lighton.member.common.domain.entity.Member;
 import com.prography.lighton.performance.common.domain.entity.Performance;
 import com.prography.lighton.performance.common.domain.entity.PerformanceRequest;
+import com.prography.lighton.performance.common.domain.entity.enums.RequestStatus;
 import com.prography.lighton.performance.common.domain.exception.NoSuchPerformanceRequestException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -19,6 +20,10 @@ import org.springframework.stereotype.Repository;
 public interface PerformanceRequestRepository extends JpaRepository<PerformanceRequest, Long> {
 
     boolean existsByMemberAndPerformance(Member member, Performance performance);
+
+
+    boolean existsByMemberAndPerformanceAndRequestStatusNot(Member member, Performance performance,
+                                                            RequestStatus requestStatus);
 
     Optional<PerformanceRequest> findByMemberAndPerformance(Member member, Performance performance);
 

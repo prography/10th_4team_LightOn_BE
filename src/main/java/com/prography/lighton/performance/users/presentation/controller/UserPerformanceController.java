@@ -6,6 +6,7 @@ import com.prography.lighton.common.utils.ApiUtils.ApiResult;
 import com.prography.lighton.member.common.domain.entity.Member;
 import com.prography.lighton.performance.common.presentation.dto.response.GetPerformanceDetailResponseDTO;
 import com.prography.lighton.performance.users.application.service.UserPerformanceService;
+import com.prography.lighton.performance.users.presentation.dto.response.CheckIsAppliedPerformanceResponse;
 import com.prography.lighton.performance.users.presentation.dto.response.GetMyPerformanceStatsResponseDTO;
 import com.prography.lighton.performance.users.presentation.dto.response.GetMyRegisteredPerformanceListResponseDTO;
 import com.prography.lighton.performance.users.presentation.dto.response.GetMyRequestedPerformanceListResponseDTO;
@@ -32,6 +33,14 @@ public class UserPerformanceController {
     public ResponseEntity<ApiResult<GetPerformanceDetailResponseDTO>> getPerformanceDetail(
             @PathVariable Long performanceId) {
         return ResponseEntity.ok(ApiUtils.success(userPerformanceService.getPerformanceDetail(performanceId)));
+    }
+
+    @GetMapping("{performanceId}/is-applied")
+    public ResponseEntity<ApiResult<CheckIsAppliedPerformanceResponse>> isAppliedForPerformance(
+            @PathVariable Long performanceId,
+            @LoginMember Member member) {
+        return ResponseEntity.ok(
+                ApiUtils.success(userPerformanceService.isAppliedForPerformance(performanceId, member)));
     }
 
     @GetMapping("/{performanceId}/payment")
