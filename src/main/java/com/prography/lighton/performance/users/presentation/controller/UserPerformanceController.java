@@ -35,7 +35,7 @@ public class UserPerformanceController {
         return ResponseEntity.ok(ApiUtils.success(userPerformanceService.getPerformanceDetail(performanceId)));
     }
 
-    @GetMapping("{performanceId}/is-applied")
+    @GetMapping("{performanceId}/applied")
     public ResponseEntity<ApiResult<CheckIsAppliedPerformanceResponse>> isAppliedForPerformance(
             @PathVariable Long performanceId,
             @LoginMember Member member) {
