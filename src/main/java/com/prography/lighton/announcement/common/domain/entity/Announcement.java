@@ -2,6 +2,7 @@ package com.prography.lighton.announcement.common.domain.entity;
 
 import com.prography.lighton.announcement.common.domain.exception.InvalidAnnouncementException;
 import com.prography.lighton.common.domain.BaseEntity;
+import io.micrometer.common.util.StringUtils;
 import jakarta.persistence.CollectionTable;
 import jakarta.persistence.Column;
 import jakarta.persistence.ElementCollection;
@@ -36,11 +37,29 @@ public class Announcement extends BaseEntity {
     private List<String> images = new ArrayList<>();
 
     public static Announcement of(String title, String content, List<String> images) {
-        validateImages(images);
+        validateAnnouncement(title, content, images);
         return new Announcement(title, content, images);
     }
 
-    public static void validateImages(List<String> images) {
+    private static void validateAnnouncement(String title, String content, List<String> images) {
+        validateTitle(title);
+        validateContent(content);
+        validateImages(images);
+    }
+
+    private static void validateTitle(String title) {
+        if (StringUtils.isBlank(title)) {
+            throw new InvalidAnnouncementException("공지사항 제목은 필수입니다.");
+        }
+    }
+
+    private static void validateContent(String content) {
+        if (StringUtils.isBlank(content)) {
+            throw new InvalidAnnouncementException("공지사항 내용은 필수입니다.");
+        }
+    }
+
+    private static void validateImages(List<String> images) {
         if (images.size() > MAX_IMAGE_COUNT) {
             throw new InvalidAnnouncementException("공지사항 이미지는 최대 " + MAX_IMAGE_COUNT + "개까지 등록할 수 있습니다.");
         }

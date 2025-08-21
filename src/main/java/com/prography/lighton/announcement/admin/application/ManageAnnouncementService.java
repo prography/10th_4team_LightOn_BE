@@ -1,0 +1,46 @@
+package com.prography.lighton.announcement.admin.application;
+
+import com.prography.lighton.announcement.admin.infrastructure.AdminAnnouncementRepository;
+import com.prography.lighton.announcement.admin.presentation.dto.request.ManageAnnouncementRequestDTO;
+import com.prography.lighton.announcement.common.domain.entity.Announcement;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+@Service
+@Transactional(readOnly = true)
+@RequiredArgsConstructor
+public class ManageAnnouncementService {
+
+    private final AdminAnnouncementRepository adminAnnouncementRepository;
+
+    @Transactional
+    public void registerAnnouncement(ManageAnnouncementRequestDTO request) {
+        Announcement announcement = Announcement.of(
+                request.title(),
+                request.content(),
+                request.imageUrls()
+        );
+
+        adminAnnouncementRepository.save(announcement);
+    }
+
+
+    @Transactional
+    public void updateAnnouncement(Long announcementId, ManageAnnouncementRequestDTO request) {
+        Announcement announcement = adminAnnouncementRepository.getById(announcementId);
+
+        announcement.update(
+                request.title(),
+                request.content(),
+                request.imageUrls()
+        );
+    }
+
+    @Transactional
+    public void deleteAnnouncement(Long announcementId) {
+        Announcement announcement = adminAnnouncementRepository.getById(announcementId);
+
+        adminAnnouncementRepository.delete(announcement);
+    }
+}

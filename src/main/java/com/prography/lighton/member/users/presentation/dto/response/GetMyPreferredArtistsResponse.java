@@ -12,7 +12,7 @@ public record GetMyPreferredArtistsResponse(List<ArtistResponse> artists) {
                         .toList());
     }
 
-    private record ArtistResponse(
+    public record ArtistResponse(
             long id,
             String name,
             String profileImageUrl

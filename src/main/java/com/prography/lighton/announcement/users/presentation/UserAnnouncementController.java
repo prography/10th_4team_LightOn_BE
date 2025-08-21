@@ -1,6 +1,6 @@
 package com.prography.lighton.announcement.users.presentation;
 
-import com.prography.lighton.announcement.users.application.GetAnnouncementUseCase;
+import com.prography.lighton.announcement.users.application.GetAnnouncementService;
 import com.prography.lighton.announcement.users.presentation.dto.response.GetAnnouncementDetailResponseDTO;
 import com.prography.lighton.announcement.users.presentation.dto.response.GetAnnouncementListResponseDTO;
 import com.prography.lighton.common.utils.ApiUtils;
@@ -18,14 +18,14 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class UserAnnouncementController {
 
-    private final GetAnnouncementUseCase getAnnouncementUseCase;
+    private final GetAnnouncementService getAnnouncementService;
 
     @GetMapping("/{announcementId}")
     public ResponseEntity<ApiResult<GetAnnouncementDetailResponseDTO>> getAnnouncementDetail(
             @PathVariable Long announcementId
     ) {
         return ResponseEntity.ok(ApiUtils.success(
-                getAnnouncementUseCase.getAnnouncementDetail(announcementId)));
+                getAnnouncementService.getAnnouncementDetail(announcementId)));
     }
 
     @GetMapping
@@ -34,7 +34,7 @@ public class UserAnnouncementController {
             @RequestParam(defaultValue = "10") int size
     ) {
         return ResponseEntity.ok(ApiUtils.success(
-                getAnnouncementUseCase.getAnnouncementList(page, size)
+                getAnnouncementService.getAnnouncementList(page, size)
         ));
     }
 
