@@ -22,9 +22,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 public class Password {
 
     private static final Pattern PASSWORD_PATTERN = Pattern.compile(
-            "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[!@#$%^&*()\\-_=+{}\\[\\]:;\"'<>,.?/\\\\|]).{8,20}$"
+            "^(?=.*[a-z])(?=.*\\d)(?=.*[!@#$%^&*()\\-_=+{}\\[\\]:;\"'<>,.?/\\\\|]).{8,20}$"
     );
-
+    
     @Column(nullable = false, name = "password")
     private String value;
 
