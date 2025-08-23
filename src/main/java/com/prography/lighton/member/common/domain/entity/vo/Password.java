@@ -24,12 +24,12 @@ public class Password {
     private static final Pattern PASSWORD_PATTERN = Pattern.compile(
             "^(?=.*[a-z])(?=.*\\d)(?=.*[!@#$%^&*()\\-_=+{}\\[\\]:;\"'<>,.?/\\\\|]).{8,20}$"
     );
-    
+
     @Column(nullable = false, name = "password")
     private String value;
 
     public static Password encodeAndCreate(String rawPassword, PasswordEncoder encoder) {
-        if (!PASSWORD_PATTERN.matcher(rawPassword).matches() || isBlank(rawPassword)) {
+        if (isBlank(rawPassword) || !PASSWORD_PATTERN.matcher(rawPassword).matches()) {
             throw new InvalidMemberException("비밀번호 형식이 올바르지 않습니다.");
         }
         return new Password(encoder.encode(rawPassword));
