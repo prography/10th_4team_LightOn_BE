@@ -23,10 +23,8 @@ public class BuskingService {
     private final PerformanceResolver performanceResolver;
     private final ArtistService artistService;
 
-    public Busking getApprovedBuskingById(Long id) {
-        Busking performance = performanceRepository.getByBuskingId(id);
-        performance.validateApproved();
-        return performance;
+    public Busking getBuskingById(Long id) {
+        return performanceRepository.getByBuskingId(id);
     }
 
     @Transactional
@@ -53,7 +51,7 @@ public class BuskingService {
 
     @Transactional
     public void updateBuskingByUser(Member member, Long buskingId, UpdateUserBuskingMultiPart request) {
-        Busking busking = getApprovedBuskingById(buskingId);
+        Busking busking = getBuskingById(buskingId);
         var data = performanceResolver.toUpdateBuskingData(member, busking, request.data().info(),
                 request.data().schedule(),
                 request.posterImage(),
@@ -64,7 +62,7 @@ public class BuskingService {
 
     @Transactional
     public void updateBuskingByArtist(Member member, Long buskingId, UpdateArtistBuskingMultiPart request) {
-        Busking busking = getApprovedBuskingById(buskingId);
+        Busking busking = getBuskingById(buskingId);
         var data = performanceResolver.toUpdateBuskingData(member, busking, request.data().info(),
                 request.data().schedule(),
                 request.posterImage(), request.proof());
@@ -73,7 +71,7 @@ public class BuskingService {
 
     @Transactional
     public void cancelBusking(Member member, Long buskingId) {
-        Busking busking = getApprovedBuskingById(buskingId);
+        Busking busking = getBuskingById(buskingId);
         busking.cancel(member);
     }
 }

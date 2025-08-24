@@ -34,10 +34,8 @@ public class ArtistPerformanceService {
     private final PerformanceArtistRepository performanceArtistRepository;
     private final PerformanceResolver performanceResolver;
 
-    public Performance getApprovedPerformanceById(Long id) {
-        Performance performance = performanceRepository.getById(id);
-        performance.validateApproved();
-        return performance;
+    public Performance getPerformanceById(Long id) {
+        return performanceRepository.getById(id);
     }
 
     public Page<PerformanceSearchItemDTO> searchByKeyword(String keyword, Pageable pageable) {
@@ -56,7 +54,7 @@ public class ArtistPerformanceService {
 
     @Transactional
     public void updatePerformance(Member member, Long performanceId, UpdatePerformanceMultiPart request) {
-        Performance performance = getApprovedPerformanceById(performanceId);
+        Performance performance = getPerformanceById(performanceId);
         var data = performanceResolver.toUpdatePerformanceData(member, performance, request);
         performance.update(member, data.artists(), data.info(), data.schedule(), data.location(), data.payment(),
                 data.seats(),
@@ -65,7 +63,7 @@ public class ArtistPerformanceService {
 
     @Transactional
     public void cancelPerformance(Member member, Long performanceId) {
-        Performance performance = getApprovedPerformanceById(performanceId);
+        Performance performance = getPerformanceById(performanceId);
         performance.cancel(member);
     }
 
