@@ -49,6 +49,7 @@ public interface PerformanceRepository extends JpaRepository<Performance, Long> 
                 WHERE p.location.latitude BETWEEN :minLat AND :maxLat
                   AND p.location.longitude BETWEEN :minLng AND :maxLng
                   AND p.status = true
+                  AND p.canceled = false
             """)
     List<Performance> findRoughlyWithinBox(double minLat, double maxLat, double minLng, double maxLng);
 
@@ -58,6 +59,7 @@ public interface PerformanceRepository extends JpaRepository<Performance, Long> 
                 WHERE p.latitude BETWEEN :minLat AND :maxLat
                 AND p.longitude BETWEEN :minLng AND :maxLng
                 AND p.status = true
+                AND p.canceled = false
                 ORDER BY RAND()
                 LIMIT 3
             """, nativeQuery = true)
@@ -72,6 +74,7 @@ public interface PerformanceRepository extends JpaRepository<Performance, Long> 
                   AND p.location.latitude BETWEEN :minLat AND :maxLat
                   AND p.location.longitude BETWEEN :minLng AND :maxLng
                   AND p.status = true
+                  AND p.canceled = false
             """)
     List<Performance> findRegisteredInLastWeekWithinBox(double minLat, double maxLat,
                                                         double minLng, double maxLng,
@@ -116,6 +119,7 @@ public interface PerformanceRepository extends JpaRepository<Performance, Long> 
                                                     WITH a.status = true
                                               WHERE p.status = true
                                                 AND (p.performer = :member OR a.member = :member)
+                                                AND p.canceled = false
                                            ORDER BY p.createdAt DESC
             """)
     List<Performance> getMyRegisteredOrParticipatedPerformanceList(@Param("member") Member member);
