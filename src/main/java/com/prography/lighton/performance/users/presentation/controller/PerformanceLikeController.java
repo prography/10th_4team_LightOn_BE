@@ -21,11 +21,11 @@ public class PerformanceLikeController {
 
     private final UserPerformanceLikeService likeService;
 
-    @GetMapping("{performanceId}/like")
+    @GetMapping("/{performanceId}/like")
     public ResponseEntity<ApiResult<LikePerformanceResponse>> getPerformanceLikeStatus(
             @LoginMember Member member,
             @PathVariable Long performanceId) {
-        
+
         return ResponseEntity.ok(
                 ApiUtils.success(likeService.getPerformanceLikeStatus(member, performanceId))
         );
