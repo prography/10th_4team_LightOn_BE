@@ -1,5 +1,6 @@
 package com.prography.lighton.performance.common.presentation.dto.response;
 
+import com.prography.lighton.performance.common.domain.entity.enums.ApproveStatus;
 import com.prography.lighton.performance.common.domain.entity.enums.Seat;
 import com.prography.lighton.performance.common.domain.entity.enums.Type;
 import com.prography.lighton.performance.common.domain.entity.vo.Info;
@@ -20,7 +21,8 @@ public record GetPerformanceDetailResponseDTO(
         List<Seat> seats,
         String proofUrl,
         Boolean isPaid,
-        Integer fee
+        Integer fee,
+        ApproveStatus status
 ) {
     public record ArtistDTO(Long id, String name, String description) {
         public static ArtistDTO of(Long id, String name, String description) {

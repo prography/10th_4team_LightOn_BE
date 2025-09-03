@@ -21,9 +21,10 @@ public final class ApprovalPolicy {
 
     private static boolean isAllowed(ApproveStatus from, ApproveStatus to) {
         return switch (from) {
-            case PENDING -> (to == ApproveStatus.APPROVED || to == ApproveStatus.REJECTED);
-            case APPROVED -> (to == ApproveStatus.PENDING);
-            case REJECTED -> false;
+            case PENDING ->
+                    (to == ApproveStatus.APPROVED || to == ApproveStatus.REJECTED || to == ApproveStatus.CANCELED);
+            case APPROVED -> (to == ApproveStatus.PENDING || to == ApproveStatus.CANCELED);
+            case CANCELED, REJECTED -> false;
         };
     }
 

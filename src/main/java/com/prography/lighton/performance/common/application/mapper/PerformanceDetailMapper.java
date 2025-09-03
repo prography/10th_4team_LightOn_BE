@@ -64,6 +64,7 @@ public class PerformanceDetailMapper {
                 .proofUrl(p.getProofUrl())
                 .isPaid(p.getPayment().getIsPaid())
                 .fee(p.getPayment().getFee())
+                .status(p.getApproveStatus())
                 .build();
     }
 
@@ -90,6 +91,7 @@ public class PerformanceDetailMapper {
                 .proofUrl(b.getProofUrl())
                 .isPaid(b.getPayment().getIsPaid())
                 .fee(b.getPayment().getFee())
+                .status(b.getApproveStatus())
                 .build();
     }
 
