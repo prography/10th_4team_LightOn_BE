@@ -32,13 +32,14 @@ public class ArtistPerformanceController {
                 ApiUtils.success(artistPerformanceService.getPerformanceRequests(performanceId, member)));
     }
 
-    @PostMapping("/{performanceId}/requests")
+    @PostMapping("/{performanceId}/applicants/{applicantId}/requests")
     public ResponseEntity<ApiResult<?>> managePerformanceRequest(
             @PathVariable Long performanceId,
+            @PathVariable Long applicantId,
             @LoginMember Member member,
             @RequestParam RequestStatus requestStatus
     ) {
-        artistPerformanceService.managePerformanceRequest(performanceId, member, requestStatus);
+        artistPerformanceService.managePerformanceRequest(performanceId, applicantId, member, requestStatus);
         return ResponseEntity.ok(ApiUtils.success());
     }
 }
