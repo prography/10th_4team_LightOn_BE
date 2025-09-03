@@ -48,6 +48,7 @@ public interface PerformanceRepository extends JpaRepository<Performance, Long> 
                 JOIN FETCH p.genres pg
                 WHERE p.location.latitude BETWEEN :minLat AND :maxLat
                   AND p.location.longitude BETWEEN :minLng AND :maxLng
+                AND p.canceled = false
                   AND p.status = true
             """)
     List<Performance> findRoughlyWithinBox(double minLat, double maxLat, double minLng, double maxLng);
@@ -57,6 +58,7 @@ public interface PerformanceRepository extends JpaRepository<Performance, Long> 
                 JOIN performance_genre pg ON p.id = pg.performance_id
                 WHERE p.latitude BETWEEN :minLat AND :maxLat
                 AND p.longitude BETWEEN :minLng AND :maxLng
+                AND p.canceled = false
                 AND p.status = true
                 ORDER BY RAND()
                 LIMIT 3
@@ -71,6 +73,7 @@ public interface PerformanceRepository extends JpaRepository<Performance, Long> 
                 WHERE p.approvedAt >= :fromDate
                   AND p.location.latitude BETWEEN :minLat AND :maxLat
                   AND p.location.longitude BETWEEN :minLng AND :maxLng
+                AND p.canceled = false
                   AND p.status = true
             """)
     List<Performance> findRegisteredInLastWeekWithinBox(double minLat, double maxLat,
@@ -89,6 +92,7 @@ public interface PerformanceRepository extends JpaRepository<Performance, Long> 
                 )
                 AND p.location.latitude BETWEEN :minLat AND :maxLat
                 AND p.location.longitude BETWEEN :minLng AND :maxLng
+                AND p.canceled = false
                 AND p.status = true
             """)
     List<Performance> findClosingSoonWithinBox(
@@ -116,6 +120,7 @@ public interface PerformanceRepository extends JpaRepository<Performance, Long> 
                                                     WITH a.status = true
                                               WHERE p.status = true
                                                 AND (p.performer = :member OR a.member = :member)
+                                                AND p.canceled = false
                                            ORDER BY p.createdAt DESC
             """)
     List<Performance> getMyRegisteredOrParticipatedPerformanceList(@Param("member") Member member);

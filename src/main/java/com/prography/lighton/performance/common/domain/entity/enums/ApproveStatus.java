@@ -3,7 +3,7 @@ package com.prography.lighton.performance.common.domain.entity.enums;
 import com.prography.lighton.artist.admin.domain.exception.UnsupportedApproveStatusTypeException;
 
 public enum ApproveStatus {
-    PENDING, APPROVED, REJECTED;
+    PENDING, APPROVED, REJECTED, CANCELED;
 
     public static ApproveStatus from(String value) {
         try {

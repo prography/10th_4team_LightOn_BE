@@ -216,6 +216,7 @@ public class Performance extends BaseEntity {
         if (this.canceled) {
             throw new IllegalStateException("이미 취소된 공연입니다.");
         }
+        managePerformanceApplication(ApproveStatus.CANCELED);
         this.canceled = true;
     }
 
