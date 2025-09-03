@@ -22,6 +22,15 @@ public class UserPerformanceLikeService {
     private final PerformanceLikeRepository performanceLikeRepository;
     private final ArtistLikeRedisService likeRedisService;
 
+    public LikePerformanceResponse getPerformanceLikeStatus(Member member, Long performanceId) {
+        Performance performance = performanceRepository.getById(performanceId);
+
+        PerformanceLike performanceLike = performanceLikeRepository.findByMemberAndPerformance(member, performance)
+                .orElseGet(() -> PerformanceLike.of(member, performance, false));
+
+        return LikePerformanceResponse.of(performanceLike.isLiked());
+    }
+
     @Transactional
     public LikePerformanceResponse likeOrUnlikePerformance(Member member, Long performanceId) {
         Performance performance = performanceRepository.getById(performanceId);
@@ -32,7 +41,7 @@ public class UserPerformanceLikeService {
         boolean nowLiked = like.toggleLike();
         performanceLikeRepository.save(like);
 
-        if (like.toggleLike()) {
+        if (nowLiked) {
             incrementArtistLikes(performance);
         }
         return LikePerformanceResponse.of(nowLiked);
