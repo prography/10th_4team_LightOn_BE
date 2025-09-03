@@ -7,11 +7,11 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 
 public enum PerformanceStatus {
-    PENDING, APPROVED, FINISHED, REJECTED;
+    PENDING, APPROVED, FINISHED, REJECTED, CANCELED;
 
     public static PerformanceStatus getPerformanceStatus(
             ApproveStatus approveStatus, LocalDate finishDate, LocalTime finishTime) {
-        
+
         LocalDateTime currentDateTime = LocalDateTime.now();
 
         if (currentDateTime.toLocalDate().isAfter(finishDate) ||
