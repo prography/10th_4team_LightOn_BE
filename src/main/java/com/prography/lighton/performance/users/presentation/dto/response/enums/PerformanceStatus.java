@@ -26,6 +26,8 @@ public enum PerformanceStatus {
             return PerformanceStatus.APPROVED;
         } else if (approveStatus == ApproveStatus.REJECTED) {
             return PerformanceStatus.REJECTED;
+        } else if (approveStatus == ApproveStatus.CANCELED) {
+            return PerformanceStatus.CANCELED;
         }
 
         throw new UnsupportedTypeException("지원하지 않는 공연 상태입니다.");
