@@ -3,6 +3,7 @@ package com.prography.lighton.performance.artist.application.impl;
 import com.prography.lighton.genre.domain.entity.Genre;
 import com.prography.lighton.genre.infrastructure.cache.GenreCache;
 import com.prography.lighton.member.common.domain.entity.Member;
+import com.prography.lighton.member.common.infrastructure.repository.MemberRepository;
 import com.prography.lighton.performance.artist.application.ArtistPerformanceService;
 import com.prography.lighton.performance.artist.presentation.dto.response.GetPerformanceRequestsResponseDTO;
 import com.prography.lighton.performance.common.domain.entity.Performance;
@@ -23,6 +24,7 @@ public class ArtistPerformanceServiceImpl implements ArtistPerformanceService {
 
     private final GenreCache genreCache;
 
+    private final MemberRepository memberRepository;
     private final PerformanceRepository performanceRepository;
     private final PerformanceRequestRepository performanceRequestRepository;
 
@@ -41,11 +43,14 @@ public class ArtistPerformanceServiceImpl implements ArtistPerformanceService {
 
     @Override
     @Transactional
-    public void managePerformanceRequest(Long performanceId, Member member, RequestStatus requestStatus) {
+    public void managePerformanceRequest(Long performanceId, Long applicantId, Member member,
+                                         RequestStatus requestStatus) {
         Performance performance = performanceRepository.getById(performanceId);
         performance.validateIsManagedBy(member);
 
-        PerformanceRequest performanceRequest = performanceRequestRepository.getByMemberAndPerformance(member, performance);
+        Member applicant = memberRepository.getMemberById(applicantId);
+        PerformanceRequest performanceRequest = performanceRequestRepository.getByMemberAndPerformance(applicant,
+                performance);
         performanceRequest.updateRequestStatus(requestStatus);
 
         // TODO 확정 시 유저에게 알림 발송

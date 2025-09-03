@@ -8,5 +8,5 @@ public interface ArtistPerformanceService {
 
     GetPerformanceRequestsResponseDTO getPerformanceRequests(Long performanceId, Member member);
 
-    void managePerformanceRequest(Long performanceId, Member member, RequestStatus requestStatus);
+    void managePerformanceRequest(Long performanceId, Long applicantId, Member member, RequestStatus requestStatus);
 }
