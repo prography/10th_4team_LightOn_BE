@@ -46,7 +46,9 @@ public class BuskingFixture {
                 PerformanceFixture.defaultLocation(),
                 PerformanceFixture.defaultGenres(),
                 PerformanceFixture.DEFAULT_PROOF_URL,
-                artist
+                artist,
+                ARTIST_NAME,
+                ARTIST_DESCRIPTION
         );
     }
 
@@ -58,7 +60,9 @@ public class BuskingFixture {
                 PerformanceFixture.defaultLocation(),
                 PerformanceFixture.defaultGenres(),
                 PerformanceFixture.DEFAULT_PROOF_URL,
-                artist
+                artist,
+                ARTIST_NAME,
+                ARTIST_DESCRIPTION
         );
     }
 }

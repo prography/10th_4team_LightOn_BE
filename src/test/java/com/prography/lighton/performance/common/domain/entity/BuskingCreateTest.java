@@ -34,7 +34,9 @@ class BuskingCreateTest {
                     PerformanceFixture.defaultLocation(),
                     PerformanceFixture.defaultGenres(),
                     PerformanceFixture.DEFAULT_PROOF_URL,
-                    artist);
+                    artist,
+                    PerformanceFixture.ARTIST_NAME,
+                    PerformanceFixture.ARTIST_DESCRIPTION);
 
             assertThat(b.getType()).isEqualTo(Type.BUSKING);
             assertThat(b.getPerformer().getId()).isEqualTo(PerformanceFixture.DEFAULT_PERFORMER_ID);
@@ -83,7 +85,9 @@ class BuskingCreateTest {
                     PerformanceFixture.defaultLocation(),
                     PerformanceFixture.defaultGenres(),
                     PerformanceFixture.DEFAULT_PROOF_URL,
-                    artist
+                    artist,
+                    PerformanceFixture.ARTIST_NAME,
+                    PerformanceFixture.ARTIST_DESCRIPTION
             );
 
             assertThat(b.getArtistName()).isEqualTo(artistName);
@@ -117,7 +121,9 @@ class BuskingCreateTest {
                     PerformanceFixture.defaultLocation(),
                     PerformanceFixture.defaultGenres(),
                     PerformanceFixture.DEFAULT_PROOF_URL,
-                    artist
+                    artist,
+                    PerformanceFixture.ARTIST_NAME,
+                    PerformanceFixture.ARTIST_DESCRIPTION
             )).isInstanceOf(MasterArtistCannotBeRemovedException.class);
         }
     }
