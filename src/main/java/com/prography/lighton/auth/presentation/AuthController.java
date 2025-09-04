@@ -58,7 +58,7 @@ public class AuthController {
     public void socialLoginRedirect(
             @PathVariable(name = "socialLoginType") String socialLoginPath,
             HttpServletResponse response) throws IOException {
-        SocialLoginType socialLoginType = SocialLoginType.valueOf(socialLoginPath.toUpperCase());
+        SocialLoginType socialLoginType = SocialLoginType.from(socialLoginPath.toUpperCase());
         String redirectUrl = oAuthService.accessRequest(socialLoginType);
         response.sendRedirect(redirectUrl);
     }
@@ -68,7 +68,7 @@ public class AuthController {
     public ResponseEntity<ApiResult<SocialLoginResult>> socialLoginCallback(
             @PathVariable(name = "socialLoginType") String socialLoginPath,
             @RequestParam(name = "code") String code) throws RuntimeException {
-        SocialLoginType socialLoginType = SocialLoginType.valueOf(socialLoginPath.toUpperCase());
+        SocialLoginType socialLoginType = SocialLoginType.from(socialLoginPath.toUpperCase());
         return ResponseEntity.status(HttpStatus.OK)
                 .body(ApiUtils.success(oAuthService.oAuthLoginOrJoin(socialLoginType, code)));
     }

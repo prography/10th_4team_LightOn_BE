@@ -11,12 +11,15 @@ import org.springframework.data.repository.query.Param;
 
 public interface TemporaryMemberRepository extends JpaRepository<TemporaryMember, Long> {
 
-    Optional<TemporaryMember> findByEmail(Email email);
+    @Query("SELECT m FROM TemporaryMember m WHERE m.email.value = :email AND m.loginType = :socialLoginType AND not m.isRegistered")
+    Optional<TemporaryMember> findByEmailAndSocialLoginTypeAndNotRegistered(@Param("email") String email,
+                                                                            @Param("socialLoginType") SocialLoginType socialLoginType);
 
     void deleteByEmail(Email email);
 
-    @Query("SELECT COUNT(m) > 0 FROM TemporaryMember m WHERE m.email.value = :email AND not m.isRegistered")
-    boolean existsByEmailAndNotRegistered(@Param("email") String email);
+    @Query("SELECT COUNT(m) > 0 FROM TemporaryMember m WHERE m.email.value = :email AND m.loginType = :socialLoginType AND not m.isRegistered")
+    boolean existsByEmailAndSocialLoginTypeAndNotRegistered(@Param("email") String email,
+                                                            @Param("socialLoginType") SocialLoginType socialLoginType);
 
     @Query("SELECT COUNT(m) > 0 FROM TemporaryMember m WHERE m.email.value = :email")
     boolean existsByEmail(@Param("email") String email);
