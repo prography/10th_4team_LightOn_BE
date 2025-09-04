@@ -1,6 +1,7 @@
 package com.prography.lighton.performance.users.presentation.dto.response;
 
 import com.prography.lighton.performance.common.domain.entity.PerformanceRequest;
+import com.prography.lighton.performance.common.domain.entity.enums.Type;
 import com.prography.lighton.performance.users.presentation.dto.response.enums.PerformanceStatus;
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -25,7 +26,8 @@ public record GetMyRequestedPerformanceListResponseDTO(List<RequestedPerformance
                                 ),
                                 request.getPerformance().getInfo().getPlace(),
                                 request.getPerformance().getPayment().getIsPaid(),
-                                request.getRequestedAt().toLocalDate()
+                                request.getRequestedAt().toLocalDate(),
+                                request.getPerformance().getType()
                         ))
                         .toList()
         );
@@ -39,7 +41,8 @@ public record GetMyRequestedPerformanceListResponseDTO(List<RequestedPerformance
             PerformanceStatus performanceStatus,
             String address,
             boolean isPaid,
-            LocalDate requestedAt
+            LocalDate requestedAt,
+            boolean isConcert
     ) {
         public static RequestedPerformanceResponseDTO from(
                 Long id,
@@ -49,10 +52,13 @@ public record GetMyRequestedPerformanceListResponseDTO(List<RequestedPerformance
                 PerformanceStatus performanceStatus,
                 String address,
                 boolean isPaid,
-                LocalDate requestedAt
+                LocalDate requestedAt,
+                Type type
+
         ) {
             return new RequestedPerformanceResponseDTO(
-                    id, title, startDate, startTime, performanceStatus, address, isPaid, requestedAt
+                    id, title, startDate, startTime, performanceStatus, address, isPaid, requestedAt,
+                    type == Type.CONCERT
             );
         }
     }
