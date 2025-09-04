@@ -38,7 +38,7 @@ public class LoginMemberService {
     }
 
     private void validateIsNotTemporaryMember(String email) {
-        if (temporaryMemberRepository.existsByEmailAndNotRegistered(email)) {
+        if (temporaryMemberRepository.existsByEmailAndSocialLoginTypeAndNotRegistered(email, SocialLoginType.DEFAULT)) {
             throw new InvalidMemberException("개인 정보를 입력해주세요.");
         }
     }

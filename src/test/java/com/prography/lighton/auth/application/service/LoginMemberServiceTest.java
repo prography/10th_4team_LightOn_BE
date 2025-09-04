@@ -7,6 +7,7 @@ import static org.mockito.Mockito.when;
 
 import com.prography.lighton.auth.application.fake.FakeTokenProvider;
 import com.prography.lighton.auth.application.validator.DuplicateEmailValidator;
+import com.prography.lighton.auth.domain.enums.SocialLoginType;
 import com.prography.lighton.member.common.domain.entity.Member;
 import com.prography.lighton.member.common.domain.exception.InvalidMemberException;
 import com.prography.lighton.member.common.infrastructure.repository.MemberRepository;
@@ -57,7 +58,8 @@ class LoginMemberServiceTest {
         Member member = createNormalMember(passwordEncoder);
         ReflectionTestUtils.setField(member, "id", 1L);
         when(memberRepository.getMemberByEmail(member.getEmail())).thenReturn(member);
-        when(temporaryMemberRepository.existsByEmailAndNotRegistered(member.getEmail().getValue())).thenReturn(false);
+        when(temporaryMemberRepository.existsByEmailAndSocialLoginTypeAndNotRegistered(member.getEmail().getValue(),
+                SocialLoginType.DEFAULT)).thenReturn(false);
         when(passwordEncoder.matches(password, member.getPassword().getValue())).thenReturn(true);
 
         // When
@@ -75,7 +77,8 @@ class LoginMemberServiceTest {
     void should_not_allow_temporary_member_to_login() {
         // Given
         Member member = createNormalMember(passwordEncoder);
-        when(temporaryMemberRepository.existsByEmailAndNotRegistered(member.getEmail().getValue())).thenReturn(true);
+        when(temporaryMemberRepository.existsByEmailAndSocialLoginTypeAndNotRegistered(member.getEmail().getValue(),
+                SocialLoginType.DEFAULT)).thenReturn(true);
 
         // When & Then
         assertThrows(InvalidMemberException.class, () ->
@@ -89,7 +92,8 @@ class LoginMemberServiceTest {
         // Given
         Member member = createNormalMember(passwordEncoder);
         when(memberRepository.getMemberByEmail(member.getEmail())).thenReturn(member);
-        when(temporaryMemberRepository.existsByEmailAndNotRegistered(member.getEmail().getValue())).thenReturn(false);
+        when(temporaryMemberRepository.existsByEmailAndSocialLoginTypeAndNotRegistered(member.getEmail().getValue(),
+                SocialLoginType.DEFAULT)).thenReturn(false);
         when(passwordEncoder.matches("WrongPassword", member.getPassword().getValue())).thenReturn(false);
 
         // When & Then

@@ -87,7 +87,8 @@ public class OAuthService {
             return issueTokensFor(member);
         }
 
-        TemporaryMember tempMember = temporaryMemberRepository.findByEmailAndNotRegistered(emailVO.getValue())
+        TemporaryMember tempMember = temporaryMemberRepository.findByEmailAndSocialLoginTypeAndNotRegistered(
+                        emailVO.getValue(), socialLoginType)
                 .orElseGet(() -> temporaryMemberRepository.save(
                         TemporaryMember.socialLoginMemberOf(emailVO, socialLoginType)));
 
