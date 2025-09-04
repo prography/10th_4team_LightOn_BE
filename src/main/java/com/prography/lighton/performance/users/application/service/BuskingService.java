@@ -45,7 +45,8 @@ public class BuskingService {
                 request.posterImage(),
                 request.proof());
         Busking busking = Busking.createByArtist(member, data.info(), data.schedule(),
-                data.location(), data.genres(), data.proofUrl(), artist);
+                data.location(), data.genres(), data.proofUrl(), artist, request.data().artistName(),
+                request.data().artistDescription());
         performanceRepository.save(busking);
     }
 
@@ -66,7 +67,8 @@ public class BuskingService {
         var data = performanceResolver.toUpdateBuskingData(member, busking, request.data().info(),
                 request.data().schedule(),
                 request.posterImage(), request.proof());
-        busking.updateByArtist(member, data.info(), data.schedule(), data.location(), data.genres(), data.proofUrl());
+        busking.updateByArtist(member, data.info(), data.schedule(), data.location(), data.genres(), data.proofUrl(),
+                request.data().artistName(), request.data().artistDescription());
     }
 
     @Transactional

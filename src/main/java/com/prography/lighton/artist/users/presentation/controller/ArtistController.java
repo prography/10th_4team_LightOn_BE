@@ -5,6 +5,7 @@ import com.prography.lighton.artist.users.presentation.dto.request.RegisterArtis
 import com.prography.lighton.artist.users.presentation.dto.request.SaveArtistRequest;
 import com.prography.lighton.artist.users.presentation.dto.request.UpdateArtistMultipart;
 import com.prography.lighton.artist.users.presentation.dto.response.ArtistCheckResponseDTO;
+import com.prography.lighton.artist.users.presentation.dto.response.GetMyArtistInfoResponse;
 import com.prography.lighton.common.annotation.LoginMember;
 import com.prography.lighton.common.utils.ApiUtils;
 import com.prography.lighton.common.utils.ApiUtils.ApiResult;
@@ -75,5 +76,10 @@ public class ArtistController {
     @GetMapping("/me")
     public ResponseEntity<ApiResult<ArtistCheckResponseDTO>> checkIsArtist(@LoginMember Member member) {
         return ResponseEntity.ok(ApiUtils.success(artistService.isArtist(member)));
+    }
+
+    @GetMapping("/me/info")
+    public ResponseEntity<ApiResult<GetMyArtistInfoResponse>> getMyArtistInfo(@LoginMember Member member) {
+        return ResponseEntity.ok(ApiUtils.success(artistService.getMyArtistInfo(member)));
     }
 }
