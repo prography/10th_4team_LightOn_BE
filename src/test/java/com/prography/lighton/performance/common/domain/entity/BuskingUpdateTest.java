@@ -36,7 +36,9 @@ class BuskingUpdateTest {
                     PerformanceFixture.defaultLocation(),
                     PerformanceFixture.defaultGenres(),
                     PerformanceFixture.DEFAULT_PROOF_URL,
-                    artist);
+                    artist,
+                    PerformanceFixture.ARTIST_NAME,
+                    PerformanceFixture.ARTIST_DESCRIPTION);
 
             Info updatedInfo = Info.of("수정 제목", "수정 설명", "수정 장소", "", "");
 
@@ -44,7 +46,9 @@ class BuskingUpdateTest {
                     performer,
                     updatedInfo, PerformanceFixture.defaultSchedule(), PerformanceFixture.defaultLocation(),
                     PerformanceFixture.defaultGenres(),
-                    PerformanceFixture.DEFAULT_PROOF_URL
+                    PerformanceFixture.DEFAULT_PROOF_URL,
+                    PerformanceFixture.ARTIST_NAME,
+                    PerformanceFixture.ARTIST_DESCRIPTION
             );
 
             assertThat(b.getInfo()).isEqualTo(updatedInfo);
@@ -62,7 +66,9 @@ class BuskingUpdateTest {
             assertThatThrownBy(() -> b.updateByArtist(
                     notPerformer,
                     b.getInfo(), b.getSchedule(), b.getLocation(),
-                    PerformanceFixture.defaultGenres(), "수정 url"
+                    PerformanceFixture.defaultGenres(), "수정 url",
+                    PerformanceFixture.ARTIST_NAME,
+                    PerformanceFixture.ARTIST_DESCRIPTION
             )).isInstanceOf(NotAuthorizedPerformanceAccessException.class);
         }
 
@@ -80,7 +86,9 @@ class BuskingUpdateTest {
 
             assertThatThrownBy(() -> b.updateByArtist(
                     b.getPerformer(), b.getInfo(), near, b.getLocation(),
-                    PerformanceFixture.defaultGenres(), "수정 url"
+                    PerformanceFixture.defaultGenres(), "수정 url",
+                    PerformanceFixture.ARTIST_NAME,
+                    PerformanceFixture.ARTIST_DESCRIPTION
             )).isInstanceOf(PerformanceUpdateNotAllowedException.class);
         }
     }

@@ -43,7 +43,7 @@ public class PerformanceResolver {
         SavePerformanceRequest data = request.data();
 
         return new PerformanceData(
-                toArtists(member, data.artists()),
+                toArtists(member),
                 toInfo(data.info(), posterUrl),
                 toSchedule(data.schedule()),
                 toLocation(data.info()),
@@ -63,7 +63,7 @@ public class PerformanceResolver {
         SavePerformanceRequest data = request.data();
 
         return new PerformanceData(
-                toArtists(member, data.artists()),
+                toArtists(member),
                 toInfo(data.info(), posterUrl),
                 toSchedule(data.schedule()),
                 toLocation(data.info()),
@@ -104,10 +104,9 @@ public class PerformanceResolver {
                 proofUrl);
     }
 
-    private List<Artist> toArtists(Member member, List<Long> artistIds) {
+    private List<Artist> toArtists(Member member) {
         Artist artist = artistService.getApprovedArtistByMember(member);
-        artistIds.add(artist.getId());
-        return artistService.getApprovedArtistsByIds(artistIds);
+        return List.of(artist);
     }
 
     private Info toInfo(InfoDTO req, String posterUrl) {

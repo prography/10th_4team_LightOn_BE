@@ -119,6 +119,13 @@ public class Performance extends BaseEntity {
 
     private LocalDateTime approvedAt;
 
+    @Column(length = 100)
+    private String artistName;
+
+    @Column(length = 255)
+    private
+    String artistDescription;
+
     protected Performance(
             Member performer,
             Info info,
@@ -127,13 +134,17 @@ public class Performance extends BaseEntity {
             String proofUrl,
             PerformanceProfile profile,
             List<Genre> genres,
-            List<Artist> artists
+            List<Artist> artists,
+            String artistName,
+            String artistDescription
     ) {
         this.performer = performer;
         this.info = info;
         this.schedule = schedule;
         this.location = location;
         this.proofUrl = proofUrl;
+        this.artistName = artistName;
+        this.artistDescription = artistDescription;
 
         this.type = profile.type();
         this.payment = profile.payment();
@@ -155,7 +166,9 @@ public class Performance extends BaseEntity {
             List<Seat> seats,
             List<Genre> genres,
             String proofUrl,
-            int totalSeatsCount
+            int totalSeatsCount,
+            String artistName,
+            String artistDescription
     ) {
         return new Performance(
                 performer,
@@ -165,7 +178,9 @@ public class Performance extends BaseEntity {
                 proofUrl,
                 PerformanceProfile.concert(payment, seats, totalSeatsCount),
                 genres,
-                artists
+                artists,
+                artistName,
+                artistDescription
         );
     }
 
@@ -180,13 +195,15 @@ public class Performance extends BaseEntity {
             List<Seat> seats,
             List<Genre> genres,
             String proofUrl,
-            int totalSeatsCount
+            int totalSeatsCount,
+            String artistName,
+            String artistDescription
     ) {
         validatePerformer(performer);
         ensureUpdatableWindow();
         DomainValidator.requireNonBlank(proofUrl);
 
-        updateCommonDetails(info, schedule, location, proofUrl, genres);
+        updateCommonDetails(info, schedule, location, proofUrl, genres, artistName, artistDescription);
         this.payment = payment;
         this.seats.clear();
         this.seats.addAll(seats);
@@ -200,12 +217,17 @@ public class Performance extends BaseEntity {
             Schedule schedule,
             Location location,
             String proofUrl,
-            List<Genre> genres
+            List<Genre> genres,
+            String artistName,
+            String artistDescription
     ) {
         this.info = info;
         this.schedule = schedule;
         this.location = location;
         this.proofUrl = proofUrl;
+
+        this.artistName = artistName;
+        this.artistDescription = artistDescription;
 
         updateGenres(genres);
     }
