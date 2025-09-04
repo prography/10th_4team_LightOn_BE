@@ -11,7 +11,6 @@ import com.prography.lighton.performance.common.domain.entity.profile.Performanc
 import com.prography.lighton.performance.common.domain.entity.vo.Info;
 import com.prography.lighton.performance.common.domain.entity.vo.Location;
 import com.prography.lighton.performance.common.domain.entity.vo.Schedule;
-import jakarta.persistence.Column;
 import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
 import java.util.List;
@@ -30,12 +29,6 @@ public class Busking extends Performance {
 
     private static final int UPDATE_DEADLINE_DAYS = 3;
 
-    @Column(length = 100)
-    private String artistName;
-
-    @Column(length = 255)
-    private
-    String artistDescription;
 
     private Busking(
             Member performer,
@@ -56,10 +49,10 @@ public class Busking extends Performance {
                 proofUrl,
                 PerformanceProfile.busking(),
                 genres,
-                artists
+                artists,
+                artistName,
+                artistDescription
         );
-        this.artistName = artistName;
-        this.artistDescription = artistDescription;
     }
 
     public static Busking createByUser(
@@ -83,11 +76,13 @@ public class Busking extends Performance {
             Location location,
             List<Genre> genres,
             String proofUrl,
-            Artist artist
+            Artist artist,
+            String artistName,
+            String artistDescription
     ) {
         Busking busking = new Busking(
                 performer, info, schedule, location, proofUrl, genres,
-                List.of(artist), artist.getStageName(), artist.getDescription()
+                List.of(artist), artistName, artistDescription
         );
         busking.managePerformanceApplication(ApproveStatus.APPROVED);
         return busking;
@@ -104,7 +99,9 @@ public class Busking extends Performance {
             Schedule schedule,
             Location location,
             List<Genre> genres,
-            String proofUrl
+            String proofUrl,
+            String artistName,
+            String artistDescription
     ) {
         validatePerformer(performer);
         ensureUpdatableWindow();
@@ -114,7 +111,9 @@ public class Busking extends Performance {
                 schedule,
                 location,
                 proofUrl,
-                genres
+                genres,
+                artistName,
+                artistDescription
         );
     }
 
@@ -135,15 +134,14 @@ public class Busking extends Performance {
         DomainValidator.requireNonBlank(artistName);
         DomainValidator.requireNonBlank(artistDescription);
 
-        this.artistName = artistName;
-        this.artistDescription = artistDescription;
-
         updateCommonDetails(
                 info,
                 schedule,
                 location,
                 proofUrl,
-                genres
+                genres,
+                artistName,
+                artistDescription
         );
     }
 }

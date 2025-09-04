@@ -48,7 +48,8 @@ public class ArtistPerformanceService {
         var data = performanceResolver.toNewPerformanceData(member, request);
         Performance performance = Performance.create(member, data.artists(), data.info(), data.schedule(),
                 data.location(),
-                data.payment(), data.seats(), data.genres(), data.proofUrl(), request.data().totalSeatsCount());
+                data.payment(), data.seats(), data.genres(), data.proofUrl(), request.data().totalSeatsCount(),
+                request.data().artistName(), request.data().artistDescription());
         performanceRepository.save(performance);
     }
 
@@ -58,7 +59,8 @@ public class ArtistPerformanceService {
         var data = performanceResolver.toUpdatePerformanceData(member, performance, request);
         performance.update(member, data.artists(), data.info(), data.schedule(), data.location(), data.payment(),
                 data.seats(),
-                data.genres(), data.proofUrl(), request.data().totalSeatsCount());
+                data.genres(), data.proofUrl(), request.data().totalSeatsCount(), request.data().artistName(),
+                request.data().artistDescription());
     }
 
     @Transactional
