@@ -1,18 +1,14 @@
 package com.prography.lighton.artist.users.application.service;
 
-import static java.util.stream.Collectors.collectingAndThen;
-import static java.util.stream.Collectors.toList;
-
 import com.prography.lighton.artist.common.domain.entity.Artist;
 import com.prography.lighton.artist.common.domain.entity.enums.ApproveStatus;
-import com.prography.lighton.artist.users.application.exception.NoSuchArtistException;
 import com.prography.lighton.artist.users.application.resolver.ArtistRequestResolver;
 import com.prography.lighton.artist.users.infrastructure.repository.ArtistRepository;
 import com.prography.lighton.artist.users.presentation.dto.request.RegisterArtistMultipart;
 import com.prography.lighton.artist.users.presentation.dto.request.UpdateArtistMultipart;
 import com.prography.lighton.artist.users.presentation.dto.response.ArtistCheckResponseDTO;
+import com.prography.lighton.artist.users.presentation.dto.response.GetMyArtistInfoResponse;
 import com.prography.lighton.member.common.domain.entity.Member;
-import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -31,15 +27,9 @@ public class ArtistService {
         return artist;
     }
 
-    public List<Artist> getApprovedArtistsByIds(List<Long> artistIds) {
-        return artistRepository.findAllById(artistIds).stream()
-                .peek(Artist::isValidApproved)
-                .collect(collectingAndThen(toList(), list -> {
-                    if (list.size() != artistIds.size()) {
-                        throw new NoSuchArtistException();
-                    }
-                    return list;
-                }));
+    public GetMyArtistInfoResponse getMyArtistInfo(Member member) {
+        Artist artist = artistRepository.getByMember(member);
+        return GetMyArtistInfoResponse.of(artist.getStageName(), artist.getDescription());
     }
 
     @Transactional
