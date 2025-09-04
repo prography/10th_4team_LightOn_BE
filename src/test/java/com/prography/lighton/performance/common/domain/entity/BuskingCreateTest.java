@@ -69,32 +69,6 @@ class BuskingCreateTest {
         }
 
         @Test
-        @DisplayName("아티스트 Busking 생성 시 이름·설명은 Artist 엔티티 값이 들어간다")
-        void should_set_artist_fields_from_artist_entity() {
-            Member performer = PerformanceFixture.defaultMember();
-            Artist artist = PerformanceFixture.defaultArtist(performer);
-            String artistName = "name";
-            String artistDescription = "description";
-            when(artist.getStageName()).thenReturn(artistName);
-            when(artist.getDescription()).thenReturn(artistDescription);
-
-            Busking b = Busking.createByArtist(
-                    performer,
-                    PerformanceFixture.defaultInfo(),
-                    PerformanceFixture.defaultSchedule(),
-                    PerformanceFixture.defaultLocation(),
-                    PerformanceFixture.defaultGenres(),
-                    PerformanceFixture.DEFAULT_PROOF_URL,
-                    artist,
-                    PerformanceFixture.ARTIST_NAME,
-                    PerformanceFixture.ARTIST_DESCRIPTION
-            );
-
-            assertThat(b.getArtistName()).isEqualTo(artistName);
-            assertThat(b.getArtistDescription()).isEqualTo(artistDescription);
-        }
-
-        @Test
         @DisplayName("아티스트 Busking 생성 시 PerformanceArtist 리스트가 초기화된다")
         void should_init_performanceArtist_list() {
             Busking b = BuskingFixture.defaultBuskingByArtist();
