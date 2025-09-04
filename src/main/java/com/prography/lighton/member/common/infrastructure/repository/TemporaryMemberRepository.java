@@ -11,7 +11,8 @@ import org.springframework.data.repository.query.Param;
 
 public interface TemporaryMemberRepository extends JpaRepository<TemporaryMember, Long> {
 
-    Optional<TemporaryMember> findByEmail(Email email);
+    @Query("SELECT m FROM TemporaryMember m WHERE m.email.value = :email AND not m.isRegistered")
+    Optional<TemporaryMember> findByEmailAndNotRegistered(@Param("email") String email);
 
     void deleteByEmail(Email email);
 

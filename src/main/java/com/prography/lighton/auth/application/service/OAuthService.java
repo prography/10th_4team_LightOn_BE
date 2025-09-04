@@ -1,6 +1,5 @@
 package com.prography.lighton.auth.application.service;
 
-import com.prography.lighton.auth.application.exception.MemberProfileIncompleteException;
 import com.prography.lighton.auth.application.exception.UnsupportedSocialLoginTypeException;
 import com.prography.lighton.auth.application.port.RefreshTokenService;
 import com.prography.lighton.auth.application.port.TokenProvider;
@@ -81,10 +80,6 @@ public class OAuthService {
     private SocialLoginResult handleLoginOrRegister(String email, SocialLoginType socialLoginType) {
         duplicateEmailValidator.validateConflictingLoginType(email, socialLoginType);
 
-        if (isExistTemporaryMemberByEmail(email)) {
-            throw new MemberProfileIncompleteException();
-        }
-
         Email emailVO = Email.of(email);
 
         if (isExistMemberByEmail(email)) {
@@ -92,16 +87,11 @@ public class OAuthService {
             return issueTokensFor(member);
         }
 
-        TemporaryMember tempMember = temporaryMemberRepository.findByEmail(emailVO)
+        TemporaryMember tempMember = temporaryMemberRepository.findByEmailAndNotRegistered(emailVO.getValue())
                 .orElseGet(() -> temporaryMemberRepository.save(
                         TemporaryMember.socialLoginMemberOf(emailVO, socialLoginType)));
 
         return RegisterSocialMemberResponse.of(tempMember.isRegistered(), tempMember.getId());
-    }
-
-
-    private boolean isExistTemporaryMemberByEmail(String email) {
-        return temporaryMemberRepository.existsByEmailAndNotRegistered(email);
     }
 
     private boolean isExistMemberByEmail(String email) {
