@@ -1,6 +1,7 @@
 package com.prography.lighton.performance.users.presentation.dto.response;
 
 import com.prography.lighton.performance.common.domain.entity.Performance;
+import com.prography.lighton.performance.common.domain.entity.enums.Type;
 import com.prography.lighton.performance.users.presentation.dto.response.enums.PerformanceStatus;
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -27,7 +28,8 @@ public record GetMyRegisteredPerformanceListResponseDTO(
                                 ),
                                 performance.getInfo().getPlace(),
                                 performance.getPayment().getIsPaid(),
-                                performance.getCreatedAt().toLocalDate()
+                                performance.getCreatedAt().toLocalDate(),
+                                performance.getType()
                         ))
                         .toList()
         );
@@ -41,7 +43,8 @@ public record GetMyRegisteredPerformanceListResponseDTO(
             PerformanceStatus performanceStatus,
             String address,
             boolean isPaid,
-            LocalDate createdAt
+            LocalDate createdAt,
+            boolean isConcert
     ) {
         public static RegisteredPerformanceResponseDTO from(
                 Long id,
@@ -51,10 +54,11 @@ public record GetMyRegisteredPerformanceListResponseDTO(
                 PerformanceStatus performanceStatus,
                 String address,
                 boolean isPaid,
-                LocalDate createdAt
+                LocalDate createdAt,
+                Type type
         ) {
             return new RegisteredPerformanceResponseDTO(
-                    id, title, startDate, startTime, performanceStatus, address, isPaid, createdAt
+                    id, title, startDate, startTime, performanceStatus, address, isPaid, createdAt, type == Type.CONCERT
             );
         }
     }
