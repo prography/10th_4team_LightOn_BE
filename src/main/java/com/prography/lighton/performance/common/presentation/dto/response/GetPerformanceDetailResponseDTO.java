@@ -22,7 +22,9 @@ public record GetPerformanceDetailResponseDTO(
         String proofUrl,
         Boolean isPaid,
         Integer fee,
-        ApproveStatus status
+        ApproveStatus status,
+        Integer totalSeatsCount,
+        Integer bookedSeatCount
 ) {
     public record ArtistDTO(Long id, String name, String description) {
         public static ArtistDTO of(Long id, String name, String description) {
