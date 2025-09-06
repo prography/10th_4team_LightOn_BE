@@ -66,6 +66,8 @@ public class PerformanceDetailMapper {
                 .isPaid(p.getPayment().getIsPaid())
                 .fee(p.getPayment().getFee())
                 .status(p.getApproveStatus())
+                .totalSeatsCount(p.getSeatInventory().getTotalSeatsCount())
+                .bookedSeatCount(p.getSeatInventory().getBookedSeatCount())
                 .build();
     }
 
