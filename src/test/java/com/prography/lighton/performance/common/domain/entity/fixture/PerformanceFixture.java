@@ -35,6 +35,8 @@ public class PerformanceFixture {
     public static final double DEFAULT_LONGITUDE = 0.0;
     public static final String DEFAULT_PROOF_URL = "http://proof.url";
     public static final int DEFAULT_TOTAL_SEATS = 50;
+    public static final String ARTIST_NAME = "아티스트 이름";
+    public static final String ARTIST_DESCRIPTION = "아티스트 설명";
 
 
     public static Info defaultInfo() {
@@ -70,6 +72,7 @@ public class PerformanceFixture {
 
     public static Payment defaultPayment() {
         return Payment.of(
+                true,
                 DEFAULT_ACCOUNT,
                 DEFAULT_BANK,
                 DEFAULT_HOLDER,
@@ -105,7 +108,9 @@ public class PerformanceFixture {
                 defaultSeats(),
                 defaultGenres(),
                 DEFAULT_PROOF_URL,
-                DEFAULT_TOTAL_SEATS
+                DEFAULT_TOTAL_SEATS,
+                ARTIST_NAME,
+                ARTIST_DESCRIPTION
         );
     }
 

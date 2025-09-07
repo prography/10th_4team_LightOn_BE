@@ -50,11 +50,12 @@ public class PerformanceDetailMapper {
                 .id(p.getId())
                 .info(p.getInfo())
                 .artists(
-                        p.getArtists().stream()
-                                .map(pa -> ArtistDTO.of(pa.getArtist().getId(),
-                                        pa.getArtist().getStageName(),
-                                        pa.getArtist().getDescription()))
-                                .toList())
+                        List.of(
+                                ArtistDTO.of(
+                                        p.getArtists().get(0).getArtist().getId(),
+                                        p.getArtistName(),
+                                        p.getArtistDescription()
+                                )))
                 .genres(toGenres(p.getGenres()))
                 .schedule(p.getSchedule())
                 .regionCode(regionCache.getRegionCodeByInfo(p.getLocation().getRegion()))
@@ -65,6 +66,8 @@ public class PerformanceDetailMapper {
                 .isPaid(p.getPayment().getIsPaid())
                 .fee(p.getPayment().getFee())
                 .status(p.getApproveStatus())
+                .totalSeatsCount(p.getSeatInventory().getTotalSeatsCount())
+                .bookedSeatCount(p.getSeatInventory().getBookedSeatCount())
                 .build();
     }
 
@@ -75,7 +78,7 @@ public class PerformanceDetailMapper {
             artistDto = ArtistDTO.of(null, b.getArtistName(), b.getArtistDescription());
         } else {
             var a = b.getArtists().get(0).getArtist();
-            artistDto = ArtistDTO.of(a.getId(), a.getStageName(), a.getDescription());
+            artistDto = ArtistDTO.of(a.getId(), b.getArtistName(), b.getArtistDescription());
         }
 
         return GetPerformanceDetailResponseDTO.builder()

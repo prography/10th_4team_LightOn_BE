@@ -25,7 +25,9 @@ class PerformanceCreateTest {
                 PerformanceFixture.defaultSeats(),
                 PerformanceFixture.defaultGenres(),
                 PerformanceFixture.DEFAULT_PROOF_URL,
-                PerformanceFixture.DEFAULT_TOTAL_SEATS
+                PerformanceFixture.DEFAULT_TOTAL_SEATS,
+                PerformanceFixture.ARTIST_NAME,
+                PerformanceFixture.ARTIST_DESCRIPTION
         );
 
         assertThat(p.getPerformer().getId()).isEqualTo(PerformanceFixture.DEFAULT_PERFORMER_ID);

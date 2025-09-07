@@ -43,7 +43,9 @@ class PerformanceUpdateTest {
                     PerformanceFixture.defaultSeats(),
                     PerformanceFixture.defaultGenres(),
                     PerformanceFixture.DEFAULT_PROOF_URL,
-                    PerformanceFixture.DEFAULT_TOTAL_SEATS
+                    PerformanceFixture.DEFAULT_TOTAL_SEATS,
+                    PerformanceFixture.ARTIST_NAME,
+                    PerformanceFixture.ARTIST_DESCRIPTION
             );
 
             Info updatedInfo = Info.of("수정 제목", "수정 설명", "수정 장소", "", "");
@@ -57,7 +59,9 @@ class PerformanceUpdateTest {
                     PerformanceFixture.defaultSeats(),
                     PerformanceFixture.defaultGenres(),
                     PerformanceFixture.DEFAULT_PROOF_URL,
-                    PerformanceFixture.DEFAULT_TOTAL_SEATS
+                    PerformanceFixture.DEFAULT_TOTAL_SEATS,
+                    PerformanceFixture.ARTIST_NAME,
+                    PerformanceFixture.ARTIST_DESCRIPTION
             );
 
             // then
@@ -79,7 +83,9 @@ class PerformanceUpdateTest {
                             PerformanceFixture.defaultSeats(),
                             PerformanceFixture.defaultGenres(),
                             PerformanceFixture.DEFAULT_PROOF_URL,
-                            PerformanceFixture.DEFAULT_TOTAL_SEATS
+                            PerformanceFixture.DEFAULT_TOTAL_SEATS,
+                            PerformanceFixture.ARTIST_NAME,
+                            PerformanceFixture.ARTIST_DESCRIPTION
                     )
             ).isInstanceOf(NotAuthorizedPerformanceAccessException.class);
         }
@@ -109,7 +115,9 @@ class PerformanceUpdateTest {
                             PerformanceFixture.defaultSeats(),
                             PerformanceFixture.defaultGenres(),
                             PerformanceFixture.DEFAULT_PROOF_URL,
-                            PerformanceFixture.DEFAULT_TOTAL_SEATS
+                            PerformanceFixture.DEFAULT_TOTAL_SEATS,
+                            PerformanceFixture.ARTIST_NAME,
+                            PerformanceFixture.ARTIST_DESCRIPTION
                     )
             ).isInstanceOf(PerformanceUpdateNotAllowedException.class);
         }
@@ -130,7 +138,9 @@ class PerformanceUpdateTest {
                             PerformanceFixture.defaultSeats(),
                             PerformanceFixture.defaultGenres(),
                             " ",
-                            PerformanceFixture.DEFAULT_TOTAL_SEATS
+                            PerformanceFixture.DEFAULT_TOTAL_SEATS,
+                            PerformanceFixture.ARTIST_NAME,
+                            PerformanceFixture.ARTIST_DESCRIPTION
                     )
             ).isInstanceOf(IllegalArgumentException.class);
         }
@@ -157,7 +167,9 @@ class PerformanceUpdateTest {
                             PerformanceFixture.defaultSeats(),
                             PerformanceFixture.defaultGenres(),
                             PerformanceFixture.DEFAULT_PROOF_URL,
-                            updateSeatCount
+                            updateSeatCount,
+                            PerformanceFixture.ARTIST_NAME,
+                            PerformanceFixture.ARTIST_DESCRIPTION
                     )
             ).isInstanceOf(InvalidSeatCountException.class);
         }
@@ -181,7 +193,9 @@ class PerformanceUpdateTest {
                     PerformanceFixture.defaultSeats(),
                     PerformanceFixture.defaultGenres(),
                     PerformanceFixture.DEFAULT_PROOF_URL,
-                    PerformanceFixture.DEFAULT_TOTAL_SEATS
+                    PerformanceFixture.DEFAULT_TOTAL_SEATS,
+                    PerformanceFixture.ARTIST_NAME,
+                    PerformanceFixture.ARTIST_DESCRIPTION
             );
 
             // when: 마스터 아티스트(공연 등록자) 제거
@@ -196,7 +210,10 @@ class PerformanceUpdateTest {
                             PerformanceFixture.defaultSeats(),
                             PerformanceFixture.defaultGenres(),
                             PerformanceFixture.DEFAULT_PROOF_URL,
-                            PerformanceFixture.DEFAULT_TOTAL_SEATS)
+                            PerformanceFixture.DEFAULT_TOTAL_SEATS,
+                            PerformanceFixture.ARTIST_NAME,
+                            PerformanceFixture.ARTIST_DESCRIPTION)
+
             ).isInstanceOf(MasterArtistCannotBeRemovedException.class);
         }
 
@@ -219,7 +236,9 @@ class PerformanceUpdateTest {
                     PerformanceFixture.defaultSeats(),
                     PerformanceFixture.defaultGenres(),
                     PerformanceFixture.DEFAULT_PROOF_URL,
-                    PerformanceFixture.DEFAULT_TOTAL_SEATS
+                    PerformanceFixture.DEFAULT_TOTAL_SEATS,
+                    PerformanceFixture.ARTIST_NAME,
+                    PerformanceFixture.ARTIST_DESCRIPTION
             );
 
             // when: a2 제거
@@ -233,7 +252,9 @@ class PerformanceUpdateTest {
                     PerformanceFixture.defaultSeats(),
                     PerformanceFixture.defaultGenres(),
                     PerformanceFixture.DEFAULT_PROOF_URL,
-                    PerformanceFixture.DEFAULT_TOTAL_SEATS
+                    PerformanceFixture.DEFAULT_TOTAL_SEATS,
+                    PerformanceFixture.ARTIST_NAME,
+                    PerformanceFixture.ARTIST_DESCRIPTION
             );
 
             // then
@@ -264,7 +285,9 @@ class PerformanceUpdateTest {
                     PerformanceFixture.defaultSeats(),
                     PerformanceFixture.defaultGenres(),
                     PerformanceFixture.DEFAULT_PROOF_URL,
-                    PerformanceFixture.DEFAULT_TOTAL_SEATS
+                    PerformanceFixture.DEFAULT_TOTAL_SEATS,
+                    PerformanceFixture.ARTIST_NAME,
+                    PerformanceFixture.ARTIST_DESCRIPTION
             );
 
             assertThat(p.getArtists()).hasSize(2)
@@ -290,7 +313,9 @@ class PerformanceUpdateTest {
                     PerformanceFixture.defaultSeats(),
                     List.of(g1, g2),
                     PerformanceFixture.DEFAULT_PROOF_URL,
-                    PerformanceFixture.DEFAULT_TOTAL_SEATS
+                    PerformanceFixture.DEFAULT_TOTAL_SEATS,
+                    PerformanceFixture.ARTIST_NAME,
+                    PerformanceFixture.ARTIST_DESCRIPTION
             );
 
             // when: g2 제거
@@ -304,7 +329,9 @@ class PerformanceUpdateTest {
                     PerformanceFixture.defaultSeats(),
                     List.of(g1),
                     PerformanceFixture.DEFAULT_PROOF_URL,
-                    PerformanceFixture.DEFAULT_TOTAL_SEATS
+                    PerformanceFixture.DEFAULT_TOTAL_SEATS,
+                    PerformanceFixture.ARTIST_NAME,
+                    PerformanceFixture.ARTIST_DESCRIPTION
             );
 
             assertThat(p.getGenres()).hasSize(1)
@@ -333,7 +360,9 @@ class PerformanceUpdateTest {
                     PerformanceFixture.defaultSeats(),
                     List.of(existing, newGenre),
                     PerformanceFixture.DEFAULT_PROOF_URL,
-                    PerformanceFixture.DEFAULT_TOTAL_SEATS
+                    PerformanceFixture.DEFAULT_TOTAL_SEATS,
+                    PerformanceFixture.ARTIST_NAME,
+                    PerformanceFixture.ARTIST_DESCRIPTION
             );
 
             assertThat(p.getGenres()).hasSize(2)
