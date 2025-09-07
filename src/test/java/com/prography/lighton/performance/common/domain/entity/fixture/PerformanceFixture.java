@@ -72,6 +72,7 @@ public class PerformanceFixture {
 
     public static Payment defaultPayment() {
         return Payment.of(
+                true,
                 DEFAULT_ACCOUNT,
                 DEFAULT_BANK,
                 DEFAULT_HOLDER,
