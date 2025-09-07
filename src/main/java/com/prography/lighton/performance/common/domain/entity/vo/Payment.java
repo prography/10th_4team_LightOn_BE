@@ -28,8 +28,8 @@ public class Payment {
 
     private Integer fee;
 
-    public static Payment of(String account, String bank, String accountHolder, Integer fee) {
-        if (isInvalid(account, bank, accountHolder, fee)) {
+    public static Payment of(Boolean isPaid, String account, String bank, String accountHolder, Integer fee) {
+        if (isPaid && isInvalid(account, bank, accountHolder, fee)) {
             throw new InvalidPaymentInfoException();
         }
 
