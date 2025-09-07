@@ -33,7 +33,7 @@ public class Payment {
             throw new InvalidPaymentInfoException();
         }
 
-        return new Payment(true, account, bank, accountHolder, fee);
+        return new Payment(isPaid, account, bank, accountHolder, fee == null ? 0 : fee);
     }
 
     private static boolean isInvalid(String account, String bank, String holder, Integer fee) {
