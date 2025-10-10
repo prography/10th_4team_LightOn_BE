@@ -23,3 +23,4 @@ class DisableSecurityConfig {
         return mock(TokenProvider.class);
     }
 }
+
