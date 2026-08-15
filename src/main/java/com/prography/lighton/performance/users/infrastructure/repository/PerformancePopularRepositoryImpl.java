@@ -46,7 +46,7 @@ public class PerformancePopularRepositoryImpl implements PerformancePopularRepos
 
         return query
                 .select(p.id)
-                .distinct()
+                //.distinct()
                 .from(p)
                 .join(p.genres, pg)
                 .join(pg.genre, g)
@@ -58,6 +58,7 @@ public class PerformancePopularRepositoryImpl implements PerformancePopularRepos
                         g.name.eq(genre),
                         p.type.eq(Type.CONCERT) // TODO 추후 버스킹도 조회 가능하도록 수정 예정
                 )
+                .groupBy(p.id)
                 .orderBy(p.likeCount.desc(), p.viewCount.desc())
                 .limit(limit)
                 .fetch();

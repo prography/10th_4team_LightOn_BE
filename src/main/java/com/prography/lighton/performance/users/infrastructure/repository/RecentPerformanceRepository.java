@@ -13,7 +13,7 @@ public interface RecentPerformanceRepository {
 
     default List<Long> findRecentIds(String genre, int limit) {
         if (StringUtils.hasText(genre)) {
-            return findRecentByGenre(genre.trim().toLowerCase(), limit);
+            return findRecentByGenre(genre.trim(), limit);
         }
         return findRecentAll(limit);
     }
