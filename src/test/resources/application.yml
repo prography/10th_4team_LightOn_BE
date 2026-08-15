@@ -58,6 +58,7 @@ cloud:
 
 kakao:
   local:
+    base-url: https://dapi.kakao.com
     rest-api-key: test
 
 sms:
