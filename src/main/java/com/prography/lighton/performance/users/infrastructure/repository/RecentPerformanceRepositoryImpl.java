@@ -46,7 +46,7 @@ public class RecentPerformanceRepositoryImpl implements RecentPerformanceReposit
 
         return query
                 .select(p.id)
-                .distinct()
+                //.distinct()
                 .from(p)
                 .join(p.genres, pg)
                 .join(pg.genre, g)
@@ -58,6 +58,7 @@ public class RecentPerformanceRepositoryImpl implements RecentPerformanceReposit
                         p.schedule.endDate.goe(today),
                         p.type.eq(Type.CONCERT)
                 )
+                .groupBy(p.id)
                 .orderBy(p.createdAt.desc())
                 .limit(limit)
                 .fetch();
