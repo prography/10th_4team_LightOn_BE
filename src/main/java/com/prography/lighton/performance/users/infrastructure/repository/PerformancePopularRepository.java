@@ -11,7 +11,7 @@ public interface PerformancePopularRepository {
 
     default List<Long> findTopPopularIds(String genre, int limit) {
         if (StringUtils.hasText(genre)) {
-            return findTopPopularByGenre(genre.trim().toLowerCase(), limit);
+            return findTopPopularByGenre(genre.trim(), limit);
         }
         return findTopPopularAll(limit);
     }
