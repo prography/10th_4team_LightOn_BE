@@ -1,0 +1,75 @@
+# 테스트 전용 설정
+# @SpringBootTest 실행 시 이 파일이 운영 application.yml 을 대체하여
+# 외부 인프라(MySQL/Redis/AWS/SMS 등) 없이 인메모리 H2 로 컨텍스트를 띄운다.
+spring:
+  # 인메모리 H2 (테스트 프로세스 안에서만 존재, 별도 서버 불필요)
+  datasource:
+    url: jdbc:h2:mem:testdb;MODE=MySQL;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
+    driver-class-name: org.h2.Driver
+    username: sa
+    password:
+
+  jpa:
+    hibernate:
+      ddl-auto: create-drop   # 엔티티로부터 스키마 자동 생성
+    properties:
+      hibernate:
+        format_sql: false
+    open-in-view: false
+
+  data:
+    redis:
+      host: localhost
+      port: 6379
+
+  oauth2:
+    google:
+      url: http://localhost
+      client-id: test
+      callback-login-url: http://localhost
+      client-secret: test
+      scope: email
+    kakao:
+      url: http://localhost
+      client-id: test
+      callback-login-url: http://localhost
+
+security:
+  jwt:
+    token:
+      secret-key: test-secret-key-for-ci-only-please-change-1234567890
+      access:
+        expire-length: 3600000
+      refresh:
+        expire-length: 1209600000
+
+cloud:
+  aws:
+    stack:
+      auto: false
+    region:
+      auto: false
+      static: ap-northeast-2
+    credentials:
+      access-key: test
+      secret-key: test
+    s3:
+      bucket: test-bucket
+
+kakao:
+  local:
+    rest-api-key: test
+
+sms:
+  api-key: test
+  api-secret: test
+  api-url: https://api.solapi.com
+  from-number: "01000000000"
+
+apple:
+  oauth:
+    team-id: test
+    client-id: test
+    key-id: test
+    private-key-path: AuthKey.p8
+    redirect-uri: http://localhost
